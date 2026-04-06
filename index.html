@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mindful Check-in</title>
+  <link rel="stylesheet" href="styles.css?v=2.0.2">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div class="hero-topline">
+        <h1 data-i18n="header.title">Mindful Check-in</h1>
+        <div class="hero-controls">
+          <div class="theme-switch" role="group" aria-label="Theme switch">
+            <button type="button" class="theme-button" data-theme-value="light" aria-label="Light theme" title="Light">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+                <circle cx="8" cy="8" r="3"/>
+                <line x1="8" y1="1" x2="8" y2="2.5"/>
+                <line x1="8" y1="13.5" x2="8" y2="15"/>
+                <line x1="1" y1="8" x2="2.5" y2="8"/>
+                <line x1="13.5" y1="8" x2="15" y2="8"/>
+                <line x1="3.1" y1="3.1" x2="4.2" y2="4.2"/>
+                <line x1="11.8" y1="11.8" x2="12.9" y2="12.9"/>
+                <line x1="12.9" y1="3.1" x2="11.8" y2="4.2"/>
+                <line x1="4.2" y1="11.8" x2="3.1" y2="12.9"/>
+              </svg>
+            </button>
+            <button type="button" class="theme-button" data-theme-value="dark" aria-label="Dark theme" title="Dark">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <path d="M13.5 10.5A6 6 0 0 1 5.5 2.5a6 6 0 1 0 8 8z"/>
+              </svg>
+            </button>
+            <button type="button" class="theme-button" data-theme-value="system" aria-label="System theme" title="System">
+              <svg width="16" height="15" viewBox="0 0 18 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="1" y="1.5" width="16" height="10" rx="1.5"/>
+                <line x1="6" y1="14" x2="12" y2="14"/>
+                <line x1="9" y1="11.5" x2="9" y2="14"/>
+              </svg>
+            </button>
+          </div>
+          <div class="language-switch" role="group" aria-label="Language switch">
+            <button type="button" class="language-button" data-language="nl" aria-pressed="false">NL</button>
+            <button type="button" class="language-button is-selected" data-language="en" aria-pressed="true">EN</button>
+          </div>
+          <div class="tab-switch" role="tablist" aria-label="Section tabs">
+            <button type="button" class="tab-button is-selected" data-tab-target="checkin" data-i18n="tabs.checkin" role="tab" aria-selected="true">Check-in</button>
+            <button type="button" class="tab-button" data-tab-target="overview" data-i18n="tabs.overview" role="tab" aria-selected="false">Overview</button>
+            <button type="button" class="tab-button" data-tab-target="settings" data-i18n="tabs.settings" role="tab" aria-selected="false">Settings</button>
+            <button type="button" class="tab-button" data-tab-target="info" data-i18n="tabs.info" role="tab" aria-selected="false">Info</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="tab-panel is-active" data-tab-panel="checkin">
+    <section class="card" aria-labelledby="checkin-heading">
+      <h2 id="checkin-heading" data-i18n="checkin.title">Today's check-in</h2>
+      <p data-i18n="checkin.intro">
+        Pick one mood for today, add an optional note, and save it only on this device.
+      </p>
+
+      <div class="section-group" data-component="thoughts">
+        <div class="thoughts-row">
+          <div class="weather-column" data-component="weather">
+            <label class="field-label" data-i18n="weather.label">Weather</label>
+            <div class="weather-widget" id="weather-widget">
+              <div class="weather-icon" id="weather-icon"></div>
+              <div class="weather-details">
+                <span class="weather-temp" id="weather-temp">--</span>
+                <span class="weather-desc" id="weather-desc" data-i18n="weather.loading">Loading...</span>
+                <span class="weather-location" id="weather-location"></span>
+              </div>
+            </div>
+          </div>
+          <div class="thoughts-field">
+            <label class="field-label" for="thoughts" data-i18n="fields.thoughts.label">Thoughts</label>
+            <textarea id="thoughts" rows="4" data-i18n-placeholder="fields.thoughts.placeholder" placeholder="What thoughts come to mind?"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-group three-column">
+        <div class="checkin-block feeling-panel" data-component="coreFeeling">
+          <label class="field-label" data-i18n="fields.feelings.label">Core feeling</label>
+          <div class="section-actions">
+            <select id="wheel-type" class="wheel-select">
+              <option value="act">ACT (8)</option>
+              <option value="plutchik">Plutchik (8)</option>
+              <option value="ekman">Ekman (6)</option>
+              <option value="junto">Junto (6)</option>
+              <option value="extended">Extended (12)</option>
+            </select>
+            <button type="button" class="reset-button" id="reset-feeling" data-i18n="buttons.resetFeeling">Reset feeling</button>
+          </div>
+          <svg class="emotion-wheel" id="emotion-wheel" viewBox="0 0 360 360" role="group" aria-label="Core feelings wheel"></svg>
+          <div class="selection-display is-empty" id="selected-emotion-display" data-i18n="fields.feelings.empty">
+            Select one core feeling
+          </div>
+          <label class="field-label checkin-block-note-label" for="custom-emotions" data-i18n="fields.customFeelings.label">Custom feelings</label>
+          <textarea id="custom-emotions" rows="3" data-i18n-placeholder="fields.customFeelings.placeholder" placeholder="Describe additional feelings..."></textarea>
+        </div>
+
+        <div class="checkin-block body-panel" data-component="bodySignals">
+          <label class="field-label" data-i18n="fields.bodySignals.label">Body signals</label>
+          <div class="section-actions">
+            <button type="button" class="reset-button" id="reset-body-signals" data-i18n="buttons.resetBodySignals">Reset body signals</button>
+          </div>
+          <div class="body-figure" id="body-figure" role="group" aria-label="Body signal selector">
+            <svg class="body-figure-svg" viewBox="0 0 120 240" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <ellipse cx="60" cy="25" rx="15" ry="18" class="body-part" data-part="head" fill="#f8fafc"/>
+              <rect x="55" y="43" width="10" height="8" class="body-part" data-part="neck" fill="#f8fafc"/>
+              <ellipse cx="42" cy="58" rx="8" ry="6" class="body-part" data-part="left-shoulder" fill="#f8fafc"/>
+              <ellipse cx="78" cy="58" rx="8" ry="6" class="body-part" data-part="right-shoulder" fill="#f8fafc"/>
+              <ellipse cx="60" cy="77" rx="18" ry="20" class="body-part" data-part="chest" fill="#f8fafc"/>
+              <ellipse cx="60" cy="106" rx="16" ry="18" class="body-part" data-part="abdomen" fill="#f8fafc"/>
+
+              <ellipse cx="35" cy="76" rx="6" ry="15" class="body-part" data-part="left-upper-arm" fill="#f8fafc"/>
+              <ellipse cx="85" cy="76" rx="6" ry="15" class="body-part" data-part="right-upper-arm" fill="#f8fafc"/>
+              <circle cx="32" cy="93" r="4.5" class="body-part" data-part="left-elbow" fill="#f8fafc"/>
+              <circle cx="88" cy="93" r="4.5" class="body-part" data-part="right-elbow" fill="#f8fafc"/>
+              <ellipse cx="28" cy="110" rx="5.5" ry="12" class="body-part" data-part="left-forearm" fill="#f8fafc"/>
+              <ellipse cx="92" cy="110" rx="5.5" ry="12" class="body-part" data-part="right-forearm" fill="#f8fafc"/>
+              <ellipse cx="26" cy="126" rx="4.5" ry="6.5" class="body-part" data-part="left-hand" fill="#f8fafc"/>
+              <ellipse cx="94" cy="126" rx="4.5" ry="6.5" class="body-part" data-part="right-hand" fill="#f8fafc"/>
+              <ellipse cx="53" cy="136" rx="10" ry="11" class="body-part" data-part="left-hip" fill="#f8fafc"/>
+              <ellipse cx="67" cy="136" rx="10" ry="11" class="body-part" data-part="right-hip" fill="#f8fafc"/>
+              <ellipse cx="50" cy="171" rx="9" ry="27" class="body-part" data-part="left-leg" fill="#f8fafc"/>
+              <ellipse cx="70" cy="171" rx="9" ry="27" class="body-part" data-part="right-leg" fill="#f8fafc"/>
+              <circle cx="50" cy="198" r="6" class="body-part" data-part="left-knee" fill="#f8fafc"/>
+              <circle cx="70" cy="198" r="6" class="body-part" data-part="right-knee" fill="#f8fafc"/>
+              <ellipse cx="48" cy="216" rx="6.5" ry="14" class="body-part" data-part="left-lower-leg" fill="#f8fafc"/>
+              <ellipse cx="72" cy="216" rx="6.5" ry="14" class="body-part" data-part="right-lower-leg" fill="#f8fafc"/>
+              <ellipse cx="46" cy="232" rx="6" ry="7" class="body-part" data-part="left-foot" fill="#f8fafc"/>
+              <ellipse cx="74" cy="232" rx="6" ry="7" class="body-part" data-part="right-foot" fill="#f8fafc"/>
+              <rect x="55" y="51" width="10" height="36" rx="3" class="body-part back-zone" data-part="upper-back"/>
+              <rect x="55" y="90" width="10" height="34" rx="3" class="body-part back-zone" data-part="lower-back"/>
+            </svg>
+          </div>
+          <div class="selection-display is-empty" id="body-signals-display" data-i18n="fields.bodySignals.empty">
+            Select body areas where you notice signals
+          </div>
+          <label class="field-label checkin-block-note-label" for="body" data-i18n="fields.body.label">Body note</label>
+          <textarea id="body" rows="3" data-i18n-placeholder="fields.body.placeholder" placeholder="Describe what you notice in your body..."></textarea>
+        </div>
+
+        <div class="checkin-block energy-panel" data-component="energyPanel">
+          <label class="field-label" data-i18n="fields.energy.label">Energy level</label>
+          <div class="section-actions">
+            <button type="button" class="reset-button" id="reset-energy" data-i18n="buttons.resetEnergy">Reset energy</button>
+          </div>
+          <div class="energy-triple">
+            <div class="energy-column">
+              <div class="energy-meter-row">
+                <div class="energy-scale">
+                  <span>100</span>
+                  <span>75</span>
+                  <span>50</span>
+                  <span>25</span>
+                  <span>0</span>
+                </div>
+                <div class="energy-meter-col">
+                  <span class="energy-type-label" data-i18n="energy.physical">Physical</span>
+                  <div class="energy-meter" data-energy-type="physical" aria-label="Physical energy from 0 to 100">
+                    <div class="energy-fill" id="energy-fill-physical"></div>
+                  </div>
+                  <input type="text" class="energy-note-input" id="energy-note-physical" data-i18n-placeholder="fields.energyNote.placeholder" placeholder="Describe how your energy feels...">
+                </div>
+              </div>
+            </div>
+            <div class="energy-column">
+              <div class="energy-meter-row">
+                <div class="energy-scale">
+                  <span>100</span>
+                  <span>75</span>
+                  <span>50</span>
+                  <span>25</span>
+                  <span>0</span>
+                </div>
+                <div class="energy-meter-col">
+                  <span class="energy-type-label" data-i18n="energy.mental">Mental</span>
+                  <div class="energy-meter" data-energy-type="mental" aria-label="Mental energy from 0 to 100">
+                    <div class="energy-fill" id="energy-fill-mental"></div>
+                  </div>
+                  <input type="text" class="energy-note-input" id="energy-note-mental" data-i18n-placeholder="fields.energyNote.placeholder" placeholder="Describe how your energy feels...">
+                </div>
+              </div>
+            </div>
+            <div class="energy-column">
+              <div class="energy-meter-row">
+                <div class="energy-scale">
+                  <span>100</span>
+                  <span>75</span>
+                  <span>50</span>
+                  <span>25</span>
+                  <span>0</span>
+                </div>
+                <div class="energy-meter-col">
+                  <span class="energy-type-label" id="energy-emotional-label">Emotioneel /
+Sociaal</span>
+                  <div class="energy-meter" data-energy-type="emotional" aria-label="Emotional/Social energy from 0 to 100">
+                    <div class="energy-fill" id="energy-fill-emotional"></div>
+                  </div>
+                  <input type="text" class="energy-note-input" id="energy-note-emotional" data-i18n-placeholder="fields.energyNote.placeholder" placeholder="Describe how your energy feels...">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="selection-display is-empty" id="energy-display" data-i18n="fields.energy.empty">
+            Click in the meters to set your energy levels
+          </div>
+          <label class="field-label checkin-block-note-label" for="energy-note" data-i18n="fields.energyNote.label">Energy note</label>
+          <textarea id="energy-note" rows="3" data-i18n-placeholder="fields.energyNote.placeholder" placeholder="Describe how your energy feels..."></textarea>
+        </div>
+      </div>
+
+      <div class="section-group" data-component="moodMatrix">
+        <div class="mood-header">
+          <h3 class="subheading" data-i18n="fields.moodGrid.label">Mood matrix</h3>
+          <div class="section-actions">
+            <button type="button" class="reset-button" id="reset-mood" data-i18n="buttons.resetMood">Reset mood</button>
+          </div>
+        </div>
+        <p class="field-help" data-i18n="fields.moodGrid.help">Click one cell to mark your current mood.</p>
+        <div class="mood-grid-wrapper">
+          <div class="axis-label axis-energy-high" data-i18n="fields.moodGrid.axisHigh">HIGH ENERGY</div>
+          <div class="axis-label axis-energy-low" data-i18n="fields.moodGrid.axisLow">LOW ENERGY</div>
+          <div class="axis-label axis-mood-negative" data-i18n="fields.moodGrid.axisNegative">NEGATIVE</div>
+          <div class="axis-label axis-mood-positive" data-i18n="fields.moodGrid.axisPositive">POSITIVE</div>
+          <div class="mood-grid" id="mood-grid"></div>
+        </div>
+        <div class="selection-display is-empty" id="selected-mood-display" data-i18n="fields.moodGrid.empty">
+          Select one mood cell
+        </div>
+      </div>
+
+      <div class="section-group two-column-fields">
+        <div data-component="actions">
+          <label class="field-label" for="action" data-i18n="fields.action.label">Action</label>
+          <textarea id="action" rows="3" data-i18n-placeholder="fields.action.placeholder" placeholder="What action do you want to take?"></textarea>
+          <div class="quick-actions-chips" id="quick-actions-chips"></div>
+        </div>
+
+        <div data-component="note">
+          <label class="field-label" for="note" data-i18n="fields.note.label">Optional note</label>
+          <textarea id="note" name="note" rows="3" data-i18n-placeholder="fields.note.placeholder" placeholder="Write a short note..."></textarea>
+        </div>
+      </div>
+
+      <div class="checkin-save-row">
+        <button type="button" class="save-button checkin-save-button" id="save-checkin" data-i18n="checkin.saveShort">Save</button>
+        <label class="checkin-save-option" id="save-option-wrap">
+          <input type="checkbox" id="save-as-new-entry" />
+          <span data-i18n="checkin.saveAsNew">Extra</span>
+        </label>
+      </div>
+
+      <p class="status-message" id="status-message" aria-live="polite"></p>
+    </section>
+
+    <section class="grid">
+      <article class="card" aria-labelledby="summary-heading">
+        <h2 id="summary-heading" data-i18n="summary.title">Summary</h2>
+        <div id="summary-content" class="summary-content" aria-live="polite">
+          <p class="empty-state" data-i18n="summary.empty">Save your first check-in to see a simple summary here.</p>
+        </div>
+      </article>
+
+      <article class="card" aria-labelledby="history-heading">
+        <h2 id="history-heading" data-i18n="history.title">Last 28 days</h2>
+        <div id="history-content" class="history-content" aria-live="polite">
+          <p class="empty-state" data-i18n="history.empty">Your recent entries will appear here after you save a check-in.</p>
+        </div>
+      </article>
+    </section>
+    </div><!-- /tab-panel checkin -->
+
+    <div class="tab-panel" data-tab-panel="overview">
+      <section class="card" aria-labelledby="overview-heading">
+        <h2 id="overview-heading" data-i18n="overview.title">Saved check-ins</h2>
+        <p data-i18n="overview.intro">This table shows your saved check-ins. Visible columns follow your Settings.</p>
+        <div class="overview-controls">
+          <input id="overview-search" type="search" oninput="window.__moodOverviewApply && window.__moodOverviewApply()" onchange="window.__moodOverviewApply && window.__moodOverviewApply()" data-i18n-placeholder="overview.searchPlaceholder" placeholder="Search..." />
+          <select id="overview-filter" class="wheel-select" onchange="window.__moodOverviewApply && window.__moodOverviewApply()">
+            <option value="all" data-i18n="overview.filters.all">All</option>
+            <option value="today" data-i18n="overview.filters.today">Today</option>
+            <option value="last7" data-i18n="overview.filters.last7">Last 7 days</option>
+            <option value="last14" data-i18n="overview.filters.last14">Last 2 weeks</option>
+            <option value="lastMonth" data-i18n="overview.filters.lastMonth">Last month</option>
+            <option value="last3Months" data-i18n="overview.filters.last3Months">Last 3 months</option>
+          </select>
+          <label class="overview-notes-toggle">
+            <input id="overview-with-notes-only" type="checkbox" onchange="window.__moodOverviewApply && window.__moodOverviewApply()" />
+            <span data-i18n="overview.withNotesOnly">Only with notes</span>
+          </label>
+        </div>
+        <div class="overview-table-wrap">
+          <table class="overview-table" id="overview-table">
+            <thead id="overview-head"></thead>
+            <tbody id="overview-body"></tbody>
+          </table>
+        </div>
+        <p class="status-message" id="overview-empty" aria-live="polite"></p>
+        <div class="section-actions overview-pagination">
+          <button type="button" class="reset-button" id="overview-export" data-i18n="overview.export">Export</button>
+          <button type="button" class="reset-button" id="overview-import" data-i18n="overview.import">Import</button>
+          <input type="file" id="overview-import-file" accept="application/json,.json" class="is-hidden" />
+          <button type="button" class="reset-button" id="overview-prev" data-i18n="overview.prev">Previous</button>
+          <span class="overview-page-info" id="overview-page-info">Page 1 of 1</span>
+          <button type="button" class="reset-button" id="overview-next" data-i18n="overview.next">Next</button>
+        </div>
+        <p class="status-message" id="overview-status" aria-live="polite"></p>
+      </section>
+    </div>
+
+    <div class="tab-panel" data-tab-panel="settings">
+      <section class="card" aria-labelledby="settings-heading">
+        <h2 id="settings-heading" data-i18n="settings.title">Settings</h2>
+        <p data-i18n="settings.intro">Set your default language and choose which check-in parts are visible.</p>
+
+        <div class="section-group">
+          <div class="settings-general-grid">
+            <div class="settings-general-item">
+              <label class="field-label" for="settings-default-language" data-i18n="settings.defaultLanguage.label">Default language</label>
+              <select id="settings-default-language" class="wheel-select">
+                <option value="en" data-i18n="settings.defaultLanguage.en">English</option>
+                <option value="nl" data-i18n="settings.defaultLanguage.nl">Nederlands</option>
+              </select>
+            </div>
+            <div class="settings-general-item">
+              <label class="field-label" for="settings-theme" data-i18n="settings.theme.label">Theme</label>
+              <select id="settings-theme" class="wheel-select">
+                <option value="system" data-i18n="settings.theme.system">System</option>
+                <option value="light" data-i18n="settings.theme.light">Light</option>
+                <option value="dark" data-i18n="settings.theme.dark">Dark</option>
+              </select>
+            </div>
+            <div class="settings-general-item">
+              <label class="field-label" for="settings-default-wheel" data-i18n="settings.defaultWheel.label">Default emotion wheel</label>
+              <select id="settings-default-wheel" class="wheel-select">
+                <option value="act">ACT (8)</option>
+                <option value="plutchik">Plutchik (8)</option>
+                <option value="ekman">Ekman (6)</option>
+                <option value="junto">Junto (6)</option>
+                <option value="extended">Extended (12)</option>
+              </select>
+            </div>
+            <div class="settings-general-item">
+              <label class="field-label" for="settings-energy-emotional-label" data-i18n="settings.energyEmotionalLabel.label">Social/Emotional</label>
+              <select id="settings-energy-emotional-label" class="wheel-select">
+                <option value="emotionalSocial" data-i18n="settings.energyEmotionalLabel.emotionalSocial">Emotional / Social</option>
+                <option value="emotional" data-i18n="settings.energyEmotionalLabel.emotional">Emotional</option>
+                <option value="social" data-i18n="settings.energyEmotionalLabel.social">Social</option>
+              </select>
+            </div>
+            <div class="settings-general-item" aria-hidden="true"></div>
+            <div class="settings-general-item" aria-hidden="true"></div>
+            <div class="settings-general-item">
+              <label class="field-label" for="settings-rows-per-page" data-i18n="settings.rowsPerPage.label">Rows per overview page</label>
+              <input id="settings-rows-per-page" type="number" class="quick-action-input" min="5" max="100" step="1" />
+            </div>
+            <div class="settings-general-item">
+              <label class="field-label" for="settings-overview-max-chars" data-i18n="settings.overviewMaxChars.label">Max characters in overview cells</label>
+              <input id="settings-overview-max-chars" type="number" class="quick-action-input" min="20" max="500" step="5" />
+            </div>
+            <div class="settings-general-item">
+              <label class="field-label" for="settings-weather-location" data-i18n="settings.weatherLocation.label">Weather location</label>
+              <input id="settings-weather-location" type="text" class="quick-action-input" data-i18n-placeholder="settings.weatherLocation.placeholder" placeholder="e.g. Amsterdam" maxlength="100" />
+              <p class="settings-weather-last-fetched" id="weather-last-fetched"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-group">
+          <h3 class="subheading" data-i18n="settings.components.title">Optional parts</h3>
+          <div class="settings-grid">
+            <div class="settings-column settings-column-left">
+              <label class="settings-item"><input type="checkbox" id="setting-weather"> <span data-i18n="settings.components.weather">Weather</span></label>
+              <label class="settings-item"><input type="checkbox" id="setting-thoughts"> <span data-i18n="settings.components.thoughts">Thoughts</span></label>
+              <label class="settings-item"><input type="checkbox" id="setting-core-feeling"> <span data-i18n="settings.components.coreFeeling">Core feeling</span></label>
+              <label class="settings-item"><input type="checkbox" id="setting-body-signals"> <span data-i18n="settings.components.bodySignals">Body signals</span></label>
+            </div>
+            <div class="settings-column settings-column-middle">
+              <label class="settings-item"><input type="checkbox" id="setting-mood-matrix"> <span data-i18n="settings.components.moodMatrix">Mood matrix</span></label>
+              <label class="settings-item"><input type="checkbox" id="setting-actions"> <span data-i18n="settings.components.actions">Actions</span></label>
+              <label class="settings-item"><input type="checkbox" id="setting-note"> <span data-i18n="settings.components.note">Optional note</span></label>
+            </div>
+            <div class="settings-column settings-column-right settings-energy-group">
+              <span class="settings-group-label" data-i18n="settings.components.energyGroup">Energy level</span>
+              <label class="settings-item settings-item-sub"><input type="checkbox" id="setting-energy-physical"> <span data-i18n="settings.components.energyPhysicalShort">Physical</span></label>
+              <label class="settings-item settings-item-sub"><input type="checkbox" id="setting-energy-mental"> <span data-i18n="settings.components.energyMentalShort">Mental</span></label>
+              <label class="settings-item settings-item-sub"><input type="checkbox" id="setting-energy-emotional"> <span data-i18n="settings.components.energyEmotionalShort">Emotional / Social</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-group">
+          <h3 class="subheading" data-i18n="settings.quickActions.title">Quick actions</h3>
+          <p class="form-help" data-i18n="settings.quickActions.intro">Define reusable action phrases. Click them on the Check-in tab to add to the Action field.</p>
+          <div class="quick-actions-editor">
+            <div class="quick-actions-input-row">
+              <input type="text" id="quick-action-input" class="quick-action-input" data-i18n-placeholder="settings.quickActions.placeholder" placeholder="e.g. Take a walk" maxlength="100" />
+              <button type="button" class="reset-button" id="quick-action-add" data-i18n="settings.quickActions.add">Add</button>
+            </div>
+            <div class="quick-actions-list" id="quick-actions-list"></div>
+          </div>
+        </div>
+
+        <div class="section-actions settings-actions">
+          <button type="button" class="reset-button" id="settings-reset" data-i18n="settings.buttons.reset">Reset defaults</button>
+          <button type="button" class="reset-button" id="settings-export" data-i18n="settings.buttons.export">Export settings</button>
+          <button type="button" class="reset-button" id="settings-import" data-i18n="settings.buttons.import">Import settings</button>
+          <button type="button" class="save-button" id="settings-save" data-i18n="settings.buttons.save">Save settings</button>
+          <input type="file" id="settings-import-file" accept="application/json,.json" class="is-hidden" />
+        </div>
+        <p class="status-message" id="settings-status" aria-live="polite"></p>
+      </section>
+    </div>
+
+    <div class="tab-panel" data-tab-panel="info">
+      <section class="card" aria-labelledby="info-heading">
+        <h2 id="info-heading" data-i18n="info.title">Info</h2>
+        <p class="intro" data-i18n="info.intro">
+          A small private web app for a regular check-in with yourself. Runs entirely in your browser — no server, no account, no tracking.
+        </p>
+
+        <div class="section-group">
+          <h3 class="subheading" data-i18n="info.quickGuideTitle">Quick guide</h3>
+          <div class="info-guide-grid">
+            <div class="info-guide-item">
+              <span class="info-guide-icon">💾</span>
+              <div>
+                <strong data-i18n="info.tipSaveLabel">Save</strong>
+                <p data-i18n="info.tipSaveDesc">Updates the most recent check-in for today. Use this to refine your entry during the day.</p>
+              </div>
+            </div>
+            <div class="info-guide-item">
+              <span class="info-guide-icon">➕</span>
+              <div>
+                <strong data-i18n="info.tipExtraLabel">Extra</strong>
+                <p data-i18n="info.tipExtraDesc">Adds a new check-in alongside the existing one for today. Useful if your mood or energy shifts significantly.</p>
+              </div>
+            </div>
+            <div class="info-guide-item">
+              <span class="info-guide-icon">⚙️</span>
+              <div>
+                <strong data-i18n="info.tipSettingsLabel">Settings</strong>
+                <p data-i18n="info.tipSettingsDesc">Choose your language, theme, and which check-in parts are visible. Hidden sections are not deleted — just not shown.</p>
+              </div>
+            </div>
+            <div class="info-guide-item">
+              <span class="info-guide-icon">📋</span>
+              <div>
+                <strong data-i18n="info.tipOverviewLabel">Overview</strong>
+                <p data-i18n="info.tipOverviewDesc">Browse, search, sort and filter all your saved check-ins. Click a row to open it in the Check-in tab. Export or import entries as JSON.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-group">
+          <h3 class="subheading" data-i18n="info.featuresTitle">What you can track</h3>
+          <div class="info-features-grid">
+            <div class="info-feature-item">
+              <span class="info-feature-icon">🌡️</span>
+              <span data-i18n="info.featureWeather">Weather at check-in time</span>
+            </div>
+            <div class="info-feature-item">
+              <span class="info-feature-icon">💭</span>
+              <span data-i18n="info.featureThoughts">Free-text thoughts</span>
+            </div>
+            <div class="info-feature-item">
+              <span class="info-feature-icon">🎡</span>
+              <span data-i18n="info.featureWheel">Core feeling via emotion wheel</span>
+            </div>
+            <div class="info-feature-item">
+              <span class="info-feature-icon">🧍</span>
+              <span data-i18n="info.featureBody">Body signals on a body figure</span>
+            </div>
+            <div class="info-feature-item">
+              <span class="info-feature-icon">⚡</span>
+              <span data-i18n="info.featureEnergy">Physical, mental &amp; emotional energy levels</span>
+            </div>
+            <div class="info-feature-item">
+              <span class="info-feature-icon">🎨</span>
+              <span data-i18n="info.featureMood">Mood via a 10×10 valence/arousal matrix</span>
+            </div>
+            <div class="info-feature-item">
+              <span class="info-feature-icon">✅</span>
+              <span data-i18n="info.featureActions">Actions and intentions</span>
+            </div>
+            <div class="info-feature-item">
+              <span class="info-feature-icon">📝</span>
+              <span data-i18n="info.featureNote">An optional free-text note</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-group">
+          <h3 class="subheading" data-i18n="info.privacyTitle">Privacy</h3>
+          <div class="info-privacy-block">
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-ok">✓</span>
+              <span data-i18n="info.privacyNoServer">No server. Everything runs locally in your browser.</span>
+            </div>
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-ok">✓</span>
+              <span data-i18n="info.privacyNoAccount">No account or login required.</span>
+            </div>
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-ok">✓</span>
+              <span data-i18n="info.privacyNoTracking">No analytics, no cookies, no tracking.</span>
+            </div>
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-ok">✓</span>
+              <span data-i18n="info.privacyNoPII">No personal data is collected or stored. No names, email addresses, or identifiers.</span>
+            </div>
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-note">ℹ</span>
+              <span data-i18n="info.privacyWeather">The optional weather widget contacts Open-Meteo (open-meteo.com). No personal data is sent — only your coordinates or city name.</span>
+            </div>
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-note">ℹ</span>
+              <span data-i18n="info.storageEncryption">Data is not encrypted by this app.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-group">
+          <h3 class="subheading" data-i18n="info.storageTitle">Storage</h3>
+          <div class="info-privacy-block">
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-ok">✓</span>
+              <span data-i18n="info.storageWhere">Your data is stored in your browser localStorage on this device.</span>
+            </div>
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-ok">✓</span>
+              <span data-i18n="info.storageHow">The app saves entries and settings as plain JSON text in localStorage.</span>
+            </div>
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-warn">⚠️</span>
+              <span data-i18n="info.storageOtherBrowser">Opening the app in a different browser or on a different device shows no data — localStorage is not shared between browsers or devices.</span>
+            </div>
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-warn">⚠️</span>
+              <span data-i18n="info.storageClearWarning">Clearing your browser data or cache can permanently delete all your check-ins.</span>
+            </div>
+            <div class="info-privacy-item">
+              <span class="info-privacy-icon info-privacy-warn">⚠️</span>
+              <span data-i18n="info.storageIncognito">In private/incognito mode, data is deleted as soon as you close the window.</span>
+            </div>
+          </div>
+          <div class="info-storage-callout">
+            <strong data-i18n="info.storageBackupTitle">💾 Back up your data</strong>
+            <p data-i18n="info.storageBackupDesc">Use <strong>Export</strong> in the Overview tab to save a JSON backup to your computer. Use <strong>Import</strong> to restore it or move entries to another browser or device.</p>
+          </div>
+        </div>
+
+        <div class="section-group info-version-block">
+          <h3 class="subheading" data-i18n="labels.version">Version</h3>
+          <p class="app-version" id="app-version" aria-label="Application version"></p>
+        </div>
+
+        <div class="section-group">
+          <h3 class="subheading" data-i18n="info.scoreTitle">How is the colour score calculated?</h3>
+          <p class="info-score-intro" data-i18n="info.scoreIntro">Each day in the history calendar gets a colour. The app looks at which check-in components you filled in, in this order:</p>
+
+          <ol class="info-score-priority">
+            <li>
+              <strong data-i18n="info.scorePriority1Label">Emotion wheel</strong>
+              <span data-i18n="info.scorePriority1Desc">If you picked an emotion (e.g. joy, fear, trust), that emotion's type determines the colour.</span>
+            </li>
+            <li>
+              <strong data-i18n="info.scorePriority2Label">Mood selector</strong>
+              <span data-i18n="info.scorePriority2Desc">If no emotion wheel was used, the overall mood choice (Great / Okay / Low) is used.</span>
+            </li>
+            <li>
+              <strong data-i18n="info.scorePriority3Label">Mood grid (valence axis)</strong>
+              <span data-i18n="info.scorePriority3Desc">If neither above was filled in, the horizontal valence axis of the circumplex grid is used: 7–10 = positive, 4–6 = mixed, 1–3 = low.</span>
+            </li>
+          </ol>
+
+          <p class="info-score-subheading" data-i18n="info.scoreColourTitle">What do the colours mean?</p>
+          <div class="info-score-table">
+            <div class="info-score-row">
+              <span class="info-score-dot score-high"></span>
+              <span class="info-score-label" data-i18n="info.scoreHighLabel">Positive</span>
+              <span class="info-score-desc" data-i18n="info.scoreHighDesc">Emotion: joy, serenity, love, trust &mdash; Mood: Great &mdash; Valence: 7–10</span>
+            </div>
+            <div class="info-score-row">
+              <span class="info-score-dot score-mid"></span>
+              <span class="info-score-label" data-i18n="info.scoreMidLabel">Mixed</span>
+              <span class="info-score-desc" data-i18n="info.scoreMidDesc">Emotion: acceptance, surprise, anticipation &mdash; Mood: Okay &mdash; Valence: 4–6</span>
+            </div>
+            <div class="info-score-row">
+              <span class="info-score-dot score-low"></span>
+              <span class="info-score-label" data-i18n="info.scoreLowLabel">Low</span>
+              <span class="info-score-desc" data-i18n="info.scoreLowDesc">Emotion: sadness, anger, fear, disgust, shame &mdash; Mood: Low &mdash; Valence: 1–3</span>
+            </div>
+            <div class="info-score-row">
+              <span class="info-score-dot score-empty"></span>
+              <span class="info-score-label" data-i18n="info.scoreEmptyLabel">No entry</span>
+              <span class="info-score-desc" data-i18n="info.scoreEmptyDesc">No check-in recorded for that day</span>
+            </div>
+          </div>
+          <p class="info-score-note" data-i18n="info.scoreNote">Energy levels, body signals, and notes are not factored into the colour. They are visible when you click a day to load that entry.</p>
+        </div>
+
+        <div class="section-group">
+          <h3 class="subheading" data-i18n="info.toolsTitle">Tools</h3>
+          <p class="info-tools-intro" data-i18n="info.toolsIntro">Use these to explore or reset the app.</p>
+          <div class="section-actions settings-actions">
+            <button type="button" class="reset-button" id="generate-demo-data" data-i18n="info.generateDemoButton">Generate demo data</button>
+            <button type="button" class="reset-button delete-button" id="clear-local-storage" data-i18n="info.clearStorageButton">Clear local storage</button>
+          </div>
+          <p class="status-message" id="info-status" aria-live="polite"></p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="translations.js?v=2.0.0" defer></script>
+  <script src="js/data.js?v=2.0.0" defer></script>
+  <script src="js/utils.js?v=2.0.0" defer></script>
+  <script src="js/storage.js?v=2.0.0" defer></script>
+  <script src="js/checkin.js?v=2.0.3" defer></script>
+  <script src="js/overview.js?v=2.0.0" defer></script>
+  <script src="js/weather.js?v=2.0.0" defer></script>
+  <script src="js/settings-ui.js?v=2.0.0" defer></script>
+  <script src="js/demo.js?v=1.0.0" defer></script>
+  <script src="js/init.js?v=2.0.0" defer></script>
+</body>
+</html>
