@@ -1,0 +1,196 @@
+/* ── Overview Controls ── */
+.overview-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+#overview-search {
+  min-width: 220px;
+  flex: 1 1 260px;
+  border: 1px solid var(--border-input);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--text-strong);
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+/* ── Overview Table ── */
+.overview-table-wrap {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.overview-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.overview-table th,
+.overview-table td {
+  border-bottom: 0;
+  padding: 4px 8px;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.25;
+  font-size: 0.82rem;
+}
+
+.overview-table th {
+  color: var(--text-strong);
+  background: var(--bg-surface-alt);
+}
+
+.overview-table td {
+  color: var(--text-muted);
+  max-width: 220px;
+  white-space: normal;
+}
+
+/* ── Sorting ── */
+.overview-sortable {
+  user-select: none;
+}
+
+.overview-sortable.is-active {
+  color: var(--accent-dark);
+}
+
+/* ── Energy Columns ── */
+.overview-col-energyPhysical,
+.overview-col-energyMental,
+.overview-col-energyEmotional {
+  width: 86px;
+  max-width: 86px;
+  text-align: center !important;
+}
+
+.overview-col-energyPhysical .overview-cell-main,
+.overview-col-energyMental .overview-cell-main,
+.overview-col-energyEmotional .overview-cell-main,
+.overview-col-energyPhysical .overview-cell-sub,
+.overview-col-energyMental .overview-cell-sub,
+.overview-col-energyEmotional .overview-cell-sub {
+  text-align: center;
+}
+
+/* ── Action Columns ── */
+.overview-col-delete,
+.overview-col-exportEntry {
+  width: 28px;
+  max-width: 28px;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+/* ── Row Styles ── */
+.overview-row {
+  cursor: pointer;
+}
+
+.overview-row td {
+  background: var(--bg-surface);
+}
+
+.overview-row.overview-entry-alt td {
+  background: var(--bg-surface-alt);
+}
+
+.overview-row.is-entry-hover td,
+.overview-row:focus-visible td {
+  background: var(--bg-accent);
+}
+
+.overview-row-note td {
+  padding-top: 1px;
+  padding-bottom: 4px;
+}
+
+.overview-note-cell,
+.overview-energy-note-cell {
+  border-top: 0;
+  background: inherit;
+}
+
+.overview-energy-note-cell .overview-cell-sub {
+  margin-top: 0;
+  text-align: left;
+}
+
+/* ── Cell Values ── */
+.overview-cell-main {
+  color: var(--text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.overview-cell-sub {
+  margin-top: 1px;
+  font-size: 0.74rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Icon Buttons (shared base for delete & export) ── */
+.overview-delete-button,
+.overview-export-entry-button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  width: 22px;
+  height: 22px;
+  line-height: 1;
+  font-weight: 700;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overview-delete-button {
+  color: var(--delete-color);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.overview-delete-button:hover,
+.overview-delete-button:focus-visible {
+  background: var(--delete-bg-hover);
+  color: var(--delete-hover);
+}
+
+.overview-export-entry-button {
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+
+.overview-export-entry-button:hover,
+.overview-export-entry-button:focus-visible {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ── Pagination ── */
+.overview-pagination {
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.overview-page-info {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+

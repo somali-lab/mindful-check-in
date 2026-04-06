@@ -70,6 +70,41 @@
     });
   };
 
+  App.downloadJsonFile = function (data, filename) {
+    var payload = JSON.stringify(data, null, 2);
+    var blob = new Blob([payload], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  App.readJsonFile = function (fileInput, callback) {
+    var file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = JSON.parse(String(reader.result));
+        callback(parsed, null);
+      } catch (error) {
+        callback(null, error);
+      }
+      fileInput.value = "";
+    };
+    reader.readAsText(file);
+  };
+
+  App.refreshViews = function () {
+    App.renderSummary();
+    App.renderHistory();
+    App.renderOverview();
+  };
+
   App.getTodayKey = function () {
     var today = new Date();
     var year = today.getFullYear();

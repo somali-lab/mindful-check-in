@@ -25,8 +25,8 @@ Each check-in is a snapshot of your current state across multiple dimensions:
 | **Optional note**   | Anything else to add                                                                                                           |
 
 **Save behaviour:**
-- **Save** — updates the latest check-in for today
-- **Extra** — creates an additional check-in for the same day
+- **Save** — updates the latest check-in for today, or creates one if none exists
+- **New check-in** — clears the form so you can start a fresh entry (creates an additional check-in for the same day on save)
 
 ### Emotion wheel variants
 
@@ -39,6 +39,11 @@ Five models to choose from (switch per check-in or set a default):
 | Ekman    | 6 (joy, sadness, anger, fear, surprise, disgust)                            |
 | Junto    | 6 (love, joy, surprise, anger, sadness, fear)                               |
 | Extended | 12                                                                          |
+
+### Summary & History
+
+- **Summary** — today's status, 7-day heatmap, streak counter, total check-in count
+- **History** — 28-day calendar view with color-coded dots; switchable between core feeling, mood matrix, and energy modes; click a day to load that entry
 
 ### Overview
 
@@ -57,10 +62,10 @@ Five models to choose from (switch per check-in or set a default):
 - Default emotion wheel type
 - Rows per page (5–100)
 - Overview text truncation limit (20–500 characters)
-- Weather location (city name or coordinates)
+- Weather location (city name, geocoded via Open-Meteo)
 - Emotional/Social energy label variant
 - Per-component visibility toggles (hide sections you don't use)
-- Quick actions editor
+- Quick actions editor (configurable shortcut chips for the actions field)
 - Export and import settings as JSON
 
 ### Info tab
@@ -102,36 +107,41 @@ python -m http.server
 
 ## Data format
 
-Entries are stored in `localStorage` under the key `local-mood-tracker-entries` as a JSON object keyed by date (`YYYY-MM-DD`) or entry ID.
+Entries are stored in `localStorage` under the key `local-mood-tracker-entries` as a JSON object. Keys use the format `YYYY-MM-DD` (first entry of a day) or `YYYY-MM-DD_HHMMSSmmm` (subsequent entries on the same day).
 
 Each entry contains:
 
 ```json
 {
+  "id": "a1b2c3d4-...",
   "thoughts": "...",
   "selectedEmotion": "joy",
+  "wheelType": "act",
   "customFeelings": "...",
   "energy": { "physical": 70, "mental": 55, "emotional": 60 },
-  "bodySignals": ["chest", "shoulders"],
+  "bodySignals": ["chest", "left-shoulder"],
   "bodyNote": "...",
   "energyNote": "...",
   "action": "...",
   "note": "...",
   "moodGrid": { "energy": 7, "valence": 8 },
-  "weather": { "temperature": 14, "code": 1, "icon": "🌤️", "description": "Mainly clear" },
+  "mood": "great",
+  "weather": { "temperature": 14, "code": 1, "icon": "🌤️", "description": "Mainly clear", "location": "Amsterdam" },
   "updatedAt": "2026-04-06T09:30:00.000Z"
 }
 ```
 
 Other `localStorage` keys used by the app:
 
-| Key                              | Contents                                |
-|----------------------------------|-----------------------------------------|
-| `local-mood-tracker-entries`     | All check-in entries                    |
-| `local-mood-tracker-settings`    | User settings                           |
-| `local-mood-tracker-language`    | Active language (`en` / `nl`)           |
-| `local-mood-tracker-active-tab`  | Last active tab                         |
-| `local-mood-tracker-overview-ui` | Overview UI state (sort, filters, page) |
+| Key                                | Contents                                |
+|------------------------------------|-----------------------------------------|
+| `local-mood-tracker-entries`       | All check-in entries                    |
+| `local-mood-tracker-settings`      | User settings                           |
+| `local-mood-tracker-language`      | Active language (`en` / `nl`)           |
+| `local-mood-tracker-active-tab`    | Last active tab                         |
+| `local-mood-tracker-overview-ui`   | Overview UI state (sort, filters, page) |
+| `local-mood-tracker-weather-cache` | Cached weather responses (1 hour TTL)   |
+| `moodTrackerWheelType`             | Currently selected emotion wheel type   |
 
 ---
 
@@ -139,16 +149,26 @@ Other `localStorage` keys used by the app:
 
 ```text
 index.html          — App shell, all HTML markup
-styles.css          — All styles, CSS custom properties, light/dark themes
 translations.js     — All UI strings in English and Dutch
+css/
+  base.css          — CSS custom properties, reset, dark theme, shared utilities
+  layout.css        — App shell, hero header, tabs, grid layouts, responsive
+  components.css    — Buttons, form inputs, toggle switches, banners, chips
+  checkin.css       — Emotion wheel, body figure, energy meters, mood grid
+  overview.css      — Table, sorting, pagination, row styles
+  settings.css      — Settings grid, sub-items
+  summary.css       — Summary cards, heatmap, history calendar
+  weather.css       — Weather widget
+  info.css          — Info page, score legend
 js/
   data.js           — Static data: mood grid words, color map, emotion wheel configs
   storage.js        — localStorage read/write, entry normalization, migration
-  utils.js          — Shared helpers: i18n, HTML escaping, ID generation, date utils
-  checkin.js        — Check-in tab: emotion wheel, body figure, mood grid, energy meters
+  utils.js          — Shared helpers: i18n, HTML escaping, ID generation, date utils, file I/O
+  checkin.js        — Check-in tab: emotion wheel, body figure, mood grid, energy meters, summary, history
   overview.js       — Overview tab: table rendering, sort, filter, search, export/import
   settings-ui.js    — Settings tab: form sync, theme application, component visibility
-  weather.js        — Weather widget: Open-Meteo fetch, geocoding, rendering
+  weather.js        — Weather widget: Open-Meteo fetch, geocoding, caching, rendering
+  demo.js           — Demo data generator (30 random entries)
   init.js           — App bootstrap: DOM references, event binding, tab routing
 ```
 
@@ -174,3 +194,22 @@ Any modern browser that supports `localStorage`, `fetch`, `crypto.randomUUID`, a
 | [Open-Meteo Geocoding API](https://open-meteo.com/en/docs/geocoding-api) | City name → coordinates | Optional |
 
 Both are free and require no API key. Disable the weather component in Settings if you prefer fully offline operation.
+
+---
+
+## Built with
+
+This project was built entirely with AI-assisted development using:
+
+- **[VS Code](https://code.visualstudio.com/)** and **[Cursor](https://cursor.com/)** as editors
+- **GPT 5.3 Codex** (OpenAI) and **Claude Opus 4.6** (Anthropic) as coding models
+
+---
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+You are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies — as long as you include attribution to the original source.
+
+Copyright (c) 2026 [somali-lab](https://github.com/somali-lab)

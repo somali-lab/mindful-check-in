@@ -4,7 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mindful Check-in</title>
-  <link rel="stylesheet" href="styles.css?v=2.0.2">
+  <link rel="stylesheet" href="css/base.css?v=3.0.0">
+  <link rel="stylesheet" href="css/layout.css?v=3.0.0">
+  <link rel="stylesheet" href="css/components.css?v=3.0.0">
+  <link rel="stylesheet" href="css/checkin.css?v=3.0.0">
+  <link rel="stylesheet" href="css/overview.css?v=3.0.0">
+  <link rel="stylesheet" href="css/settings.css?v=3.0.0">
+  <link rel="stylesheet" href="css/summary.css?v=3.0.0">
+  <link rel="stylesheet" href="css/weather.css?v=3.0.0">
+  <link rel="stylesheet" href="css/info.css?v=3.0.0">
 </head>
 <body>
   <main class="app-shell">
@@ -303,8 +311,8 @@ Sociaal</span>
         <h2 id="overview-heading" data-i18n="overview.title">Saved check-ins</h2>
         <p data-i18n="overview.intro">This table shows your saved check-ins. Visible columns follow your Settings.</p>
         <div class="overview-controls">
-          <input id="overview-search" type="search" oninput="window.__moodOverviewApply && window.__moodOverviewApply()" onchange="window.__moodOverviewApply && window.__moodOverviewApply()" data-i18n-placeholder="overview.searchPlaceholder" placeholder="Search..." />
-          <select id="overview-filter" class="wheel-select" onchange="window.__moodOverviewApply && window.__moodOverviewApply()">
+          <input id="overview-search" type="search" data-i18n-placeholder="overview.searchPlaceholder" placeholder="Search..." />
+          <select id="overview-filter" class="wheel-select">
             <option value="all" data-i18n="overview.filters.all">All</option>
             <option value="today" data-i18n="overview.filters.today">Today</option>
             <option value="last7" data-i18n="overview.filters.last7">Last 7 days</option>

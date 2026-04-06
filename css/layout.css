@@ -1,0 +1,313 @@
+/* ── App Shell ── */
+.app-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 24px 48px;
+}
+
+/* ── Hero / Header ── */
+.hero {
+  margin-bottom: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding: 12px 0 8px;
+  background: var(--bg-hero);
+  backdrop-filter: blur(4px);
+}
+
+.hero .intro {
+  display: none;
+}
+
+.hero-topline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.hero-topline h1 {
+  margin: 0;
+  text-align: left;
+  justify-self: start;
+  white-space: nowrap;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+.hero-topline .tab-switch {
+  justify-self: start;
+}
+
+.hero-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-self: end;
+}
+
+.hero-rail {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-light);
+}
+
+.hero-message-bar {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.hero-toolbar-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.hero-toolbar-section.is-hidden {
+  display: none;
+}
+
+/* ── Theme & Language Switches ── */
+.theme-switch,
+.language-switch {
+  display: inline-flex;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: transparent;
+  gap: 2px;
+}
+
+.theme-button,
+.language-button {
+  border: 0;
+  background: transparent;
+  padding: 6px 9px;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-faint);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.theme-button:hover,
+.language-button:hover {
+  color: var(--text-muted);
+}
+
+.theme-button.is-selected,
+.language-button.is-selected {
+  background: var(--bg-surface);
+  color: var(--text-strong);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ── Tab System ── */
+.tab-switch {
+  display: inline-flex;
+  gap: 4px;
+  margin: 0;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+}
+
+.tab-button {
+  border: 0;
+  background: transparent;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s, color 0.15s;
+}
+
+.tab-button:hover {
+  color: var(--text-strong);
+}
+
+.tab-button.is-active {
+  background: var(--bg-surface);
+  color: var(--text-strong);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.is-active {
+  display: block;
+}
+
+/* ── Card ── */
+.card {
+  padding: 20px;
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  background: var(--bg-surface);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+/* ── Grid Layouts ── */
+.grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.section-group {
+  margin-top: 18px;
+}
+
+.section-group:first-child {
+  margin-top: 0;
+}
+
+.subheading {
+  margin-bottom: 8px;
+}
+
+.section-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.two-column {
+  display: grid;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.three-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.two-column-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.two-column-fields textarea {
+  min-height: 80px;
+}
+
+/* ── Checkin Toolbar ── */
+.checkin-toolbar {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.checkin-toolbar-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.checkin-save-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 0;
+}
+
+.checkin-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+/* ── Responsive ── */
+@media (min-width: 800px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .two-column {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero-topline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    padding-bottom: 2px;
+  }
+
+  .hero-topline h1 {
+    order: 1;
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+    font-size: 1.25rem;
+    margin-bottom: 2px;
+  }
+
+  .hero-topline .tab-switch {
+    order: 2;
+    flex: 1 1 auto;
+  }
+
+  .hero-controls {
+    order: 3;
+    margin-left: auto;
+    gap: 6px;
+  }
+
+  .hero-controls .theme-switch,
+  .hero-controls .language-switch {
+    gap: 0;
+  }
+
+  .hero-controls .theme-button,
+  .hero-controls .language-button {
+    padding: 5px 7px;
+    font-size: 0.72rem;
+  }
+
+  .hero-rail {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .checkin-save-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .three-column,
+  .two-column-fields {
+    grid-template-columns: 1fr;
+  }
+}

@@ -142,13 +142,24 @@
       });
   };
 
+  App.showEntryWeather = function (entry) {
+    if (entry && entry.weather && entry.weather.temperature !== null && entry.weather.temperature !== undefined) {
+      App.state.displayWeather = entry.weather;
+    } else {
+      App.state.displayWeather = null;
+    }
+    App.renderWeatherWidget();
+  };
+
   App.renderWeatherWidget = function () {
     var dom = App.dom;
     if (!dom.weatherWidget) return;
 
-    var weather = App.state.currentWeather;
+    var weather = App.state.displayWeather || App.state.currentWeather;
     var settings = App.state.settings;
-    var locationName = (settings.weatherCoords && settings.weatherCoords.name) || settings.weatherLocation || "";
+    var locationName = (App.state.displayWeather && App.state.displayWeather.location)
+      || (settings.weatherCoords && settings.weatherCoords.name)
+      || settings.weatherLocation || "";
 
     if (!settings.weatherLocation && !settings.weatherCoords) {
       dom.weatherWidget.classList.add("is-empty");

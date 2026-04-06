@@ -1,0 +1,425 @@
+/* ── Checkin Block ── */
+.checkin-block {
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 14px 14px 12px;
+}
+
+.checkin-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.checkin-block-header > .field-label {
+  margin-bottom: 0;
+}
+
+.checkin-block-header > .section-actions {
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.checkin-block-note-label {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-light);
+}
+
+.feeling-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.feeling-panel .section-actions {
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.body-panel,
+.energy-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* ── Emotion Wheel ── */
+.emotion-wheel {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.emotion-segment {
+  cursor: pointer;
+  stroke: var(--text-muted);
+  stroke-width: 1.5;
+  transition: stroke-width 180ms ease, opacity 180ms ease, transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.emotion-segment:hover {
+  stroke-width: 2;
+}
+
+.emotion-segment.is-selected {
+  stroke: var(--segment-selected-stroke);
+  stroke-width: 2.8;
+  filter: brightness(1.1) drop-shadow(0 0 0.35rem rgba(79, 70, 229, 0.4));
+}
+
+#emotion-wheel.has-selection .emotion-segment:not(.is-selected) {
+  opacity: 0.62;
+}
+
+.emotion-segment-label {
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--segment-label-fill);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Body Figure (uses --body-part-* variables from base.css) ── */
+.body-figure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 280px;
+  min-height: 340px;
+  margin-inline: auto;
+  padding: 12px;
+}
+
+.body-figure-svg {
+  width: 180px;
+  height: 320px;
+}
+
+.body-figure .body-part {
+  fill: var(--body-part-fill);
+  stroke: var(--body-part-stroke);
+  cursor: pointer;
+  transition: fill 120ms ease, stroke 120ms ease, opacity 120ms ease;
+}
+
+.body-figure .body-part.back-zone {
+  opacity: 0.58;
+}
+
+.body-figure .body-part.back-zone:hover,
+.body-figure .body-part.back-zone.is-selected {
+  opacity: 1;
+}
+
+.body-figure .body-part:hover {
+  fill: var(--body-part-hover-fill);
+  stroke: var(--body-part-hover-stroke);
+}
+
+.body-figure .body-part.is-selected {
+  fill: var(--body-part-selected-fill);
+  stroke: var(--body-part-selected-stroke);
+}
+
+.body-figure .back-zone {
+  fill: var(--back-zone-fill);
+  stroke: var(--body-part-stroke);
+}
+
+/* ── Energy Meters ── */
+.energy-triple {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 12px;
+}
+
+.energy-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.energy-meter-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.energy-meter-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.energy-type-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  text-align: center;
+  margin-bottom: 6px;
+  white-space: pre-line;
+}
+
+.energy-meter {
+  position: relative;
+  width: 78px;
+  height: 344px;
+  margin: 4px 0;
+  border: 2px solid var(--text-strong);
+  border-radius: 32px;
+  background: var(--bg-energy-meter);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.energy-fill {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  background-size: 100% 344px;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  transition: height 160ms ease-out;
+}
+
+[data-energy-type="physical"] .energy-fill { background-image: var(--energy-physical); }
+[data-energy-type="mental"]   .energy-fill { background-image: var(--energy-mental); }
+[data-energy-type="emotional"] .energy-fill { background-image: var(--energy-emotional); }
+
+.energy-scale {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 344px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-muted);
+  text-align: right;
+  padding-top: 22px;
+  padding-bottom: 12px;
+}
+
+.energy-scale span {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.energy-scale span:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.energy-note-input {
+  width: 100%;
+  margin-top: 16px;
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 0.82rem;
+  border: 1px solid var(--border-input);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--text-body);
+}
+
+#energy-display {
+  white-space: nowrap;
+  margin-top: 16px;
+}
+
+/* ── Three-column layout adjustments ── */
+.three-column .emotion-wheel { max-width: 100%; }
+
+.three-column .energy-meter {
+  width: 50px;
+  flex: 1;
+  min-height: 160px;
+}
+
+.three-column .energy-scale {
+  flex: 1;
+  min-height: 160px;
+}
+
+.three-column .energy-meter-col,
+.three-column .energy-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.three-column .energy-meter-row {
+  height: 100%;
+  flex: 1;
+}
+
+.three-column .energy-note-input { display: none; }
+.three-column .energy-triple { gap: 2px; flex: 1; }
+.three-column .energy-type-label { font-size: 0.75rem; }
+.three-column .body-figure-svg { width: auto; height: 310px; }
+
+.three-column .selection-display {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* ── Mood Grid ── */
+[data-component="moodMatrix"] .subheading { margin: 0; }
+
+.mood-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.mood-header .section-actions { margin: 0; }
+
+.mood-grid-wrapper {
+  position: relative;
+  margin-top: 16px;
+  padding: 16px 18px 40px 74px;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  background: var(--bg-mood-wrapper);
+  overflow: visible;
+}
+
+.mood-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-rows: repeat(10, 54px);
+  gap: 4px;
+  border: 1px solid var(--border-input);
+  border-radius: 12px;
+  padding: 6px;
+  background: var(--bg-surface);
+}
+
+.mood-cell {
+  border: 1px solid var(--border-mood-cell);
+  border-radius: 10px;
+  margin: 0;
+  padding: 6px;
+  font: inherit;
+  font-size: 0.76rem;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--text-body);
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition: transform 110ms ease, box-shadow 110ms ease;
+}
+
+.mood-cell:hover,
+.mood-cell:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px var(--mood-cell-shadow);
+  outline: 2px solid var(--mood-cell-outline);
+  outline-offset: 1px;
+}
+
+.mood-cell.is-selected {
+  box-shadow: inset 0 0 0 3px var(--mood-cell-selected-inset), var(--mood-cell-selected-shadow);
+  outline: 3px solid var(--mood-cell-selected-outline);
+  outline-offset: 2px;
+  transform: scale(1.08);
+  z-index: 2;
+  font-weight: 700;
+}
+
+.axis-label {
+  position: absolute;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.axis-energy-high {
+  left: 16px;
+  top: 12px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+.axis-energy-low {
+  left: 16px;
+  bottom: 12px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+.axis-mood-negative {
+  bottom: 10px;
+  left: 26%;
+  transform: translateX(-50%);
+}
+
+.axis-mood-positive {
+  bottom: 10px;
+  right: 26%;
+  transform: translateX(50%);
+}
+
+/* ── Checkin Responsive ── */
+@media (max-width: 620px) {
+  .mood-grid { grid-template-rows: repeat(10, 46px); }
+  .mood-grid-wrapper { padding-left: 66px; }
+  .axis-label { font-size: 0.64rem; }
+
+  .energy-meter,
+  .energy-scale { height: 260px; }
+  .energy-meter { width: 70px; }
+
+  #energy-display {
+    white-space: normal;
+    font-size: 0.82rem;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .feeling-panel,
+  .body-panel,
+  .energy-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .three-column .selection-display {
+    height: auto;
+    min-height: 48px;
+    align-items: flex-start;
+  }
+
+  .body-figure-svg {
+    width: 160px;
+    height: 280px;
+  }
+}

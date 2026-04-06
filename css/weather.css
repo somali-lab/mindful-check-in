@@ -1,0 +1,87 @@
+/* ── Weather Widget ── */
+.thoughts-weather-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.weather-column {
+  flex-shrink: 0;
+  width: 150px;
+}
+
+.thoughts-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.weather-widget {
+  width: 100%;
+  padding: 10px 8px;
+  border: 1px solid var(--border-input);
+  border-radius: 12px;
+  background: var(--bg-surface);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.weather-widget.is-empty {
+  opacity: 0.5;
+}
+
+.weather-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.weather-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.weather-temp {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.weather-desc {
+  font-size: 0.75rem;
+  color: var(--text-body);
+  line-height: 1.2;
+}
+
+.weather-location {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Weather Responsive ── */
+@media (max-width: 600px) {
+  .thoughts-weather-row {
+    flex-direction: column;
+  }
+  .weather-column {
+    width: 100%;
+  }
+  .weather-widget {
+    flex-direction: row;
+    gap: 12px;
+    justify-content: center;
+  }
+  .weather-details {
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,82 @@
+/* ── Settings Grid ── */
+.settings-general-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 24px;
+  align-items: start;
+}
+
+.settings-general-item select {
+  width: auto;
+  min-width: 120px;
+}
+
+.settings-general-item input {
+  width: 100%;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 24px;
+  align-items: start;
+}
+
+.settings-column {
+  display: grid;
+  gap: 8px;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  color: var(--text-strong);
+}
+
+.settings-item.settings-item-sub {
+  padding-left: 12px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.settings-group-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  margin-bottom: 2px;
+}
+
+.settings-energy-group {
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.settings-weather-last-fetched {
+  margin: 4px 0 0;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  line-height: 1.4;
+}
+
+.form-help {
+  margin: 0 0 8px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Settings Responsive ── */
+@media (max-width: 620px) {
+  .settings-general-grid,
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}

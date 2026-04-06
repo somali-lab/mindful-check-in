@@ -1,0 +1,230 @@
+/* ── Summary & History shared ── */
+.summary-content,
+.history-content {
+  display: grid;
+  gap: 12px;
+}
+
+/* ── Summary: Today Status ── */
+.summary-today {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-light);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.summary-today.is-done {
+  background: var(--summary-done-bg);
+  border-color: var(--summary-done-border);
+  color: var(--summary-done-text);
+}
+
+.summary-today-icon {
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Summary: 7-day Week Heatmap ── */
+.summary-week {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+}
+
+.heat-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.heat-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.heat-today .heat-dot {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.heat-label {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.heat-today .heat-label {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Status colors (shared across heat-*, cal-*, score-*) */
+.heat-high, .cal-high  { background: var(--status-high); }
+.heat-mid,  .cal-mid   { background: var(--status-mid); }
+.heat-low,  .cal-low   { background: var(--status-low); }
+.heat-empty, .cal-empty { background: var(--status-empty); }
+
+/* ── Summary: Stats Row ── */
+.summary-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.summary-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px;
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.summary-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  line-height: 1.1;
+}
+
+.summary-stat-label {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* ── History: 28-day Calendar ── */
+.cal-mode-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.cal-mode-btn {
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 120ms, color 120ms, border-color 120ms;
+  white-space: nowrap;
+}
+
+.cal-mode-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.cal-mode-btn.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.cal-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 32px);
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.cal-day-header {
+  width: 32px;
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cal-cell-pad {
+  width: 32px;
+  height: 32px;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 32px);
+  gap: 4px;
+}
+
+.cal-cell {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.cal-cell:not(.cal-empty):hover {
+  transform: scale(1.15);
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+.cal-cell.cal-empty {
+  cursor: default;
+  pointer-events: none;
+}
+
+.cal-day-num {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(0,0,0,0.55);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.cal-high .cal-day-num,
+.cal-mid  .cal-day-num,
+.cal-low  .cal-day-num { color: rgba(0,0,0,0.6); }
+
+.cal-today {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.cal-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.cal-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cal-legend-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-right: 8px;
+}

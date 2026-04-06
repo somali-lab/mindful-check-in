@@ -172,19 +172,11 @@ document.addEventListener("DOMContentLoaded", function () {
   App.hydrateTodayEntry();
   App.renderCoreSelections();
   App.renderCheckinContext();
-  App.renderSummary();
-  App.renderHistory();
-  App.renderOverview();
+  App.refreshViews();
   App.renderQuickActionsChips();
   App.loadWeather();
   App.activateTab(initialTab, false);
   history.replaceState({ tab: initialTab }, "", "#" + initialTab);
-
-  window.__moodOverviewApply = function () {
-    App.currentOverviewPage = 1;
-    App.saveOverviewUiState();
-    App.renderOverview();
-  };
 
   App.initCheckinEvents();
   App.initOverviewEvents();
@@ -215,9 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
       App.renderEmotionWheel();
       App.renderMoodGrid();
       App.renderCoreSelections();
-      App.renderSummary();
-      App.renderHistory();
-      App.renderOverview();
+      App.refreshViews();
       if (App.renderWeatherWidget) App.renderWeatherWidget();
       if (App.renderWeatherLastFetched) App.renderWeatherLastFetched();
       if (typeof App.renderCheckinMessage === "function") {

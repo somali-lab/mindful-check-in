@@ -179,12 +179,10 @@
     App.renderEmotionWheel();
     App.renderMoodGrid();
     App.renderCoreSelections();
-    App.renderSummary();
-    App.renderHistory();
     App.renderQuickActionsChips();
     if (App.renderWeatherWidget) App.renderWeatherWidget();
     App.currentOverviewPage = 1;
-    App.renderOverview();
+    App.refreshViews();
   };
 
   App.initSettingsEvents = function () {
@@ -242,16 +240,7 @@
 
     if (dom.settingsExportButton) {
       dom.settingsExportButton.addEventListener("click", function () {
-        var payload = JSON.stringify(state.settings, null, 2);
-        var blob = new Blob([payload], { type: "application/json" });
-        var url = URL.createObjectURL(blob);
-        var anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = "mindful-checkin-settings.json";
-        document.body.appendChild(anchor);
-        anchor.click();
-        anchor.remove();
-        URL.revokeObjectURL(url);
+        App.downloadJsonFile(state.settings, "mindful-checkin-settings.json");
         App.renderCheckinMessage(App.t("settings.status.exported"), { variant: "success", autoHideMs: 4000 });
       });
     }
@@ -264,24 +253,18 @@
 
     if (dom.settingsImportFile) {
       dom.settingsImportFile.addEventListener("change", function () {
-        var file = dom.settingsImportFile.files && dom.settingsImportFile.files[0];
-        if (!file) return;
-        var reader = new FileReader();
-        reader.onload = function () {
-          try {
-            var parsed = JSON.parse(String(reader.result));
-            state.settings = App.normalizeSettings(parsed);
-            App.saveSettings(state.settings);
-            App.syncSettingsForm();
-            App.fullRefreshAfterSettings();
-            App.renderCheckinMessage(App.t("settings.status.imported"), { variant: "success", autoHideMs: 4000 });
-          } catch (error) {
+        App.readJsonFile(dom.settingsImportFile, function (parsed, error) {
+          if (error || !parsed) {
             console.warn("Could not import settings file.", error);
             App.renderCheckinMessage(App.t("settings.status.importError"), { variant: "warning" });
+            return;
           }
-          dom.settingsImportFile.value = "";
-        };
-        reader.readAsText(file);
+          state.settings = App.normalizeSettings(parsed);
+          App.saveSettings(state.settings);
+          App.syncSettingsForm();
+          App.fullRefreshAfterSettings();
+          App.renderCheckinMessage(App.t("settings.status.imported"), { variant: "success", autoHideMs: 4000 });
+        });
       });
     }
 

@@ -8,14 +8,6 @@
   var ACTIVE_TAB_KEY = "local-mood-tracker-active-tab";
   var OVERVIEW_UI_KEY = "local-mood-tracker-overview-ui";
 
-  App.STORAGE_KEYS = {
-    entries: STORAGE_KEY,
-    language: LANGUAGE_KEY,
-    settings: SETTINGS_KEY,
-    activeTab: ACTIVE_TAB_KEY,
-    overviewUi: OVERVIEW_UI_KEY,
-  };
-
   App.getDefaultSettings = function () {
     return window.MINDFUL_CHECKIN_DEFAULT_SETTINGS || {
       defaultLanguage: App.FALLBACK_LANGUAGE,
@@ -57,10 +49,6 @@
       energy: Math.min(10, Math.max(1, Math.round(energy))),
       valence: Math.min(10, Math.max(1, Math.round(valence))),
     };
-  };
-
-  App.sanitizeMoodGridForStorage = function (moodGrid) {
-    return App.normalizeMoodGrid(moodGrid);
   };
 
   App.normalizeEntry = function (rawEntry) {

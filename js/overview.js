@@ -76,11 +76,11 @@
       case "bodySignals":
         return { main: App.formatBodySignals(entry.bodySignals), sub: entry.bodyNote || "" };
       case "energyPhysical":
-        return { main: typeof entry.energy?.physical === "number" ? entry.energy.physical + "%" : "-", sub: "" };
+        return { main: (entry.energy && typeof entry.energy.physical === "number") ? entry.energy.physical + "%" : "-", sub: "" };
       case "energyMental":
-        return { main: typeof entry.energy?.mental === "number" ? entry.energy.mental + "%" : "-", sub: "" };
+        return { main: (entry.energy && typeof entry.energy.mental === "number") ? entry.energy.mental + "%" : "-", sub: "" };
       case "energyEmotional":
-        return { main: typeof entry.energy?.emotional === "number" ? entry.energy.emotional + "%" : "-", sub: "" };
+        return { main: (entry.energy && typeof entry.energy.emotional === "number") ? entry.energy.emotional + "%" : "-", sub: "" };
       case "moodMatrix":
         if (entry.moodGrid) {
           var normalizedMoodGrid = App.normalizeMoodGrid(entry.moodGrid);
@@ -189,11 +189,11 @@
       case "bodySignals":
         return App.formatBodySignals(entry.bodySignals);
       case "energyPhysical":
-        return typeof entry.energy?.physical === "number" ? entry.energy.physical : -1;
+        return (entry.energy && typeof entry.energy.physical === "number") ? entry.energy.physical : -1;
       case "energyMental":
-        return typeof entry.energy?.mental === "number" ? entry.energy.mental : -1;
+        return (entry.energy && typeof entry.energy.mental === "number") ? entry.energy.mental : -1;
       case "energyEmotional":
-        return typeof entry.energy?.emotional === "number" ? entry.energy.emotional : -1;
+        return (entry.energy && typeof entry.energy.emotional === "number") ? entry.energy.emotional : -1;
       case "moodMatrix":
         return entry.moodGrid ? (entry.moodGrid.energy || 0) + "-" + (entry.moodGrid.valence || 0) : "";
       case "actions":
@@ -218,20 +218,8 @@
     if (!rawEntry || typeof rawEntry !== "object") return;
     var entry = App.normalizeEntry(rawEntry);
     state.activeEntryKey = entryKey;
-    dom.thoughtsField.value = entry.thoughts || "";
-    dom.customEmotionsField.value = entry.customFeelings || "";
-    dom.bodyField.value = entry.bodyNote || "";
-    dom.energyNoteField.value = entry.energyNote || "";
-    dom.actionField.value = entry.action || "";
-    dom.noteField.value = entry.note || "";
-    state.selectedEmotion = entry.selectedEmotion || null;
-    state.bodySignals = new Set(entry.bodySignals || []);
-    state.selectedMoodGrid = App.normalizeMoodGrid(entry.moodGrid);
-    state.energy = {
-      physical: typeof entry.energy?.physical === "number" ? entry.energy.physical : null,
-      mental: typeof entry.energy?.mental === "number" ? entry.energy.mental : null,
-      emotional: typeof entry.energy?.emotional === "number" ? entry.energy.emotional : null,
-    };
+    App.populateFormFromEntry(entry);
+    if (App.showEntryWeather) App.showEntryWeather(entry);
 
     var savedWheel = rawEntry.wheelType || entry.wheelType || null;
     if (savedWheel && App.emotionWheelVariants[savedWheel] && savedWheel !== App.activeWheelType) {
@@ -241,8 +229,8 @@
       App.renderEmotionWheel();
     }
 
-    if (typeof App.renderCheckinContext === "function") App.renderCheckinContext();
-    if (typeof App.renderCheckinMessage === "function") App.renderCheckinMessage("");
+    App.renderCheckinContext();
+    App.renderCheckinMessage("");
     App.renderCoreSelections();
     App.activateTab("checkin", true);
   };
@@ -355,24 +343,12 @@
         if (!window.confirm(App.t("overview.deleteConfirm"))) return;
         delete App.state.entries[entryKey];
         if (App.state.activeEntryKey === entryKey) {
-          App.state.activeEntryKey = null;
-          dom.thoughtsField.value = "";
-          dom.customEmotionsField.value = "";
-          dom.bodyField.value = "";
-          dom.energyNoteField.value = "";
-          dom.actionField.value = "";
-          dom.noteField.value = "";
-          App.state.selectedEmotion = null;
-          App.state.bodySignals = new Set();
-          App.state.selectedMoodGrid = null;
-          App.state.energy = { physical: null, mental: null, emotional: null };
+          App.clearCheckinForm();
         }
         App.saveEntries(App.state.entries);
         App.hydrateTodayEntry();
         App.renderCoreSelections();
-        App.renderSummary();
-        App.renderHistory();
-        App.renderOverview();
+        App.refreshViews();
       });
     });
 
@@ -388,16 +364,7 @@
         delete exportData.language;
         var dateTimeStr = entryKey.replace(/[^0-9T\-]/g, "").replace(/T/, "-");
         if (!dateTimeStr) dateTimeStr = App.getTodayKey();
-        var payload = JSON.stringify(exportData, null, 2);
-        var blob = new Blob([payload], { type: "application/json" });
-        var url = URL.createObjectURL(blob);
-        var anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = "mindful-checkin-" + dateTimeStr + ".json";
-        document.body.appendChild(anchor);
-        anchor.click();
-        anchor.remove();
-        URL.revokeObjectURL(url);
+        App.downloadJsonFile(exportData, "mindful-checkin-" + dateTimeStr + ".json");
       });
     });
 
@@ -483,16 +450,7 @@
           delete raw.language;
           return Object.assign({ entryKey: entry.entryKey }, raw);
         });
-        var payload = JSON.stringify(exportData, null, 2);
-        var blob = new Blob([payload], { type: "application/json" });
-        var url = URL.createObjectURL(blob);
-        var anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = "mindful-checkin-export-" + App.getTodayKey() + ".json";
-        document.body.appendChild(anchor);
-        anchor.click();
-        anchor.remove();
-        URL.revokeObjectURL(url);
+        App.downloadJsonFile(exportData, "mindful-checkin-export-" + App.getTodayKey() + ".json");
         if (dom.overviewStatus) {
           dom.overviewStatus.textContent = App.t("overview.exportDone").replace("{count}", String(exportData.length));
         }
@@ -507,59 +465,47 @@
 
     if (dom.overviewImportFile) {
       dom.overviewImportFile.addEventListener("change", function () {
-        var file = dom.overviewImportFile.files && dom.overviewImportFile.files[0];
-        if (!file) return;
-        var reader = new FileReader();
-        reader.onload = function () {
-          try {
-            var parsed = JSON.parse(String(reader.result));
-            if (!Array.isArray(parsed)) {
-              if (dom.overviewStatus) dom.overviewStatus.textContent = App.t("overview.importError");
-              return;
-            }
-            var overwrite = window.confirm(App.t("overview.importConfirmOverwrite"));
-            var existingById = {};
-            Object.entries(App.state.entries).forEach(function (pair) {
-              if (pair[1] && pair[1].id) existingById[pair[1].id] = pair[0];
-            });
-            var added = 0, updated = 0, skipped = 0;
-            parsed.forEach(function (imported) {
-              if (!imported || typeof imported !== "object") return;
-              var importId = imported.id || null;
-              var importKey = imported.entryKey || App.createTimestampedEntryKey(App.getTodayKey());
-              var entryData = Object.assign({}, imported);
-              delete entryData.entryKey;
-              if (importId && existingById[importId]) {
-                if (overwrite) {
-                  var existingKey = existingById[importId];
-                  App.state.entries[existingKey] = Object.assign({}, App.state.entries[existingKey], entryData);
-                  updated += 1;
-                } else {
-                  skipped += 1;
-                }
-              } else {
-                if (!entryData.id) entryData.id = App.generateId();
-                App.state.entries[importKey] = entryData;
-                if (entryData.id) existingById[entryData.id] = importKey;
-                added += 1;
-              }
-            });
-            App.saveEntries(App.state.entries);
-            App.renderSummary();
-            App.renderHistory();
-            App.renderOverview();
-            if (dom.overviewStatus) {
-              dom.overviewStatus.textContent = App.t("overview.importDone")
-                .replace("{added}", String(added))
-                .replace("{updated}", String(updated))
-                .replace("{skipped}", String(skipped));
-            }
-          } catch (error) {
+        App.readJsonFile(dom.overviewImportFile, function (parsed, error) {
+          if (error || !Array.isArray(parsed)) {
             if (dom.overviewStatus) dom.overviewStatus.textContent = App.t("overview.importError");
+            return;
           }
-          dom.overviewImportFile.value = "";
-        };
-        reader.readAsText(file);
+          var overwrite = window.confirm(App.t("overview.importConfirmOverwrite"));
+          var existingById = {};
+          Object.entries(App.state.entries).forEach(function (pair) {
+            if (pair[1] && pair[1].id) existingById[pair[1].id] = pair[0];
+          });
+          var added = 0, updated = 0, skipped = 0;
+          parsed.forEach(function (imported) {
+            if (!imported || typeof imported !== "object") return;
+            var importId = imported.id || null;
+            var importKey = imported.entryKey || App.createTimestampedEntryKey(App.getTodayKey());
+            var entryData = Object.assign({}, imported);
+            delete entryData.entryKey;
+            if (importId && existingById[importId]) {
+              if (overwrite) {
+                var existingKey = existingById[importId];
+                App.state.entries[existingKey] = Object.assign({}, App.state.entries[existingKey], entryData);
+                updated += 1;
+              } else {
+                skipped += 1;
+              }
+            } else {
+              if (!entryData.id) entryData.id = App.generateId();
+              App.state.entries[importKey] = entryData;
+              if (entryData.id) existingById[entryData.id] = importKey;
+              added += 1;
+            }
+          });
+          App.saveEntries(App.state.entries);
+          App.refreshViews();
+          if (dom.overviewStatus) {
+            dom.overviewStatus.textContent = App.t("overview.importDone")
+              .replace("{added}", String(added))
+              .replace("{updated}", String(updated))
+              .replace("{skipped}", String(skipped));
+          }
+        });
       });
     }
   };

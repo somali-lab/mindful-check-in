@@ -240,50 +240,26 @@
     }
   };
 
-  App.hydrateTodayEntry = function () {
+  App.clearCheckinForm = function () {
     var dom = App.dom;
     var state = App.state;
-    var todayKey = App.getTodayKey();
-    var latestTodayEntryKey = App.findLatestEntryKeyForDate(todayKey);
-    if (!latestTodayEntryKey) return;
-
-    var rawTodayEntry = state.entries[latestTodayEntryKey];
-    if (!rawTodayEntry || typeof rawTodayEntry !== "object") return;
-    var todayEntry = App.normalizeEntry(rawTodayEntry);
-    state.activeEntryKey = latestTodayEntryKey;
-
-    dom.thoughtsField.value = todayEntry.thoughts || "";
-    dom.customEmotionsField.value = todayEntry.customFeelings || "";
-    dom.bodyField.value = todayEntry.bodyNote || todayEntry.body || "";
-    dom.energyNoteField.value = todayEntry.energyNote || "";
-    dom.actionField.value = todayEntry.action || "";
-    dom.noteField.value = todayEntry.note || "";
-    state.selectedEmotion = todayEntry.selectedEmotion || todayEntry.feelings || null;
-    if (todayEntry.energy && typeof todayEntry.energy === "object") {
-      state.energy = {
-        physical: typeof todayEntry.energy.physical === "number" ? todayEntry.energy.physical : null,
-        mental: typeof todayEntry.energy.mental === "number" ? todayEntry.energy.mental : null,
-        emotional: typeof todayEntry.energy.emotional === "number" ? todayEntry.energy.emotional : null,
-      };
-    } else if (typeof todayEntry.energy === "number") {
-      state.energy = { physical: todayEntry.energy, mental: null, emotional: null };
-    } else {
-      state.energy = { physical: null, mental: null, emotional: null };
-    }
-    state.selectedMoodGrid = App.normalizeMoodGrid(todayEntry.moodGrid);
-    state.bodySignals = new Set(todayEntry.bodySignals || todayEntry.body_signals || []);
-    App.renderCheckinContext();
-    App.renderCheckinMessage("");
+    state.activeEntryKey = null;
+    dom.thoughtsField.value = "";
+    dom.customEmotionsField.value = "";
+    dom.bodyField.value = "";
+    dom.energyNoteField.value = "";
+    dom.actionField.value = "";
+    dom.noteField.value = "";
+    state.selectedEmotion = null;
+    state.energy = { physical: null, mental: null, emotional: null };
+    state.selectedMoodGrid = null;
+    state.bodySignals = new Set();
+    if (App.showEntryWeather) App.showEntryWeather(null);
   };
 
-  App.loadEntryIntoForm = function (entryKey) {
+  App.populateFormFromEntry = function (entry) {
     var dom = App.dom;
     var state = App.state;
-    var raw = state.entries[entryKey];
-    if (!raw || typeof raw !== "object") return;
-    var entry = App.normalizeEntry(raw);
-    state.activeEntryKey = entryKey;
-
     dom.thoughtsField.value = entry.thoughts || "";
     dom.customEmotionsField.value = entry.customFeelings || "";
     dom.bodyField.value = entry.bodyNote || entry.body || "";
@@ -297,11 +273,38 @@
         mental: typeof entry.energy.mental === "number" ? entry.energy.mental : null,
         emotional: typeof entry.energy.emotional === "number" ? entry.energy.emotional : null,
       };
+    } else if (typeof entry.energy === "number") {
+      state.energy = { physical: entry.energy, mental: null, emotional: null };
     } else {
       state.energy = { physical: null, mental: null, emotional: null };
     }
     state.selectedMoodGrid = App.normalizeMoodGrid(entry.moodGrid);
-    state.bodySignals = new Set(entry.bodySignals || []);
+    state.bodySignals = new Set(entry.bodySignals || entry.body_signals || []);
+  };
+
+  App.hydrateTodayEntry = function () {
+    var state = App.state;
+    var todayKey = App.getTodayKey();
+    var latestTodayEntryKey = App.findLatestEntryKeyForDate(todayKey);
+    if (!latestTodayEntryKey) return;
+
+    var rawTodayEntry = state.entries[latestTodayEntryKey];
+    if (!rawTodayEntry || typeof rawTodayEntry !== "object") return;
+    var todayEntry = App.normalizeEntry(rawTodayEntry);
+    state.activeEntryKey = latestTodayEntryKey;
+    App.populateFormFromEntry(todayEntry);
+    App.renderCheckinContext();
+    App.renderCheckinMessage("");
+  };
+
+  App.loadEntryIntoForm = function (entryKey) {
+    var state = App.state;
+    var raw = state.entries[entryKey];
+    if (!raw || typeof raw !== "object") return;
+    var entry = App.normalizeEntry(raw);
+    state.activeEntryKey = entryKey;
+    App.populateFormFromEntry(entry);
+    if (App.showEntryWeather) App.showEntryWeather(entry);
     App.renderCoreSelections();
     App.renderCheckinContext();
 
@@ -351,7 +354,12 @@
   // Score an entry based on a specific history view mode
   App.scoreEntryByMode = function (entry, mode) {
     if (!entry) return null;
-    if (mode === "feeling") return App.scoreEntry(entry);
+    if (mode === "feeling") {
+      if (entry.selectedEmotion && App.moodScoreMap[entry.selectedEmotion]) {
+        return App.moodScoreMap[entry.selectedEmotion];
+      }
+      return null;
+    }
     if (mode === "moodMatrix") {
       var mg = entry.moodGrid;
       if (!mg || typeof mg.valence !== "number") return null;
@@ -366,7 +374,12 @@
   // Tooltip text for a calendar cell based on the active mode
   App.tooltipByMode = function (entry, mode) {
     if (!entry) return App.t("history.noEntry");
-    if (mode === "feeling") return App.getDisplayMood(entry);
+    if (mode === "feeling") {
+      if (entry.selectedEmotion) {
+        return App.t("feelings." + entry.selectedEmotion) || entry.selectedEmotion;
+      }
+      return App.t("history.noEntry");
+    }
     if (mode === "moodMatrix") {
       var mg = entry.moodGrid;
       if (!mg || typeof mg.valence !== "number") return App.t("history.noEntry");
@@ -401,16 +414,6 @@
       streak += 1;
     }
     return streak;
-  };
-
-  App.getRecentAverageLabel = function (sortedEntries) {
-    var recent = sortedEntries.slice(0, 5);
-    var scores = recent.map(function (e) { return App.scoreEntry(e); }).filter(function (s) { return typeof s === "number"; });
-    if (scores.length === 0) return App.t("summary.averageMid");
-    var average = scores.reduce(function (sum, v) { return sum + v; }, 0) / scores.length;
-    if (average >= 2.5) return App.t("summary.averageHigh");
-    if (average >= 1.75) return App.t("summary.averageMid");
-    return App.t("summary.averageLow");
   };
 
   App.renderSummary = function () {
@@ -711,8 +714,7 @@
       var existingEntry = state.entries[targetEntryKey];
       var wasUpdate = isEditingToday && Boolean(existingEntry);
 
-      state.entries[targetEntryKey] = {
-        ...App.normalizeEntry(existingEntry || {}),
+      state.entries[targetEntryKey] = Object.assign({}, App.normalizeEntry(existingEntry || {}), {
         id: (existingEntry && existingEntry.id) ? existingEntry.id : App.generateId(),
         thoughts: dom.thoughtsField.value.trim(),
         selectedEmotion: state.selectedEmotion,
@@ -724,17 +726,15 @@
         energyNote: dom.energyNoteField.value.trim(),
         action: dom.actionField.value.trim(),
         note: dom.noteField.value.trim(),
-        moodGrid: App.sanitizeMoodGridForStorage(state.selectedMoodGrid),
+        moodGrid: App.normalizeMoodGrid(state.selectedMoodGrid),
         mood: App.deriveMoodBucket(state.selectedEmotion, state.selectedMoodGrid, existingEntry),
         weather: App.getWeatherForEntry ? App.getWeatherForEntry() : null,
         updatedAt: new Date().toISOString(),
-      };
+      });
 
       App.saveEntries(state.entries);
       state.activeEntryKey = targetEntryKey;
-      App.renderSummary();
-      App.renderHistory();
-      App.renderOverview();
+      App.refreshViews();
       App.renderCheckinMessage(wasUpdate ? App.t("status.updated") : App.t("status.saved"), {
         variant: "success",
         autoHideMs: 4000,
@@ -744,17 +744,7 @@
 
     if (dom.newCheckinButton) {
       dom.newCheckinButton.addEventListener("click", function () {
-        state.activeEntryKey = null;
-        dom.thoughtsField.value = "";
-        dom.customEmotionsField.value = "";
-        dom.bodyField.value = "";
-        dom.energyNoteField.value = "";
-        dom.actionField.value = "";
-        dom.noteField.value = "";
-        state.selectedEmotion = null;
-        state.energy = { physical: null, mental: null, emotional: null };
-        state.selectedMoodGrid = null;
-        state.bodySignals = new Set();
+        App.clearCheckinForm();
         App.renderCoreSelections();
         App.renderCheckinMessage("");
         App.renderCheckinContext();

@@ -95,9 +95,7 @@
     }
 
     App.saveEntries(App.state.entries);
-    App.renderSummary();
-    App.renderHistory();
-    App.renderOverview();
+    App.refreshViews();
     if (App.dom.infoStatus) App.dom.infoStatus.textContent = App.t("info.demoGenerated");
   };
 })();
