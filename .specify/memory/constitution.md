@@ -1,50 +1,161 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+  Sync Impact Report
+  ─────────────────────────────────
+  Version change: 0.0.0 → 1.0.0 (MAJOR — initial ratification)
+  Modified principles: N/A (initial version)
+  Added sections:
+    - I. Privacy-First & Local-Only
+    - II. Zero Build, Zero Dependencies
+    - III. Defensive Data Handling
+    - IV. Internationalization as Default
+    - V. Accessibility & Semantic HTML
+    - Technology Constraints
+    - Development Workflow
+  Removed sections: N/A
+  Templates requiring updates:
+    - .specify/templates/plan-template.md ✅ no changes needed
+    - .specify/templates/spec-template.md ✅ no changes needed
+    - .specify/templates/tasks-template.md ✅ no changes needed
+  Follow-up TODOs: none
+-->
+
+# Mindful Check-in Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Privacy-First & Local-Only
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+All user data MUST remain on the user's device. The app MUST NOT
+transmit personal data to any server, analytics service, or
+third-party endpoint. The sole permitted network request is the
+optional Open-Meteo weather fetch, which sends only geographic
+coordinates — never user-generated content.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+- No cookies, no tracking pixels, no analytics scripts.
+- No server-side component — the app is a set of static files.
+- `localStorage` is the only persistence layer; no IndexedDB,
+  no remote sync.
+- Users MUST be able to disable the weather component for fully
+  offline operation.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**Rationale**: The app exists to encourage honest self-reflection.
+That requires absolute trust that entries are never shared.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### II. Zero Build, Zero Dependencies
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+The app MUST run by opening `index.html` in any modern browser.
+No bundler, transpiler, package manager, or build step is
+permitted.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- All JavaScript MUST be vanilla ES5-compatible IIFEs attached
+  to the global `window.App` namespace.
+- All CSS MUST be plain CSS using custom properties — no
+  preprocessors.
+- External runtime dependencies are forbidden. The only external
+  service is the optional Open-Meteo API (free, no API key).
+- Cache-busting versioning (`?v=X.Y.Z`) on asset URLs is the
+  sole deployment mechanism.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**Rationale**: Simplicity lowers the barrier to contribution and
+guarantees long-term maintainability without toolchain rot.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### III. Defensive Data Handling
+
+Every data path — read, write, import, normalize — MUST be
+defensively validated.
+
+- `App.normalizeEntry()` MUST handle missing fields, wrong
+  types, and legacy key names without throwing.
+- User-supplied strings rendered into HTML MUST be escaped via
+  `App.escapeHtml()` to prevent XSS.
+- Import flows MUST offer the user a choice between overwrite
+  and skip-duplicates — never silently discard data.
+- `localStorage` writes MUST silently degrade (try/catch) when
+  quota is exceeded.
+
+**Rationale**: Users accumulate months of personal entries.
+Data loss or corruption erodes trust irreparably.
+
+### IV. Internationalization as Default
+
+Every user-visible string MUST be defined in `translations.js`
+under both `en` and `nl` keys, resolved at runtime via
+`App.t()`.
+
+- Hard-coded UI text in HTML or JS is forbidden.
+- Language switching MUST be instant (no page reload).
+- The default language is configurable in Settings.
+- New features MUST ship with both `en` and `nl` translations
+  before merge.
+
+**Rationale**: The app serves a bilingual audience; missing
+translations degrade the experience for half the users.
+
+### V. Accessibility & Semantic HTML
+
+Interactive elements MUST use correct ARIA roles, labels, and
+keyboard semantics.
+
+- Tab navigation via `role="tablist"` / `role="tab"` /
+  `aria-selected`.
+- SVG interactive regions MUST carry `aria-label` or visible
+  text alternatives.
+- Color MUST NOT be the sole means of conveying information —
+  text labels or patterns MUST accompany color-coded elements.
+- Theme support (light / dark / system) MUST maintain
+  sufficient contrast ratios (WCAG AA minimum).
+
+**Rationale**: Mental health tools must be usable by everyone,
+including users with visual or motor impairments.
+
+## Technology Constraints
+
+- **Runtime**: Any modern browser supporting `localStorage`,
+  `fetch`, and inline SVG. `crypto.randomUUID` is used when
+  available but has a `Math.random` fallback.
+- **Language**: Vanilla JavaScript (ES5 IIFEs, `"use strict"`).
+- **Styling**: Plain CSS with custom properties; one file per
+  logical domain (base, layout, components, checkin, overview,
+  settings, summary, weather, info).
+- **State management**: Single global `App.state` object
+  hydrated from `localStorage` on boot.
+- **External services**: Open-Meteo Forecast + Geocoding APIs
+  only (free, no API key, optional).
+- **Data format**: JSON objects in `localStorage` keyed by date
+  (`YYYY-MM-DD` or `YYYY-MM-DD_HHMMSSmmm`).
+
+## Development Workflow
+
+- **File organization**: HTML shell in `index.html`;
+  JS modules in `js/`; CSS modules in `css/`;
+  translations in `translations.js`.
+- **Module pattern**: Each JS file is a self-contained IIFE
+  that attaches public API methods to `window.App`.
+- **Naming**: `App.<verb><Noun>()` for public functions;
+  local helpers as plain `function` declarations inside the
+  IIFE scope.
+- **Commit hygiene**: Atomic commits with clear scope. No
+  unrelated changes bundled together.
+- **Quality gates**: Syntax-check JS files before committing
+  (`new Function(source)` or equivalent). Verify both `en`
+  and `nl` translations are present for changed keys.
+- **No generated files**: The repository MUST NOT contain
+  build artifacts, minified bundles, or `node_modules`.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution is the authoritative reference for
+architectural and process decisions in Mindful Check-in. It
+supersedes ad-hoc conventions found elsewhere in the codebase.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- **Amendments** MUST be documented with a version bump, rationale,
+  and date in this file.
+- **Versioning** follows Semantic Versioning:
+  - MAJOR: principle removal or backward-incompatible redefinition.
+  - MINOR: new principle or materially expanded guidance.
+  - PATCH: clarifications, wording fixes, non-semantic changes.
+- **Compliance**: Every PR and code review SHOULD verify alignment
+  with these principles. Deviations MUST be justified in the PR
+  description.
+
+**Version**: 1.0.0 | **Ratified**: 2026-04-06 | **Last Amended**: 2026-04-06
