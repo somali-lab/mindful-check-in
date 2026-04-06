@@ -10,6 +10,13 @@
   <main class="app-shell">
     <header class="hero">
       <div class="hero-topline">
+        <div class="tab-switch" role="tablist" aria-label="Section tabs">
+          <button type="button" class="tab-button is-selected" data-tab-target="checkin" data-i18n="tabs.checkin" role="tab" aria-selected="true">Check-in</button>
+          <button type="button" class="tab-button" data-tab-target="overview" data-i18n="tabs.overview" role="tab" aria-selected="false">Overview</button>
+          <button type="button" class="tab-button" data-tab-target="settings" data-i18n="tabs.settings" role="tab" aria-selected="false">Settings</button>
+          <button type="button" class="tab-button" data-tab-target="info" data-i18n="tabs.info" role="tab" aria-selected="false">Info</button>
+        </div>
+
         <h1 data-i18n="header.title">Mindful Check-in</h1>
         <div class="hero-controls">
           <div class="theme-switch" role="group" aria-label="Theme switch">
@@ -43,46 +50,70 @@
             <button type="button" class="language-button" data-language="nl" aria-pressed="false">NL</button>
             <button type="button" class="language-button is-selected" data-language="en" aria-pressed="true">EN</button>
           </div>
-          <div class="tab-switch" role="tablist" aria-label="Section tabs">
-            <button type="button" class="tab-button is-selected" data-tab-target="checkin" data-i18n="tabs.checkin" role="tab" aria-selected="true">Check-in</button>
-            <button type="button" class="tab-button" data-tab-target="overview" data-i18n="tabs.overview" role="tab" aria-selected="false">Overview</button>
-            <button type="button" class="tab-button" data-tab-target="settings" data-i18n="tabs.settings" role="tab" aria-selected="false">Settings</button>
-            <button type="button" class="tab-button" data-tab-target="info" data-i18n="tabs.info" role="tab" aria-selected="false">Info</button>
+        </div>
+      </div>
+
+      <div class="hero-rail">
+        <div class="hero-message-bar">
+          <div class="history-banner is-hidden" id="history-banner" aria-live="polite"></div>
+        </div>
+        <div class="checkin-toolbar" id="checkin-toolbar">
+          <div class="checkin-toolbar-main">
+            <div class="checkin-toolbar-left">
+              <div class="checkin-context-pill" id="checkin-context-pill"></div>
+            </div>
+            <div class="checkin-save-row">
+              <button type="button" class="save-button save-button--secondary" id="new-checkin" data-i18n="checkin.newCheckin">New check-in</button>
+              <button type="button" class="save-button checkin-save-button" id="save-checkin" data-i18n="checkin.saveShort">Save</button>
+            </div>
+          </div>
+        </div>
+        <div class="hero-toolbar-section is-hidden" id="overview-toolbar">
+          <div class="checkin-save-row">
+            <button type="button" class="save-button save-button--secondary" id="overview-export" data-i18n="overview.export">Export</button>
+            <button type="button" class="save-button save-button--secondary" id="overview-import" data-i18n="overview.import">Import</button>
+          </div>
+        </div>
+        <div class="hero-toolbar-section is-hidden" id="settings-toolbar">
+          <div class="checkin-save-row">
+            <button type="button" class="save-button save-button--secondary" id="settings-reset" data-i18n="settings.buttons.reset">Reset defaults</button>
+            <button type="button" class="save-button save-button--secondary" id="settings-export" data-i18n="settings.buttons.export">Export settings</button>
+            <button type="button" class="save-button save-button--secondary" id="settings-import" data-i18n="settings.buttons.import">Import settings</button>
+            <button type="button" class="save-button" id="settings-save" data-i18n="settings.buttons.save">Save settings</button>
           </div>
         </div>
       </div>
     </header>
 
     <div class="tab-panel is-active" data-tab-panel="checkin">
-    <section class="card" aria-labelledby="checkin-heading">
-      <h2 id="checkin-heading" data-i18n="checkin.title">Today's check-in</h2>
-      <p data-i18n="checkin.intro">
-        Pick one mood for today, add an optional note, and save it only on this device.
-      </p>
+    <section class="card">
 
-      <div class="section-group" data-component="thoughts">
-        <div class="thoughts-row">
-          <div class="weather-column" data-component="weather">
-            <label class="field-label" data-i18n="weather.label">Weather</label>
-            <div class="weather-widget" id="weather-widget">
-              <div class="weather-icon" id="weather-icon"></div>
-              <div class="weather-details">
-                <span class="weather-temp" id="weather-temp">--</span>
-                <span class="weather-desc" id="weather-desc" data-i18n="weather.loading">Loading...</span>
-                <span class="weather-location" id="weather-location"></span>
-              </div>
+      <div class="section-group thoughts-weather-row">
+        <div class="weather-column" data-component="weather">
+          <label class="field-label" data-i18n="weather.label">Weather</label>
+          <div class="weather-widget" id="weather-widget">
+            <div class="weather-icon" id="weather-icon"></div>
+            <div class="weather-details">
+              <span class="weather-temp" id="weather-temp">--</span>
+              <span class="weather-desc" id="weather-desc" data-i18n="weather.loading">Loading...</span>
+              <span class="weather-location" id="weather-location"></span>
             </div>
           </div>
-          <div class="thoughts-field">
-            <label class="field-label" for="thoughts" data-i18n="fields.thoughts.label">Thoughts</label>
-            <textarea id="thoughts" rows="4" data-i18n-placeholder="fields.thoughts.placeholder" placeholder="What thoughts come to mind?"></textarea>
-          </div>
+        </div>
+        <div class="thoughts-field" data-component="thoughts">
+          <label class="field-label" for="thoughts" data-i18n="fields.thoughts.label">Thoughts</label>
+          <textarea id="thoughts" rows="4" data-i18n-placeholder="fields.thoughts.placeholder" placeholder="What thoughts come to mind?"></textarea>
         </div>
       </div>
 
       <div class="section-group three-column">
         <div class="checkin-block feeling-panel" data-component="coreFeeling">
-          <label class="field-label" data-i18n="fields.feelings.label">Core feeling</label>
+          <div class="checkin-block-header">
+            <label class="field-label" data-i18n="fields.feelings.label">Core feeling</label>
+            <div class="section-actions">
+              <button type="button" class="reset-button" id="reset-feeling" data-i18n="buttons.reset">Reset</button>
+            </div>
+          </div>
           <div class="section-actions">
             <select id="wheel-type" class="wheel-select">
               <option value="act">ACT (8)</option>
@@ -91,20 +122,21 @@
               <option value="junto">Junto (6)</option>
               <option value="extended">Extended (12)</option>
             </select>
-            <button type="button" class="reset-button" id="reset-feeling" data-i18n="buttons.resetFeeling">Reset feeling</button>
           </div>
           <svg class="emotion-wheel" id="emotion-wheel" viewBox="0 0 360 360" role="group" aria-label="Core feelings wheel"></svg>
           <div class="selection-display is-empty" id="selected-emotion-display" data-i18n="fields.feelings.empty">
             Select one core feeling
           </div>
-          <label class="field-label checkin-block-note-label" for="custom-emotions" data-i18n="fields.customFeelings.label">Custom feelings</label>
+          <label class="field-label checkin-block-note-label" for="custom-emotions" data-i18n="fields.customFeelings.label">Core feeling note</label>
           <textarea id="custom-emotions" rows="3" data-i18n-placeholder="fields.customFeelings.placeholder" placeholder="Describe additional feelings..."></textarea>
         </div>
 
         <div class="checkin-block body-panel" data-component="bodySignals">
-          <label class="field-label" data-i18n="fields.bodySignals.label">Body signals</label>
-          <div class="section-actions">
-            <button type="button" class="reset-button" id="reset-body-signals" data-i18n="buttons.resetBodySignals">Reset body signals</button>
+          <div class="checkin-block-header">
+            <label class="field-label" data-i18n="fields.bodySignals.label">Body signals</label>
+            <div class="section-actions">
+              <button type="button" class="reset-button" id="reset-body-signals" data-i18n="buttons.reset">Reset</button>
+            </div>
           </div>
           <div class="body-figure" id="body-figure" role="group" aria-label="Body signal selector">
             <svg class="body-figure-svg" viewBox="0 0 120 240" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -140,14 +172,16 @@
           <div class="selection-display is-empty" id="body-signals-display" data-i18n="fields.bodySignals.empty">
             Select body areas where you notice signals
           </div>
-          <label class="field-label checkin-block-note-label" for="body" data-i18n="fields.body.label">Body note</label>
+          <label class="field-label checkin-block-note-label" for="body" data-i18n="fields.body.label">Body signals note</label>
           <textarea id="body" rows="3" data-i18n-placeholder="fields.body.placeholder" placeholder="Describe what you notice in your body..."></textarea>
         </div>
 
         <div class="checkin-block energy-panel" data-component="energyPanel">
-          <label class="field-label" data-i18n="fields.energy.label">Energy level</label>
-          <div class="section-actions">
-            <button type="button" class="reset-button" id="reset-energy" data-i18n="buttons.resetEnergy">Reset energy</button>
+          <div class="checkin-block-header">
+            <label class="field-label" data-i18n="fields.energy.label">Energy level</label>
+            <div class="section-actions">
+              <button type="button" class="reset-button" id="reset-energy" data-i18n="buttons.reset">Reset</button>
+            </div>
           </div>
           <div class="energy-triple">
             <div class="energy-column">
@@ -209,7 +243,7 @@ Sociaal</span>
           <div class="selection-display is-empty" id="energy-display" data-i18n="fields.energy.empty">
             Click in the meters to set your energy levels
           </div>
-          <label class="field-label checkin-block-note-label" for="energy-note" data-i18n="fields.energyNote.label">Energy note</label>
+          <label class="field-label checkin-block-note-label" for="energy-note" data-i18n="fields.energyNote.label">Energy level note</label>
           <textarea id="energy-note" rows="3" data-i18n-placeholder="fields.energyNote.placeholder" placeholder="Describe how your energy feels..."></textarea>
         </div>
       </div>
@@ -218,10 +252,9 @@ Sociaal</span>
         <div class="mood-header">
           <h3 class="subheading" data-i18n="fields.moodGrid.label">Mood matrix</h3>
           <div class="section-actions">
-            <button type="button" class="reset-button" id="reset-mood" data-i18n="buttons.resetMood">Reset mood</button>
+            <button type="button" class="reset-button" id="reset-mood" data-i18n="buttons.reset">Reset</button>
           </div>
         </div>
-        <p class="field-help" data-i18n="fields.moodGrid.help">Click one cell to mark your current mood.</p>
         <div class="mood-grid-wrapper">
           <div class="axis-label axis-energy-high" data-i18n="fields.moodGrid.axisHigh">HIGH ENERGY</div>
           <div class="axis-label axis-energy-low" data-i18n="fields.moodGrid.axisLow">LOW ENERGY</div>
@@ -246,16 +279,6 @@ Sociaal</span>
           <textarea id="note" name="note" rows="3" data-i18n-placeholder="fields.note.placeholder" placeholder="Write a short note..."></textarea>
         </div>
       </div>
-
-      <div class="checkin-save-row">
-        <button type="button" class="save-button checkin-save-button" id="save-checkin" data-i18n="checkin.saveShort">Save</button>
-        <label class="checkin-save-option" id="save-option-wrap">
-          <input type="checkbox" id="save-as-new-entry" />
-          <span data-i18n="checkin.saveAsNew">Extra</span>
-        </label>
-      </div>
-
-      <p class="status-message" id="status-message" aria-live="polite"></p>
     </section>
 
     <section class="grid">
@@ -289,10 +312,6 @@ Sociaal</span>
             <option value="lastMonth" data-i18n="overview.filters.lastMonth">Last month</option>
             <option value="last3Months" data-i18n="overview.filters.last3Months">Last 3 months</option>
           </select>
-          <label class="overview-notes-toggle">
-            <input id="overview-with-notes-only" type="checkbox" onchange="window.__moodOverviewApply && window.__moodOverviewApply()" />
-            <span data-i18n="overview.withNotesOnly">Only with notes</span>
-          </label>
         </div>
         <div class="overview-table-wrap">
           <table class="overview-table" id="overview-table">
@@ -301,13 +320,13 @@ Sociaal</span>
           </table>
         </div>
         <p class="status-message" id="overview-empty" aria-live="polite"></p>
+        <input type="file" id="overview-import-file" accept="application/json,.json" class="is-hidden" />
         <div class="section-actions overview-pagination">
-          <button type="button" class="reset-button" id="overview-export" data-i18n="overview.export">Export</button>
-          <button type="button" class="reset-button" id="overview-import" data-i18n="overview.import">Import</button>
-          <input type="file" id="overview-import-file" accept="application/json,.json" class="is-hidden" />
+          <button type="button" class="reset-button" id="overview-first" data-i18n="overview.first">First</button>
           <button type="button" class="reset-button" id="overview-prev" data-i18n="overview.prev">Previous</button>
           <span class="overview-page-info" id="overview-page-info">Page 1 of 1</span>
           <button type="button" class="reset-button" id="overview-next" data-i18n="overview.next">Next</button>
+          <button type="button" class="reset-button" id="overview-last" data-i18n="overview.last">Last</button>
         </div>
         <p class="status-message" id="overview-status" aria-live="polite"></p>
       </section>
@@ -406,13 +425,7 @@ Sociaal</span>
           </div>
         </div>
 
-        <div class="section-actions settings-actions">
-          <button type="button" class="reset-button" id="settings-reset" data-i18n="settings.buttons.reset">Reset defaults</button>
-          <button type="button" class="reset-button" id="settings-export" data-i18n="settings.buttons.export">Export settings</button>
-          <button type="button" class="reset-button" id="settings-import" data-i18n="settings.buttons.import">Import settings</button>
-          <button type="button" class="save-button" id="settings-save" data-i18n="settings.buttons.save">Save settings</button>
-          <input type="file" id="settings-import-file" accept="application/json,.json" class="is-hidden" />
-        </div>
+        <input type="file" id="settings-import-file" accept="application/json,.json" class="is-hidden" />
         <p class="status-message" id="settings-status" aria-live="polite"></p>
       </section>
     </div>
@@ -581,21 +594,23 @@ Sociaal</span>
           </ol>
 
           <p class="info-score-subheading" data-i18n="info.scoreColourTitle">What do the colours mean?</p>
+
+          <p class="info-score-subsub" data-i18n="info.scoreColourMoodSub">Core feeling &amp; Mood matrix</p>
           <div class="info-score-table">
             <div class="info-score-row">
               <span class="info-score-dot score-high"></span>
               <span class="info-score-label" data-i18n="info.scoreHighLabel">Positive</span>
-              <span class="info-score-desc" data-i18n="info.scoreHighDesc">Emotion: joy, serenity, love, trust &mdash; Mood: Great &mdash; Valence: 7–10</span>
+              <span class="info-score-desc" data-i18n="info.scoreHighDesc">Core feeling: joy, serenity, love, trust &mdash; Mood matrix: right side (positive)</span>
             </div>
             <div class="info-score-row">
               <span class="info-score-dot score-mid"></span>
               <span class="info-score-label" data-i18n="info.scoreMidLabel">Mixed</span>
-              <span class="info-score-desc" data-i18n="info.scoreMidDesc">Emotion: acceptance, surprise, anticipation &mdash; Mood: Okay &mdash; Valence: 4–6</span>
+              <span class="info-score-desc" data-i18n="info.scoreMidDesc">Core feeling: acceptance, surprise, anticipation &mdash; Mood matrix: middle</span>
             </div>
             <div class="info-score-row">
               <span class="info-score-dot score-low"></span>
-              <span class="info-score-label" data-i18n="info.scoreLowLabel">Low</span>
-              <span class="info-score-desc" data-i18n="info.scoreLowDesc">Emotion: sadness, anger, fear, disgust, shame &mdash; Mood: Low &mdash; Valence: 1–3</span>
+              <span class="info-score-label" data-i18n="info.scoreLowLabel">Negative</span>
+              <span class="info-score-desc" data-i18n="info.scoreLowDesc">Core feeling: sadness, melancholy, anger, aggression, fear, disgust, shame &mdash; Mood matrix: left side (negative)</span>
             </div>
             <div class="info-score-row">
               <span class="info-score-dot score-empty"></span>
@@ -603,7 +618,32 @@ Sociaal</span>
               <span class="info-score-desc" data-i18n="info.scoreEmptyDesc">No check-in recorded for that day</span>
             </div>
           </div>
-          <p class="info-score-note" data-i18n="info.scoreNote">Energy levels, body signals, and notes are not factored into the colour. They are visible when you click a day to load that entry.</p>
+
+          <p class="info-score-subsub" data-i18n="info.scoreColourEnergySub">Energy bars (Physical, Mental, Emo/Social)</p>
+          <div class="info-score-table">
+            <div class="info-score-row">
+              <span class="info-score-dot score-high"></span>
+              <span class="info-score-label" data-i18n="info.scoreEnergyHighLabel">High</span>
+              <span class="info-score-desc" data-i18n="info.scoreEnergyHighDesc">Energy level ≥ 67%</span>
+            </div>
+            <div class="info-score-row">
+              <span class="info-score-dot score-mid"></span>
+              <span class="info-score-label" data-i18n="info.scoreEnergyMidLabel">Medium</span>
+              <span class="info-score-desc" data-i18n="info.scoreEnergyMidDesc">Energy level 34–66%</span>
+            </div>
+            <div class="info-score-row">
+              <span class="info-score-dot score-low"></span>
+              <span class="info-score-label" data-i18n="info.scoreEnergyLowLabel">Low</span>
+              <span class="info-score-desc" data-i18n="info.scoreEnergyLowDesc">Energy level ≤ 33%</span>
+            </div>
+            <div class="info-score-row">
+              <span class="info-score-dot score-empty"></span>
+              <span class="info-score-label" data-i18n="info.scoreEmptyLabel">No entry</span>
+              <span class="info-score-desc" data-i18n="info.scoreEmptyDesc">No check-in recorded for that day</span>
+            </div>
+          </div>
+
+          <p class="info-score-note" data-i18n="info.scoreNote">Select a view mode (Core feeling, Mood, Physical, Mental, Emo/Social) above the calendar to switch between perspectives.</p>
         </div>
 
         <div class="section-group">

@@ -21,12 +21,12 @@
       defaultLanguage: App.FALLBACK_LANGUAGE,
       theme: "system",
       defaultWheelType: "act",
-      rowsPerPage: 20,
+      rowsPerPage: 7,
       overviewMaxChars: 120,
-      energyEmotionalLabel: "emotionalSocial",
-      weatherLocation: "",
-      weatherCoords: null,
-      quickActions: [],
+      energyEmotionalLabel: "social",
+      weatherLocation: "Amsterdam",
+      weatherCoords: { lat: 52.3676, lon: 4.9041, name: "Amsterdam" },
+      quickActions: [], // Intentionally empty — normalizeSettings fills language-specific defaults via getDefaultQuickActions(lang)
       components: {
         weather: true, thoughts: true, coreFeeling: true, bodySignals: true,
         energyPhysical: true, energyMental: true, energyEmotional: true,
@@ -159,7 +159,7 @@
       defaultWheelType: settings.defaultWheelType || "act",
       rowsPerPage: settings.rowsPerPage,
       overviewMaxChars: settings.overviewMaxChars,
-      energyEmotionalLabel: settings.energyEmotionalLabel || "emotionalSocial",
+      energyEmotionalLabel: settings.energyEmotionalLabel || "social",
       weatherLocation: settings.weatherLocation || "",
       weatherCoords: settings.weatherCoords || null,
       quickActions: Array.isArray(settings.quickActions) ? settings.quickActions.slice() : [],
@@ -260,7 +260,7 @@
   App.loadSettings = function () {
     var savedValue = localStorage.getItem(SETTINGS_KEY);
     if (!savedValue) {
-      return App.cloneSettings(App.getDefaultSettings());
+      return App.normalizeSettings(App.getDefaultSettings());
     }
     try {
       var parsed = JSON.parse(savedValue);

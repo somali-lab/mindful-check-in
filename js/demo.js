@@ -61,6 +61,17 @@
       var demoWheelType = hasEmotion ? pick(wheelTypes) : null;
       var demoEmotion = demoWheelType ? pick(App.emotionWheelVariants[demoWheelType].emotions) : null;
 
+      var weatherCodes = [0, 1, 2, 3, 45, 51, 53, 61, 63, 71, 73, 80, 81, 95];
+      var hasWeather = Math.random() > 0.3;
+      var demoWeatherCode = hasWeather ? pick(weatherCodes) : null;
+      var demoWeather = hasWeather ? {
+        temperature: randInt(-5, 35),
+        code: demoWeatherCode,
+        icon: App.getWeatherIcon ? App.getWeatherIcon(demoWeatherCode) : "❓",
+        description: "",
+        location: "Demo City",
+      } : null;
+
       App.state.entries[entryKey] = {
         id: App.generateId(),
         thoughts: Math.random() > 0.3 ? pick(thoughtsPool) : "",
@@ -78,6 +89,7 @@
         action: pick(actionsPool),
         note: pick(notesPool),
         moodGrid: hasMood ? { energy: randInt(1, 10), valence: randInt(1, 10) } : null,
+        weather: demoWeather,
         updatedAt: date.toISOString(),
       };
     }

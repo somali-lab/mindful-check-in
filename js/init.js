@@ -20,14 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
     actionField: document.querySelector("#action"),
     noteField: document.querySelector("#note"),
     saveButton: document.querySelector("#save-checkin"),
-    saveAsNewEntryCheckbox: document.querySelector("#save-as-new-entry"),
-    saveOptionWrap: document.querySelector("#save-option-wrap"),
+    newCheckinButton: document.querySelector("#new-checkin"),
+    checkinToolbar: document.querySelector("#checkin-toolbar"),
+    historyBanner: document.querySelector("#history-banner"),
+    checkinContextPill: document.querySelector("#checkin-context-pill"),
     wheelTypeSelect: document.querySelector("#wheel-type"),
     resetFeelingButton: document.querySelector("#reset-feeling"),
     resetBodySignalsButton: document.querySelector("#reset-body-signals"),
     resetEnergyButton: document.querySelector("#reset-energy"),
     resetMoodButton: document.querySelector("#reset-mood"),
-    statusMessage: document.querySelector("#status-message"),
     summaryContent: document.querySelector("#summary-content"),
     historyContent: document.querySelector("#history-content"),
     selectedEmotionDisplay: document.querySelector("#selected-emotion-display"),
@@ -41,8 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
     overviewHead: document.querySelector("#overview-head"),
     overviewBody: document.querySelector("#overview-body"),
     overviewEmpty: document.querySelector("#overview-empty"),
+    overviewFirstButton: document.querySelector("#overview-first"),
     overviewPrevButton: document.querySelector("#overview-prev"),
     overviewNextButton: document.querySelector("#overview-next"),
+    overviewLastButton: document.querySelector("#overview-last"),
     overviewPageInfo: document.querySelector("#overview-page-info"),
     overviewSearchInput: document.querySelector("#overview-search"),
     overviewFilterSelect: document.querySelector("#overview-filter"),
@@ -145,8 +148,12 @@ document.addEventListener("DOMContentLoaded", function () {
     dom.tabPanels.forEach(function (panel) {
       panel.classList.toggle("is-active", panel.dataset.tabPanel === safeTab);
     });
+    if (dom.checkinToolbar) dom.checkinToolbar.classList.toggle("is-hidden", safeTab !== "checkin");
     if (dom.saveButton) dom.saveButton.classList.toggle("is-hidden", safeTab !== "checkin");
-    if (dom.saveOptionWrap) dom.saveOptionWrap.classList.toggle("is-hidden", safeTab !== "checkin");
+    var overviewToolbar = document.getElementById("overview-toolbar");
+    var settingsToolbar = document.getElementById("settings-toolbar");
+    if (overviewToolbar) overviewToolbar.classList.toggle("is-hidden", safeTab !== "overview");
+    if (settingsToolbar) settingsToolbar.classList.toggle("is-hidden", safeTab !== "settings");
     App.saveActiveTab(safeTab);
     if (pushHistory && location.hash !== "#" + safeTab) {
       history.pushState({ tab: safeTab }, "", "#" + safeTab);
@@ -164,6 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
   App.renderMoodGrid();
   App.hydrateTodayEntry();
   App.renderCoreSelections();
+  App.renderCheckinContext();
   App.renderSummary();
   App.renderHistory();
   App.renderOverview();
@@ -212,7 +220,18 @@ document.addEventListener("DOMContentLoaded", function () {
       App.renderOverview();
       if (App.renderWeatherWidget) App.renderWeatherWidget();
       if (App.renderWeatherLastFetched) App.renderWeatherLastFetched();
-      App.dom.statusMessage.textContent = "";
+      if (typeof App.renderCheckinMessage === "function") {
+        var key = App.state && App.state.activeEntryKey;
+        var todayKey = App.getTodayKey();
+        if (key && App.extractDateKey(key) !== todayKey) {
+          App.renderCheckinMessage(App.t("checkin.historyBanner"), { variant: "info" });
+        } else {
+          App.renderCheckinMessage("");
+        }
+      }
+      if (typeof App.renderCheckinContext === "function") {
+        App.renderCheckinContext();
+      }
       if (App.dom.settingsStatus) App.dom.settingsStatus.textContent = "";
     });
   });
@@ -242,4 +261,5 @@ document.addEventListener("DOMContentLoaded", function () {
   if (App.dom.generateDemoButton) {
     App.dom.generateDemoButton.addEventListener("click", App.generateDemoData);
   }
+
 });

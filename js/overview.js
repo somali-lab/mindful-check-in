@@ -25,6 +25,7 @@
   App.getOverviewColumns = function () {
     var c = App.state.settings.components;
     var columns = [{ key: "date", label: App.t("overview.columns.date") }];
+    if (c.weather) columns.push({ key: "weather", label: App.t("overview.columns.weather") });
     if (c.coreFeeling) columns.push({ key: "coreFeeling", label: App.t("fields.feelings.label") });
     if (c.thoughts) columns.push({ key: "thoughts", label: App.t("overview.columns.thoughts") });
     if (c.bodySignals) columns.push({ key: "bodySignals", label: App.t("overview.columns.bodySignals") });
@@ -57,6 +58,14 @@
         return { main: "", sub: "" };
       case "date":
         return { main: App.formatDateOnly(entry.entryKey), sub: App.formatEntryTime(entry.entryKey, entry) };
+      case "weather":
+        var w = entry.weather;
+        if (w && (w.icon || w.code !== undefined || w.temperature !== null)) {
+          var icon = w.icon || (w.code !== undefined && App.getWeatherIcon ? App.getWeatherIcon(w.code) : "");
+          var temp = (w.temperature !== null && w.temperature !== undefined) ? Math.round(w.temperature) + "°" : "";
+          return { main: (icon + " " + temp).trim(), sub: "" };
+        }
+        return { main: "-", sub: "" };
       case "thoughts":
         return { main: entry.thoughts || "-", sub: "" };
       case "coreFeeling":
@@ -108,7 +117,8 @@
           String(entry.customFeelings || "").trim()
         );
         if (!hasAnyNote) return false;
-      } else if (filterMode === "today") {
+      }
+      if (filterMode === "today") {
         if (entry.dateKey !== todayKey) return false;
       } else if (filterMode === "last7") {
         var d7 = new Date(entry.dateKey + "T00:00:00");
@@ -231,8 +241,8 @@
       App.renderEmotionWheel();
     }
 
-    if (dom.saveAsNewEntryCheckbox) dom.saveAsNewEntryCheckbox.checked = false;
-    dom.statusMessage.textContent = App.t("status.loaded");
+    if (typeof App.renderCheckinContext === "function") App.renderCheckinContext();
+    if (typeof App.renderCheckinMessage === "function") App.renderCheckinMessage("");
     App.renderCoreSelections();
     App.activateTab("checkin", true);
   };
@@ -408,13 +418,21 @@
     });
 
     dom.overviewPageInfo.textContent = App.t("overview.page") + " " + App.currentOverviewPage + " " + App.t("overview.of") + " " + totalPages;
+    if (dom.overviewFirstButton) dom.overviewFirstButton.disabled = App.currentOverviewPage <= 1;
     if (dom.overviewPrevButton) dom.overviewPrevButton.disabled = App.currentOverviewPage <= 1;
     if (dom.overviewNextButton) dom.overviewNextButton.disabled = App.currentOverviewPage >= totalPages;
+    if (dom.overviewLastButton) dom.overviewLastButton.disabled = App.currentOverviewPage >= totalPages;
   };
 
   App.initOverviewEvents = function () {
     var dom = App.dom;
 
+    if (dom.overviewFirstButton) {
+      dom.overviewFirstButton.addEventListener("click", function () {
+        App.currentOverviewPage = 1;
+        App.renderOverview();
+      });
+    }
     if (dom.overviewPrevButton) {
       dom.overviewPrevButton.addEventListener("click", function () {
         App.currentOverviewPage = Math.max(1, App.currentOverviewPage - 1);
@@ -424,6 +442,12 @@
     if (dom.overviewNextButton) {
       dom.overviewNextButton.addEventListener("click", function () {
         App.currentOverviewPage += 1;
+        App.renderOverview();
+      });
+    }
+    if (dom.overviewLastButton) {
+      dom.overviewLastButton.addEventListener("click", function () {
+        App.currentOverviewPage = 999999;
         App.renderOverview();
       });
     }

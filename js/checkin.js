@@ -6,6 +6,60 @@
     return App.emotionWheelVariants[App.activeWheelType] || App.emotionWheelVariants.act;
   };
 
+  App.renderCheckinContext = function () {
+    var dom = App.dom;
+    if (!dom.checkinContextPill) return;
+    var state = App.state;
+    var key = state.activeEntryKey;
+    if (!key || !Object.prototype.hasOwnProperty.call(state.entries, key)) {
+      dom.checkinContextPill.textContent = "";
+      dom.checkinContextPill.className = "checkin-context-pill checkin-context-pill--new";
+    } else {
+      var dateKey = App.extractDateKey(key);
+      var entry = App.normalizeEntry(state.entries[key]);
+      var dateLabel = App.formatDateOnly(dateKey);
+      var timeLabel = App.formatEntryTime(key, entry);
+      var fullLabel = timeLabel ? dateLabel + " " + timeLabel : dateLabel;
+      var text = App.t("checkin.contextLoaded").replace("{date}", fullLabel);
+      dom.checkinContextPill.textContent = text;
+      var todayKey = App.getTodayKey();
+      dom.checkinContextPill.className = "checkin-context-pill" +
+        (dateKey === todayKey ? " checkin-context-pill--today" : " checkin-context-pill--history");
+    }
+  };
+
+  App.renderCheckinMessage = function (message, options) {
+    var dom = App.dom;
+    if (!dom.historyBanner) return;
+
+    if (App.checkinMessageTimer) {
+      window.clearTimeout(App.checkinMessageTimer);
+      App.checkinMessageTimer = null;
+    }
+
+    options = options || {};
+
+    var text = typeof message === "string" ? message.trim() : "";
+
+    if (text) {
+      dom.historyBanner.textContent = text;
+      dom.historyBanner.classList.remove("is-info", "is-success", "is-warning");
+      dom.historyBanner.classList.add("is-" + (options.variant || "info"));
+      dom.historyBanner.classList.remove("is-hidden");
+
+      if (typeof options.autoHideMs === "number" && options.autoHideMs > 0) {
+        App.checkinMessageTimer = window.setTimeout(function () {
+          App.checkinMessageTimer = null;
+          App.renderCheckinMessage("");
+        }, options.autoHideMs);
+      }
+    } else {
+      dom.historyBanner.textContent = "";
+      dom.historyBanner.classList.remove("is-info", "is-success", "is-warning");
+      dom.historyBanner.classList.add("is-hidden");
+    }
+  };
+
   App.renderEmotionWheel = function () {
     var svg = App.dom.emotionWheel;
     svg.innerHTML = "";
@@ -74,7 +128,7 @@
         cell.dataset.label = text;
         cell.addEventListener("click", function () {
           state.selectedMoodGrid = { energy: 10 - rowIndex, valence: colIndex + 1 };
-          dom.statusMessage.textContent = "";
+          App.renderCheckinMessage("");
           App.renderCoreSelections();
         });
         fragment.appendChild(cell);
@@ -218,7 +272,46 @@
     }
     state.selectedMoodGrid = App.normalizeMoodGrid(todayEntry.moodGrid);
     state.bodySignals = new Set(todayEntry.bodySignals || todayEntry.body_signals || []);
-    dom.statusMessage.textContent = App.t("status.loaded");
+    App.renderCheckinContext();
+    App.renderCheckinMessage("");
+  };
+
+  App.loadEntryIntoForm = function (entryKey) {
+    var dom = App.dom;
+    var state = App.state;
+    var raw = state.entries[entryKey];
+    if (!raw || typeof raw !== "object") return;
+    var entry = App.normalizeEntry(raw);
+    state.activeEntryKey = entryKey;
+
+    dom.thoughtsField.value = entry.thoughts || "";
+    dom.customEmotionsField.value = entry.customFeelings || "";
+    dom.bodyField.value = entry.bodyNote || entry.body || "";
+    dom.energyNoteField.value = entry.energyNote || "";
+    dom.actionField.value = entry.action || "";
+    dom.noteField.value = entry.note || "";
+    state.selectedEmotion = entry.selectedEmotion || entry.feelings || null;
+    if (entry.energy && typeof entry.energy === "object") {
+      state.energy = {
+        physical: typeof entry.energy.physical === "number" ? entry.energy.physical : null,
+        mental: typeof entry.energy.mental === "number" ? entry.energy.mental : null,
+        emotional: typeof entry.energy.emotional === "number" ? entry.energy.emotional : null,
+      };
+    } else {
+      state.energy = { physical: null, mental: null, emotional: null };
+    }
+    state.selectedMoodGrid = App.normalizeMoodGrid(entry.moodGrid);
+    state.bodySignals = new Set(entry.bodySignals || []);
+    App.renderCoreSelections();
+    App.renderCheckinContext();
+
+    var todayKey = App.getTodayKey();
+    var entryDate = App.extractDateKey(entryKey);
+    if (entryDate !== todayKey) {
+      App.renderCheckinMessage(App.t("checkin.historyBanner"), { variant: "info" });
+    } else {
+      App.renderCheckinMessage("");
+    }
   };
 
   App.getSortedEntries = function () {
@@ -226,7 +319,6 @@
       .map(function (pair) {
         return Object.assign({ entryKey: pair[0], dateKey: App.extractDateKey(pair[0]) }, App.normalizeEntry(pair[1] || {}));
       })
-      .filter(function (entry) { return entry.mood || entry.selectedEmotion || entry.moodGrid; })
       .sort(function (a, b) { return b.entryKey.localeCompare(a.entryKey); });
   };
 
@@ -398,7 +490,25 @@
       return;
     }
 
+    var components = (App.state.settings && App.state.settings.components) || {};
+
+    // Mode selector — only show modes for enabled components
+    var allModes = [
+      { key: "feeling",         componentKey: "coreFeeling",      label: App.t("history.modeFeeling") },
+      { key: "moodMatrix",      componentKey: "moodMatrix",       label: App.t("history.modeMood") },
+      { key: "energyPhysical",  componentKey: "energyPhysical",  label: App.t("history.modeEnergyPhysical") },
+      { key: "energyMental",    componentKey: "energyMental",    label: App.t("history.modeEnergyMental") },
+      { key: "energyEmotional", componentKey: "energyEmotional", label: App.getEnergyEmotionalLabel() },
+    ];
+    var modes = allModes.filter(function (m) {
+      return m.componentKey === null || components[m.componentKey] !== false;
+    });
+
     App.historyMode = App.historyMode || "feeling";
+    // If current mode got filtered out, fall back to first available
+    if (!modes.some(function (m) { return m.key === App.historyMode; })) {
+      App.historyMode = modes[0].key;
+    }
     var mode = App.historyMode;
 
     // Build date→best-entry map
@@ -422,15 +532,6 @@
     var locale = App.state.language === "nl" ? "nl-NL" : "en-US";
     var todayKey = App.getTodayKey();
     var isEnergyMode = mode.indexOf("energy") === 0;
-
-    // Mode selector
-    var modes = [
-      { key: "feeling",        label: App.t("history.modeFeeling") },
-      { key: "moodMatrix",     label: App.t("history.modeMood") },
-      { key: "energyPhysical", label: App.t("history.modeEnergyPhysical") },
-      { key: "energyMental",   label: App.t("history.modeEnergyMental") },
-      { key: "energyEmotional",label: App.getEnergyEmotionalLabel() },
-    ];
 
     var modeSelectorHtml = '<div class="cal-mode-row">' +
       modes.map(function (m) {
@@ -489,14 +590,15 @@
       });
     });
 
-    // Click a day → load that entry into check-in
-    dom.historyContent.querySelectorAll(".cal-cell[data-date]").forEach(function (btn) {
+    // Click a day → load that entry into check-in (only for days that have an entry)
+    dom.historyContent.querySelectorAll(".cal-cell[data-date]:not(.cal-empty)").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var dateKey = btn.dataset.date;
         var entryKey = App.findLatestEntryKeyForDate(dateKey);
         if (!entryKey) return;
         App.loadEntryIntoForm(entryKey);
         App.activateTab("checkin", true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
     });
   };
@@ -509,7 +611,7 @@
       var segment = event.target.closest(".emotion-segment");
       if (!segment) return;
       state.selectedEmotion = segment.dataset.emotion;
-      dom.statusMessage.textContent = "";
+      App.renderCheckinMessage("");
       App.renderCoreSelections();
     });
 
@@ -518,7 +620,7 @@
         var key = button.dataset.part;
         if (state.bodySignals.has(key)) { state.bodySignals.delete(key); }
         else { state.bodySignals.add(key); }
-        dom.statusMessage.textContent = "";
+        App.renderCheckinMessage("");
         App.renderCoreSelections();
       });
     });
@@ -530,7 +632,7 @@
         var clickY = event.clientY - rect.top;
         var percentage = Math.max(0, Math.min(100, 100 - (clickY / rect.height) * 100));
         state.energy[type] = Math.round(percentage);
-        dom.statusMessage.textContent = "";
+        App.renderCheckinMessage("");
         App.renderCoreSelections();
       });
     });
@@ -544,7 +646,7 @@
         var meter = column.querySelector(".energy-meter[data-energy-type]");
         if (!meter) return;
         state.energy[meter.dataset.energyType] = value;
-        dom.statusMessage.textContent = "";
+        App.renderCheckinMessage("");
         App.renderCoreSelections();
       });
     });
@@ -559,47 +661,55 @@
 
     dom.resetFeelingButton.addEventListener("click", function () {
       state.selectedEmotion = null;
-      dom.statusMessage.textContent = "";
+      App.renderCheckinMessage("");
       App.renderCoreSelections();
     });
 
     dom.resetBodySignalsButton.addEventListener("click", function () {
       state.bodySignals.clear();
-      dom.statusMessage.textContent = "";
+      App.renderCheckinMessage("");
       App.renderCoreSelections();
     });
 
     dom.resetEnergyButton.addEventListener("click", function () {
       state.energy = { physical: null, mental: null, emotional: null };
-      dom.statusMessage.textContent = "";
+      App.renderCheckinMessage("");
       App.renderCoreSelections();
     });
 
     dom.resetMoodButton.addEventListener("click", function () {
       state.selectedMoodGrid = null;
-      dom.statusMessage.textContent = "";
+      App.renderCheckinMessage("");
       App.renderCoreSelections();
     });
 
     dom.saveButton.addEventListener("click", function () {
       var needsMoodInput = state.settings.components.coreFeeling || state.settings.components.moodMatrix;
       if (needsMoodInput && !state.selectedEmotion && !App.normalizeMoodGrid(state.selectedMoodGrid)) {
-        dom.statusMessage.textContent = App.t("status.chooseFeeling");
+        App.renderCheckinMessage(App.t("status.chooseFeeling"), { variant: "warning" });
         return;
       }
 
       var todayKey = App.getTodayKey();
-      var shouldCreateExtraEntry = Boolean(dom.saveAsNewEntryCheckbox && dom.saveAsNewEntryCheckbox.checked);
-      var latestTodayEntryKey = App.findLatestEntryKeyForDate(todayKey);
-      var shouldUpdateActiveEntry = Boolean(
-        !shouldCreateExtraEntry && state.activeEntryKey
-        && Object.prototype.hasOwnProperty.call(state.entries, state.activeEntryKey),
-      );
-      var targetEntryKey = shouldCreateExtraEntry
-        ? App.createTimestampedEntryKey(todayKey)
-        : (shouldUpdateActiveEntry ? state.activeEntryKey : (latestTodayEntryKey || todayKey));
+      var activeDate = state.activeEntryKey ? App.extractDateKey(state.activeEntryKey) : null;
+      var isEditingToday = activeDate === todayKey
+        && state.activeEntryKey
+        && Object.prototype.hasOwnProperty.call(state.entries, state.activeEntryKey);
+
+      var targetEntryKey;
+      if (isEditingToday) {
+        // Update today's existing entry
+        targetEntryKey = state.activeEntryKey;
+      } else {
+        // Historical entry loaded, or fresh form: always create new for today
+        var latestTodayEntryKey = App.findLatestEntryKeyForDate(todayKey);
+        targetEntryKey = latestTodayEntryKey
+          ? App.createTimestampedEntryKey(todayKey)
+          : todayKey;
+      }
+
       var existingEntry = state.entries[targetEntryKey];
-      var wasUpdate = !shouldCreateExtraEntry && Boolean(existingEntry);
+      var wasUpdate = isEditingToday && Boolean(existingEntry);
 
       state.entries[targetEntryKey] = {
         ...App.normalizeEntry(existingEntry || {}),
@@ -625,10 +735,30 @@
       App.renderSummary();
       App.renderHistory();
       App.renderOverview();
-      dom.statusMessage.textContent = wasUpdate ? App.t("status.updated") : App.t("status.saved");
-      if (dom.saveAsNewEntryCheckbox) {
-        dom.saveAsNewEntryCheckbox.checked = false;
-      }
+      App.renderCheckinMessage(wasUpdate ? App.t("status.updated") : App.t("status.saved"), {
+        variant: "success",
+        autoHideMs: 4000,
+      });
+      App.renderCheckinContext();
     });
+
+    if (dom.newCheckinButton) {
+      dom.newCheckinButton.addEventListener("click", function () {
+        state.activeEntryKey = null;
+        dom.thoughtsField.value = "";
+        dom.customEmotionsField.value = "";
+        dom.bodyField.value = "";
+        dom.energyNoteField.value = "";
+        dom.actionField.value = "";
+        dom.noteField.value = "";
+        state.selectedEmotion = null;
+        state.energy = { physical: null, mental: null, emotional: null };
+        state.selectedMoodGrid = null;
+        state.bodySignals = new Set();
+        App.renderCoreSelections();
+        App.renderCheckinMessage("");
+        App.renderCheckinContext();
+      });
+    }
   };
 })();

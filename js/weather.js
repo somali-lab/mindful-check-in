@@ -81,6 +81,8 @@
     return WEATHER_ICONS[code] || "❓";
   }
 
+  App.getWeatherIcon = getWeatherIcon;
+
   function getWeatherDescription(code) {
     var key = "weather.codes." + code;
     var desc = App.t(key);
@@ -202,6 +204,7 @@
     return {
       temperature: weather.temperature,
       code: weather.code,
+      icon: weather.icon || "",
       description: weather.description,
       location: (settings.weatherCoords && settings.weatherCoords.name) || settings.weatherLocation || "",
     };

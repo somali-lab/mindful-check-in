@@ -208,24 +208,24 @@
         if (needsGeocode) {
           App.clearWeatherCache();
           if (App.dom.weatherLastFetched) App.dom.weatherLastFetched.textContent = "";
-          dom.settingsStatus.textContent = App.t("weather.loading");
+          App.renderCheckinMessage(App.t("weather.loading"), { variant: "info" });
           App.geocodeCity(newSettings.weatherLocation)
             .then(function (coords) {
               newSettings.weatherCoords = coords;
               finishSave(newSettings);
-              dom.settingsStatus.textContent = App.t("settings.status.saved");
+              App.renderCheckinMessage(App.t("settings.status.saved"), { variant: "success", autoHideMs: 4000 });
             })
             .catch(function () {
               newSettings.weatherCoords = null;
               finishSave(newSettings);
-              dom.settingsStatus.textContent = App.t("settings.status.saved") + " (" + App.t("weather.unavailable") + ")";
+              App.renderCheckinMessage(App.t("settings.status.saved") + " (" + App.t("weather.unavailable") + ")", { variant: "warning", autoHideMs: 6000 });
             });
         } else {
           if (!newSettings.weatherLocation) {
             newSettings.weatherCoords = null;
           }
           finishSave(newSettings);
-          dom.settingsStatus.textContent = App.t("settings.status.saved");
+          App.renderCheckinMessage(App.t("settings.status.saved"), { variant: "success", autoHideMs: 4000 });
         }
       });
     }
@@ -236,7 +236,7 @@
         App.saveSettings(state.settings);
         App.syncSettingsForm();
         App.fullRefreshAfterSettings();
-        dom.settingsStatus.textContent = App.t("settings.status.reset");
+        App.renderCheckinMessage(App.t("settings.status.reset"), { variant: "success", autoHideMs: 4000 });
       });
     }
 
@@ -252,7 +252,7 @@
         anchor.click();
         anchor.remove();
         URL.revokeObjectURL(url);
-        dom.settingsStatus.textContent = App.t("settings.status.exported");
+        App.renderCheckinMessage(App.t("settings.status.exported"), { variant: "success", autoHideMs: 4000 });
       });
     }
 
@@ -274,10 +274,10 @@
             App.saveSettings(state.settings);
             App.syncSettingsForm();
             App.fullRefreshAfterSettings();
-            dom.settingsStatus.textContent = App.t("settings.status.imported");
+            App.renderCheckinMessage(App.t("settings.status.imported"), { variant: "success", autoHideMs: 4000 });
           } catch (error) {
             console.warn("Could not import settings file.", error);
-            dom.settingsStatus.textContent = App.t("settings.status.importError");
+            App.renderCheckinMessage(App.t("settings.status.importError"), { variant: "warning" });
           }
           dom.settingsImportFile.value = "";
         };
