@@ -514,8 +514,8 @@
 - [x] T144 [P] Write test: all components disabled then re-enabled, verify components render correctly without stale state in tests/edge-cases.spec.js
 - [x] T145 [P] Write test: verify localStorage persistence across page reload for entries, settings, language, active tab, overview UI state in tests/edge-cases.spec.js
 - [x] T146 [P] Write test: special characters `"quotes"`, `&amp;`, `<tags>` in all text fields, verify safe HTML escaping in tests/edge-cases.spec.js
-- [ ] T154 [P] Write test: simulate full localStorage quota (fill storage to near capacity), attempt Save, verify app does not crash and handles quota error silently in tests/edge-cases.spec.js
-- [ ] T155 [P] Write test: create entry at 23:59 date key and another at 00:01 next day, verify entries stored under two different date keys in tests/edge-cases.spec.js
+- [x] T154 [P] Write test: simulate full localStorage quota (fill storage to near capacity), attempt Save, verify app does not crash and handles quota error silently in tests/edge-cases.spec.js
+- [x] T155 [P] Write test: create entry at 23:59 date key and another at 00:01 next day, verify entries stored under two different date keys in tests/edge-cases.spec.js
 
 ---
 

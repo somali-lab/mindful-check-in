@@ -20,7 +20,7 @@ Build a comprehensive Playwright E2E test suite covering all app tabs (Check-in,
 **Project Type**: E2E test suite for static web application  
 **Performance Goals**: Full suite completes in under 5 minutes  
 **Constraints**: No app source code modifications; weather/geocoding APIs globally mocked via fixtures/base.js; dev-only dependencies (not shipped to users)  
-**Scale/Scope**: 206 test cases across 26 test files covering 27 user stories, 30 functional requirements, branch coverage improvements, and ghost code cleanup
+**Scale/Scope**: 208 test cases across 26 test files covering 27 user stories, 30 functional requirements, branch coverage improvements, and ghost code cleanup
 
 ## Constitution Check
 

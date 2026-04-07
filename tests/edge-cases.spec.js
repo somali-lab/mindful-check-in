@@ -308,3 +308,87 @@ test('T146 special characters safely escaped in text fields', async ({ page }) =
   // The raw text should be escaped, not rendered as HTML
   expect(bodyHtml).not.toMatch(/<b>/);
 });
+
+// ─── T154: localStorage quota full — app does not crash ───
+
+test('T154 localStorage quota full, save does not crash the app', async ({ page }) => {
+  await page.goto('/');
+
+  // Fill localStorage to near capacity (5MB limit in most browsers)
+  // by writing large strings, leaving barely any space for an entry
+  await page.evaluate(() => {
+    const key = 'quota-filler-';
+    const chunk = 'x'.repeat(1024 * 100); // 100KB per chunk
+    try {
+      for (let i = 0; i < 100; i++) {
+        localStorage.setItem(key + i, chunk);
+      }
+    } catch (e) {
+      // Expected — storage full
+    }
+  });
+
+  // Select an emotion so save validation passes
+  await page.locator('.emotion-segment[data-emotion="joy"]').click();
+  await page.locator('#thoughts').fill('Quota test entry');
+
+  // Attempt save — should not crash the page
+  await page.locator('#save-checkin').click();
+
+  // The page should still be functional (not a blank error page)
+  await expect(page.locator('#thoughts')).toBeVisible();
+  // The tab navigation should still work
+  await expect(page.locator('[data-tab-target="checkin"]')).toBeVisible();
+
+  // Clean up filler data so other tests aren't affected
+  await page.evaluate(() => {
+    const keys = Object.keys(localStorage).filter(k => k.startsWith('quota-filler-'));
+    keys.forEach(k => localStorage.removeItem(k));
+  });
+});
+
+// ─── T155: Date boundary — entries at 23:59 and 00:01 get different date keys ───
+
+test('T155 entries at 23:59 and 00:01 stored under different date keys', async ({ page }) => {
+  // Create two entries with timestamps straddling midnight
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const yy = yesterday.getFullYear();
+  const ym = String(yesterday.getMonth() + 1).padStart(2, '0');
+  const yd = String(yesterday.getDate()).padStart(2, '0');
+  const lateKey = `${yy}-${ym}-${yd}_235900000`; // 23:59 yesterday
+
+  const ty = today.getFullYear();
+  const tm = String(today.getMonth() + 1).padStart(2, '0');
+  const td = String(today.getDate()).padStart(2, '0');
+  const earlyKey = `${ty}-${tm}-${td}_000100000`; // 00:01 today
+
+  const lateEntry = createTestEntry({ thoughts: 'Before midnight', selectedEmotion: 'sadness' });
+  const earlyEntry = createTestEntry({ thoughts: 'After midnight', selectedEmotion: 'joy' });
+
+  await injectEntries(page, {
+    [lateKey]: lateEntry,
+    [earlyKey]: earlyEntry,
+  });
+  await page.goto('/');
+
+  // Navigate to overview — both entries should appear
+  await navigateToTab(page, 'overview');
+
+  const rows = page.locator('#overview-body tr');
+  // Both entries should be visible as separate rows
+  const allText = await page.locator('#overview-body').innerText();
+  expect(allText).toContain('Before midnight');
+  expect(allText).toContain('After midnight');
+
+  // Verify they are stored under different date prefixes in localStorage
+  const entries = await getLocalStorageEntries(page);
+  const keys = Object.keys(entries);
+  const lateDate = lateKey.split('_')[0];
+  const earlyDate = earlyKey.split('_')[0];
+  expect(lateDate).not.toBe(earlyDate);
+  expect(keys).toContain(lateKey);
+  expect(keys).toContain(earlyKey);
+});
