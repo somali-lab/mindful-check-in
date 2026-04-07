@@ -338,7 +338,7 @@ The weather widget fetches and displays current conditions based on the configur
 
 1. **Given** a valid weather location configured, **When** the page loads, **Then** the weather widget shows temperature, icon, description, and location name.
 2. **Given** a cached weather response (< 1 hour old), **When** reloading, **Then** no API call is made and cached data displays.
-3. **Given** the weather API is unreachable, **When** the page loads, **Then** the widget shows gracefully without crashing the app.
+3. **Given** the weather API is unreachable, **When** the page loads, **Then** the widget displays an error state (⚠️ "Weather unavailable") without crashing the app.
 4. **Given** weather is disabled in component settings, **When** viewing the check-in tab, **Then** the weather widget is hidden.
 5. **Given** a check-in is saved, **When** examining the entry, **Then** the current weather data is attached to the entry.
 
@@ -484,7 +484,7 @@ A user loads a past entry from the overview or history calendar into the check-i
 ### Edge Cases
 
 - **localStorage full**: Saving an entry when storage quota is exceeded silently fails without crashing.
-- **Concurrent tabs**: Two browser tabs open with the app; changes in one tab do not auto-sync to the other (no conflicts).
+- **Concurrent tabs**: Two browser tabs open with the app; changes in one tab do not auto-sync to the other (no conflicts). *(Out of scope for automated E2E — requires multi-context orchestration.)*
 - **Empty state everywhere**: Overview with no entries shows empty-state message; summary shows "Not checked in today"; history shows gray cells.
 - **Extremely long text**: Notes with 10,000+ characters are accepted without browser hang.
 - **Special characters in text fields**: HTML entities (`<script>`, `"quotes"`, `&amp;`) are escaped and display as literal text.
