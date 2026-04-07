@@ -51,6 +51,7 @@
   App.renderWeatherLastFetched = function () {
     var el = App.dom && App.dom.weatherLastFetched;
     if (!el) return;
+    el.classList.remove("is-error");
     var coords = App.state && App.state.settings && App.state.settings.weatherCoords;
     if (!coords) { el.textContent = ""; return; }
     var ts = getLastFetchedTs(coords.lat, coords.lon);
@@ -60,6 +61,15 @@
     var formatted = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate())
       + " " + pad(d.getHours()) + ":" + pad(d.getMinutes());
     el.textContent = App.t("settings.weatherLocation.lastFetched") + " " + formatted;
+  };
+
+  App.renderWeatherFetchError = function () {
+    var el = App.dom && App.dom.weatherLastFetched;
+    if (!el) return;
+    var errMsg = App.state.weatherError || "";
+    if (!errMsg) return;
+    el.textContent = App.t("settings.weatherLocation.fetchError") + " " + errMsg;
+    el.classList.add("is-error");
   };
 
   var WEATHER_ICONS = {
@@ -101,7 +111,13 @@
       + "&timezone=auto&temperature_unit=celsius";
     return fetch(url)
       .then(function (response) {
-        if (!response.ok) throw new Error("Weather API error " + response.status);
+        if (!response.ok) {
+          return response.json().catch(function () { return {}; }).then(function (body) {
+            var msg = "HTTP " + response.status;
+            if (body && body.reason) msg += " — " + body.reason;
+            throw new Error(msg);
+          });
+        }
         return response.json();
       })
       .then(function (data) {
@@ -170,6 +186,15 @@
       return;
     }
 
+    if (!weather && App.state.weatherError) {
+      dom.weatherWidget.classList.remove("is-empty");
+      dom.weatherIcon.textContent = "⚠️";
+      dom.weatherTemp.textContent = "";
+      dom.weatherDesc.textContent = App.t("weather.unavailable");
+      dom.weatherLocationEl.textContent = locationName;
+      return;
+    }
+
     if (!weather) {
       dom.weatherWidget.classList.remove("is-empty");
       dom.weatherIcon.textContent = "⏳";
@@ -198,13 +223,16 @@
     App.fetchWeather(coords.lat, coords.lon)
       .then(function (weatherData) {
         App.state.currentWeather = weatherData;
+        App.state.weatherError = null;
         App.renderWeatherWidget();
         App.renderWeatherLastFetched();
       })
       .catch(function (err) {
         console.warn("Could not fetch weather:", err);
         App.state.currentWeather = null;
+        App.state.weatherError = err.message || String(err);
         App.renderWeatherWidget();
+        App.renderWeatherFetchError();
       });
   };
 

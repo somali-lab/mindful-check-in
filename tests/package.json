@@ -1,0 +1,17 @@
+{
+  "name": "mindful-checkin-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright E2E tests for Mindful Check-in",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "report": "npx playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "monocart-reporter": "^2.10.0",
+    "serve": "^14.2.4"
+  }
+}

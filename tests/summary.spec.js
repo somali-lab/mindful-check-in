@@ -1,0 +1,76 @@
+// @ts-check
+const { test, expect } = process.env.COVERAGE === '1' ? require('./fixtures/coverage') : require('./fixtures/base');
+const {
+  injectEntries,
+  createTestEntry,
+  getDateKey,
+  getTodayKey,
+} = require('./fixtures/helpers');
+
+// ─── T089: No entries — summary shows "not checked in" ───
+
+test('T089 [US21] no entries, summary shows empty/not checked in state', async ({ page }) => {
+  await page.goto('/');
+  const summary = page.locator('#summary-content');
+  await expect(summary).toContainText(/save|check/i);
+});
+
+// ─── T090: Save check-in today — summary updates ───
+
+test('T090 [US21] save check-in, summary shows checked in with streak 1', async ({ page }) => {
+  await page.goto('/');
+
+  await page.locator('.emotion-segment[data-emotion="joy"]').click();
+  await page.locator('#save-checkin').click();
+  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+
+  const summary = page.locator('#summary-content');
+  await expect(summary).toContainText(/check/i);
+  await expect(summary).toContainText('1');
+});
+
+// ─── T091: 5 consecutive days → streak shows 5 ───
+
+test('T091 [US21] 5 consecutive days entries, streak shows 5', async ({ page }) => {
+  const entries = {};
+  for (let i = 0; i < 5; i++) {
+    entries[getDateKey(i)] = createTestEntry({ selectedEmotion: 'joy', mood: 'great' });
+  }
+  await injectEntries(page, entries);
+  await page.goto('/');
+
+  const summary = page.locator('#summary-content');
+  await expect(summary).toContainText('5');
+});
+
+// ─── T092: Heatmap cells colored by mood ───
+
+test('T092 [US21] scattered entries show 7-day heatmap cells', async ({ page }) => {
+  const entries = {};
+  for (let i = 0; i < 7; i++) {
+    entries[getDateKey(i)] = createTestEntry({
+      selectedEmotion: i % 2 === 0 ? 'joy' : 'sadness',
+      mood: i % 2 === 0 ? 'great' : 'low',
+    });
+  }
+  await injectEntries(page, entries);
+  await page.goto('/');
+
+  // Verify heatmap cells exist in summary
+  const heatmapCells = page.locator('#summary-content .heat-day');
+  await expect(heatmapCells).toHaveCount(7);
+});
+
+// ─── T093: Total count shows correct number ───
+
+test('T093 [US21] 10 entries shows total count 10', async ({ page }) => {
+  const entries = {};
+  for (let i = 0; i < 10; i++) {
+    entries[getDateKey(i)] = createTestEntry({ selectedEmotion: 'joy', mood: 'great' });
+  }
+  await injectEntries(page, entries);
+  await page.goto('/');
+
+  const summary = page.locator('#summary-content');
+  await expect(summary).toContainText('10');
+});

@@ -12,14 +12,15 @@ Build a comprehensive Playwright E2E test suite covering all app tabs (Check-in,
 ## Technical Context
 
 **Language/Version**: JavaScript (ES2020+ for test files; app under test is ES5)  
-**Primary Dependencies**: @playwright/test (dev-only), static file server (npx serve)  
+**Primary Dependencies**: @playwright/test (dev-only), monocart-reporter (dev-only, coverage), static file server (npx serve)  
 **Storage**: Browser localStorage (tested via page.evaluate)  
 **Testing**: Playwright Test runner with JavaScript test files  
-**Target Platform**: Chromium (primary), optional Firefox/WebKit  
+**Target Platform**: Chromium (primary), Pixel 7 mobile emulation, optional Firefox/WebKit  
+**Code Coverage**: V8 via monocart-reporter (COVERAGE=1 env var); targets: >75% branches, >90% statements  
 **Project Type**: E2E test suite for static web application  
 **Performance Goals**: Full suite completes in under 5 minutes  
-**Constraints**: No app source code modifications; weather API mocked via route interception; dev-only dependency (not shipped to users)  
-**Scale/Scope**: 200+ test cases across 10+ test files covering 27 user stories and 30 functional requirements
+**Constraints**: No app source code modifications; weather/geocoding APIs globally mocked via fixtures/base.js; dev-only dependencies (not shipped to users)  
+**Scale/Scope**: 206 test cases across 26 test files covering 27 user stories, 30 functional requirements, branch coverage improvements, and ghost code cleanup
 
 ## Constitution Check
 
@@ -53,10 +54,13 @@ specs/001-playwright-e2e-tests/
 
 ```text
 tests/
-├── package.json                    # Playwright dev dependency
-├── playwright.config.js            # Playwright config (baseURL, webServer, projects)
+├── package.json                    # Playwright + monocart-reporter dev dependencies
+├── playwright.config.js            # Playwright config (baseURL, webServer, projects: chromium, mobile-chrome, chromium-coverage)
+├── .gitignore                      # Ignore node_modules, test-results, playwright-report, coverage
 ├── fixtures/
-│   └── helpers.js                  # Shared test helpers (inject entries, mock weather, configure settings)
+│   ├── helpers.js                  # Shared test helpers (inject entries, mock weather, configure settings)
+│   ├── base.js                     # Base fixture — auto-mocks weather + geocoding APIs for all tests
+│   └── coverage.js                 # Coverage fixture — V8 code coverage collection via monocart-reporter
 ├── checkin.spec.js                 # US1: Check-in happy path, save, update, new check-in
 ├── emotion-wheel.spec.js           # US2: All 5 wheel variants, segment selection, reset
 ├── body-signals.spec.js            # US3: Body part toggle, multi-select, reset, persistence
@@ -65,7 +69,7 @@ tests/
 ├── save-validation.spec.js         # US6: Mood required validation, visibility-dependent rules
 ├── component-visibility.spec.js    # US7+8: Individual toggles, combination presets, layout integrity
 ├── overview-table.spec.js          # US9: Table rendering, sorting by all columns, column visibility
-├── overview-search-filter.spec.js  # US10: Search, date filters, notes-only checkbox
+├── overview-search-filter.spec.js  # US10: Search, date filters
 ├── overview-pagination.spec.js     # US11: Page navigation, boundary states, rows-per-page
 ├── export-import.spec.js           # US12: Bulk export, single export, import merge modes
 ├── entry-deletion.spec.js          # US13: Delete confirm/cancel, active entry deletion
@@ -81,10 +85,11 @@ tests/
 ├── info-tools.spec.js              # US24+25: Demo data generation, clear all data
 ├── data-migration.spec.js          # US26: Legacy field normalization, backwards compatibility
 ├── entry-loading.spec.js           # US27: Load from overview/history, context pill, save behavior
-└── edge-cases.spec.js              # Cross-cutting edge cases: XSS, long text, rapid clicks, storage limits
+├── edge-cases.spec.js              # Cross-cutting edge cases: XSS, long text, rapid clicks, storage limits
+└── branch-coverage.spec.js         # Branch coverage improvement: targets uncovered branches across all JS files
 ```
 
-**Structure Decision**: Tests live in a top-level `tests/` directory with their own `package.json` to isolate dev dependencies from the zero-dependency app. Each spec file maps to one or two user stories for clear traceability.
+**Structure Decision**: Tests live in a top-level `tests/` directory with their own `package.json` to isolate dev dependencies from the zero-dependency app. Each spec file maps to one or two user stories for clear traceability. All spec files import from `fixtures/base.js` which auto-mocks external APIs; coverage mode chains through `fixtures/coverage.js`.
 
 ## Complexity Tracking
 

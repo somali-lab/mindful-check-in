@@ -101,7 +101,6 @@
     var dom = App.dom;
     var query = String((dom.overviewSearchInput && dom.overviewSearchInput.value) || "").trim().toLowerCase();
     var filterMode = (dom.overviewFilterSelect && dom.overviewFilterSelect.value) || "all";
-    var withNotesOnly = Boolean(dom.overviewWithNotesOnlyCheckbox && dom.overviewWithNotesOnlyCheckbox.checked);
     var todayKey = App.getTodayKey();
     var now = new Date();
     var minDate7 = new Date(now); minDate7.setHours(0, 0, 0, 0); minDate7.setDate(minDate7.getDate() - 6);
@@ -110,14 +109,6 @@
     var minDate3Months = new Date(now); minDate3Months.setHours(0, 0, 0, 0); minDate3Months.setMonth(minDate3Months.getMonth() - 3);
 
     return entries.filter(function (entry) {
-      if (withNotesOnly) {
-        var hasAnyNote = Boolean(
-          String(entry.note || "").trim() || String(entry.action || "").trim() ||
-          String(entry.bodyNote || "").trim() || String(entry.energyNote || "").trim() ||
-          String(entry.customFeelings || "").trim()
-        );
-        if (!hasAnyNote) return false;
-      }
       if (filterMode === "today") {
         if (entry.dateKey !== todayKey) return false;
       } else if (filterMode === "last7") {
@@ -432,14 +423,6 @@
         App.renderOverview();
       });
     }
-    if (dom.overviewWithNotesOnlyCheckbox) {
-      dom.overviewWithNotesOnlyCheckbox.addEventListener("change", function () {
-        App.currentOverviewPage = 1;
-        App.saveOverviewUiState();
-        App.renderOverview();
-      });
-    }
-
     if (dom.overviewExportButton) {
       dom.overviewExportButton.addEventListener("click", function () {
         var allEntries = App.getSortedEntries();

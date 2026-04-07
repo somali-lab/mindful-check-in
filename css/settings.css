@@ -65,6 +65,9 @@
   color: var(--text-faint);
   line-height: 1.4;
 }
+.settings-weather-last-fetched.is-error {
+  color: var(--color-warning, #e6a700);
+}
 
 .form-help {
   margin: 0 0 8px;

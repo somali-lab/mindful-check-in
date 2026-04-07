@@ -181,8 +181,7 @@ A user searches entries by keyword and filters by date range.
 1. **Given** entries containing "walk" in the action field, **When** searching for "walk", **Then** only matching entries appear.
 2. **Given** entries exist across multiple months, **When** selecting "Last 7 days" filter, **Then** only entries within the last week appear.
 3. **Given** search text "xyz" with no matching entries, **When** searching, **Then** an empty-state message displays.
-4. **Given** "Only with notes" is checked, **When** filtering, **Then** only entries with non-empty note, action, bodyNote, energyNote, or customFeelings fields appear.
-5. **Given** search active, **When** the search field is cleared, **Then** all entries reappear.
+4. **Given** search active, **When** the search field is cleared, **Then** all entries reappear.
 
 ---
 
@@ -513,7 +512,7 @@ A user loads a past entry from the overview or history calendar into the check-i
 - **FR-006**: Test suite MUST verify the 10×10 mood matrix grid cell selection, label display, and color rendering.
 - **FR-007**: Test suite MUST verify energy meters at boundary values (0%, 50%, 100%) and reset.
 - **FR-008**: Test suite MUST cover overview table sorting by every sortable column (date, coreFeeling, thoughts, bodySignals, energyPhysical, energyMental, energyEmotional, moodMatrix, actions).
-- **FR-009**: Test suite MUST cover search (matching, no-match, clear), date filters (all 5 ranges), and "notes only" checkbox.
+- **FR-009**: Test suite MUST cover search (matching, no-match, clear) and date filters (all 5 ranges).
 - **FR-010**: Test suite MUST verify pagination (first, prev, next, last, boundary states) with configurable rows per page.
 - **FR-011**: Test suite MUST cover bulk export, single-entry export, and import flows (overwrite and skip modes).
 - **FR-012**: Test suite MUST verify entry deletion with confirmation and cancellation paths.
@@ -554,13 +553,19 @@ A user loads a past entry from the overview or history calendar into the check-i
 - **SC-006**: At least 5 component visibility combination presets are tested (all-on, all-off, minimal-mood-only, energy-only, full-except-weather).
 - **SC-007**: All edge cases listed above have at least one corresponding test.
 - **SC-008**: Both English and Dutch language modes are verified in language-specific tests.
+- **SC-009**: V8 code coverage is collected and reported; overall branch coverage exceeds 75% aggregate, with no individual file below 60% branches.
+- **SC-010**: All tests are available to run on both desktop (Chromium) and mobile (Pixel 7 emulation) viewports via project selection.
+- **SC-011**: No real external API calls are made during test runs; weather and geocoding APIs are globally mocked via `tests/fixtures/base.js`.
+- **SC-012**: No ghost code remains in JS files (selectors referencing DOM elements absent from index.html).
 
 ## Assumptions
 
 - The app is served locally via a static file server (e.g., `npx serve .`) during test runs; no build step is needed.
 - Playwright will be installed as a dev dependency in the repository; this is the sole exception to the "zero dependencies" constitution principle, as it is a dev-only tool not shipped to users.
-- Weather API calls will be intercepted and mocked in Playwright to avoid external network dependencies in tests.
-- Tests run against Chromium as the primary browser; cross-browser testing (Firefox, WebKit) is a nice-to-have but not required for v1.
-- The test suite uses the Playwright Test runner (@playwright/test) with TypeScript or JavaScript test files.
+- Weather API calls will be intercepted and mocked in Playwright via a shared base fixture (`tests/fixtures/base.js`) to avoid external network dependencies and rate limiting.
+- Tests run against Chromium as the primary browser plus Pixel 7 mobile emulation; cross-browser testing (Firefox, WebKit) is a nice-to-have but not required for v1.
+- The test suite uses the Playwright Test runner (@playwright/test) with JavaScript test files.
 - `localStorage` is manipulated directly via `page.evaluate()` for setup and assertions where appropriate.
+- Code coverage is collected via monocart-reporter with V8 instrumentation when `COVERAGE=1` environment variable is set.
 - No changes to the application source code are needed to support testing; tests interact with the existing DOM and localStorage interface.
+- Minor incidental app improvements were made on this branch: weather fetch error display in settings (weather.js, settings.css, translations.js) and ghost code removal (withNotesOnly). These are out of scope for the test suite spec but documented here for traceability.

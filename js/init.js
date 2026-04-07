@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
     overviewPageInfo: document.querySelector("#overview-page-info"),
     overviewSearchInput: document.querySelector("#overview-search"),
     overviewFilterSelect: document.querySelector("#overview-filter"),
-    overviewWithNotesOnlyCheckbox: document.querySelector("#overview-with-notes-only"),
     overviewExportButton: document.querySelector("#overview-export"),
     overviewImportButton: document.querySelector("#overview-import"),
     overviewImportFile: document.querySelector("#overview-import-file"),
@@ -134,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (App.dom.overviewSearchInput) App.dom.overviewSearchInput.value = initialOverviewUi.search;
   if (App.dom.overviewFilterSelect) App.dom.overviewFilterSelect.value = initialOverviewUi.filter;
-  if (App.dom.overviewWithNotesOnlyCheckbox) App.dom.overviewWithNotesOnlyCheckbox.checked = Boolean(initialOverviewUi.withNotesOnly);
 
   App.activateTab = function (tabName, pushHistory) {
     var dom = App.dom;

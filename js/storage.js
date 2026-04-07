@@ -280,7 +280,7 @@
   };
 
   App.loadOverviewUiState = function () {
-    var fallback = { search: "", filter: "all", withNotesOnly: false, sortKey: "date", sortDir: "desc" };
+    var fallback = { search: "", filter: "all", sortKey: "date", sortDir: "desc" };
     var savedValue = localStorage.getItem(OVERVIEW_UI_KEY);
     if (!savedValue) {
       return fallback;
@@ -294,7 +294,6 @@
       var next = Object.assign({}, fallback);
       if (typeof parsed.search === "string") next.search = parsed.search;
       if (typeof parsed.filter === "string" && allowedFilters.has(parsed.filter)) next.filter = parsed.filter;
-      if (typeof parsed.withNotesOnly === "boolean") next.withNotesOnly = parsed.withNotesOnly;
       if (typeof parsed.sortKey === "string" && parsed.sortKey) next.sortKey = parsed.sortKey;
       if (parsed.sortDir === "asc" || parsed.sortDir === "desc") next.sortDir = parsed.sortDir;
       return next;
@@ -308,7 +307,6 @@
     var payload = {
       search: String((dom.overviewSearchInput && dom.overviewSearchInput.value) || ""),
       filter: String((dom.overviewFilterSelect && dom.overviewFilterSelect.value) || "all"),
-      withNotesOnly: Boolean(dom.overviewWithNotesOnlyCheckbox && dom.overviewWithNotesOnlyCheckbox.checked),
       sortKey: App.overviewSortKey,
       sortDir: App.overviewSortDir,
     };

@@ -303,6 +303,7 @@ window.MINDFUL_CHECKIN_TRANSLATIONS = {
       label: { en: "Weather location", nl: "Weerlocatie" },
       placeholder: { en: "e.g. Amsterdam", nl: "bijv. Amsterdam" },
       lastFetched: { en: "Last fetched:", nl: "Laatste ophaalmoment:" },
+      fetchError: { en: "Could not fetch weather:", nl: "Kon weer niet ophalen:" },
     },
     quickActions: {
       title: { en: "Quick actions", nl: "Snelle acties" },

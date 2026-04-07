@@ -50,7 +50,6 @@ Five models to choose from (switch per check-in or set a default):
 - Paginated, sortable table of all saved entries
 - Search across entries
 - Date filters: today, last 7 days, last 2 weeks, last month, last 3 months
-- Filter to entries with notes only
 - Delete individual entries
 - Export a single entry as JSON
 - Bulk export / import (JSON) with overwrite or skip-duplicates choice
@@ -194,6 +193,82 @@ Any modern browser that supports `localStorage`, `fetch`, `crypto.randomUUID`, a
 | [Open-Meteo Geocoding API](https://open-meteo.com/en/docs/geocoding-api) | City name → coordinates | Optional |
 
 Both are free and require no API key. Disable the weather component in Settings if you prefer fully offline operation.
+
+---
+
+## Testing
+
+The project includes a comprehensive [Playwright](https://playwright.dev/) end-to-end test suite (168 tests).
+
+### Prerequisites
+
+```bash
+cd tests
+npm install
+npx playwright install chromium
+```
+
+### Run tests (headless)
+
+```bash
+cd tests
+npx playwright test                            # all projects (desktop + mobile)
+npx playwright test --project=chromium         # desktop only
+npx playwright test --project=mobile-chrome    # mobile only (Pixel 7 emulation)
+```
+
+### Run tests (headed — visible browser)
+
+```bash
+cd tests
+npx playwright test --headed --workers=1
+```
+
+Slow down each action by 500 ms for easier observation:
+
+```bash
+cd tests
+SLOW_MO=500 npx playwright test --headed --workers=1        # macOS/Linux
+$env:SLOW_MO=500; npx playwright test --headed --workers=1   # PowerShell
+```
+
+### Run tests (interactive UI mode)
+
+```bash
+cd tests
+npx playwright test --ui
+```
+
+### Run a single test file
+
+```bash
+cd tests
+npx playwright test checkin.spec.js
+```
+
+### Run a specific test by name
+
+```bash
+cd tests
+npx playwright test -g "T005"
+```
+
+### View the HTML test report
+
+```bash
+cd tests
+npx playwright show-report
+```
+
+### Run tests with code coverage
+
+```bash
+cd tests
+$env:COVERAGE=1; npx playwright test     # PowerShell
+COVERAGE=1 npx playwright test           # macOS/Linux
+```
+
+Opens an interactive coverage report at `tests/coverage/report.html` showing per-file line, branch, and function coverage.
 
 ---
 
