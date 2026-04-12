@@ -96,7 +96,7 @@ A user selects a cell on the 10×10 mood matrix grid and sees the corresponding 
 
 ### User Story 6 - Save Validation (Priority: P1)
 
-The app enforces that at least one mood input (core feeling or mood matrix) is provided before allowing save, depending on which components are enabled.
+The app enforces that at least a core feeling or thoughts is provided before allowing save, depending on which components are enabled.
 
 **Why this priority**: Save validation prevents empty entries and is the gate for data persistence.
 
@@ -104,11 +104,11 @@ The app enforces that at least one mood input (core feeling or mood matrix) is p
 
 **Acceptance Scenarios**:
 
-1. **Given** both core feeling and mood matrix enabled but neither selected, **When** Save is clicked, **Then** a warning message appears and no entry is saved.
+1. **Given** both core feeling and thoughts enabled but neither provided, **When** Save is clicked, **Then** a warning message appears and no entry is saved.
 2. **Given** only core feeling enabled and a feeling selected, **When** Save is clicked, **Then** the entry saves successfully.
-3. **Given** only mood matrix enabled and a cell selected, **When** Save is clicked, **Then** the entry saves successfully.
-4. **Given** both core feeling and mood matrix disabled in settings, **When** Save is clicked, **Then** the entry saves without requiring mood input.
-5. **Given** core feeling selected but mood matrix not selected, **When** Save is clicked, **Then** the entry saves (only one is needed).
+3. **Given** only thoughts enabled and text entered, **When** Save is clicked, **Then** the entry saves successfully.
+4. **Given** both core feeling and thoughts disabled in settings, **When** Save is clicked, **Then** the entry saves without requiring either input.
+5. **Given** core feeling selected but no thoughts, **When** Save is clicked, **Then** the entry saves (only one is needed).
 
 ---
 
@@ -318,7 +318,7 @@ A user toggles between English and Dutch and all UI text updates instantly.
 
 **Acceptance Scenarios**:
 
-1. **Given** English active, **When** clicking "NL", **Then** all `[data-i18n]` elements update to Dutch text without page reload.
+1. **Given** English active, **When** clicking "NL", **Then** all `[data-t]` elements update to Dutch text without page reload.
 2. **Given** Dutch active, **When** clicking "EN", **Then** all elements revert to English.
 3. **Given** language set to NL, **When** reloading the page, **Then** Dutch persists.
 4. **Given** Dutch active, **When** viewing the mood matrix, **Then** mood labels display in Dutch.
@@ -398,19 +398,18 @@ The 28-day history calendar shows a 4-week grid with color-coded cells and mode 
 
 ### User Story 23 - Tab Navigation and URL Hash Routing (Priority: P3)
 
-A user navigates between tabs using buttons and browser back/forward.
+A user navigates between tabs using buttons and URL hash routing. The app uses `history.replaceState` (not `pushState`), so browser back/forward does not navigate between tabs.
 
-**Why this priority**: Tab navigation is the primary app navigation; hash routing supports deep linking and browser history.
+**Why this priority**: Tab navigation is the primary app navigation; hash routing supports deep linking.
 
-**Independent Test**: Can be tested by clicking tabs and using browser navigation.
+**Independent Test**: Can be tested by clicking tabs and verifying URL hash and view updates.
 
 **Acceptance Scenarios**:
 
 1. **Given** the check-in tab active, **When** clicking "Overview", **Then** the overview tab displays and the URL hash changes to `#overview`.
 2. **Given** hash `#settings` in the URL, **When** loading the page, **Then** the settings tab is active.
-3. **Given** multiple tab switches, **When** pressing browser Back, **Then** the previous tab activates.
-4. **Given** an invalid hash like `#nonexistent`, **When** loading the page, **Then** the default tab (check-in) activates.
-5. **Given** any tab active, **When** viewing, **Then** exactly one tab button has `is-selected` and exactly one panel is visible.
+3. **Given** an invalid hash like `#nonexistent`, **When** loading the page, **Then** the default tab (home) activates.
+4. **Given** any tab active, **When** viewing, **Then** exactly one tab button has `is-selected` and exactly one view panel has `is-active`.
 
 ---
 
@@ -476,7 +475,7 @@ A user loads a past entry from the overview or history calendar into the check-i
 
 1. **Given** an entry from 3 days ago, **When** clicking its overview row, **Then** the check-in form fills with that entry's data and the tab switches to check-in.
 2. **Given** a loaded historical entry, **When** viewing the context pill, **Then** it shows the entry's date and time.
-3. **Given** a historical entry loaded, **When** clicking Save, **Then** a new entry for today is created (not overwriting the old one).
+3. **Given** a historical entry loaded, **When** clicking Save, **Then** the entry is updated in place (overwriting the original).
 4. **Given** an entry loaded with weather data, **When** viewing, **Then** the weather widget shows the entry's recorded weather (not current).
 
 ---
@@ -488,7 +487,7 @@ A user loads a past entry from the overview or history calendar into the check-i
 - **Empty state everywhere**: Overview with no entries shows empty-state message; summary shows "Not checked in today"; history shows gray cells.
 - **Extremely long text**: Notes with 10,000+ characters are accepted without browser hang.
 - **Special characters in text fields**: HTML entities (`<script>`, `"quotes"`, `&amp;`) are escaped and display as literal text.
-- **XSS prevention**: User input containing `<img onerror=alert(1)>` is safely escaped via `App.escapeHtml()`.
+- **XSS prevention**: User input containing `<img onerror=alert(1)>` is safely escaped via `MCI.esc()`.
 - **Rapid clicking**: Double-clicking Save does not create duplicate entries.
 - **Multiple entries per day**: 5+ entries on the same day each get unique timestamped keys.
 - **Date boundary**: Creating an entry at 23:59 and another at 00:01 produces entries on two different date keys.
@@ -498,7 +497,7 @@ A user loads a past entry from the overview or history calendar into the check-i
 - **Settings import with unknown keys**: Unknown settings keys are ignored; missing keys are filled with defaults.
 - **Emotion wheel with no selection and save**: Validation catches the missing mood and shows a warning.
 - **All components disabled then re-enabled**: Re-enabling shows components correctly without stale state.
-- **Browser back/forward across tabs**: Hash routing correctly updates active tab.
+- **Browser back/forward across tabs**: Not supported — the app uses `history.replaceState`, so tab changes do not create history entries.
 
 ## Requirements *(mandatory)*
 

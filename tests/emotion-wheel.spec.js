@@ -12,10 +12,10 @@ const {
 // ─── T011: ACT wheel — select emotion and verify highlight ───
 
 test('T011 [US2] ACT wheel — click joy segment highlights and shows display', async ({ page }) => {
-  await page.goto('/');
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await expect(page.locator('.emotion-segment[data-emotion="joy"]')).toHaveClass(/is-selected/);
-  const display = page.locator('#selected-emotion-display');
+  await page.goto('/#checkin');
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await expect(page.locator('.emotion-segment[data-em="joy"]')).toHaveClass(/is-selected/);
+  const display = page.locator('#wheel-display');
   await expect(display).not.toHaveClass(/is-empty/);
   await expect(display).toContainText(/joy/i);
 });
@@ -23,12 +23,12 @@ test('T011 [US2] ACT wheel — click joy segment highlights and shows display', 
 // ─── T012: Select emotion then reset clears selection ───
 
 test('T012 [US2] reset clears emotion selection and display', async ({ page }) => {
-  await page.goto('/');
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await expect(page.locator('#selected-emotion-display')).not.toHaveClass(/is-empty/);
+  await page.goto('/#checkin');
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await expect(page.locator('#wheel-display')).not.toHaveClass(/is-empty/);
 
-  await page.locator('#reset-feeling').click();
-  await expect(page.locator('#selected-emotion-display')).toHaveClass(/is-empty/);
+  await page.locator('#whl-btn-reset').click();
+  await expect(page.locator('#wheel-display')).toHaveClass(/is-empty/);
   // No segment should be selected
   const selectedSegments = page.locator('.emotion-segment.is-selected');
   await expect(selectedSegments).toHaveCount(0);
@@ -37,22 +37,21 @@ test('T012 [US2] reset clears emotion selection and display', async ({ page }) =
 // ─── T013: Switch wheel types — verify segment count changes ───
 
 test('T013 [US2] switch from Ekman (6) to Extended (12) redraws wheel', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Switch to Ekman
-  await page.locator('#wheel-type').selectOption('ekman');
+  await page.locator('#sel-wheel').selectOption('ekman');
   await expect(page.locator('.emotion-segment')).toHaveCount(6);
 
   // Select an emotion on Ekman
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await expect(page.locator('.emotion-segment[data-emotion="joy"]')).toHaveClass(/is-selected/);
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await expect(page.locator('.emotion-segment[data-em="joy"]')).toHaveClass(/is-selected/);
 
   // Switch to Extended
-  await page.locator('#wheel-type').selectOption('extended');
+  await page.locator('#sel-wheel').selectOption('extended');
   await expect(page.locator('.emotion-segment')).toHaveCount(12);
 
   // Selection should not carry over (the wheel redraws)
-  // Joy exists in extended too but selection should reset on wheel change
   const selectedSegments = page.locator('.emotion-segment.is-selected');
   await expect(selectedSegments).toHaveCount(0);
 });
@@ -70,14 +69,14 @@ test('T014 [US2] inject entry with plutchik wheel and trust emotion, verify on l
   await page.addInitScript(() => {
     localStorage.setItem('moodTrackerWheelType', 'plutchik');
   });
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Verify wheel type switched to Plutchik
-  await expect(page.locator('#wheel-type')).toHaveValue('plutchik');
+  await expect(page.locator('#sel-wheel')).toHaveValue('plutchik');
   // Verify 8 segments (Plutchik has 8)
   await expect(page.locator('.emotion-segment')).toHaveCount(8);
   // Verify trust is highlighted
-  await expect(page.locator('.emotion-segment[data-emotion="trust"]')).toHaveClass(/is-selected/);
+  await expect(page.locator('.emotion-segment[data-em="trust"]')).toHaveClass(/is-selected/);
 });
 
 // ─── T015: Parameterized test for all 5 wheel variants ───
@@ -87,20 +86,20 @@ const wheelVariants = [
   { type: 'plutchik', emotions: ['joy', 'trust', 'fear', 'surprise', 'sadness', 'disgust', 'anger', 'anticipation'], count: 8 },
   { type: 'ekman', emotions: ['joy', 'sadness', 'anger', 'fear', 'surprise', 'disgust'], count: 6 },
   { type: 'junto', emotions: ['love', 'joy', 'surprise', 'anger', 'sadness', 'fear'], count: 6 },
-  { type: 'extended', emotions: ['joy', 'trust', 'love', 'serenity', 'surprise', 'anticipation', 'sadness', 'melancholy', 'anger', 'disgust', 'fear', 'shame'], count: 12 },
+  { type: 'extended', emotions: ['joy', 'love', 'trust', 'surprise', 'curiosity', 'anticipation', 'anxiety', 'fear', 'sadness', 'disgust', 'anger', 'shame'], count: 12 },
 ];
 
 for (const variant of wheelVariants) {
   test(`T015 [US2] ${variant.type} wheel — renders ${variant.count} segments and each selects correctly`, async ({ page }) => {
-    await page.goto('/');
-    await page.locator('#wheel-type').selectOption(variant.type);
+    await page.goto('/#checkin');
+    await page.locator('#sel-wheel').selectOption(variant.type);
     await expect(page.locator('.emotion-segment')).toHaveCount(variant.count);
 
     // Click each segment and verify selection
     for (const emotion of variant.emotions) {
-      await page.locator(`.emotion-segment[data-emotion="${emotion}"]`).click();
-      await expect(page.locator(`.emotion-segment[data-emotion="${emotion}"]`)).toHaveClass(/is-selected/);
-      const display = page.locator('#selected-emotion-display');
+      await page.locator(`.emotion-segment[data-em="${emotion}"]`).click();
+      await expect(page.locator(`.emotion-segment[data-em="${emotion}"]`)).toHaveClass(/is-selected/);
+      const display = page.locator('#wheel-display');
       await expect(display).not.toHaveClass(/is-empty/);
     }
   });

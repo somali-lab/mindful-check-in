@@ -20,23 +20,20 @@ test('T112 [US19] mock weather API success, widget shows temperature', async ({ 
   await mockGeocodingAPI(page);
   const settings = createTestSettings({ components: { weather: true } });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Wait for weather fetch to complete
-  await expect(page.locator('#weather-temp')).not.toHaveText('', { timeout: 5000 });
-  await expect(page.locator('#weather-temp')).toContainText('18');
+  await expect(page.locator('.weather-temp')).not.toHaveText('', { timeout: 5000 });
+  await expect(page.locator('.weather-temp')).toContainText('18');
 });
 
 // ─── T113: Cached weather — no API call ───
 
 test('T113 [US19] cached weather (< 1h old) uses cache, no API call', async ({ page }) => {
-  // Cache uses getCacheKey(lat, lon) = "Math.round(lat*100)/100,Math.round(lon*100)/100"
-  // Settings weatherCoords = { lat: 52.3676, lon: 4.9041 } → key = "52.37,4.9"
+  // v4 cache format: single { ts, data } object where data = current_weather fields
   const cache = {
-    '52.37,4.9': {
-      ts: Date.now(),
-      data: { temperature: 22, code: 0, description: 'Clear', icon: '☀️', isDay: 1 },
-    },
+    ts: Date.now(),
+    data: { temperature: 22, weathercode: 0, windspeed: 5, is_day: 1 },
   };
   await injectWeatherCache(page, cache);
   const settings = createTestSettings({ components: { weather: true } });
@@ -48,15 +45,15 @@ test('T113 [US19] cached weather (< 1h old) uses cache, no API call', async ({ p
     route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ current: { temperature_2m: 99, weather_code: 0, is_day: 1 } }),
+      body: JSON.stringify({ current_weather: { temperature: 99, weathercode: 0, windspeed: 0, is_day: 1 } }),
     });
   });
 
-  await page.goto('/');
+  await page.goto('/#checkin');
   await page.waitForTimeout(1000);
 
   // If cache was used, the temperature should show cached value (22), not 99
-  const temp = await page.locator('#weather-temp').textContent();
+  const temp = await page.locator('.weather-temp').textContent();
   expect(temp).toContain('22');
 });
 
@@ -74,7 +71,7 @@ test('T114 [US19] weather API failure, app does not crash', async ({ page }) => 
   await page.waitForTimeout(1000);
 
   // App should still function
-  await expect(page.locator('[data-tab-target="checkin"]')).toBeVisible();
+  await expect(page.locator('[data-route="checkin"]')).toBeVisible();
   // No critical JS errors
   expect(errors.filter(e => !e.includes('fetch'))).toHaveLength(0);
 });
@@ -84,7 +81,7 @@ test('T114 [US19] weather API failure, app does not crash', async ({ page }) => 
 test('T115 [US19] disable weather in settings, widget hidden', async ({ page }) => {
   const settings = createTestSettings({ components: { weather: false } });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   await expect(page.locator('[data-component="weather"]')).toBeHidden();
 });
@@ -96,14 +93,14 @@ test('T116 [US19] save with mocked weather, weather data in entry', async ({ pag
   await mockGeocodingAPI(page);
   const settings = createTestSettings({ components: { weather: true } });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Wait for weather to load (temp element gets populated)
-  await expect(page.locator('#weather-temp')).not.toHaveText('', { timeout: 5000 });
+  await expect(page.locator('.weather-temp')).not.toHaveText('', { timeout: 5000 });
 
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await page.locator('#save-checkin').click();
-  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await page.locator('#ci-btn-save').click();
+  await expect(page.locator('.toast--success')).toBeVisible();
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
@@ -122,8 +119,8 @@ test('T117 [US20] change weather location to Berlin, verify coords update', asyn
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  await page.locator('#settings-weather-location').fill('Berlin');
-  await page.locator('#settings-save').click();
+  await page.locator('#cfg-location').fill('Berlin');
+  await page.locator('#cfg-btn-save').click();
   await page.waitForTimeout(500);
 
   // Settings should reflect the new location
@@ -140,12 +137,12 @@ test('T118 [US20] geocoding empty results for nonsense city', async ({ page }) =
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  await page.locator('#settings-weather-location').fill('xyznonexistentcity');
-  await page.locator('#settings-save').click();
+  await page.locator('#cfg-location').fill('xyznonexistentcity');
+  await page.locator('#cfg-btn-save').click();
   await page.waitForTimeout(500);
 
   // Should show some status/warning message
-  const status = page.locator('#settings-status');
-  // May or may not show a warning — app should not crash at minimum
-  await expect(page.locator('[data-tab-target="settings"]')).toBeVisible();
+  // Geocoding happens in weather module, not during settings save in v4
+  // App should not crash at minimum
+  await expect(page.locator('[data-route="settings"]')).toBeVisible();
 });

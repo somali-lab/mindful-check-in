@@ -9,24 +9,27 @@
 
 ### Test Entry (fixture data injected into localStorage)
 
-Represents a check-in entry used to pre-seed test state. Matches the app's `normalizeEntry()` output format.
+Represents a check-in entry used to pre-seed test state. Matches the app's `MCI.normalize()` output format.
 
 | Field | Type | Required | Constraints | Notes |
 |-------|------|----------|-------------|-------|
 | id | string (UUID) | Yes | UUID v4 format | Auto-generated if missing |
 | thoughts | string | No | — | Free-text |
-| selectedEmotion | string \| null | No | Must match wheel variant | e.g., "joy", "trust", "fear" |
+| coreFeeling | string | No | Must match wheel variant | e.g., "joy", "trust", "fear" |
 | wheelType | string | No | "act" \| "plutchik" \| "ekman" \| "junto" \| "extended" | Wheel used for this entry |
 | customFeelings | string | No | — | Free-text note |
 | energy | object | No | `{ physical: 0–100\|null, mental: 0–100\|null, emotional: 0–100\|null }` | All null if unset |
 | bodySignals | string[] | No | Valid body part keys | e.g., ["chest", "head", "left-hand"] |
 | bodyNote | string | No | — | Free-text |
 | energyNote | string | No | — | Free-text |
-| action | string | No | — | Free-text |
+| actions | string | No | — | Free-text (comma-separated) |
 | note | string | No | — | Free-text |
-| moodGrid | object \| null | No | `{ energy: 1–10, valence: 1–10 }` | Null if unset |
-| mood | string \| null | No | "great" \| "okay" \| "low" \| null | Derived mood bucket |
-| weather | object \| null | No | `{ temperature, code, icon, description, location }` | Captured at save time |
+| moodRow | number | No | 0–9 or -1 if unset | Row index in 10×10 mood grid |
+| moodCol | number | No | 0–9 or -1 if unset | Column index in 10×10 mood grid |
+| moodLabel | string | No | — | Derived from moodRow/moodCol via MCI.Data.moodLabels |
+| moodColor | string | No | — | Derived from moodRow/moodCol via MCI.Data.moodColors |
+| moodScore | number | No | 0–4 | Computed via MCI.computeMoodScore() |
+| weather | object \| null | No | `{ temperature, weathercode, windspeed, description, location }` | Captured at save time |
 | updatedAt | string (ISO 8601) | No | Valid ISO timestamp | e.g., "2026-04-07T09:30:00.000Z" |
 
 **Entry Key Format**: `YYYY-MM-DD` (first of day) or `YYYY-MM-DD_HHMMSSmmm` (subsequent).
@@ -42,9 +45,11 @@ Represents the app settings object.
 | defaultWheelType | string | "act" | "act" \| "plutchik" \| "ekman" \| "junto" \| "extended" |
 | rowsPerPage | number | 7 | 5–100 |
 | overviewMaxChars | number | 120 | 20–500 |
+| toastDuration | number | 4 | Seconds |
 | energyEmotionalLabel | string | "social" | "emotionalSocial" \| "emotional" \| "social" |
 | weatherLocation | string | "Amsterdam" | Max 100 chars |
-| weatherCoords | object \| null | `{ lat: 52.37, lon: 4.90, name: "Amsterdam" }` | — |
+| weatherCoords | object \| null | null | `{ lat, lon, name }` |
+| isDefaultQuickActions | boolean | true | Whether using default quick actions |
 | quickActions | string[] | (language-dependent) | Each max 100 chars |
 | components | object | (all true) | 10 boolean toggles |
 
@@ -85,7 +90,6 @@ Mock data structure for Open-Meteo API route interception.
 |-------|------|---------|
 | current_weather.temperature | number | 14 |
 | current_weather.weathercode | number | 1 |
-| current_weather.is_day | number | 1 |
 | current_weather.windspeed | number | 8.5 |
 
 ### Geocoding Mock Response

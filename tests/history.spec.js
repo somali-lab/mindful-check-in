@@ -19,9 +19,9 @@ test('T094 [US22] 28 days of entries render history calendar grid', async ({ pag
     });
   }
   await injectEntries(page, entries);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  const historyContent = page.locator('#history-content');
+  const historyContent = page.locator('#history-grid');
   await expect(historyContent).not.toContainText(/empty/i);
 
   // Should have calendar cells
@@ -40,16 +40,16 @@ test('T095 [US22] core feeling mode, joy entry has positive color', async ({ pag
     });
   }
   await injectEntries(page, entries);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  // The "Core feeling" mode should be active by default or selectable
-  const feelingBtn = page.locator('.cal-mode-btn[data-mode="feeling"]');
+  // The "Core" mode should be active by default or selectable
+  const feelingBtn = page.locator('.cal-mode-btn[data-hmode="core"]');
   if (await feelingBtn.count() > 0) {
     await feelingBtn.click();
   }
 
-  // Cells with entries should have a score-based class
-  const cellWithEntry = page.locator('.cal-cell[data-date]').first();
+  // Cells with entries should have an entry-key attribute
+  const cellWithEntry = page.locator('.cal-cell[data-entry-key]').first();
   await expect(cellWithEntry).toBeVisible();
 });
 
@@ -68,12 +68,12 @@ test('T096 [US22] physical energy mode, colors reflect energy levels', async ({ 
     });
   }
   await injectEntries(page, entries);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  const energyPhysBtn = page.locator('.cal-mode-btn[data-mode="energyPhysical"]');
+  const energyPhysBtn = page.locator('.cal-mode-btn[data-hmode="physical"]');
   if (await energyPhysBtn.count() > 0) {
     await energyPhysBtn.click();
-    const cells = page.locator('.cal-cell[data-date]');
+    const cells = page.locator('.cal-cell[data-entry-key]');
     await expect(cells.first()).toBeVisible();
   }
 });
@@ -89,15 +89,15 @@ test('T097 [US22] click history cell with entry loads into form', async ({ page 
     });
   }
   await injectEntries(page, entries);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Click a history cell that has an entry
-  const cellWithEntry = page.locator('.cal-cell[data-date]').first();
+  const cellWithEntry = page.locator('.cal-cell[data-entry-key]').first();
   if (await cellWithEntry.count() > 0) {
     await cellWithEntry.click({ force: true });
     // After clicking, form should be populated (may auto-switch to checkin tab)
     await page.waitForTimeout(300);
-    const thoughts = await page.locator('#thoughts').inputValue();
+    const thoughts = await page.locator('#fld-thoughts').inputValue();
     expect(thoughts).toContain('History');
   }
 });
@@ -112,8 +112,8 @@ test('T098 [US22] disable core feeling, Core feeling mode button absent', async 
   const settings = createTestSettings({ components: { coreFeeling: false } });
   await injectEntries(page, entries);
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  const feelingBtn = page.locator('.cal-mode-btn[data-mode="feeling"]');
+  const feelingBtn = page.locator('.cal-mode-btn[data-hmode="core"]');
   await expect(feelingBtn).toHaveCount(0);
 });

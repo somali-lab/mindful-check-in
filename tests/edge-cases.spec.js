@@ -23,14 +23,14 @@ test('T134 XSS script tag in thoughts escaped as literal text', async ({ page })
     coreFeeling: 'joy',
   });
   await injectEntries(page, { [todayKey]: entry });
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // The thoughts should be displayed as literal text, not executed
-  await expect(page.locator('#thoughts')).toHaveValue('<script>alert(1)</script>');
+  await expect(page.locator('#fld-thoughts')).toHaveValue('<script>alert(1)</script>');
 
   // Navigate to overview to verify escaped in table
   await navigateToTab(page, 'overview');
-  const bodyHtml = await page.locator('#overview-body').innerHTML();
+  const bodyHtml = await page.locator('#ov-tbody').innerHTML();
   expect(bodyHtml).not.toContain('<script>');
 });
 
@@ -47,20 +47,20 @@ test('T135 XSS img onerror in note escaped in rendered output', async ({ page })
 
   // Navigate to overview
   await navigateToTab(page, 'overview');
-  const bodyHtml = await page.locator('#overview-body').innerHTML();
+  const bodyHtml = await page.locator('#ov-tbody').innerHTML();
   expect(bodyHtml).not.toContain('<img');
 });
 
 // ─── T136: 10,000+ characters in note ───
 
 test('T136 very long text (10000 chars) in note saves without hang', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
   const longText = 'A'.repeat(10000);
-  await page.locator('#note').fill(longText);
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await page.locator('#save-checkin').click();
+  await page.locator('#fld-note').fill(longText);
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await page.locator('#ci-btn-save').click();
 
-  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+  await expect(page.locator('.toast--success')).toBeVisible();
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
@@ -71,12 +71,12 @@ test('T136 very long text (10000 chars) in note saves without hang', async ({ pa
 // ─── T137: Double-click Save — only one entry ───
 
 test('T137 double-click Save creates only one entry', async ({ page }) => {
-  await page.goto('/');
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
+  await page.goto('/#checkin');
+  await page.locator('.emotion-segment[data-em="joy"]').click();
 
   // Rapid double click
-  await page.locator('#save-checkin').click();
-  await page.locator('#save-checkin').click();
+  await page.locator('#ci-btn-save').click();
+  await page.locator('#ci-btn-save').click();
 
   await page.waitForTimeout(300);
 
@@ -90,17 +90,18 @@ test('T137 double-click Save creates only one entry', async ({ page }) => {
 // ─── T138: 5+ entries on same day — unique timestamped keys ───
 
 test('T138 multiple entries per day get unique timestamped keys', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   for (let i = 0; i < 3; i++) {
     if (i > 0) {
-      await page.locator('#new-checkin').click();
+      await page.locator('#ci-btn-new').click();
     }
-    await page.locator('.emotion-segment[data-emotion="joy"]').click();
-    await page.locator('#thoughts').fill(`Entry ${i + 1}`);
-    await page.locator('#save-checkin').click();
-    await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
-    await page.waitForTimeout(100);
+    await page.locator('.emotion-segment[data-em="joy"]').click();
+    await page.locator('#fld-thoughts').fill(`Entry ${i + 1}`);
+    await page.locator('#ci-btn-save').click();
+    await expect(page.locator('.toast--success').first()).toBeVisible();
+    // Wait for toast to disappear before next save
+    await page.waitForTimeout(1500);
   }
 
   const entries = await getLocalStorageEntries(page);
@@ -116,15 +117,15 @@ test('T138 multiple entries per day get unique timestamped keys', async ({ page 
 // ─── T139: No entries — empty states ───
 
 test('T139 no entries shows empty states in overview and summary', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  // Summary should mention saving first check-in
-  const summary = page.locator('#summary-content');
-  await expect(summary).toContainText(/save|check/i);
+  // Summary should show empty state
+  const summary = page.locator('#summary-slot');
+  await expect(summary).toContainText(/no entries|save|check/i);
 
   // Overview should show empty message
   await navigateToTab(page, 'overview');
-  const emptyMsg = page.locator('#overview-empty');
+  const emptyMsg = page.locator('#ov-empty');
   await expect(emptyMsg).not.toBeEmpty();
 });
 
@@ -137,10 +138,10 @@ test('T140 pagination clamps to valid range', async ({ page }) => {
   await navigateToTab(page, 'overview');
 
   // Go to last page
-  await page.locator('#overview-last').click();
+  await page.locator('#ov-last').click();
 
   // Next should be disabled (can't go beyond last)
-  await expect(page.locator('#overview-next')).toBeDisabled();
+  await expect(page.locator('#ov-next')).toBeDisabled();
 });
 
 // ─── T141: Clear search after date filter — filter remains ───
@@ -151,17 +152,17 @@ test('T141 clear search after date filter, filter remains active', async ({ page
   await navigateToTab(page, 'overview');
 
   // Apply date filter
-  await page.locator('#overview-filter').selectOption('last7');
+  await page.locator('#ov-filter').selectOption('7');
   await page.waitForTimeout(200);
 
   // Type and clear search
-  await page.locator('#overview-search').fill('test');
+  await page.locator('#ov-search').fill('test');
   await page.waitForTimeout(200);
-  await page.locator('#overview-search').fill('');
+  await page.locator('#ov-search').fill('');
   await page.waitForTimeout(200);
 
   // Filter should still be "last7"
-  await expect(page.locator('#overview-filter')).toHaveValue('last7');
+  await expect(page.locator('#ov-filter')).toHaveValue('7');
 });
 
 // ─── T142: Import entries with extra unknown fields ───
@@ -170,35 +171,30 @@ test('T142 import entries with unknown fields, only known fields kept', async ({
   await page.goto('/');
   await navigateToTab(page, 'overview');
 
-  const entries = [
-    {
-      entryKey: getDateKey(0),
-      ...createTestEntry({ thoughts: 'Valid', coreFeeling: 'joy' }),
-      unknownField: 'should be ignored or kept harmlessly',
-      anotherField: 12345,
-    },
-  ];
+  // v4 import expects an object keyed by entry key, not an array
+  const dateKey = getDateKey(0);
+  const entries = {};
+  entries[dateKey] = {
+    ...createTestEntry({ thoughts: 'Valid', coreFeeling: 'joy' }),
+    unknownField: 'should be ignored or kept harmlessly',
+    anotherField: 12345,
+  };
 
-  page.on('dialog', async (dialog) => await dialog.accept());
-
-  const [fileChooser] = await Promise.all([
-    page.waitForEvent('filechooser'),
-    page.locator('#overview-import').click(),
-  ]);
-
-  const fs = require('fs');
   const tmpPath = require('path').join(__dirname, 'tmp-extra-fields.json');
+  const fs = require('fs');
   fs.writeFileSync(tmpPath, JSON.stringify(entries));
-  await fileChooser.setFiles(tmpPath);
+  await page.locator('#ov-import').setInputFiles(tmpPath);
+
+  // v4 shows import dialog — click "Overwrite matching"
+  await page.locator('#dlg-overwrite').click();
   await page.waitForTimeout(500);
 
   const stored = await getLocalStorageEntries(page);
   expect(Object.keys(stored).length).toBeGreaterThanOrEqual(1);
-  // Find the entry by dateKey or first available
-  const entryKey = Object.keys(stored).find(k => k.startsWith(getDateKey(0))) || Object.keys(stored)[0];
+  const entryKey = Object.keys(stored).find(k => k.startsWith(dateKey)) || Object.keys(stored)[0];
   expect(stored[entryKey].thoughts).toBe('Valid');
 
-  fs.unlinkSync(tmpPath);
+  try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
 // ─── T143: Import settings with unknown keys ───
@@ -210,27 +206,22 @@ test('T143 import settings with unknown keys, unknown keys ignored', async ({ pa
   const settingsToImport = createTestSettings({ theme: 'dark' });
   settingsToImport.unknownSetting = 'should not break';
 
-  const [fileChooser] = await Promise.all([
-    page.waitForEvent('filechooser'),
-    page.locator('#settings-import').click(),
-  ]);
-
   const fs = require('fs');
   const tmpPath = require('path').join(__dirname, 'tmp-unknown-settings.json');
   fs.writeFileSync(tmpPath, JSON.stringify(settingsToImport));
-  await fileChooser.setFiles(tmpPath);
+  await page.locator('#cfg-inp-import').setInputFiles(tmpPath);
   await page.waitForTimeout(500);
 
   // App should still work
-  await expect(page.locator('[data-tab-target="settings"]')).toBeVisible();
+  await expect(page.locator('[data-route="settings"]')).toBeVisible();
 
-  fs.unlinkSync(tmpPath);
+  try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
 // ─── T144: Disable and re-enable components ───
 
 test('T144 disable then re-enable components, no stale state', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Inject all-off settings after page load (not via addInitScript to avoid re-injection on reload)
   const settingsOff = createTestSettings({
@@ -272,16 +263,16 @@ test('T145 localStorage persistence across page reload', async ({ page }) => {
 
   await injectEntries(page, entries);
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Verify loaded
-  await expect(page.locator('#thoughts')).toHaveValue('Persist test');
+  await expect(page.locator('#fld-thoughts')).toHaveValue('Persist test');
 
   // Reload
   await page.reload();
 
   // Still persisted
-  await expect(page.locator('#thoughts')).toHaveValue('Persist test');
+  await expect(page.locator('#fld-thoughts')).toHaveValue('Persist test');
   const stored = await getLocalStorageEntries(page);
   expect(stored[todayKey].thoughts).toBe('Persist test');
   const storedSettings = await getLocalStorageSettings(page);
@@ -291,19 +282,19 @@ test('T145 localStorage persistence across page reload', async ({ page }) => {
 // ─── T146: Special characters in text fields ───
 
 test('T146 special characters safely escaped in text fields', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  await page.locator('#thoughts').fill('"quotes" & <tags>');
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await page.locator('#action').fill('action with "special" & <chars>');
-  await page.locator('#note').fill('<b>bold</b> & "quote"');
+  await page.locator('#fld-thoughts').fill('"quotes" & <tags>');
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await page.locator('#fld-action').fill('action with "special" & <chars>');
+  await page.locator('#fld-note').fill('<b>bold</b> & "quote"');
 
-  await page.locator('#save-checkin').click();
-  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+  await page.locator('#ci-btn-save').click();
+  await expect(page.locator('.toast--success')).toBeVisible();
 
   // Navigate to overview and verify escaped
   await navigateToTab(page, 'overview');
-  const bodyHtml = await page.locator('#overview-body').innerHTML();
+  const bodyHtml = await page.locator('#ov-tbody').innerHTML();
   expect(bodyHtml).not.toContain('<b>bold</b>');
   // The raw text should be escaped, not rendered as HTML
   expect(bodyHtml).not.toMatch(/<b>/);
@@ -312,7 +303,7 @@ test('T146 special characters safely escaped in text fields', async ({ page }) =
 // ─── T154: localStorage quota full — app does not crash ───
 
 test('T154 localStorage quota full, save does not crash the app', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Fill localStorage to near capacity (5MB limit in most browsers)
   // by writing large strings, leaving barely any space for an entry
@@ -329,16 +320,16 @@ test('T154 localStorage quota full, save does not crash the app', async ({ page 
   });
 
   // Select an emotion so save validation passes
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await page.locator('#thoughts').fill('Quota test entry');
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await page.locator('#fld-thoughts').fill('Quota test entry');
 
   // Attempt save — should not crash the page
-  await page.locator('#save-checkin').click();
+  await page.locator('#ci-btn-save').click();
 
   // The page should still be functional (not a blank error page)
-  await expect(page.locator('#thoughts')).toBeVisible();
+  await expect(page.locator('#fld-thoughts')).toBeVisible();
   // The tab navigation should still work
-  await expect(page.locator('[data-tab-target="checkin"]')).toBeVisible();
+  await expect(page.locator('[data-route="checkin"]')).toBeVisible();
 
   // Clean up filler data so other tests aren't affected
   await page.evaluate(() => {
@@ -377,9 +368,9 @@ test('T155 entries at 23:59 and 00:01 stored under different date keys', async (
   // Navigate to overview — both entries should appear
   await navigateToTab(page, 'overview');
 
-  const rows = page.locator('#overview-body tr');
+  const rows = page.locator('#ov-tbody tr');
   // Both entries should be visible as separate rows
-  const allText = await page.locator('#overview-body').innerText();
+  const allText = await page.locator('#ov-tbody').innerText();
   expect(allText).toContain('Before midnight');
   expect(allText).toContain('After midnight');
 

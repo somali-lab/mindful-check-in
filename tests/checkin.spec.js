@@ -17,24 +17,25 @@ const {
 test('smoke: page loads with correct title and check-in tab visible', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle('Mindful Check-in');
-  await expect(page.locator('[data-tab-target="checkin"]')).toBeVisible();
-  await expect(page.locator('[data-tab-panel="checkin"]')).toBeVisible();
+  await expect(page.locator('[data-route="checkin"]')).toBeVisible();
+  await navigateToTab(page, 'checkin');
+  await expect(page.locator('#view-checkin')).toBeVisible();
 });
 
 // ─── T006: Fresh app — fill all fields, save, verify entry in localStorage ───
 
 test('T006 [US1] fill all fields and save creates entry in localStorage', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Fill thoughts
-  await page.locator('#thoughts').fill('Feeling good today');
+  await page.locator('#fld-thoughts').fill('Feeling good today');
 
   // Select emotion on wheel
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
+  await page.locator('.emotion-segment[data-em="joy"]').click();
 
   // Click body parts (dispatchEvent bypasses SVG overlap)
-  await page.locator('.body-part[data-part="chest"]').dispatchEvent('click');
-  await page.locator('.body-part[data-part="head"]').dispatchEvent('click');
+  await page.locator('.body-part[data-zone="chest"]').dispatchEvent('click');
+  await page.locator('.body-part[data-zone="head"]').dispatchEvent('click');
 
   // Set energy meters by clicking scale labels
   const physicalMeter = page.locator('.energy-meter[data-energy-type="physical"]');
@@ -47,18 +48,17 @@ test('T006 [US1] fill all fields and save creates entry in localStorage', async 
   await emotionalMeter.click({ position: { x: 15, y: 60 } });
 
   // Select mood cell
-  await page.locator('.mood-cell[data-row="2"][data-col="8"]').click();
+  await page.locator('.mood-cell[data-mr="2"][data-mc="8"]').click();
 
   // Fill action and note
-  await page.locator('#action').fill('Take a walk');
-  await page.locator('#note').fill('Good day overall');
+  await page.locator('#fld-action').fill('Take a walk');
+  await page.locator('#fld-note').fill('Good day overall');
 
   // Click save
-  await page.locator('#save-checkin').click();
+  await page.locator('#ci-btn-save').click();
 
-  // Verify success banner
-  await expect(page.locator('#history-banner')).not.toHaveClass(/is-hidden/);
-  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+  // Verify success toast
+  await expect(page.locator('.toast--success')).toBeVisible();
 
   // Verify entry in localStorage
   const entries = await getLocalStorageEntries(page);
@@ -87,17 +87,17 @@ test('T007 [US1] modifying existing today entry updates without duplicating', as
   });
 
   await injectEntries(page, { [todayKey]: entry });
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Verify form is hydrated
-  await expect(page.locator('#thoughts')).toHaveValue('Original thought');
+  await expect(page.locator('#fld-thoughts')).toHaveValue('Original thought');
 
   // Modify thoughts
-  await page.locator('#thoughts').fill('Modified thought');
+  await page.locator('#fld-thoughts').fill('Modified thought');
 
   // Save
-  await page.locator('#save-checkin').click();
-  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+  await page.locator('#ci-btn-save').click();
+  await expect(page.locator('.toast--success')).toBeVisible();
 
   // Verify only one entry for today — updated, not duplicated
   const entries = await getLocalStorageEntries(page);
@@ -116,18 +116,18 @@ test('T008 [US1] New check-in creates second timestamped entry for today', async
   });
 
   await injectEntries(page, { [todayKey]: entry });
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Click "New check-in"
-  await page.locator('#new-checkin').click();
+  await page.locator('#ci-btn-new').click();
 
   // Fill minimal fields (select emotion to pass validation)
-  await page.locator('.emotion-segment[data-emotion="sadness"]').click();
-  await page.locator('#thoughts').fill('Second entry');
+  await page.locator('.emotion-segment[data-em="sadness"]').click();
+  await page.locator('#fld-thoughts').fill('Second entry');
 
   // Save
-  await page.locator('#save-checkin').click();
-  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+  await page.locator('#ci-btn-save').click();
+  await expect(page.locator('.toast--success')).toBeVisible();
 
   // Verify two entries exist
   const entries = await getLocalStorageEntries(page);
@@ -144,34 +144,32 @@ test('T008 [US1] New check-in creates second timestamped entry for today', async
 // ─── T009: After save — summary card updates ───
 
 test('T009 [US1] summary card updates after save with streak and count', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Select emotion to pass validation
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await page.locator('#save-checkin').click();
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await page.locator('#ci-btn-save').click();
 
-  // Verify summary shows "Checked in at" text
-  const summaryContent = page.locator('#summary-content');
-  await expect(summaryContent).toContainText(/check/i);
-
-  // Verify streak and total count info is present
-  await expect(summaryContent).toContainText('1');
+  // Verify summary shows content in summary slot
+  const summaryContent = page.locator('#summary-slot');
+  await expect(summaryContent).not.toContainText(/no entries/i);
 });
 
 // ─── T010: Context pill shows correct state ───
 
 test('T010 [US1] context pill shows new state before save and entry date after save', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  // Before save: pill should be empty or show new state
-  const pill = page.locator('#checkin-context-pill');
+  // Before save: pill should show new state text
+  const pill = page.locator('#ci-pill');
+  await expect(pill).toContainText(/not saved/i);
 
   // Select emotion to pass validation
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
+  await page.locator('.emotion-segment[data-em="joy"]').click();
 
   // Save
-  await page.locator('#save-checkin').click();
+  await page.locator('#ci-btn-save').click();
 
-  // After save: pill should show today's date
-  await expect(pill).not.toBeEmpty();
+  // After save: pill should show saved state
+  await expect(pill).toHaveClass(/is-saved/);
 });

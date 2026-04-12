@@ -15,8 +15,8 @@ test('T074 [US14] change theme to Dark, verify data-theme attribute', async ({ p
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  await page.locator('#settings-theme').selectOption('dark');
-  await page.locator('#settings-save').click();
+  await page.locator('#cfg-theme').selectOption('dark');
+  await page.locator('#cfg-btn-save').click();
 
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
@@ -28,15 +28,15 @@ test('T075 [US14] set rows per page to 5, verify overview shows 5 rows', async (
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  await page.locator('#settings-rows-per-page').fill('5');
-  await page.locator('#settings-save').click();
+  await page.locator('#cfg-rows').fill('5');
+  await page.locator('#cfg-btn-save').click();
   await page.waitForTimeout(500);
 
   // Reload to ensure settings are fully applied
   await page.reload();
   await navigateToTab(page, 'overview');
   // Each entry renders 2 rows (main + note), so count only main rows
-  const rows = page.locator('#overview-body tr:not(.overview-row-note)');
+  const rows = page.locator('#ov-tbody tr:not(.ov-row-note)');
   await expect(rows).toHaveCount(5);
 });
 
@@ -55,17 +55,17 @@ test('T076 [US14] set max chars to 30, overview cells truncated', async ({ page 
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  await page.locator('#settings-overview-max-chars').fill('30');
-  await page.locator('#settings-save').click();
+  await page.locator('#cfg-maxchars').fill('30');
+  await page.locator('#cfg-btn-save').click();
   await page.waitForTimeout(500);
 
   // Reload to ensure settings are fully applied
   await page.reload();
   await navigateToTab(page, 'overview');
-  // Verify some cell text is truncated (app uses "..." for truncation)
-  const cells = page.locator('#overview-body td');
+  // Verify some cell text is truncated (v4 uses \u2026 ellipsis for truncation)
+  const cells = page.locator('#ov-tbody td');
   const allCellTexts = await cells.allTextContents();
-  const truncated = allCellTexts.some(text => text.includes('...'));
+  const truncated = allCellTexts.some(text => text.includes('\u2026'));
   expect(truncated).toBeTruthy();
 });
 
@@ -75,11 +75,12 @@ test('T077 [US14] set energy emotional label to Social, verify label updates', a
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  await page.locator('#settings-energy-emotional-label').selectOption('social');
-  await page.locator('#settings-save').click();
+  await page.locator('#cfg-energy-label').selectOption('social');
+  await page.locator('#cfg-btn-save').click();
 
   await navigateToTab(page, 'checkin');
-  const label = page.locator('#energy-emotional-label');
+  // v4 renders the label dynamically as .energy-type-label inside the emotional meter column
+  const label = page.locator('.energy-type-label').last();
   await expect(label).toContainText(/social/i);
 });
 
@@ -89,11 +90,11 @@ test('T078 [US14] set default wheel to Extended, verify wheel renders', async ({
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  await page.locator('#settings-default-wheel').selectOption('extended');
-  await page.locator('#settings-save').click();
+  await page.locator('#cfg-wheel').selectOption('extended');
+  await page.locator('#cfg-btn-save').click();
 
   await navigateToTab(page, 'checkin');
-  await expect(page.locator('#wheel-type')).toHaveValue('extended');
+  await expect(page.locator('#sel-wheel')).toHaveValue('extended');
   await expect(page.locator('.emotion-segment')).toHaveCount(12);
 });
 
@@ -103,9 +104,9 @@ test('T079 [US14] changed settings persist across reload', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  await page.locator('#settings-theme').selectOption('dark');
-  await page.locator('#settings-rows-per-page').fill('10');
-  await page.locator('#settings-save').click();
+  await page.locator('#cfg-theme').selectOption('dark');
+  await page.locator('#cfg-rows').fill('10');
+  await page.locator('#cfg-btn-save').click();
 
   await page.reload();
 

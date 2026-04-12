@@ -321,7 +321,7 @@
 
 ### Implementation for User Story 18
 
-- [x] T084 [P] [US18] Write test: click "NL" button, verify key `[data-i18n]` elements show Dutch text (e.g., "Overzicht", "Instellingen") without page reload in tests/language.spec.js
+- [x] T084 [P] [US18] Write test: click "NL" button, verify key `[data-t]` elements show Dutch text (e.g., "Overzicht", "Instellingen") without page reload in tests/language.spec.js
 - [x] T085 [P] [US18] Write test: switch to NL then back to EN, verify English text restores in tests/language.spec.js
 - [x] T086 [P] [US18] Write test: set language to NL, reload page, verify Dutch persists in tests/language.spec.js
 - [x] T087 [P] [US18] Write test: NL active, view mood matrix, verify mood labels in Dutch in tests/language.spec.js
@@ -502,7 +502,7 @@
 ### Implementation for Edge Cases
 
 - [x] T134 [P] Write test: inject `<script>alert(1)</script>` into thoughts field, save, reload, verify escaped as literal text in display in tests/edge-cases.spec.js
-- [x] T135 [P] Write test: inject `<img onerror=alert(1)>` into note field, save, verify escaped via `App.escapeHtml()` in rendered output in tests/edge-cases.spec.js
+- [x] T135 [P] Write test: inject `<img onerror=alert(1)>` into note field, save, verify escaped via `MCI.esc()` in rendered output in tests/edge-cases.spec.js
 - [x] T136 [P] Write test: type 10,000+ characters in note field, save, verify no browser hang and entry persists in tests/edge-cases.spec.js
 - [x] T137 [P] Write test: double-click Save rapidly, verify only one entry created (not duplicates) in tests/edge-cases.spec.js
 - [x] T138 [P] Write test: create 5+ entries on same day, verify each gets unique timestamped key in tests/edge-cases.spec.js

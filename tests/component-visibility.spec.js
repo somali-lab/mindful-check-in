@@ -12,7 +12,7 @@ const {
 test('T036 [US7] disable weather in settings, verify widget hidden', async ({ page }) => {
   const settings = createTestSettings({ components: { weather: false } });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
   await expect(page.locator('[data-component="weather"]')).toBeHidden();
 });
 
@@ -34,7 +34,7 @@ for (const toggle of componentToggles) {
   test(`T037 [US7] disable ${toggle.id} — section disappears`, async ({ page }) => {
     const settings = createTestSettings({ components: { [toggle.id]: false } });
     await injectSettings(page, settings);
-    await page.goto('/');
+    await page.goto('/#checkin');
 
     // Listen for JS errors
     const errors = [];
@@ -57,10 +57,10 @@ test('T038 [US7] disable all except thoughts, save without mood requirement', as
     weatherCoords: null,
   });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  await page.locator('#thoughts').fill('Just thoughts');
-  await page.locator('#save-checkin').click();
+  await page.locator('#fld-thoughts').fill('Just thoughts');
+  await page.locator('#ci-btn-save').click();
 
   // App bug: renderHistory crashes when all history modes are disabled,
   // preventing the success banner. Verify save via localStorage instead.
@@ -72,14 +72,16 @@ test('T038 [US7] disable all except thoughts, save without mood requirement', as
 });
 
 // T039: Disable all 3 energy types — energy panel hidden
-test('T039 [US7] disable all 3 energy types, entire energy panel hidden', async ({ page }) => {
+test('T039 [US7] disable all 3 energy types, individual energy meters hidden', async ({ page }) => {
   const settings = createTestSettings({
     components: { energyPhysical: false, energyMental: false, energyEmotional: false },
   });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  await expect(page.locator('[data-component="energyPanel"]')).toBeHidden();
+  await expect(page.locator('.energy-meter[data-energy-type="physical"]')).toBeHidden();
+  await expect(page.locator('.energy-meter[data-energy-type="mental"]')).toBeHidden();
+  await expect(page.locator('.energy-meter[data-energy-type="emotional"]')).toBeHidden();
 });
 
 // T040: Disable core feeling, verify history mode button absent
@@ -93,10 +95,10 @@ test('T040 [US7] disable core feeling, history mode button absent', async ({ pag
   const settings = createTestSettings({ components: { coreFeeling: false } });
   await injectEntries(page, entries);
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Check the history section for mode buttons
-  const historyContent = page.locator('#history-content');
+  const historyContent = page.locator('#history-grid');
   await expect(historyContent).toBeVisible();
   // The "Core feeling" mode button should not exist when coreFeeling is disabled
   const feelingModeBtn = page.locator('.cal-mode-btn[data-mode="feeling"]');
@@ -115,7 +117,7 @@ test('T041 [US7] hide component, data preserved in localStorage', async ({ page 
   const settings = createTestSettings({ components: { bodySignals: false } });
   await injectEntries(page, { [todayKey]: entry });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Verify body signals component is hidden
   await expect(page.locator('[data-component="bodySignals"]')).toBeHidden();
@@ -132,17 +134,17 @@ test('T042 [US8] all-on preset — all fields fillable and saved', async ({ page
   const { getLocalStorageEntries, getTodayKey } = require('./fixtures/helpers');
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['all-on'] });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  await page.locator('#thoughts').fill('All on test');
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await page.locator('.body-part[data-part="chest"]').dispatchEvent('click');
-  await page.locator('.mood-cell[data-row="5"][data-col="5"]').click();
-  await page.locator('#action').fill('Walk');
-  await page.locator('#note').fill('A note');
+  await page.locator('#fld-thoughts').fill('All on test');
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await page.locator('.body-part[data-zone="chest"]').dispatchEvent('click');
+  await page.locator('.mood-cell[data-mr="5"][data-mc="5"]').click();
+  await page.locator('#fld-action').fill('Walk');
+  await page.locator('#fld-note').fill('A note');
 
-  await page.locator('#save-checkin').click();
-  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+  await page.locator('#ci-btn-save').click();
+  await expect(page.locator('.toast--success')).toBeVisible();
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
@@ -165,14 +167,15 @@ test('T043 [US8] all-off preset — save works without mood requirement', async 
     weatherCoords: null,
   });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  await page.locator('#save-checkin').click();
+  // v4 validation requires coreFeeling OR thoughts — with all-off no fields are visible
+  // Save should show warning since nothing can be filled
+  await page.locator('#ci-btn-save').click();
 
-  // App bug: renderHistory crashes when all history modes are disabled,
-  // preventing the success banner. Verify save via localStorage instead.
+  // No entry should be saved (validation blocks it)
   const entries = await getLocalStorageEntries(page);
-  expect(Object.keys(entries).length).toBeGreaterThanOrEqual(1);
+  expect(Object.keys(entries)).toHaveLength(0);
 });
 
 // T044: Mood-only preset — only mood fields populated
@@ -180,11 +183,11 @@ test('T044 [US8] mood-only preset — select emotion, save, only mood fields', a
   const { getLocalStorageEntries, getTodayKey } = require('./fixtures/helpers');
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['mood-only'] });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await page.locator('#save-checkin').click();
-  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await page.locator('#ci-btn-save').click();
+  await expect(page.locator('.toast--success')).toBeVisible();
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
@@ -196,7 +199,7 @@ test('T044 [US8] mood-only preset — select emotion, save, only mood fields', a
 test('T045 [US8] energy-only preset — only 3 energy meters visible', async ({ page }) => {
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['energy-only'] });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   await expect(page.locator('.energy-meter[data-energy-type="physical"]')).toBeVisible();
   await expect(page.locator('.energy-meter[data-energy-type="mental"]')).toBeVisible();
@@ -210,7 +213,7 @@ test('T045 [US8] energy-only preset — only 3 energy meters visible', async ({ 
 test('T046 [US8] single-energy preset — only mental meter visible', async ({ page }) => {
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['single-energy'] });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   await expect(page.locator('.energy-meter[data-energy-type="mental"]')).toBeVisible();
   await expect(page.locator('.energy-meter[data-energy-type="physical"]')).toBeHidden();
@@ -221,7 +224,7 @@ test('T046 [US8] single-energy preset — only mental meter visible', async ({ p
 test('T047 [US8] text-only preset — no wheel, body, grid visible', async ({ page }) => {
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['text-only'] });
   await injectSettings(page, settings);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   await expect(page.locator('[data-component="thoughts"]')).toBeVisible();
   await expect(page.locator('[data-component="actions"]')).toBeVisible();

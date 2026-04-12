@@ -52,6 +52,8 @@ tests/
 ├── package.json                    # Dev dependencies
 ├── playwright.config.js            # Test runner config
 ├── fixtures/
+│   ├── base.js                     # Base test fixture
+│   ├── coverage.js                 # Coverage fixture
 │   └── helpers.js                  # Shared test helpers
 ├── checkin.spec.js                 # Check-in happy path tests
 ├── emotion-wheel.spec.js           # Emotion wheel variant tests
@@ -65,6 +67,7 @@ tests/
 ├── overview-pagination.spec.js     # Pagination
 ├── export-import.spec.js           # Export/import flows
 ├── entry-deletion.spec.js          # Delete with confirm/cancel
+├── entry-loading.spec.js           # Load from overview/history
 ├── settings.spec.js                # Settings configuration
 ├── settings-portability.spec.js    # Settings export/import/reset
 ├── quick-actions.spec.js           # Quick action editor & chips
@@ -75,8 +78,8 @@ tests/
 ├── history.spec.js                 # 28-day history calendar
 ├── tab-navigation.spec.js          # Tab routing & hash
 ├── info-tools.spec.js              # Demo data & clear all
-├── data-migration.spec.js          # Legacy field normalization
-├── entry-loading.spec.js           # Load from overview/history
+├── demo-wheel.spec.js              # Demo data wheel type validation
+├── branch-coverage.spec.js         # Edge-case branch coverage
 └── edge-cases.spec.js              # XSS, long text, rapid clicks
 ```
 
@@ -89,7 +92,7 @@ const { injectEntries, createTestEntry } = require('./fixtures/helpers');
 
 test('my test', async ({ page }) => {
   const entries = {
-    '2026-04-07': createTestEntry({ selectedEmotion: 'joy' }),
+    '2026-04-07': createTestEntry({ coreFeeling: 'joy' }),
   };
   await injectEntries(page, entries);
   await page.goto('/');
@@ -110,8 +113,13 @@ test('weather renders', async ({ page }) => {
 ### Dialog Handling
 
 ```js
+// Demo generate requires confirm()
 page.on('dialog', dialog => dialog.accept());
-await page.click('#clear-local-storage');
+await page.click('#demo-btn-generate');
+
+// Clear all data requires two confirm() calls — both accepted by same handler
+page.on('dialog', dialog => dialog.accept());
+await page.click('#demo-btn-clear');
 ```
 
 ## Viewing Results

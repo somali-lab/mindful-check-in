@@ -17,7 +17,7 @@ test('T103 [US15] export settings downloads JSON file', async ({ page }) => {
 
   const [download] = await Promise.all([
     page.waitForEvent('download'),
-    page.locator('#settings-export').click(),
+    page.locator('#cfg-btn-export').click(),
   ]);
 
   expect(download.suggestedFilename()).toMatch(/\.json$/);
@@ -36,22 +36,17 @@ test('T104 [US15] import valid settings JSON applies immediately', async ({ page
 
   const settingsToImport = createTestSettings({ theme: 'dark', rowsPerPage: 5 });
 
-  const [fileChooser] = await Promise.all([
-    page.waitForEvent('filechooser'),
-    page.locator('#settings-import').click(),
-  ]);
-
   const fs = require('fs');
   const tmpPath = require('path').join(__dirname, 'tmp-settings-import.json');
   fs.writeFileSync(tmpPath, JSON.stringify(settingsToImport));
-  await fileChooser.setFiles(tmpPath);
+  await page.locator('#cfg-inp-import').setInputFiles(tmpPath);
   await page.waitForTimeout(500);
 
   // Verify settings applied
   const stored = await getLocalStorageSettings(page);
   expect(stored.theme).toBe('dark');
 
-  fs.unlinkSync(tmpPath);
+  try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
 // ─── T105: Import corrupt settings — error ───
@@ -62,24 +57,17 @@ test('T105 [US15] import corrupt settings shows error, settings unchanged', asyn
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  page.on('dialog', async (dialog) => await dialog.accept());
-
-  const [fileChooser] = await Promise.all([
-    page.waitForEvent('filechooser'),
-    page.locator('#settings-import').click(),
-  ]);
-
   const fs = require('fs');
   const tmpPath = require('path').join(__dirname, 'tmp-bad-settings.json');
   fs.writeFileSync(tmpPath, 'not valid json');
-  await fileChooser.setFiles(tmpPath);
+  await page.locator('#cfg-inp-import').setInputFiles(tmpPath);
   await page.waitForTimeout(500);
 
   // Settings unchanged
   const stored = await getLocalStorageSettings(page);
   expect(stored.theme).toBe('light');
 
-  fs.unlinkSync(tmpPath);
+  try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
 // ─── T106: Reset settings ───
@@ -92,7 +80,7 @@ test('T106 [US15] reset settings restores defaults', async ({ page }) => {
 
   page.on('dialog', async (dialog) => await dialog.accept());
 
-  await page.locator('#settings-reset').click();
+  await page.locator('#cfg-btn-reset').click();
   await page.waitForTimeout(300);
 
   // Settings should be reset to defaults

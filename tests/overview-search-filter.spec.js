@@ -14,7 +14,7 @@ test('T054 [US10] search "walk" filters to matching entries', async ({ page }) =
   const entries = {};
   for (let i = 0; i < 10; i++) {
     entries[getDateKey(i)] = createTestEntry({
-      action: i % 3 === 0 ? 'Take a walk' : 'Rest',
+      actions: i % 3 === 0 ? 'Take a walk' : 'Rest',
       thoughts: `Day ${i}`,
       coreFeeling: 'joy',
     });
@@ -23,11 +23,11 @@ test('T054 [US10] search "walk" filters to matching entries', async ({ page }) =
   await page.goto('/');
   await navigateToTab(page, 'overview');
 
-  await page.locator('#overview-search').fill('walk');
+  await page.locator('#ov-search').fill('walk');
   // Wait for filter to apply
   await page.waitForTimeout(300);
 
-  const rows = page.locator('#overview-body tr');
+  const rows = page.locator('#ov-tbody tr');
   const count = await rows.count();
   expect(count).toBeGreaterThan(0);
   expect(count).toBeLessThan(10);
@@ -42,11 +42,11 @@ test('T055 [US10] Last 7 days filter shows only recent entries', async ({ page }
   await page.goto('/');
   await navigateToTab(page, 'overview');
 
-  await page.locator('#overview-filter').selectOption('last7');
+  await page.locator('#ov-filter').selectOption('7');
   await page.waitForTimeout(500);
 
   // Each entry renders 2 rows (main + note), so count only main rows
-  const rows = page.locator('#overview-body tr:not(.overview-row-note)');
+  const rows = page.locator('#ov-tbody tr:not(.ov-row-note)');
   const count = await rows.count();
   expect(count).toBeLessThanOrEqual(7);
   expect(count).toBeGreaterThan(0);
@@ -59,10 +59,10 @@ test('T056 [US10] search "xyz" with no matches shows empty state', async ({ page
   await page.goto('/');
   await navigateToTab(page, 'overview');
 
-  await page.locator('#overview-search').fill('xyznonexistent');
+  await page.locator('#ov-search').fill('xyznonexistent');
   await page.waitForTimeout(300);
 
-  const emptyMessage = page.locator('#overview-empty');
+  const emptyMessage = page.locator('#ov-empty');
   await expect(emptyMessage).not.toBeEmpty();
 });
 
@@ -73,14 +73,14 @@ test('T058 [US10] clear search field shows all entries again', async ({ page }) 
   await page.goto('/');
   await navigateToTab(page, 'overview');
 
-  const allRowsBefore = await page.locator('#overview-body tr').count();
+  const allRowsBefore = await page.locator('#ov-tbody tr').count();
 
-  await page.locator('#overview-search').fill('walk');
+  await page.locator('#ov-search').fill('walk');
   await page.waitForTimeout(300);
-  await page.locator('#overview-search').fill('');
+  await page.locator('#ov-search').fill('');
   await page.waitForTimeout(300);
 
-  const allRowsAfter = await page.locator('#overview-body tr').count();
+  const allRowsAfter = await page.locator('#ov-tbody tr').count();
   expect(allRowsAfter).toBe(allRowsBefore);
 });
 
@@ -89,10 +89,10 @@ test('T058 [US10] clear search field shows all entries again', async ({ page }) 
 const dateFilters = [
   { value: 'all', label: 'All' },
   { value: 'today', label: 'Today' },
-  { value: 'last7', label: 'Last 7 days' },
-  { value: 'last14', label: 'Last 2 weeks' },
-  { value: 'lastMonth', label: 'Last month' },
-  { value: 'last3Months', label: 'Last 3 months' },
+  { value: '7', label: 'Last 7 days' },
+  { value: '14', label: 'Last 2 weeks' },
+  { value: '30', label: 'Last month' },
+  { value: '90', label: 'Last 3 months' },
 ];
 
 for (const filter of dateFilters) {
@@ -101,12 +101,12 @@ for (const filter of dateFilters) {
     await page.goto('/');
     await navigateToTab(page, 'overview');
 
-    await page.locator('#overview-filter').selectOption(filter.value);
+    await page.locator('#ov-filter').selectOption(filter.value);
     await page.waitForTimeout(300);
 
     // No crash, table is still visible
     if (filter.value === 'all') {
-      const rows = page.locator('#overview-body tr');
+      const rows = page.locator('#ov-tbody tr');
       await expect(rows.first()).toBeVisible();
     }
   });

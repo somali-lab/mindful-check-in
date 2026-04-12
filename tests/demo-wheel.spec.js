@@ -15,7 +15,7 @@ const VALID_WHEEL_TYPES = Object.keys(WHEEL_EMOTIONS);
 // ─── Helper: generate demo data and return all entries ───
 
 async function generateDemoAndGetEntries(page) {
-  await page.goto('/frontend-v4/');
+  await page.goto('/');
   // Auto-accept the confirm() dialog that generateDemo() fires
   page.on('dialog', async (dialog) => await dialog.accept());
 

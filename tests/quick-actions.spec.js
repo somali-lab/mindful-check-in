@@ -9,20 +9,20 @@ const {
 // ─── T107: Default quick actions render as chips ───
 
 test('T107 [US16] default quick actions render chips on check-in', async ({ page }) => {
-  await page.goto('/');
-  const chips = page.locator('#quick-actions-chips .qa-chip');
+  await page.goto('/#checkin');
+  const chips = page.locator('#ci-chips .quick-action-chip');
   await expect(chips.first()).toBeVisible();
 });
 
 // ─── T108: Click chip appends to action textarea ───
 
 test('T108 [US16] click chip appends text to action textarea', async ({ page }) => {
-  await page.goto('/');
-  const firstChip = page.locator('#quick-actions-chips .qa-chip').first();
+  await page.goto('/#checkin');
+  const firstChip = page.locator('#ci-chips .quick-action-chip').first();
   const chipText = await firstChip.textContent();
   await firstChip.click();
 
-  const action = await page.locator('#action').inputValue();
+  const action = await page.locator('#fld-action').inputValue();
   expect(action).toContain(chipText.trim());
 });
 
@@ -32,10 +32,10 @@ test('T109 [US16] type new action in settings and add', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  await page.locator('#quick-action-input').fill('Meditate');
-  await page.locator('#quick-action-add').click();
+  await page.locator('#qa-input').fill('Meditate');
+  await page.locator('#cfg-btn-add-qa').click();
 
-  const list = page.locator('#quick-actions-list');
+  const list = page.locator('#qa-list');
   await expect(list).toContainText('Meditate');
 });
 
@@ -46,13 +46,13 @@ test('T110 [US16] remove quick action from list', async ({ page }) => {
   await navigateToTab(page, 'settings');
 
   // Count items before
-  const itemsBefore = await page.locator('#quick-actions-list .quick-action-tag').count();
+  const itemsBefore = await page.locator('#qa-list .quick-action-tag').count();
 
   // Click remove on first item
-  const removeBtn = page.locator('#quick-actions-list .qa-remove').first();
+  const removeBtn = page.locator('#qa-list .qa-del').first();
   if (await removeBtn.count() > 0) {
     await removeBtn.click();
-    const itemsAfter = await page.locator('#quick-actions-list .quick-action-tag').count();
+    const itemsAfter = await page.locator('#qa-list .quick-action-tag').count();
     expect(itemsAfter).toBe(itemsBefore - 1);
   }
 });
@@ -64,15 +64,15 @@ test('T111 [US16] save custom actions, verify chips on check-in', async ({ page 
   await navigateToTab(page, 'settings');
 
   // Add a custom action
-  await page.locator('#quick-action-input').fill('Yoga session');
-  await page.locator('#quick-action-add').click();
+  await page.locator('#qa-input').fill('Yoga session');
+  await page.locator('#cfg-btn-add-qa').click();
 
   // Save settings
-  await page.locator('#settings-save').click();
+  await page.locator('#cfg-btn-save').click();
 
   // Go to check-in
   await navigateToTab(page, 'checkin');
 
-  const chips = page.locator('#quick-actions-chips');
+  const chips = page.locator('#ci-chips');
   await expect(chips).toContainText('Yoga session');
 });

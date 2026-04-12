@@ -70,11 +70,11 @@ async function mockWeatherAPI(page, weatherOverrides) {
     ...(weatherOverrides || {}),
   };
   const weatherResponse = {
-    current: {
-      temperature_2m: defaults.temperature,
-      weather_code: defaults.weathercode,
+    current_weather: {
+      temperature: defaults.temperature,
+      weathercode: defaults.weathercode,
       is_day: defaults.is_day,
-      wind_speed_10m: defaults.windspeed,
+      windspeed: defaults.windspeed,
     },
   };
   await page.route('**/api.open-meteo.com/**', (route) =>
@@ -220,8 +220,8 @@ const VISIBILITY_PRESETS = {
 // ─── Navigation helpers ───
 
 async function navigateToTab(page, tabName) {
-  await page.locator(`[data-tab-target="${tabName}"]`).click();
-  await page.locator(`[data-tab-panel="${tabName}"]`).waitFor({ state: 'visible' });
+  await page.locator(`[data-route="${tabName}"]`).click();
+  await page.locator(`#view-${tabName}`).waitFor({ state: 'visible' });
 }
 
 // ─── Date helpers ───

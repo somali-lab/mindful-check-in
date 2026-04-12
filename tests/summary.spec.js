@@ -10,21 +10,21 @@ const {
 // ─── T089: No entries — summary shows "not checked in" ───
 
 test('T089 [US21] no entries, summary shows empty/not checked in state', async ({ page }) => {
-  await page.goto('/');
-  const summary = page.locator('#summary-content');
-  await expect(summary).toContainText(/save|check/i);
+  await page.goto('/#checkin');
+  const summary = page.locator('#summary-slot');
+  await expect(summary).toContainText(/no entries|save|check/i);
 });
 
 // ─── T090: Save check-in today — summary updates ───
 
 test('T090 [US21] save check-in, summary shows checked in with streak 1', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  await page.locator('.emotion-segment[data-emotion="joy"]').click();
-  await page.locator('#save-checkin').click();
-  await expect(page.locator('#history-banner')).toHaveClass(/is-success/);
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await page.locator('#ci-btn-save').click();
+  await expect(page.locator('.toast--success')).toBeVisible();
 
-  const summary = page.locator('#summary-content');
+  const summary = page.locator('#summary-slot');
   await expect(summary).toContainText(/check/i);
   await expect(summary).toContainText('1');
 });
@@ -37,9 +37,9 @@ test('T091 [US21] 5 consecutive days entries, streak shows 5', async ({ page }) 
     entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy', moodScore: 3 });
   }
   await injectEntries(page, entries);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  const summary = page.locator('#summary-content');
+  const summary = page.locator('#summary-slot');
   await expect(summary).toContainText('5');
 });
 
@@ -54,10 +54,10 @@ test('T092 [US21] scattered entries show 7-day heatmap cells', async ({ page }) 
     });
   }
   await injectEntries(page, entries);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Verify heatmap cells exist in summary
-  const heatmapCells = page.locator('#summary-content .heat-day');
+  const heatmapCells = page.locator('#summary-slot .heat-day');
   await expect(heatmapCells).toHaveCount(7);
 });
 
@@ -69,8 +69,8 @@ test('T093 [US21] 10 entries shows total count 10', async ({ page }) => {
     entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy', moodScore: 3 });
   }
   await injectEntries(page, entries);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
-  const summary = page.locator('#summary-content');
+  const summary = page.locator('#summary-slot');
   await expect(summary).toContainText('10');
 });

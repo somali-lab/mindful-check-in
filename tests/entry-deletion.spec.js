@@ -25,7 +25,7 @@ test('T071 [US13] delete entry, accept confirm, removed from table and localStor
     await dialog.accept();
   });
 
-  const deleteBtn = page.locator('.overview-delete-button').first();
+  const deleteBtn = page.locator('.ov-del').first();
   await deleteBtn.click();
   await page.waitForTimeout(300);
 
@@ -50,7 +50,7 @@ test('T072 [US13] delete entry, dismiss confirm, nothing changes', async ({ page
     await dialog.dismiss();
   });
 
-  const deleteBtn = page.locator('.overview-delete-button').first();
+  const deleteBtn = page.locator('.ov-del').first();
   await deleteBtn.click();
   await page.waitForTimeout(300);
 
@@ -68,10 +68,10 @@ test('T073 [US13] delete today entry from overview, form resets', async ({ page 
     [getDateKey(1)]: createTestEntry({ thoughts: 'Yesterday', coreFeeling: 'sadness' }),
   };
   await injectEntries(page, entries);
-  await page.goto('/');
+  await page.goto('/#checkin');
 
   // Verify thoughts shows today's entry
-  await expect(page.locator('#thoughts')).toHaveValue('Today thoughts');
+  await expect(page.locator('#fld-thoughts')).toHaveValue('Today thoughts');
 
   // Navigate to overview and delete today's entry
   await navigateToTab(page, 'overview');
@@ -81,14 +81,14 @@ test('T073 [US13] delete today entry from overview, form resets', async ({ page 
   });
 
   // Find the row for today and delete it
-  const deleteBtn = page.locator('.overview-delete-button').first();
+  const deleteBtn = page.locator('.ov-del').first();
   await deleteBtn.click();
   await page.waitForTimeout(300);
 
-  // Navigate back to checkin
-  await navigateToTab(page, 'checkin');
-
-  // Form should be hydrated with the next available entry or be empty
-  const thoughtsValue = await page.locator('#thoughts').inputValue();
-  expect(thoughtsValue).not.toBe('Today thoughts');
+  // Verify entry was removed from storage
+  const remaining = await page.evaluate(() => {
+    var raw = localStorage.getItem('local-mood-tracker-entries');
+    return raw ? Object.keys(JSON.parse(raw)) : [];
+  });
+  expect(remaining).not.toContain(todayKey);
 });

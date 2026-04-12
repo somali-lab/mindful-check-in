@@ -16,7 +16,11 @@ test('T124 [US24] generate demo data creates entries in localStorage', async ({ 
   await page.goto('/');
   await navigateToTab(page, 'info');
 
-  await page.locator('#generate-demo-data').click();
+  // generateDemo() calls confirm() — accept it
+  page.on('dialog', async (dialog) => await dialog.accept());
+
+  await page.locator('#demo-btn-generate').click();
+  await page.waitForTimeout(500);
 
   const entries = await getLocalStorageEntries(page);
   expect(Object.keys(entries).length).toBeGreaterThanOrEqual(20);
@@ -27,10 +31,13 @@ test('T124 [US24] generate demo data creates entries in localStorage', async ({ 
 test('T125 [US24] demo data entries appear in overview', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'info');
-  await page.locator('#generate-demo-data').click();
+
+  page.on('dialog', async (dialog) => await dialog.accept());
+  await page.locator('#demo-btn-generate').click();
+  await page.waitForTimeout(500);
 
   await navigateToTab(page, 'overview');
-  const rows = page.locator('#overview-body tr');
+  const rows = page.locator('#ov-tbody tr');
   await expect(rows.first()).toBeVisible();
   const count = await rows.count();
   expect(count).toBeGreaterThan(0);
@@ -45,7 +52,10 @@ test('T126 [US24] demo data adds alongside existing entries', async ({ page }) =
   await injectEntries(page, existing);
   await page.goto('/');
   await navigateToTab(page, 'info');
-  await page.locator('#generate-demo-data').click();
+
+  page.on('dialog', async (dialog) => await dialog.accept());
+  await page.locator('#demo-btn-generate').click();
+  await page.waitForTimeout(500);
 
   const entries = await getLocalStorageEntries(page);
   // Original entry should still exist
@@ -70,14 +80,14 @@ test('T127 [US25] clear all local data removes all localStorage keys', async ({ 
   await page.reload();
   await navigateToTab(page, 'info');
 
-  // Accept confirm dialog
+  // clearAll() calls confirm() TWICE — accept both
   page.on('dialog', async (dialog) => await dialog.accept());
 
-  await page.locator('#clear-local-storage').click();
+  await page.locator('#demo-btn-clear').click();
 
-  // localStorage.clear() triggers page reload — wait for it
+  // clearAll() reloads after 1500ms — wait for it
+  await page.waitForTimeout(2000);
   await page.waitForLoadState('load');
-  await page.waitForTimeout(500);
 
   const stored = await getLocalStorageEntries(page);
   // Should be empty or null
@@ -95,10 +105,10 @@ test('T128 [US25] dismiss clear data confirm, nothing deleted', async ({ page })
   await page.goto('/');
   await navigateToTab(page, 'info');
 
-  // Dismiss confirm dialog
+  // Dismiss first confirm dialog — clearAll returns early
   page.on('dialog', async (dialog) => await dialog.dismiss());
 
-  await page.locator('#clear-local-storage').click();
+  await page.locator('#demo-btn-clear').click();
   await page.waitForTimeout(300);
 
   const stored = await getLocalStorageEntries(page);
