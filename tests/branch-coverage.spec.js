@@ -401,8 +401,8 @@ test('sort overview by thoughts column', async ({ page }) => {
 
 test('sort overview by coreFeeling column', async ({ page }) => {
   const entries = {};
-  entries[getDateKey(0)] = createTestEntry({ selectedEmotion: 'joy' });
-  entries[getDateKey(1)] = createTestEntry({ selectedEmotion: 'anger' });
+  entries[getDateKey(0)] = createTestEntry({ coreFeeling: 'joy' });
+  entries[getDateKey(1)] = createTestEntry({ coreFeeling: 'anger' });
   await injectEntries(page, entries);
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -433,8 +433,8 @@ test('sort overview by bodySignals column', async ({ page }) => {
 
 test('sort overview by moodMatrix column', async ({ page }) => {
   const entries = {};
-  entries[getDateKey(0)] = createTestEntry({ moodGrid: { energy: 8, valence: 3 } });
-  entries[getDateKey(1)] = createTestEntry({ moodGrid: { energy: 2, valence: 9 } });
+  entries[getDateKey(0)] = createTestEntry({ moodRow: 7, moodCol: 2 });
+  entries[getDateKey(1)] = createTestEntry({ moodRow: 1, moodCol: 8 });
   await injectEntries(page, entries);
   await page.goto('/');
   await navigateToTab(page, 'overview');

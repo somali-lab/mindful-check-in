@@ -45,7 +45,7 @@ test('T066 [US12] import valid JSON into empty app adds entries', async ({ page 
       entryKey: getDateKey(i),
       ...createTestEntry({
         thoughts: `Imported ${i}`,
-        selectedEmotion: 'joy',
+        coreFeeling: 'joy',
       }),
     });
   }

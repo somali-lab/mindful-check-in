@@ -62,6 +62,12 @@
   transition: stroke-width 180ms ease, opacity 180ms ease, transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
   transform-box: fill-box;
   transform-origin: center;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.emotion-segment:focus {
+  outline: none;
 }
 
 .emotion-segment:hover {
@@ -74,21 +80,25 @@
   filter: brightness(1.1) drop-shadow(0 0 0.35rem rgba(79, 70, 229, 0.4));
 }
 
-#emotion-wheel.has-selection .emotion-segment:not(.is-selected) {
+#wheel-svg.has-selection .emotion-segment:not(.is-selected) {
   opacity: 0.62;
 }
 
 .emotion-segment-label {
   font-size: 13px;
   font-weight: 700;
-  fill: var(--segment-label-fill);
   text-anchor: middle;
   dominant-baseline: middle;
   pointer-events: none;
   user-select: none;
+  fill: var(--text-on-color);
 }
 
-/* ── Body Figure (uses --body-part-* variables from base.css) ── */
+.segment-label--light {
+  fill: var(--text-on-color-inv);
+}
+
+/* ── Body Figure ── */
 .body-figure {
   display: flex;
   justify-content: center;
@@ -117,7 +127,7 @@
 }
 
 .body-figure .body-part.back-zone:hover,
-.body-figure .body-part.back-zone.is-selected {
+.body-figure .body-part.back-zone.is-on {
   opacity: 1;
 }
 
@@ -126,7 +136,7 @@
   stroke: var(--body-part-hover-stroke);
 }
 
-.body-figure .body-part.is-selected {
+.body-figure .body-part.is-on {
   fill: var(--body-part-selected-fill);
   stroke: var(--body-part-selected-stroke);
 }
@@ -223,7 +233,7 @@
 
 .energy-scale span:hover {
   background: var(--accent);
-  color: #fff;
+  color: var(--text-on-accent);
 }
 
 .energy-note-input {
@@ -303,8 +313,8 @@
   padding: 16px 18px 40px 74px;
   border: 1px solid var(--border-light);
   border-radius: 16px;
-  background: var(--bg-mood-wrapper);
-  overflow: visible;
+  background: var(--bg-surface-alt);
+  overflow: hidden;
 }
 
 .mood-grid {
@@ -328,10 +338,17 @@
   font-size: 0.76rem;
   line-height: 1.1;
   text-align: center;
-  color: var(--text-body);
+  color: var(--text-on-color);
+  text-shadow: var(--mood-cell-text-shadow);
   overflow-wrap: anywhere;
   cursor: pointer;
   transition: transform 110ms ease, box-shadow 110ms ease;
+}
+
+/* Light-background cells get dark text, no shadow */
+.mood-cell.mood-cell--light {
+  color: var(--text-on-color-inv);
+  text-shadow: none;
 }
 
 .mood-cell:hover,
@@ -343,10 +360,10 @@
 }
 
 .mood-cell.is-selected {
-  box-shadow: inset 0 0 0 3px var(--mood-cell-selected-inset), var(--mood-cell-selected-shadow);
   outline: 3px solid var(--mood-cell-selected-outline);
   outline-offset: 2px;
-  transform: scale(1.08);
+  box-shadow: inset 0 0 0 3px var(--mood-cell-selected-inset), var(--mood-cell-selected-shadow);
+  transform: scale(1.12);
   z-index: 2;
   font-weight: 700;
 }

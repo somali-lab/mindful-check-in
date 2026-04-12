@@ -123,17 +123,20 @@ function createTestEntry(overrides) {
   return {
     id: 'test-' + Math.random().toString(36).slice(2, 10),
     thoughts: '',
-    selectedEmotion: null,
+    coreFeeling: '',
     wheelType: 'act',
     customFeelings: '',
     energy: { physical: null, mental: null, emotional: null },
     bodySignals: [],
     bodyNote: '',
     energyNote: '',
-    action: '',
+    actions: '',
     note: '',
-    moodGrid: null,
-    mood: null,
+    moodRow: -1,
+    moodCol: -1,
+    moodLabel: '',
+    moodColor: '',
+    moodScore: 2,
     weather: null,
     updatedAt: new Date().toISOString(),
     ...(overrides || {}),
@@ -245,20 +248,20 @@ function getDateKey(daysAgo) {
 function generateEntries(count, options) {
   const entries = {};
   const emotions = ['joy', 'sadness', 'anger', 'fear', 'trust', 'surprise'];
-  const moods = ['great', 'okay', 'low'];
   for (let i = 0; i < count; i++) {
     const key = getDateKey(i);
     entries[key] = createTestEntry({
-      selectedEmotion: emotions[i % emotions.length],
-      mood: moods[i % moods.length],
+      coreFeeling: emotions[i % emotions.length],
+      moodScore: [3, 2, 1][i % 3],
       thoughts: `Thought for day ${i}`,
       energy: {
         physical: Math.round(Math.random() * 100),
         mental: Math.round(Math.random() * 100),
         emotional: Math.round(Math.random() * 100),
       },
-      moodGrid: { energy: (i % 10) + 1, valence: ((i + 3) % 10) + 1 },
-      action: i % 3 === 0 ? 'Take a walk' : '',
+      moodRow: i % 10,
+      moodCol: (i + 3) % 10,
+      actions: i % 3 === 0 ? 'Take a walk' : '',
       note: i % 4 === 0 ? `Note for day ${i}` : '',
       updatedAt: new Date(Date.now() - i * 86400000).toISOString(),
       ...(options || {}),

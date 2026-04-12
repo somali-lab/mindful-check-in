@@ -20,7 +20,7 @@ test('T134 XSS script tag in thoughts escaped as literal text', async ({ page })
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     thoughts: '<script>alert(1)</script>',
-    selectedEmotion: 'joy',
+    coreFeeling: 'joy',
   });
   await injectEntries(page, { [todayKey]: entry });
   await page.goto('/');
@@ -40,7 +40,7 @@ test('T135 XSS img onerror in note escaped in rendered output', async ({ page })
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     note: '<img onerror=alert(1) src=x>',
-    selectedEmotion: 'joy',
+    coreFeeling: 'joy',
   });
   await injectEntries(page, { [todayKey]: entry });
   await page.goto('/');
@@ -173,7 +173,7 @@ test('T142 import entries with unknown fields, only known fields kept', async ({
   const entries = [
     {
       entryKey: getDateKey(0),
-      ...createTestEntry({ thoughts: 'Valid', selectedEmotion: 'joy' }),
+      ...createTestEntry({ thoughts: 'Valid', coreFeeling: 'joy' }),
       unknownField: 'should be ignored or kept harmlessly',
       anotherField: 12345,
     },
@@ -267,7 +267,7 @@ test('T144 disable then re-enable components, no stale state', async ({ page }) 
 
 test('T145 localStorage persistence across page reload', async ({ page }) => {
   const todayKey = getTodayKey();
-  const entries = { [todayKey]: createTestEntry({ thoughts: 'Persist test', selectedEmotion: 'joy' }) };
+  const entries = { [todayKey]: createTestEntry({ thoughts: 'Persist test', coreFeeling: 'joy' }) };
   const settings = createTestSettings({ theme: 'dark' });
 
   await injectEntries(page, entries);
@@ -365,8 +365,8 @@ test('T155 entries at 23:59 and 00:01 stored under different date keys', async (
   const td = String(today.getDate()).padStart(2, '0');
   const earlyKey = `${ty}-${tm}-${td}_000100000`; // 00:01 today
 
-  const lateEntry = createTestEntry({ thoughts: 'Before midnight', selectedEmotion: 'sadness' });
-  const earlyEntry = createTestEntry({ thoughts: 'After midnight', selectedEmotion: 'joy' });
+  const lateEntry = createTestEntry({ thoughts: 'Before midnight', coreFeeling: 'sadness' });
+  const earlyEntry = createTestEntry({ thoughts: 'After midnight', coreFeeling: 'joy' });
 
   await injectEntries(page, {
     [lateKey]: lateEntry,

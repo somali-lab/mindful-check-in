@@ -48,7 +48,7 @@ test('T076 [US14] set max chars to 30, overview cells truncated', async ({ page 
   for (let i = 0; i < 3; i++) {
     entries[getDateKey(i)] = createTestEntry({
       thoughts: 'This is a very long thought that should be truncated at thirty characters definitely',
-      selectedEmotion: 'joy',
+      coreFeeling: 'joy',
     });
   }
   await injectEntries(page, entries);

@@ -82,9 +82,9 @@
   font-size: 0.875rem;
 }
 
-.info-privacy-ok   { color: #16a34a; }
+.info-privacy-ok   { color: var(--info-ok); }
 .info-privacy-note { color: var(--accent); }
-.info-privacy-warn { color: #d97706; }
+.info-privacy-warn { color: var(--info-warn); }
 
 .info-storage-callout {
   margin-top: 12px;
@@ -137,6 +137,77 @@
 
 .info-score-priority li span {
   color: var(--text-muted);
+}
+
+.info-score-sub {
+  margin: 14px 0 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.info-score-sub + p {
+  margin: 0 0 6px;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Accordion for emotion scores */
+.info-accordion {
+  margin: 6px 0 10px;
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.info-accordion summary {
+  padding: 8px 12px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  cursor: pointer;
+  background: var(--bg-surface);
+  list-style: none;
+}
+.info-accordion summary::-webkit-details-marker { display: none; }
+.info-accordion summary::before {
+  content: "\25B6";
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+.info-accordion[open] summary::before {
+  transform: rotate(90deg);
+}
+.info-accordion-body {
+  padding: 8px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.info-score-group {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  flex-wrap: wrap;
+}
+.info-score-group strong {
+  color: var(--text-strong);
+  white-space: nowrap;
+}
+.info-score-group span:last-child {
+  color: var(--text-muted);
+}
+.info-score-dot-inline {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  top: 1px;
 }
 
 .info-score-subheading {
@@ -197,11 +268,4 @@
   color: var(--text-muted);
   font-style: italic;
   line-height: 1.5;
-}
-
-/* ── Info: Tools ── */
-.info-tools-intro {
-  margin: 0 0 12px;
-  color: var(--text-muted);
-  font-size: 0.875rem;
 }

@@ -4,678 +4,641 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mindful Check-in</title>
-  <link rel="stylesheet" href="css/base.css?v=3.0.0">
-  <link rel="stylesheet" href="css/layout.css?v=3.0.0">
-  <link rel="stylesheet" href="css/components.css?v=3.0.0">
-  <link rel="stylesheet" href="css/checkin.css?v=3.0.0">
-  <link rel="stylesheet" href="css/overview.css?v=3.0.0">
-  <link rel="stylesheet" href="css/settings.css?v=3.0.0">
-  <link rel="stylesheet" href="css/summary.css?v=3.0.0">
-  <link rel="stylesheet" href="css/weather.css?v=3.0.0">
-  <link rel="stylesheet" href="css/info.css?v=3.0.0">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/checkin.css">
+  <link rel="stylesheet" href="css/overview.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/summary.css">
+  <link rel="stylesheet" href="css/weather.css">
+  <link rel="stylesheet" href="css/info.css">
 </head>
 <body>
-  <main class="app-shell">
-    <header class="hero">
-      <div class="hero-topline">
-        <div class="tab-switch" role="tablist" aria-label="Section tabs">
-          <button type="button" class="tab-button is-selected" data-tab-target="checkin" data-i18n="tabs.checkin" role="tab" aria-selected="true">Check-in</button>
-          <button type="button" class="tab-button" data-tab-target="overview" data-i18n="tabs.overview" role="tab" aria-selected="false">Overview</button>
-          <button type="button" class="tab-button" data-tab-target="settings" data-i18n="tabs.settings" role="tab" aria-selected="false">Settings</button>
-          <button type="button" class="tab-button" data-tab-target="info" data-i18n="tabs.info" role="tab" aria-selected="false">Info</button>
-        </div>
+<noscript><p style="padding:2rem;text-align:center" data-t="noscript">JavaScript is required.</p></noscript>
 
-        <h1 data-i18n="header.title">Mindful Check-in</h1>
-        <div class="hero-controls">
-          <div class="theme-switch" role="group" aria-label="Theme switch">
-            <button type="button" class="theme-button" data-theme-value="light" aria-label="Light theme" title="Light">
-              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
-                <circle cx="8" cy="8" r="3"/>
-                <line x1="8" y1="1" x2="8" y2="2.5"/>
-                <line x1="8" y1="13.5" x2="8" y2="15"/>
-                <line x1="1" y1="8" x2="2.5" y2="8"/>
-                <line x1="13.5" y1="8" x2="15" y2="8"/>
-                <line x1="3.1" y1="3.1" x2="4.2" y2="4.2"/>
-                <line x1="11.8" y1="11.8" x2="12.9" y2="12.9"/>
-                <line x1="12.9" y1="3.1" x2="11.8" y2="4.2"/>
-                <line x1="4.2" y1="11.8" x2="3.1" y2="12.9"/>
-              </svg>
-            </button>
-            <button type="button" class="theme-button" data-theme-value="dark" aria-label="Dark theme" title="Dark">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                <path d="M13.5 10.5A6 6 0 0 1 5.5 2.5a6 6 0 1 0 8 8z"/>
-              </svg>
-            </button>
-            <button type="button" class="theme-button" data-theme-value="system" aria-label="System theme" title="System">
-              <svg width="16" height="15" viewBox="0 0 18 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="1" y="1.5" width="16" height="10" rx="1.5"/>
-                <line x1="6" y1="14" x2="12" y2="14"/>
-                <line x1="9" y1="11.5" x2="9" y2="14"/>
-              </svg>
-            </button>
-          </div>
-          <div class="language-switch" role="group" aria-label="Language switch">
-            <button type="button" class="language-button" data-language="nl" aria-pressed="false">NL</button>
-            <button type="button" class="language-button is-selected" data-language="en" aria-pressed="true">EN</button>
-          </div>
-        </div>
+<div class="app-layout">
+
+  <!-- ════════════════════════════════════════════════════════
+       NAVIGATION RAIL — icon sidebar (bottom-bar on mobile)
+       ════════════════════════════════════════════════════════ -->
+  <nav class="nav-rail" role="navigation" aria-label="Main navigation">
+    <div class="nav-rail-logo" aria-hidden="true">🧘</div>
+
+    <div class="nav-rail-main">
+      <button class="nav-rail-btn is-active" data-route="home" aria-label="Home" title="Home">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/>
+        </svg>
+      </button>
+      <button class="nav-rail-btn" data-route="checkin" aria-label="Check-in" title="Check-in">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/>
+        </svg>
+      </button>
+      <button class="nav-rail-btn" data-route="overview" aria-label="Overview" title="Overview">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 14h6m-6-4h6m-6 8h4"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="nav-rail-footer">
+      <button class="nav-rail-btn" data-route="settings" aria-label="Settings" title="Settings">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.573-1.066z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+      <button class="nav-rail-btn" data-route="info" aria-label="Info" title="Info">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ════════════════════════════════════════════════════════ -->
+  <div class="main-content">
+
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="app-header-left">
+        <h1 data-t="appTitle">Mindful Check-in</h1>
       </div>
-
-      <div class="hero-rail">
-        <div class="hero-message-bar">
-          <div class="history-banner is-hidden" id="history-banner" aria-live="polite"></div>
+      <div class="app-header-right">
+        <div class="theme-switch" id="theme-btns" role="group" aria-label="Theme switch">
+          <button type="button" class="theme-button" data-theme-pick="light" aria-label="Light theme" title="Light">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+              <circle cx="8" cy="8" r="3"/>
+              <line x1="8" y1="1" x2="8" y2="2.5"/>
+              <line x1="8" y1="13.5" x2="8" y2="15"/>
+              <line x1="1" y1="8" x2="2.5" y2="8"/>
+              <line x1="13.5" y1="8" x2="15" y2="8"/>
+              <line x1="3.1" y1="3.1" x2="4.2" y2="4.2"/>
+              <line x1="11.8" y1="11.8" x2="12.9" y2="12.9"/>
+              <line x1="12.9" y1="3.1" x2="11.8" y2="4.2"/>
+              <line x1="4.2" y1="11.8" x2="3.1" y2="12.9"/>
+            </svg>
+          </button>
+          <button type="button" class="theme-button" data-theme-pick="dark" aria-label="Dark theme" title="Dark">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path d="M13.5 10.5A6 6 0 0 1 5.5 2.5a6 6 0 1 0 8 8z"/>
+            </svg>
+          </button>
+          <button type="button" class="theme-button is-selected" data-theme-pick="system" aria-label="System theme" title="System">
+            <svg width="16" height="15" viewBox="0 0 18 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="1" y="1.5" width="16" height="10" rx="1.5"/>
+              <line x1="6" y1="14" x2="12" y2="14"/>
+              <line x1="9" y1="11.5" x2="9" y2="14"/>
+            </svg>
+          </button>
         </div>
-        <div class="checkin-toolbar" id="checkin-toolbar">
-          <div class="checkin-toolbar-main">
-            <div class="checkin-toolbar-left">
-              <div class="checkin-context-pill" id="checkin-context-pill"></div>
-            </div>
-            <div class="checkin-save-row">
-              <button type="button" class="save-button save-button--secondary" id="new-checkin" data-i18n="checkin.newCheckin">New check-in</button>
-              <button type="button" class="save-button checkin-save-button" id="save-checkin" data-i18n="checkin.saveShort">Save</button>
-            </div>
-          </div>
-        </div>
-        <div class="hero-toolbar-section is-hidden" id="overview-toolbar">
-          <div class="checkin-save-row">
-            <button type="button" class="save-button save-button--secondary" id="overview-export" data-i18n="overview.export">Export</button>
-            <button type="button" class="save-button save-button--secondary" id="overview-import" data-i18n="overview.import">Import</button>
-          </div>
-        </div>
-        <div class="hero-toolbar-section is-hidden" id="settings-toolbar">
-          <div class="checkin-save-row">
-            <button type="button" class="save-button save-button--secondary" id="settings-reset" data-i18n="settings.buttons.reset">Reset defaults</button>
-            <button type="button" class="save-button save-button--secondary" id="settings-export" data-i18n="settings.buttons.export">Export settings</button>
-            <button type="button" class="save-button save-button--secondary" id="settings-import" data-i18n="settings.buttons.import">Import settings</button>
-            <button type="button" class="save-button" id="settings-save" data-i18n="settings.buttons.save">Save settings</button>
-          </div>
+        <div class="language-switch" id="lang-btns" role="group" aria-label="Language switch">
+          <button type="button" class="language-button is-selected" data-lang-pick="en" aria-pressed="true">EN</button>
+          <button type="button" class="language-button" data-lang-pick="nl" aria-pressed="false">NL</button>
         </div>
       </div>
     </header>
 
-    <div class="tab-panel is-active" data-tab-panel="checkin">
-    <section class="card">
+    <!-- ══════════════════════════════════════════════════════
+         HOME / DASHBOARD VIEW
+         ══════════════════════════════════════════════════════ -->
+    <div class="view is-active" id="view-home">
+      <div class="view-content">
+        <div class="home-hero">
+          <p class="home-subtitle" data-t="appTitle">Mindful Check-in</p>
+          <h1 class="home-greeting" data-t="homeGreeting">How are you today?</h1>
+        </div>
 
-      <div class="section-group thoughts-weather-row">
-        <div class="weather-column" data-component="weather">
-          <label class="field-label" data-i18n="weather.label">Weather</label>
-          <div class="weather-widget" id="weather-widget">
-            <div class="weather-icon" id="weather-icon"></div>
-            <div class="weather-details">
-              <span class="weather-temp" id="weather-temp">--</span>
-              <span class="weather-desc" id="weather-desc" data-i18n="weather.loading">Loading...</span>
-              <span class="weather-location" id="weather-location"></span>
+        <!-- Stats left + Heatmap center + Stats right -->
+        <div class="home-body">
+          <div class="home-stats home-stats--left">
+            <div class="bento-card">
+              <span class="bento-label" data-t="statStreak">Streak</span>
+              <span class="bento-value" id="home-streak">0</span>
+              <span class="bento-sub" data-t="homeDays">days</span>
+            </div>
+            <div class="bento-card">
+              <span class="bento-label" data-t="statTotal">Total</span>
+              <span class="bento-value" id="home-total">0</span>
+              <span class="bento-sub" data-t="homeEntries">entries</span>
+            </div>
+          </div>
+          <div class="bento-card home-heatmap-card">
+            <span class="bento-label" data-t="historyTitle">28-Day History</span>
+            <div class="home-heatmap" id="home-heatmap"></div>
+          </div>
+          <div class="home-stats home-stats--right">
+            <div class="bento-card">
+              <span class="bento-label" data-t="statAvgMood">Avg Mood</span>
+              <span class="bento-value" id="home-avg">&mdash;</span>
+              <span class="bento-sub" id="home-status"></span>
+            </div>
+            <div class="bento-card">
+              <span class="bento-label" data-t="statTopFeeling">Top Feeling</span>
+              <span class="bento-mood" id="home-mood">&mdash;</span>
+              <span class="bento-sub" data-t="homeLastMood">Last mood</span>
             </div>
           </div>
         </div>
-        <div class="thoughts-field" data-component="thoughts">
-          <label class="field-label" for="thoughts" data-i18n="fields.thoughts.label">Thoughts</label>
-          <textarea id="thoughts" rows="4" data-i18n-placeholder="fields.thoughts.placeholder" placeholder="What thoughts come to mind?"></textarea>
-        </div>
+
+        <!-- Start CTA button -->
+        <button type="button" class="home-cta" id="home-btn-checkin" data-t="homeStartCheckin">Start today's check-in</button>
       </div>
+    </div>
 
-      <div class="section-group three-column">
-        <div class="checkin-block feeling-panel" data-component="coreFeeling">
-          <div class="checkin-block-header">
-            <label class="field-label" data-i18n="fields.feelings.label">Core feeling</label>
-            <div class="section-actions">
-              <button type="button" class="reset-button" id="reset-feeling" data-i18n="buttons.reset">Reset</button>
+    <!-- ══════════════════════════════════════════════════════
+         CHECK-IN VIEW
+         ══════════════════════════════════════════════════════ -->
+    <div class="view" id="view-checkin">
+      <div class="view-content">
+
+        <!-- Toolbar: context pill + save buttons -->
+        <div class="checkin-toolbar">
+          <div class="checkin-toolbar-left">
+            <div class="checkin-context-pill" id="ci-pill" data-t="pillNew">New · not saved yet</div>
+          </div>
+          <div class="checkin-save-row">
+            <button type="button" class="save-button save-button--secondary" id="ci-btn-new" data-t="btnNewCheckin">New check-in</button>
+            <button type="button" class="save-button" id="ci-btn-save" data-t="btnSave">Save check-in</button>
+          </div>
+        </div>
+
+        <section class="card">
+
+          <!-- Thoughts + Weather row -->
+          <div class="section-group thoughts-weather-row">
+            <div class="weather-column" data-component="weather">
+              <label class="field-label" data-t="labelWeather">Weather</label>
+              <div class="weather-widget" id="weather-slot">
+                <span data-t="weatherLoading">Loading weather…</span>
+              </div>
+            </div>
+            <div class="thoughts-field" data-component="thoughts">
+              <label class="field-label" for="fld-thoughts" data-t="labelThoughts">Thoughts</label>
+              <textarea id="fld-thoughts" rows="4" data-t-placeholder="placeholderThoughts" placeholder="What's on your mind?"></textarea>
             </div>
           </div>
-          <div class="section-actions">
-            <select id="wheel-type" class="wheel-select">
-              <option value="act">ACT (8)</option>
-              <option value="plutchik">Plutchik (8)</option>
-              <option value="ekman">Ekman (6)</option>
-              <option value="junto">Junto (6)</option>
-              <option value="extended">Extended (12)</option>
+
+          <!-- Three-column: feeling, body, energy -->
+          <div class="section-group three-column">
+
+            <!-- Core Feeling -->
+            <div class="checkin-block feeling-panel" data-component="coreFeeling">
+              <div class="checkin-block-header">
+                <label class="field-label" data-t="labelCoreFeeling">Core Feeling</label>
+                <div class="section-actions">
+                  <button type="button" class="reset-button" id="whl-btn-reset" data-t="btnReset">Reset</button>
+                </div>
+              </div>
+              <div class="section-actions">
+                <select id="sel-wheel" class="wheel-select">
+                  <option value="act">ACT (8)</option>
+                  <option value="plutchik">Plutchik (8)</option>
+                  <option value="ekman">Ekman (6)</option>
+                  <option value="junto">Junto (6)</option>
+                  <option value="extended">Extended (12)</option>
+                </select>
+              </div>
+              <svg class="emotion-wheel" id="wheel-svg" viewBox="0 0 360 360" role="group" data-t-aria="labelCoreFeeling"></svg>
+              <div class="selection-display is-empty" id="wheel-display" data-t="emotionNone">No feeling selected</div>
+              <label class="field-label checkin-block-note-label" for="fld-custom" data-t="labelCustomFeelings">Additional feelings</label>
+              <textarea id="fld-custom" rows="2" data-t-placeholder="placeholderCustom" placeholder="Other feelings…"></textarea>
+            </div>
+
+            <!-- Body Signals -->
+            <div class="checkin-block body-panel" data-component="bodySignals">
+              <div class="checkin-block-header">
+                <label class="field-label" data-t="labelBodySignals">Body Signals</label>
+                <div class="section-actions">
+                  <button type="button" class="reset-button" id="bdy-btn-reset" data-t="btnReset">Reset</button>
+                </div>
+              </div>
+              <div class="body-figure" id="body-svg" role="group" data-t-aria="labelBodySignals">
+                <svg class="body-figure-svg" viewBox="0 0 120 240" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <ellipse cx="60" cy="25" rx="15" ry="18" class="body-part bz" data-zone="head" fill="#f8fafc"/>
+                  <rect x="55" y="43" width="10" height="8" class="body-part bz" data-zone="neck" fill="#f8fafc"/>
+                  <ellipse cx="42" cy="58" rx="8" ry="6" class="body-part bz" data-zone="left-shoulder" fill="#f8fafc"/>
+                  <ellipse cx="78" cy="58" rx="8" ry="6" class="body-part bz" data-zone="right-shoulder" fill="#f8fafc"/>
+                  <ellipse cx="60" cy="77" rx="18" ry="20" class="body-part bz" data-zone="chest" fill="#f8fafc"/>
+                  <ellipse cx="60" cy="106" rx="16" ry="18" class="body-part bz" data-zone="abdomen" fill="#f8fafc"/>
+                  <ellipse cx="35" cy="76" rx="6" ry="15" class="body-part bz" data-zone="left-upper-arm" fill="#f8fafc"/>
+                  <ellipse cx="85" cy="76" rx="6" ry="15" class="body-part bz" data-zone="right-upper-arm" fill="#f8fafc"/>
+                  <circle cx="32" cy="93" r="4.5" class="body-part bz" data-zone="left-elbow" fill="#f8fafc"/>
+                  <circle cx="88" cy="93" r="4.5" class="body-part bz" data-zone="right-elbow" fill="#f8fafc"/>
+                  <ellipse cx="28" cy="110" rx="5.5" ry="12" class="body-part bz" data-zone="left-forearm" fill="#f8fafc"/>
+                  <ellipse cx="92" cy="110" rx="5.5" ry="12" class="body-part bz" data-zone="right-forearm" fill="#f8fafc"/>
+                  <ellipse cx="26" cy="126" rx="4.5" ry="6.5" class="body-part bz" data-zone="left-hand" fill="#f8fafc"/>
+                  <ellipse cx="94" cy="126" rx="4.5" ry="6.5" class="body-part bz" data-zone="right-hand" fill="#f8fafc"/>
+                  <ellipse cx="53" cy="136" rx="10" ry="11" class="body-part bz" data-zone="left-hip" fill="#f8fafc"/>
+                  <ellipse cx="67" cy="136" rx="10" ry="11" class="body-part bz" data-zone="right-hip" fill="#f8fafc"/>
+                  <ellipse cx="50" cy="171" rx="9" ry="27" class="body-part bz" data-zone="left-upper-leg" fill="#f8fafc"/>
+                  <ellipse cx="70" cy="171" rx="9" ry="27" class="body-part bz" data-zone="right-upper-leg" fill="#f8fafc"/>
+                  <circle cx="50" cy="198" r="6" class="body-part bz" data-zone="left-knee" fill="#f8fafc"/>
+                  <circle cx="70" cy="198" r="6" class="body-part bz" data-zone="right-knee" fill="#f8fafc"/>
+                  <ellipse cx="48" cy="216" rx="6.5" ry="14" class="body-part bz" data-zone="left-lower-leg" fill="#f8fafc"/>
+                  <ellipse cx="72" cy="216" rx="6.5" ry="14" class="body-part bz" data-zone="right-lower-leg" fill="#f8fafc"/>
+                  <ellipse cx="46" cy="232" rx="6" ry="7" class="body-part bz" data-zone="left-foot" fill="#f8fafc"/>
+                  <ellipse cx="74" cy="232" rx="6" ry="7" class="body-part bz" data-zone="right-foot" fill="#f8fafc"/>
+                  <rect x="55" y="51" width="10" height="36" rx="3" class="body-part bz back-zone" data-zone="upper-back"/>
+                  <rect x="55" y="90" width="10" height="34" rx="3" class="body-part bz back-zone" data-zone="lower-back"/>
+                </svg>
+              </div>
+              <div class="selection-display is-empty" id="body-display" data-t="bodyNone">No body signals selected</div>
+              <label class="field-label checkin-block-note-label" for="fld-body-note" data-t="labelBodyNote">Body note</label>
+              <textarea id="fld-body-note" rows="2" data-t-placeholder="placeholderBodyNote" placeholder="Note about your body…"></textarea>
+            </div>
+
+            <!-- Energy Levels -->
+            <div class="checkin-block energy-panel" data-component="energyPanel">
+              <div class="checkin-block-header">
+                <label class="field-label" data-t="labelEnergy">Energy Levels</label>
+                <div class="section-actions">
+                  <button type="button" class="reset-button" id="nrg-btn-reset" data-t="btnReset">Reset</button>
+                </div>
+              </div>
+              <div class="energy-triple" id="energy-slot">
+                <!-- Built by energy.js -->
+              </div>
+              <div class="selection-display is-empty" id="energy-display"></div>
+              <label class="field-label checkin-block-note-label" for="fld-energy-note" data-t="labelEnergyNote">Energy note</label>
+              <textarea id="fld-energy-note" rows="2" data-t-placeholder="placeholderEnergyNote" placeholder="Note about your energy…"></textarea>
+            </div>
+          </div>
+
+          <!-- Mood Matrix -->
+          <div class="section-group" data-component="moodMatrix">
+            <div class="mood-header">
+              <h3 class="subheading" data-t="labelMoodMatrix">Mood Matrix</h3>
+              <div class="section-actions">
+                <button type="button" class="reset-button" id="mood-btn-reset" data-t="btnReset">Reset</button>
+              </div>
+            </div>
+            <div class="mood-grid-wrapper">
+              <div class="axis-label axis-energy-high" data-t="axisEnergyHigh">HIGH ENERGY</div>
+              <div class="axis-label axis-energy-low" data-t="axisEnergyLow">LOW ENERGY</div>
+              <div class="axis-label axis-mood-negative" data-t="axisValenceNeg">NEGATIVE</div>
+              <div class="axis-label axis-mood-positive" data-t="axisValencePos">POSITIVE</div>
+              <div class="mood-grid" id="mood-slot"></div>
+            </div>
+            <div class="selection-display is-empty" id="mood-display" data-t="moodNone">No mood selected</div>
+          </div>
+
+          <!-- Actions + Note -->
+          <div class="section-group two-column-fields">
+            <div data-component="actions">
+              <label class="field-label" for="fld-action" data-t="labelActions">Actions</label>
+              <textarea id="fld-action" rows="3" data-t-placeholder="placeholderActions" placeholder="What did you do or plan to do?"></textarea>
+              <div class="quick-actions-chips" id="ci-chips"></div>
+            </div>
+            <div data-component="note">
+              <label class="field-label" for="fld-note" data-t="labelNote">Note</label>
+              <textarea id="fld-note" rows="3" data-t-placeholder="placeholderNote" placeholder="Anything else…"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Summary + History -->
+        <section class="grid">
+          <article class="card" aria-labelledby="summary-heading">
+            <h2 id="summary-heading" data-t="summaryTitle">Summary</h2>
+            <div id="summary-slot" class="summary-content" aria-live="polite">
+              <p class="empty-state" data-t="summaryEmpty">No entries yet.</p>
+            </div>
+          </article>
+          <article class="card" aria-labelledby="history-heading">
+            <h2 id="history-heading" data-t="historyTitle">28-Day History</h2>
+            <div id="history-modes" class="cal-mode-row"></div>
+            <div id="history-grid" class="cal-grid" aria-live="polite"></div>
+          </article>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         OVERVIEW VIEW
+         ══════════════════════════════════════════════════════ -->
+    <div class="view" id="view-overview">
+      <div class="view-content">
+        <div class="checkin-toolbar">
+          <div class="checkin-toolbar-left">
+            <h2 id="overview-heading" data-t="overviewTitle" style="margin:0;font-size:1.3rem">Overview</h2>
+          </div>
+          <div class="checkin-save-row">
+            <button type="button" class="save-button save-button--secondary" id="ov-export" data-t="btnExport">Export entries</button>
+            <label class="save-button save-button--secondary" style="cursor:pointer">
+              <span data-t="btnImport">Import entries</span>
+              <input type="file" accept=".json" id="ov-import" class="is-hidden"/>
+            </label>
+          </div>
+        </div>
+        <section class="card" aria-labelledby="overview-heading">
+
+          <div class="overview-controls">
+            <input id="ov-search" type="search" data-t-placeholder="searchPlaceholder" placeholder="Search entries…"/>
+            <select id="ov-filter" class="wheel-select">
+              <option value="all" data-t="filterAll">All time</option>
+              <option value="today" data-t="filterToday">Today</option>
+              <option value="7" data-t="filter7">Last 7 days</option>
+              <option value="14" data-t="filter14">Last 2 weeks</option>
+              <option value="30" data-t="filter30">Last month</option>
+              <option value="90" data-t="filter90">Last 3 months</option>
             </select>
           </div>
-          <svg class="emotion-wheel" id="emotion-wheel" viewBox="0 0 360 360" role="group" aria-label="Core feelings wheel"></svg>
-          <div class="selection-display is-empty" id="selected-emotion-display" data-i18n="fields.feelings.empty">
-            Select one core feeling
-          </div>
-          <label class="field-label checkin-block-note-label" for="custom-emotions" data-i18n="fields.customFeelings.label">Core feeling note</label>
-          <textarea id="custom-emotions" rows="3" data-i18n-placeholder="fields.customFeelings.placeholder" placeholder="Describe additional feelings..."></textarea>
-        </div>
 
-        <div class="checkin-block body-panel" data-component="bodySignals">
-          <div class="checkin-block-header">
-            <label class="field-label" data-i18n="fields.bodySignals.label">Body signals</label>
-            <div class="section-actions">
-              <button type="button" class="reset-button" id="reset-body-signals" data-i18n="buttons.reset">Reset</button>
-            </div>
+          <div class="overview-table-wrap">
+            <table class="overview-table" id="ov-table">
+              <thead><tr id="ov-thead"></tr></thead>
+              <tbody id="ov-tbody"></tbody>
+            </table>
           </div>
-          <div class="body-figure" id="body-figure" role="group" aria-label="Body signal selector">
-            <svg class="body-figure-svg" viewBox="0 0 120 240" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <ellipse cx="60" cy="25" rx="15" ry="18" class="body-part" data-part="head" fill="#f8fafc"/>
-              <rect x="55" y="43" width="10" height="8" class="body-part" data-part="neck" fill="#f8fafc"/>
-              <ellipse cx="42" cy="58" rx="8" ry="6" class="body-part" data-part="left-shoulder" fill="#f8fafc"/>
-              <ellipse cx="78" cy="58" rx="8" ry="6" class="body-part" data-part="right-shoulder" fill="#f8fafc"/>
-              <ellipse cx="60" cy="77" rx="18" ry="20" class="body-part" data-part="chest" fill="#f8fafc"/>
-              <ellipse cx="60" cy="106" rx="16" ry="18" class="body-part" data-part="abdomen" fill="#f8fafc"/>
 
-              <ellipse cx="35" cy="76" rx="6" ry="15" class="body-part" data-part="left-upper-arm" fill="#f8fafc"/>
-              <ellipse cx="85" cy="76" rx="6" ry="15" class="body-part" data-part="right-upper-arm" fill="#f8fafc"/>
-              <circle cx="32" cy="93" r="4.5" class="body-part" data-part="left-elbow" fill="#f8fafc"/>
-              <circle cx="88" cy="93" r="4.5" class="body-part" data-part="right-elbow" fill="#f8fafc"/>
-              <ellipse cx="28" cy="110" rx="5.5" ry="12" class="body-part" data-part="left-forearm" fill="#f8fafc"/>
-              <ellipse cx="92" cy="110" rx="5.5" ry="12" class="body-part" data-part="right-forearm" fill="#f8fafc"/>
-              <ellipse cx="26" cy="126" rx="4.5" ry="6.5" class="body-part" data-part="left-hand" fill="#f8fafc"/>
-              <ellipse cx="94" cy="126" rx="4.5" ry="6.5" class="body-part" data-part="right-hand" fill="#f8fafc"/>
-              <ellipse cx="53" cy="136" rx="10" ry="11" class="body-part" data-part="left-hip" fill="#f8fafc"/>
-              <ellipse cx="67" cy="136" rx="10" ry="11" class="body-part" data-part="right-hip" fill="#f8fafc"/>
-              <ellipse cx="50" cy="171" rx="9" ry="27" class="body-part" data-part="left-leg" fill="#f8fafc"/>
-              <ellipse cx="70" cy="171" rx="9" ry="27" class="body-part" data-part="right-leg" fill="#f8fafc"/>
-              <circle cx="50" cy="198" r="6" class="body-part" data-part="left-knee" fill="#f8fafc"/>
-              <circle cx="70" cy="198" r="6" class="body-part" data-part="right-knee" fill="#f8fafc"/>
-              <ellipse cx="48" cy="216" rx="6.5" ry="14" class="body-part" data-part="left-lower-leg" fill="#f8fafc"/>
-              <ellipse cx="72" cy="216" rx="6.5" ry="14" class="body-part" data-part="right-lower-leg" fill="#f8fafc"/>
-              <ellipse cx="46" cy="232" rx="6" ry="7" class="body-part" data-part="left-foot" fill="#f8fafc"/>
-              <ellipse cx="74" cy="232" rx="6" ry="7" class="body-part" data-part="right-foot" fill="#f8fafc"/>
-              <rect x="55" y="51" width="10" height="36" rx="3" class="body-part back-zone" data-part="upper-back"/>
-              <rect x="55" y="90" width="10" height="34" rx="3" class="body-part back-zone" data-part="lower-back"/>
-            </svg>
-          </div>
-          <div class="selection-display is-empty" id="body-signals-display" data-i18n="fields.bodySignals.empty">
-            Select body areas where you notice signals
-          </div>
-          <label class="field-label checkin-block-note-label" for="body" data-i18n="fields.body.label">Body signals note</label>
-          <textarea id="body" rows="3" data-i18n-placeholder="fields.body.placeholder" placeholder="Describe what you notice in your body..."></textarea>
-        </div>
+          <p class="empty-state is-hidden" id="ov-empty" data-t="overviewEmpty">No entries yet.</p>
 
-        <div class="checkin-block energy-panel" data-component="energyPanel">
-          <div class="checkin-block-header">
-            <label class="field-label" data-i18n="fields.energy.label">Energy level</label>
-            <div class="section-actions">
-              <button type="button" class="reset-button" id="reset-energy" data-i18n="buttons.reset">Reset</button>
-            </div>
+          <div class="section-actions overview-pagination">
+            <button type="button" class="reset-button" id="ov-first" data-t="pageFirst">First</button>
+            <button type="button" class="reset-button" id="ov-prev" data-t="pagePrev">Prev</button>
+            <span class="overview-page-info" id="ov-page-info">Page 1 of 1</span>
+            <button type="button" class="reset-button" id="ov-next" data-t="pageNext">Next</button>
+            <button type="button" class="reset-button" id="ov-last" data-t="pageLast">Last</button>
           </div>
-          <div class="energy-triple">
-            <div class="energy-column">
-              <div class="energy-meter-row">
-                <div class="energy-scale">
-                  <span>100</span>
-                  <span>75</span>
-                  <span>50</span>
-                  <span>25</span>
-                  <span>0</span>
-                </div>
-                <div class="energy-meter-col">
-                  <span class="energy-type-label" data-i18n="energy.physical">Physical</span>
-                  <div class="energy-meter" data-energy-type="physical" aria-label="Physical energy from 0 to 100">
-                    <div class="energy-fill" id="energy-fill-physical"></div>
-                  </div>
-                  <input type="text" class="energy-note-input" id="energy-note-physical" data-i18n-placeholder="fields.energyNote.placeholder" placeholder="Describe how your energy feels...">
-                </div>
-              </div>
-            </div>
-            <div class="energy-column">
-              <div class="energy-meter-row">
-                <div class="energy-scale">
-                  <span>100</span>
-                  <span>75</span>
-                  <span>50</span>
-                  <span>25</span>
-                  <span>0</span>
-                </div>
-                <div class="energy-meter-col">
-                  <span class="energy-type-label" data-i18n="energy.mental">Mental</span>
-                  <div class="energy-meter" data-energy-type="mental" aria-label="Mental energy from 0 to 100">
-                    <div class="energy-fill" id="energy-fill-mental"></div>
-                  </div>
-                  <input type="text" class="energy-note-input" id="energy-note-mental" data-i18n-placeholder="fields.energyNote.placeholder" placeholder="Describe how your energy feels...">
-                </div>
-              </div>
-            </div>
-            <div class="energy-column">
-              <div class="energy-meter-row">
-                <div class="energy-scale">
-                  <span>100</span>
-                  <span>75</span>
-                  <span>50</span>
-                  <span>25</span>
-                  <span>0</span>
-                </div>
-                <div class="energy-meter-col">
-                  <span class="energy-type-label" id="energy-emotional-label">Emotioneel /
-Sociaal</span>
-                  <div class="energy-meter" data-energy-type="emotional" aria-label="Emotional/Social energy from 0 to 100">
-                    <div class="energy-fill" id="energy-fill-emotional"></div>
-                  </div>
-                  <input type="text" class="energy-note-input" id="energy-note-emotional" data-i18n-placeholder="fields.energyNote.placeholder" placeholder="Describe how your energy feels...">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="selection-display is-empty" id="energy-display" data-i18n="fields.energy.empty">
-            Click in the meters to set your energy levels
-          </div>
-          <label class="field-label checkin-block-note-label" for="energy-note" data-i18n="fields.energyNote.label">Energy level note</label>
-          <textarea id="energy-note" rows="3" data-i18n-placeholder="fields.energyNote.placeholder" placeholder="Describe how your energy feels..."></textarea>
-        </div>
+        </section>
       </div>
-
-      <div class="section-group" data-component="moodMatrix">
-        <div class="mood-header">
-          <h3 class="subheading" data-i18n="fields.moodGrid.label">Mood matrix</h3>
-          <div class="section-actions">
-            <button type="button" class="reset-button" id="reset-mood" data-i18n="buttons.reset">Reset</button>
-          </div>
-        </div>
-        <div class="mood-grid-wrapper">
-          <div class="axis-label axis-energy-high" data-i18n="fields.moodGrid.axisHigh">HIGH ENERGY</div>
-          <div class="axis-label axis-energy-low" data-i18n="fields.moodGrid.axisLow">LOW ENERGY</div>
-          <div class="axis-label axis-mood-negative" data-i18n="fields.moodGrid.axisNegative">NEGATIVE</div>
-          <div class="axis-label axis-mood-positive" data-i18n="fields.moodGrid.axisPositive">POSITIVE</div>
-          <div class="mood-grid" id="mood-grid"></div>
-        </div>
-        <div class="selection-display is-empty" id="selected-mood-display" data-i18n="fields.moodGrid.empty">
-          Select one mood cell
-        </div>
-      </div>
-
-      <div class="section-group two-column-fields">
-        <div data-component="actions">
-          <label class="field-label" for="action" data-i18n="fields.action.label">Action</label>
-          <textarea id="action" rows="3" data-i18n-placeholder="fields.action.placeholder" placeholder="What action do you want to take?"></textarea>
-          <div class="quick-actions-chips" id="quick-actions-chips"></div>
-        </div>
-
-        <div data-component="note">
-          <label class="field-label" for="note" data-i18n="fields.note.label">Optional note</label>
-          <textarea id="note" name="note" rows="3" data-i18n-placeholder="fields.note.placeholder" placeholder="Write a short note..."></textarea>
-        </div>
-      </div>
-    </section>
-
-    <section class="grid">
-      <article class="card" aria-labelledby="summary-heading">
-        <h2 id="summary-heading" data-i18n="summary.title">Summary</h2>
-        <div id="summary-content" class="summary-content" aria-live="polite">
-          <p class="empty-state" data-i18n="summary.empty">Save your first check-in to see a simple summary here.</p>
-        </div>
-      </article>
-
-      <article class="card" aria-labelledby="history-heading">
-        <h2 id="history-heading" data-i18n="history.title">Last 28 days</h2>
-        <div id="history-content" class="history-content" aria-live="polite">
-          <p class="empty-state" data-i18n="history.empty">Your recent entries will appear here after you save a check-in.</p>
-        </div>
-      </article>
-    </section>
-    </div><!-- /tab-panel checkin -->
-
-    <div class="tab-panel" data-tab-panel="overview">
-      <section class="card" aria-labelledby="overview-heading">
-        <h2 id="overview-heading" data-i18n="overview.title">Saved check-ins</h2>
-        <p data-i18n="overview.intro">This table shows your saved check-ins. Visible columns follow your Settings.</p>
-        <div class="overview-controls">
-          <input id="overview-search" type="search" data-i18n-placeholder="overview.searchPlaceholder" placeholder="Search..." />
-          <select id="overview-filter" class="wheel-select">
-            <option value="all" data-i18n="overview.filters.all">All</option>
-            <option value="today" data-i18n="overview.filters.today">Today</option>
-            <option value="last7" data-i18n="overview.filters.last7">Last 7 days</option>
-            <option value="last14" data-i18n="overview.filters.last14">Last 2 weeks</option>
-            <option value="lastMonth" data-i18n="overview.filters.lastMonth">Last month</option>
-            <option value="last3Months" data-i18n="overview.filters.last3Months">Last 3 months</option>
-          </select>
-        </div>
-        <div class="overview-table-wrap">
-          <table class="overview-table" id="overview-table">
-            <thead id="overview-head"></thead>
-            <tbody id="overview-body"></tbody>
-          </table>
-        </div>
-        <p class="status-message" id="overview-empty" aria-live="polite"></p>
-        <input type="file" id="overview-import-file" accept="application/json,.json" class="is-hidden" />
-        <div class="section-actions overview-pagination">
-          <button type="button" class="reset-button" id="overview-first" data-i18n="overview.first">First</button>
-          <button type="button" class="reset-button" id="overview-prev" data-i18n="overview.prev">Previous</button>
-          <span class="overview-page-info" id="overview-page-info">Page 1 of 1</span>
-          <button type="button" class="reset-button" id="overview-next" data-i18n="overview.next">Next</button>
-          <button type="button" class="reset-button" id="overview-last" data-i18n="overview.last">Last</button>
-        </div>
-        <p class="status-message" id="overview-status" aria-live="polite"></p>
-      </section>
     </div>
 
-    <div class="tab-panel" data-tab-panel="settings">
-      <section class="card" aria-labelledby="settings-heading">
-        <h2 id="settings-heading" data-i18n="settings.title">Settings</h2>
-        <p data-i18n="settings.intro">Set your default language and choose which check-in parts are visible.</p>
-
-        <div class="section-group">
-          <div class="settings-general-grid">
-            <div class="settings-general-item">
-              <label class="field-label" for="settings-default-language" data-i18n="settings.defaultLanguage.label">Default language</label>
-              <select id="settings-default-language" class="wheel-select">
-                <option value="en" data-i18n="settings.defaultLanguage.en">English</option>
-                <option value="nl" data-i18n="settings.defaultLanguage.nl">Nederlands</option>
-              </select>
-            </div>
-            <div class="settings-general-item">
-              <label class="field-label" for="settings-theme" data-i18n="settings.theme.label">Theme</label>
-              <select id="settings-theme" class="wheel-select">
-                <option value="system" data-i18n="settings.theme.system">System</option>
-                <option value="light" data-i18n="settings.theme.light">Light</option>
-                <option value="dark" data-i18n="settings.theme.dark">Dark</option>
-              </select>
-            </div>
-            <div class="settings-general-item">
-              <label class="field-label" for="settings-default-wheel" data-i18n="settings.defaultWheel.label">Default emotion wheel</label>
-              <select id="settings-default-wheel" class="wheel-select">
-                <option value="act">ACT (8)</option>
-                <option value="plutchik">Plutchik (8)</option>
-                <option value="ekman">Ekman (6)</option>
-                <option value="junto">Junto (6)</option>
-                <option value="extended">Extended (12)</option>
-              </select>
-            </div>
-            <div class="settings-general-item">
-              <label class="field-label" for="settings-energy-emotional-label" data-i18n="settings.energyEmotionalLabel.label">Social/Emotional</label>
-              <select id="settings-energy-emotional-label" class="wheel-select">
-                <option value="emotionalSocial" data-i18n="settings.energyEmotionalLabel.emotionalSocial">Emotional / Social</option>
-                <option value="emotional" data-i18n="settings.energyEmotionalLabel.emotional">Emotional</option>
-                <option value="social" data-i18n="settings.energyEmotionalLabel.social">Social</option>
-              </select>
-            </div>
-            <div class="settings-general-item" aria-hidden="true"></div>
-            <div class="settings-general-item" aria-hidden="true"></div>
-            <div class="settings-general-item">
-              <label class="field-label" for="settings-rows-per-page" data-i18n="settings.rowsPerPage.label">Rows per overview page</label>
-              <input id="settings-rows-per-page" type="number" class="quick-action-input" min="5" max="100" step="1" />
-            </div>
-            <div class="settings-general-item">
-              <label class="field-label" for="settings-overview-max-chars" data-i18n="settings.overviewMaxChars.label">Max characters in overview cells</label>
-              <input id="settings-overview-max-chars" type="number" class="quick-action-input" min="20" max="500" step="5" />
-            </div>
-            <div class="settings-general-item">
-              <label class="field-label" for="settings-weather-location" data-i18n="settings.weatherLocation.label">Weather location</label>
-              <input id="settings-weather-location" type="text" class="quick-action-input" data-i18n-placeholder="settings.weatherLocation.placeholder" placeholder="e.g. Amsterdam" maxlength="100" />
-              <p class="settings-weather-last-fetched" id="weather-last-fetched"></p>
-            </div>
+    <!-- ══════════════════════════════════════════════════════
+         SETTINGS VIEW
+         ══════════════════════════════════════════════════════ -->
+    <div class="view" id="view-settings">
+      <div class="view-content">
+        <div class="checkin-toolbar">
+          <div class="checkin-toolbar-left">
+            <h2 id="settings-heading" data-t="settingsTitle" style="margin:0;font-size:1.3rem">Settings</h2>
+          </div>
+          <div class="checkin-save-row">
+            <button type="button" class="save-button" id="cfg-btn-save" data-t="settingSave">Save settings</button>
+            <button type="button" class="reset-button" id="cfg-btn-reset" data-t="settingReset">Reset to defaults</button>
+            <button type="button" class="save-button save-button--secondary" id="cfg-btn-export" data-t="settingExport">Export settings</button>
+            <label class="save-button save-button--secondary" style="cursor:pointer">
+              <span data-t="settingImport">Import settings</span>
+              <input type="file" accept=".json" id="cfg-inp-import" class="is-hidden"/>
+            </label>
           </div>
         </div>
+        <section class="card" aria-labelledby="settings-heading">
 
-        <div class="section-group">
-          <h3 class="subheading" data-i18n="settings.components.title">Optional parts</h3>
-          <div class="settings-grid">
-            <div class="settings-column settings-column-left">
-              <label class="settings-item"><input type="checkbox" id="setting-weather"> <span data-i18n="settings.components.weather">Weather</span></label>
-              <label class="settings-item"><input type="checkbox" id="setting-thoughts"> <span data-i18n="settings.components.thoughts">Thoughts</span></label>
-              <label class="settings-item"><input type="checkbox" id="setting-core-feeling"> <span data-i18n="settings.components.coreFeeling">Core feeling</span></label>
-              <label class="settings-item"><input type="checkbox" id="setting-body-signals"> <span data-i18n="settings.components.bodySignals">Body signals</span></label>
-            </div>
-            <div class="settings-column settings-column-middle">
-              <label class="settings-item"><input type="checkbox" id="setting-mood-matrix"> <span data-i18n="settings.components.moodMatrix">Mood matrix</span></label>
-              <label class="settings-item"><input type="checkbox" id="setting-actions"> <span data-i18n="settings.components.actions">Actions</span></label>
-              <label class="settings-item"><input type="checkbox" id="setting-note"> <span data-i18n="settings.components.note">Optional note</span></label>
-            </div>
-            <div class="settings-column settings-column-right settings-energy-group">
-              <span class="settings-group-label" data-i18n="settings.components.energyGroup">Energy level</span>
-              <label class="settings-item settings-item-sub"><input type="checkbox" id="setting-energy-physical"> <span data-i18n="settings.components.energyPhysicalShort">Physical</span></label>
-              <label class="settings-item settings-item-sub"><input type="checkbox" id="setting-energy-mental"> <span data-i18n="settings.components.energyMentalShort">Mental</span></label>
-              <label class="settings-item settings-item-sub"><input type="checkbox" id="setting-energy-emotional"> <span data-i18n="settings.components.energyEmotionalShort">Emotional / Social</span></label>
+          <div class="section-group">
+            <div class="settings-general-grid">
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-lang" data-t="settingLanguage">Language</label>
+                <select id="cfg-lang" class="wheel-select">
+                  <option value="en">English</option>
+                  <option value="nl">Nederlands</option>
+                </select>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-theme" data-t="settingTheme">Theme</label>
+                <select id="cfg-theme" class="wheel-select">
+                  <option value="system" data-t="themeSystem">System</option>
+                  <option value="light" data-t="themeLight">Light</option>
+                  <option value="dark" data-t="themeDark">Dark</option>
+                </select>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-wheel" data-t="settingWheel">Default wheel</label>
+                <select id="cfg-wheel" class="wheel-select">
+                  <option value="act">ACT (8)</option>
+                  <option value="plutchik">Plutchik (8)</option>
+                  <option value="ekman">Ekman (6)</option>
+                  <option value="junto">Junto (6)</option>
+                  <option value="extended">Extended (12)</option>
+                </select>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-energy-label" data-t="settingEnergyLabel">Third energy label</label>
+                <select id="cfg-energy-label" class="wheel-select">
+                  <option value="emotionalSocial">Emotional / Social</option>
+                  <option value="emotional">Emotional</option>
+                  <option value="social">Social</option>
+                </select>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-location" data-t="settingWeatherLocation">Weather location</label>
+                <input id="cfg-location" type="text" maxlength="100" placeholder="e.g. Amsterdam"/>
+              </div>
+              <div class="settings-general-item">&nbsp;</div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-rows" data-t="settingRowsPerPage">Rows per page</label>
+                <input id="cfg-rows" type="number" min="5" max="100" step="1"/>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-maxchars" data-t="settingMaxChars">Max characters in overview</label>
+                <input id="cfg-maxchars" type="number" min="20" max="500" step="5"/>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-toast" data-t="settingToastDuration">Toast duration (sec)</label>
+                <input id="cfg-toast" type="number" min="2" max="15" step="1"/>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="section-group">
-          <h3 class="subheading" data-i18n="settings.quickActions.title">Quick actions</h3>
-          <p class="form-help" data-i18n="settings.quickActions.intro">Define reusable action phrases. Click them on the Check-in tab to add to the Action field.</p>
-          <div class="quick-actions-editor">
-            <div class="quick-actions-input-row">
-              <input type="text" id="quick-action-input" class="quick-action-input" data-i18n-placeholder="settings.quickActions.placeholder" placeholder="e.g. Take a walk" maxlength="100" />
-              <button type="button" class="reset-button" id="quick-action-add" data-i18n="settings.quickActions.add">Add</button>
+          <div class="section-group">
+            <h3 class="subheading" data-t="settingComponents">Visible components</h3>
+            <div class="settings-grid">
+              <div class="settings-column">
+                <label class="settings-item"><input type="checkbox" data-comp="weather" checked> <span data-t="compWeather">Weather</span></label>
+                <label class="settings-item"><input type="checkbox" data-comp="thoughts" checked> <span data-t="compThoughts">Thoughts</span></label>
+                <label class="settings-item"><input type="checkbox" data-comp="coreFeeling" checked> <span data-t="compCoreFeeling">Core feeling</span></label>
+                <label class="settings-item"><input type="checkbox" data-comp="bodySignals" checked> <span data-t="compBodySignals">Body signals</span></label>
+              </div>
+              <div class="settings-column">
+                <label class="settings-item"><input type="checkbox" data-comp="moodMatrix" checked> <span data-t="compMoodMatrix">Mood matrix</span></label>
+                <label class="settings-item"><input type="checkbox" data-comp="actions" checked> <span data-t="compActions">Actions</span></label>
+                <label class="settings-item"><input type="checkbox" data-comp="note" checked> <span data-t="compNote">Note</span></label>
+              </div>
+              <div class="settings-column settings-energy-group">
+                <span class="settings-group-label" data-t="labelEnergy">Energy level</span>
+                <label class="settings-item settings-item-sub"><input type="checkbox" data-comp="energyPhysical" checked> <span data-t="compEnergyPhysical">Physical</span></label>
+                <label class="settings-item settings-item-sub"><input type="checkbox" data-comp="energyMental" checked> <span data-t="compEnergyMental">Mental</span></label>
+                <label class="settings-item settings-item-sub"><input type="checkbox" data-comp="energyEmotional" checked> <span data-t="compEnergyEmotional">Emotional</span></label>
+              </div>
             </div>
-            <div class="quick-actions-list" id="quick-actions-list"></div>
           </div>
-        </div>
 
-        <input type="file" id="settings-import-file" accept="application/json,.json" class="is-hidden" />
-        <p class="status-message" id="settings-status" aria-live="polite"></p>
-      </section>
+          <div class="section-group">
+            <h3 class="subheading" data-t="quickActionsTitle">Quick actions</h3>
+            <div class="quick-actions-editor">
+              <div class="quick-actions-input-row">
+                <input type="text" id="qa-input" class="quick-action-input" data-t-placeholder="quickActionsPlaceholder" placeholder="New action…" maxlength="100"/>
+                <button type="button" class="reset-button" id="cfg-btn-add-qa" data-t="quickActionsAdd">Add</button>
+              </div>
+              <div class="quick-actions-list" id="qa-list"></div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
 
-    <div class="tab-panel" data-tab-panel="info">
-      <section class="card" aria-labelledby="info-heading">
-        <h2 id="info-heading" data-i18n="info.title">Info</h2>
-        <p class="intro" data-i18n="info.intro">
-          A small private web app for a regular check-in with yourself. Runs entirely in your browser — no server, no account, no tracking.
-        </p>
+    <!-- ══════════════════════════════════════════════════════
+         INFO VIEW
+         ══════════════════════════════════════════════════════ -->
+    <div class="view" id="view-info">
+      <div class="view-content">
 
-        <div class="section-group">
-          <h3 class="subheading" data-i18n="info.quickGuideTitle">Quick guide</h3>
-          <div class="info-guide-grid">
-            <div class="info-guide-item">
-              <span class="info-guide-icon">💾</span>
-              <div>
-                <strong data-i18n="info.tipSaveLabel">Save</strong>
-                <p data-i18n="info.tipSaveDesc">Updates the most recent check-in for today. Use this to refine your entry during the day.</p>
+        <!-- Info Toolbar: buttons + version -->
+        <div class="info-toolbar">
+          <div class="info-toolbar-left">
+            <h2 id="info-heading" data-t="infoTitle">About</h2>
+            <span class="info-version-badge" data-t="version">v1.0.0</span>
+          </div>
+          <div class="info-toolbar-actions">
+            <button type="button" class="save-button save-button--secondary" id="demo-btn-generate" data-t="btnDemo">Generate demo data</button>
+            <button type="button" class="save-button save-button--secondary info-btn-danger" id="demo-btn-clear" data-t="btnClearAll">Clear all data</button>
+          </div>
+        </div>
+
+        <section class="card" aria-labelledby="info-heading">
+          <p class="intro" data-t="infoDesc">A small private web app for a regular check-in with yourself. Runs entirely in your browser — no server, no account, no tracking.</p>
+
+          <div class="section-group">
+            <h3 class="subheading" data-t="infoQuickGuide">Quick guide</h3>
+            <div class="info-guide-grid">
+              <div class="info-guide-item">
+                <span class="info-guide-icon">💾</span>
+                <div><strong data-t="infoTipSaveLabel">Save</strong><p data-t="infoTipSaveDesc">Updates the most recent check-in for today. Use this to refine your entry during the day.</p></div>
+              </div>
+              <div class="info-guide-item">
+                <span class="info-guide-icon">➕</span>
+                <div><strong data-t="infoTipExtraLabel">Extra</strong><p data-t="infoTipExtraDesc">Adds a new check-in alongside the existing one for today. Useful if your mood or energy shifts significantly.</p></div>
+              </div>
+              <div class="info-guide-item">
+                <span class="info-guide-icon">⚙️</span>
+                <div><strong data-t="infoTipSettingsLabel">Settings</strong><p data-t="infoTipSettingsDesc">Choose your language, theme, and which check-in parts are visible. Hidden sections are not deleted — just not shown.</p></div>
+              </div>
+              <div class="info-guide-item">
+                <span class="info-guide-icon">📋</span>
+                <div><strong data-t="infoTipOverviewLabel">Overview</strong><p data-t="infoTipOverviewDesc">Browse, search, sort and filter all your saved check-ins. Click a row to open it in the Check-in tab. Export or import entries as JSON.</p></div>
               </div>
             </div>
-            <div class="info-guide-item">
-              <span class="info-guide-icon">➕</span>
-              <div>
-                <strong data-i18n="info.tipExtraLabel">Extra</strong>
-                <p data-i18n="info.tipExtraDesc">Adds a new check-in alongside the existing one for today. Useful if your mood or energy shifts significantly.</p>
+          </div>
+
+          <div class="section-group">
+            <h3 class="subheading" data-t="infoFeaturesTitle">What you can track</h3>
+            <div class="info-features-grid">
+              <div class="info-feature-item"><span class="info-feature-icon">🌡️</span><span data-t="infoFeatureWeather">Weather at check-in time</span></div>
+              <div class="info-feature-item"><span class="info-feature-icon">💭</span><span data-t="infoFeatureThoughts">Free-text thoughts</span></div>
+              <div class="info-feature-item"><span class="info-feature-icon">🎡</span><span data-t="infoFeatureWheel">Core feeling via emotion wheel</span></div>
+              <div class="info-feature-item"><span class="info-feature-icon">🧍</span><span data-t="infoFeatureBody">Body signals on a body figure</span></div>
+              <div class="info-feature-item"><span class="info-feature-icon">⚡</span><span data-t="infoFeatureEnergy">Physical, mental &amp; emotional energy levels</span></div>
+              <div class="info-feature-item"><span class="info-feature-icon">🎨</span><span data-t="infoFeatureMood">Mood via a 10×10 valence/arousal matrix</span></div>
+              <div class="info-feature-item"><span class="info-feature-icon">✅</span><span data-t="infoFeatureActions">Actions and intentions</span></div>
+              <div class="info-feature-item"><span class="info-feature-icon">📝</span><span data-t="infoFeatureNote">An optional free-text note</span></div>
+            </div>
+          </div>
+
+          <div class="section-group">
+            <h3 class="subheading" data-t="infoPrivacyTitle">Privacy</h3>
+            <div class="info-privacy-block">
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-ok">✓</span><span data-t="infoPrivacyNoServer">No server. Everything runs locally in your browser.</span></div>
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-ok">✓</span><span data-t="infoPrivacyNoAccount">No account or login required.</span></div>
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-ok">✓</span><span data-t="infoPrivacyNoTracking">No analytics, no cookies, no tracking.</span></div>
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-ok">✓</span><span data-t="infoPrivacyNoPII">No personal data is collected or stored.</span></div>
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-note">ℹ</span><span data-t="infoPrivacyWeather">The optional weather widget contacts Open-Meteo (open-meteo.com). No personal data is sent — only coordinates or city name.</span></div>
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-note">ℹ</span><span data-t="infoStorageEncryption">Data is not encrypted by this app.</span></div>
+            </div>
+          </div>
+
+          <div class="section-group">
+            <h3 class="subheading" data-t="infoStorageTitle">Storage</h3>
+            <div class="info-privacy-block">
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-ok">✓</span><span data-t="infoStorageWhere">Your data is stored in your browser localStorage on this device.</span></div>
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-ok">✓</span><span data-t="infoStorageHow">The app saves entries and settings as plain JSON text in localStorage.</span></div>
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-warn">⚠️</span><span data-t="infoStorageOtherBrowser">Opening the app in a different browser or on a different device shows no data — localStorage is not shared.</span></div>
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-warn">⚠️</span><span data-t="infoStorageClearWarning">Clearing your browser data or cache can permanently delete all your check-ins.</span></div>
+              <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-warn">⚠️</span><span data-t="infoStorageIncognito">In private/incognito mode, data is deleted as soon as you close the window.</span></div>
+            </div>
+            <div class="info-storage-callout">
+              <strong data-t="infoStorageBackupTitle">💾 Back up your data</strong>
+              <p data-t="infoStorageBackupDesc">Use Export in the Overview tab to save a JSON backup. Use Import to restore it or move entries to another browser.</p>
+            </div>
+          </div>
+
+          <div class="section-group">
+            <h3 class="subheading" data-t="infoScoreTitle">How are the heatmap colours calculated?</h3>
+            <p class="info-score-intro" data-t="infoScoreIntro">The 28-day history and the 7-day summary both use three colours: green (good), orange (mixed) and red (low). The calculation differs per tab.</p>
+
+            <h4 class="info-score-sub" data-t="infoScoreSummaryTitle">Summary (7-day dots)</h4>
+            <p data-t="infoScoreSummaryDesc">Each dot shows the combined mood score (1–3) of that day. The score is the average of all available components: emotion wheel score, mood grid valence (column 0–9 → 1–3) and energy average (0–100 → 1–3). Score 3 = green, 2 = orange, 1 = red.</p>
+
+            <h4 class="info-score-sub" data-t="infoScoreCoreTitle">Core feeling tab</h4>
+            <p data-t="infoScoreCoreDesc">Uses the combined mood score (same as summary). Score ≥ 3 = green, 2 = orange, 1 = red.</p>
+            <div class="info-accordion-body">
+              <div class="info-score-group">
+                <span class="info-score-dot-inline" style="background:var(--status-high)"></span>
+                <strong data-t="infoScoreGreen">Green (3)</strong>
+                <span data-t="infoScoreGreenList">joy, serenity, love, acceptance, trust, happiness, contentment, excitement, pride, gratitude, curiosity</span>
+              </div>
+              <div class="info-score-group">
+                <span class="info-score-dot-inline" style="background:var(--status-mid)"></span>
+                <strong data-t="infoScoreOrange">Orange (2)</strong>
+                <span data-t="infoScoreOrangeList">surprise, anticipation, melancholy, anxiety</span>
+              </div>
+              <div class="info-score-group">
+                <span class="info-score-dot-inline" style="background:var(--status-low)"></span>
+                <strong data-t="infoScoreRed">Red (1)</strong>
+                <span data-t="infoScoreRedList">sadness, anger, aggression, fear, disgust, shame, guilt</span>
               </div>
             </div>
-            <div class="info-guide-item">
-              <span class="info-guide-icon">⚙️</span>
-              <div>
-                <strong data-i18n="info.tipSettingsLabel">Settings</strong>
-                <p data-i18n="info.tipSettingsDesc">Choose your language, theme, and which check-in parts are visible. Hidden sections are not deleted — just not shown.</p>
-              </div>
-            </div>
-            <div class="info-guide-item">
-              <span class="info-guide-icon">📋</span>
-              <div>
-                <strong data-i18n="info.tipOverviewLabel">Overview</strong>
-                <p data-i18n="info.tipOverviewDesc">Browse, search, sort and filter all your saved check-ins. Click a row to open it in the Check-in tab. Export or import entries as JSON.</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div class="section-group">
-          <h3 class="subheading" data-i18n="info.featuresTitle">What you can track</h3>
-          <div class="info-features-grid">
-            <div class="info-feature-item">
-              <span class="info-feature-icon">🌡️</span>
-              <span data-i18n="info.featureWeather">Weather at check-in time</span>
-            </div>
-            <div class="info-feature-item">
-              <span class="info-feature-icon">💭</span>
-              <span data-i18n="info.featureThoughts">Free-text thoughts</span>
-            </div>
-            <div class="info-feature-item">
-              <span class="info-feature-icon">🎡</span>
-              <span data-i18n="info.featureWheel">Core feeling via emotion wheel</span>
-            </div>
-            <div class="info-feature-item">
-              <span class="info-feature-icon">🧍</span>
-              <span data-i18n="info.featureBody">Body signals on a body figure</span>
-            </div>
-            <div class="info-feature-item">
-              <span class="info-feature-icon">⚡</span>
-              <span data-i18n="info.featureEnergy">Physical, mental &amp; emotional energy levels</span>
-            </div>
-            <div class="info-feature-item">
-              <span class="info-feature-icon">🎨</span>
-              <span data-i18n="info.featureMood">Mood via a 10×10 valence/arousal matrix</span>
-            </div>
-            <div class="info-feature-item">
-              <span class="info-feature-icon">✅</span>
-              <span data-i18n="info.featureActions">Actions and intentions</span>
-            </div>
-            <div class="info-feature-item">
-              <span class="info-feature-icon">📝</span>
-              <span data-i18n="info.featureNote">An optional free-text note</span>
-            </div>
-          </div>
-        </div>
+            <h4 class="info-score-sub" data-t="infoScoreMoodTitle">Mood tab</h4>
+            <p data-t="infoScoreMoodDesc">Based on the valence column (horizontal axis) of the 10×10 mood grid. Column 6–9 = green, 4–5 = orange, 0–3 = red.</p>
 
-        <div class="section-group">
-          <h3 class="subheading" data-i18n="info.privacyTitle">Privacy</h3>
-          <div class="info-privacy-block">
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-ok">✓</span>
-              <span data-i18n="info.privacyNoServer">No server. Everything runs locally in your browser.</span>
-            </div>
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-ok">✓</span>
-              <span data-i18n="info.privacyNoAccount">No account or login required.</span>
-            </div>
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-ok">✓</span>
-              <span data-i18n="info.privacyNoTracking">No analytics, no cookies, no tracking.</span>
-            </div>
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-ok">✓</span>
-              <span data-i18n="info.privacyNoPII">No personal data is collected or stored. No names, email addresses, or identifiers.</span>
-            </div>
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-note">ℹ</span>
-              <span data-i18n="info.privacyWeather">The optional weather widget contacts Open-Meteo (open-meteo.com). No personal data is sent — only your coordinates or city name.</span>
-            </div>
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-note">ℹ</span>
-              <span data-i18n="info.storageEncryption">Data is not encrypted by this app.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-group">
-          <h3 class="subheading" data-i18n="info.storageTitle">Storage</h3>
-          <div class="info-privacy-block">
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-ok">✓</span>
-              <span data-i18n="info.storageWhere">Your data is stored in your browser localStorage on this device.</span>
-            </div>
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-ok">✓</span>
-              <span data-i18n="info.storageHow">The app saves entries and settings as plain JSON text in localStorage.</span>
-            </div>
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-warn">⚠️</span>
-              <span data-i18n="info.storageOtherBrowser">Opening the app in a different browser or on a different device shows no data — localStorage is not shared between browsers or devices.</span>
-            </div>
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-warn">⚠️</span>
-              <span data-i18n="info.storageClearWarning">Clearing your browser data or cache can permanently delete all your check-ins.</span>
-            </div>
-            <div class="info-privacy-item">
-              <span class="info-privacy-icon info-privacy-warn">⚠️</span>
-              <span data-i18n="info.storageIncognito">In private/incognito mode, data is deleted as soon as you close the window.</span>
-            </div>
-          </div>
-          <div class="info-storage-callout">
-            <strong data-i18n="info.storageBackupTitle">💾 Back up your data</strong>
-            <p data-i18n="info.storageBackupDesc">Use <strong>Export</strong> in the Overview tab to save a JSON backup to your computer. Use <strong>Import</strong> to restore it or move entries to another browser or device.</p>
-          </div>
-        </div>
-
-        <div class="section-group info-version-block">
-          <h3 class="subheading" data-i18n="labels.version">Version</h3>
-          <p class="app-version" id="app-version" aria-label="Application version"></p>
-        </div>
-
-        <div class="section-group">
-          <h3 class="subheading" data-i18n="info.scoreTitle">How is the colour score calculated?</h3>
-          <p class="info-score-intro" data-i18n="info.scoreIntro">Each day in the history calendar gets a colour. The app looks at which check-in components you filled in, in this order:</p>
-
-          <ol class="info-score-priority">
-            <li>
-              <strong data-i18n="info.scorePriority1Label">Emotion wheel</strong>
-              <span data-i18n="info.scorePriority1Desc">If you picked an emotion (e.g. joy, fear, trust), that emotion's type determines the colour.</span>
-            </li>
-            <li>
-              <strong data-i18n="info.scorePriority2Label">Mood selector</strong>
-              <span data-i18n="info.scorePriority2Desc">If no emotion wheel was used, the overall mood choice (Great / Okay / Low) is used.</span>
-            </li>
-            <li>
-              <strong data-i18n="info.scorePriority3Label">Mood grid (valence axis)</strong>
-              <span data-i18n="info.scorePriority3Desc">If neither above was filled in, the horizontal valence axis of the circumplex grid is used: 7–10 = positive, 4–6 = mixed, 1–3 = low.</span>
-            </li>
-          </ol>
-
-          <p class="info-score-subheading" data-i18n="info.scoreColourTitle">What do the colours mean?</p>
-
-          <p class="info-score-subsub" data-i18n="info.scoreColourMoodSub">Core feeling &amp; Mood matrix</p>
-          <div class="info-score-table">
-            <div class="info-score-row">
-              <span class="info-score-dot score-high"></span>
-              <span class="info-score-label" data-i18n="info.scoreHighLabel">Positive</span>
-              <span class="info-score-desc" data-i18n="info.scoreHighDesc">Core feeling: joy, serenity, love, trust &mdash; Mood matrix: right side (positive)</span>
-            </div>
-            <div class="info-score-row">
-              <span class="info-score-dot score-mid"></span>
-              <span class="info-score-label" data-i18n="info.scoreMidLabel">Mixed</span>
-              <span class="info-score-desc" data-i18n="info.scoreMidDesc">Core feeling: acceptance, surprise, anticipation &mdash; Mood matrix: middle</span>
-            </div>
-            <div class="info-score-row">
-              <span class="info-score-dot score-low"></span>
-              <span class="info-score-label" data-i18n="info.scoreLowLabel">Negative</span>
-              <span class="info-score-desc" data-i18n="info.scoreLowDesc">Core feeling: sadness, melancholy, anger, aggression, fear, disgust, shame &mdash; Mood matrix: left side (negative)</span>
-            </div>
-            <div class="info-score-row">
-              <span class="info-score-dot score-empty"></span>
-              <span class="info-score-label" data-i18n="info.scoreEmptyLabel">No entry</span>
-              <span class="info-score-desc" data-i18n="info.scoreEmptyDesc">No check-in recorded for that day</span>
-            </div>
+            <h4 class="info-score-sub" data-t="infoScoreEnergyTitle">Physical / Mental / Emotional tabs</h4>
+            <p data-t="infoScoreEnergyDesc">Based on the slider value (0–100%) of that energy type. 67–100% = green, 34–66% = orange, 0–33% = red.</p>
           </div>
 
-          <p class="info-score-subsub" data-i18n="info.scoreColourEnergySub">Energy bars (Physical, Mental, Emo/Social)</p>
-          <div class="info-score-table">
-            <div class="info-score-row">
-              <span class="info-score-dot score-high"></span>
-              <span class="info-score-label" data-i18n="info.scoreEnergyHighLabel">High</span>
-              <span class="info-score-desc" data-i18n="info.scoreEnergyHighDesc">Energy level ≥ 67%</span>
-            </div>
-            <div class="info-score-row">
-              <span class="info-score-dot score-mid"></span>
-              <span class="info-score-label" data-i18n="info.scoreEnergyMidLabel">Medium</span>
-              <span class="info-score-desc" data-i18n="info.scoreEnergyMidDesc">Energy level 34–66%</span>
-            </div>
-            <div class="info-score-row">
-              <span class="info-score-dot score-low"></span>
-              <span class="info-score-label" data-i18n="info.scoreEnergyLowLabel">Low</span>
-              <span class="info-score-desc" data-i18n="info.scoreEnergyLowDesc">Energy level ≤ 33%</span>
-            </div>
-            <div class="info-score-row">
-              <span class="info-score-dot score-empty"></span>
-              <span class="info-score-label" data-i18n="info.scoreEmptyLabel">No entry</span>
-              <span class="info-score-desc" data-i18n="info.scoreEmptyDesc">No check-in recorded for that day</span>
-            </div>
-          </div>
-
-          <p class="info-score-note" data-i18n="info.scoreNote">Select a view mode (Core feeling, Mood, Physical, Mental, Emo/Social) above the calendar to switch between perspectives.</p>
-        </div>
-
-        <div class="section-group">
-          <h3 class="subheading" data-i18n="info.toolsTitle">Tools</h3>
-          <p class="info-tools-intro" data-i18n="info.toolsIntro">Use these to explore or reset the app.</p>
-          <div class="section-actions settings-actions">
-            <button type="button" class="reset-button" id="generate-demo-data" data-i18n="info.generateDemoButton">Generate demo data</button>
-            <button type="button" class="reset-button delete-button" id="clear-local-storage" data-i18n="info.clearStorageButton">Clear local storage</button>
-          </div>
-          <p class="status-message" id="info-status" aria-live="polite"></p>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
-  </main>
 
-  <script src="translations.js?v=2.0.0" defer></script>
-  <script src="js/data.js?v=2.0.0" defer></script>
-  <script src="js/utils.js?v=2.0.0" defer></script>
-  <script src="js/storage.js?v=2.0.0" defer></script>
-  <script src="js/checkin.js?v=2.0.3" defer></script>
-  <script src="js/overview.js?v=2.0.0" defer></script>
-  <script src="js/weather.js?v=2.0.0" defer></script>
-  <script src="js/settings-ui.js?v=2.0.0" defer></script>
-  <script src="js/demo.js?v=1.0.0" defer></script>
-  <script src="js/init.js?v=2.0.0" defer></script>
+  </div><!-- /main-content -->
+</div><!-- /app-layout -->
+
+<!-- Toast container -->
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- Import dialog -->
+<dialog id="dlg-import" class="card" style="max-width:360px">
+  <h3 data-t="importDialogTitle">Import mode</h3>
+  <div class="section-actions" style="gap:8px;margin-top:12px">
+    <button class="save-button" id="dlg-overwrite" data-t="importOverwrite">Overwrite matching</button>
+    <button class="save-button save-button--secondary" id="dlg-skip" data-t="importSkip">Skip matching</button>
+  </div>
+</dialog>
+
+<!-- Scripts (v2 architecture: data → core → modules → boot) -->
+<script src="data/translations.js"></script>
+<script src="data/static.js"></script>
+<script src="lib/core.js"></script>
+<script src="lib/compute.js"></script>
+<script src="modules/navigation.js"></script>
+<script src="modules/home.js"></script>
+<script src="modules/weather.js"></script>
+<script src="modules/wheel.js"></script>
+<script src="modules/body.js"></script>
+<script src="modules/energy.js"></script>
+<script src="modules/mood.js"></script>
+<script src="modules/checkin.js"></script>
+<script src="modules/overview.js"></script>
+<script src="modules/settings.js"></script>
+<script src="modules/dashboard.js"></script>
+<script src="modules/demo.js"></script>
+<script src="boot.js"></script>
 </body>
 </html>

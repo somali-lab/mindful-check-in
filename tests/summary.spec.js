@@ -34,7 +34,7 @@ test('T090 [US21] save check-in, summary shows checked in with streak 1', async 
 test('T091 [US21] 5 consecutive days entries, streak shows 5', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 5; i++) {
-    entries[getDateKey(i)] = createTestEntry({ selectedEmotion: 'joy', mood: 'great' });
+    entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy', moodScore: 3 });
   }
   await injectEntries(page, entries);
   await page.goto('/');
@@ -49,8 +49,8 @@ test('T092 [US21] scattered entries show 7-day heatmap cells', async ({ page }) 
   const entries = {};
   for (let i = 0; i < 7; i++) {
     entries[getDateKey(i)] = createTestEntry({
-      selectedEmotion: i % 2 === 0 ? 'joy' : 'sadness',
-      mood: i % 2 === 0 ? 'great' : 'low',
+      coreFeeling: i % 2 === 0 ? 'joy' : 'sadness',
+      moodScore: i % 2 === 0 ? 3 : 1,
     });
   }
   await injectEntries(page, entries);
@@ -66,7 +66,7 @@ test('T092 [US21] scattered entries show 7-day heatmap cells', async ({ page }) 
 test('T093 [US21] 10 entries shows total count 10', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 10; i++) {
-    entries[getDateKey(i)] = createTestEntry({ selectedEmotion: 'joy', mood: 'great' });
+    entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy', moodScore: 3 });
   }
   await injectEntries(page, entries);
   await page.goto('/');

@@ -1,0 +1,36 @@
+name: Build Tailwind CSS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend-tw/src/**'
+      - 'frontend-tw/index.html'
+      - 'frontend-tw/package.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend-tw
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install
+
+      - run: npx @tailwindcss/cli -i src/input.css -o style.css --minify
+
+      - name: Commit built CSS
+        run: |
+          cd ..
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add frontend-tw/style.css
+          git diff --cached --quiet || git commit -m "chore: rebuild frontend-tw/style.css"
+          git push

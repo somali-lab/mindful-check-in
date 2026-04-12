@@ -88,7 +88,7 @@ test('T040 [US7] disable core feeling, history mode button absent', async ({ pag
   // Inject some entries so history renders
   const entries = {};
   for (let i = 0; i < 5; i++) {
-    entries[getDateKey(i)] = createTestEntry({ selectedEmotion: 'joy', mood: 'great' });
+    entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy', moodScore: 3 });
   }
   const settings = createTestSettings({ components: { coreFeeling: false } });
   await injectEntries(page, entries);
@@ -109,7 +109,7 @@ test('T041 [US7] hide component, data preserved in localStorage', async ({ page 
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     thoughts: 'Test thoughts',
-    selectedEmotion: 'joy',
+    coreFeeling: 'joy',
     bodySignals: ['chest', 'head'],
   });
   const settings = createTestSettings({ components: { bodySignals: false } });
@@ -149,10 +149,10 @@ test('T042 [US8] all-on preset — all fields fillable and saved', async ({ page
   const keys = Object.keys(entries).filter(k => k.startsWith(todayKey));
   const entry = entries[keys[0]];
   expect(entry.thoughts).toBe('All on test');
-  expect(entry.selectedEmotion).toBe('joy');
+  expect(entry.coreFeeling).toBe('joy');
   expect(entry.bodySignals).toContain('chest');
-  expect(entry.moodGrid).toBeTruthy();
-  expect(entry.action).toBe('Walk');
+  expect(entry.moodRow).toBeGreaterThanOrEqual(0);
+  expect(entry.actions).toBe('Walk');
   expect(entry.note).toBe('A note');
 });
 
@@ -189,7 +189,7 @@ test('T044 [US8] mood-only preset — select emotion, save, only mood fields', a
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
   const entry = entries[Object.keys(entries).find(k => k.startsWith(todayKey))];
-  expect(entry.selectedEmotion).toBe('joy');
+  expect(entry.coreFeeling).toBe('joy');
 });
 
 // T045: Energy-only preset — only energy panel visible

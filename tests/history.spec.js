@@ -14,8 +14,8 @@ test('T094 [US22] 28 days of entries render history calendar grid', async ({ pag
   const entries = {};
   for (let i = 0; i < 28; i++) {
     entries[getDateKey(i)] = createTestEntry({
-      selectedEmotion: i % 3 === 0 ? 'joy' : i % 3 === 1 ? 'sadness' : 'anger',
-      mood: i % 3 === 0 ? 'great' : i % 3 === 1 ? 'low' : 'okay',
+      coreFeeling: i % 3 === 0 ? 'joy' : i % 3 === 1 ? 'sadness' : 'anger',
+      moodScore: i % 3 === 0 ? 3 : i % 3 === 1 ? 1 : 2,
     });
   }
   await injectEntries(page, entries);
@@ -35,8 +35,8 @@ test('T095 [US22] core feeling mode, joy entry has positive color', async ({ pag
   const entries = {};
   for (let i = 0; i < 7; i++) {
     entries[getDateKey(i)] = createTestEntry({
-      selectedEmotion: 'joy',
-      mood: 'great',
+      coreFeeling: 'joy',
+      moodScore: 3,
     });
   }
   await injectEntries(page, entries);
@@ -64,7 +64,7 @@ test('T096 [US22] physical energy mode, colors reflect energy levels', async ({ 
         mental: 50,
         emotional: 50,
       },
-      selectedEmotion: 'joy',
+      coreFeeling: 'joy',
     });
   }
   await injectEntries(page, entries);
@@ -85,7 +85,7 @@ test('T097 [US22] click history cell with entry loads into form', async ({ page 
   for (let i = 0; i < 7; i++) {
     entries[getDateKey(i)] = createTestEntry({
       thoughts: `History ${i}`,
-      selectedEmotion: 'joy',
+      coreFeeling: 'joy',
     });
   }
   await injectEntries(page, entries);
@@ -107,7 +107,7 @@ test('T097 [US22] click history cell with entry loads into form', async ({ page 
 test('T098 [US22] disable core feeling, Core feeling mode button absent', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 7; i++) {
-    entries[getDateKey(i)] = createTestEntry({ selectedEmotion: 'joy' });
+    entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy' });
   }
   const settings = createTestSettings({ components: { coreFeeling: false } });
   await injectEntries(page, entries);

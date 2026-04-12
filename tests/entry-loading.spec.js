@@ -16,7 +16,7 @@ test('T099 [US27] click overview row loads entry and switches to checkin', async
   for (let i = 0; i < 5; i++) {
     entries[getDateKey(i)] = createTestEntry({
       thoughts: `Entry ${i}`,
-      selectedEmotion: 'joy',
+      coreFeeling: 'joy',
     });
   }
   await injectEntries(page, entries);
@@ -42,7 +42,7 @@ test('T100 [US27] load historical entry, context pill shows date', async ({ page
   const entries = {
     [threeDaysAgo]: createTestEntry({
       thoughts: 'Three days ago',
-      selectedEmotion: 'joy',
+      coreFeeling: 'joy',
     }),
   };
   await injectEntries(page, entries);
@@ -65,7 +65,7 @@ test('T101 [US27] load historical entry, save creates new today entry', async ({
   const entries = {
     [twoDaysAgo]: createTestEntry({
       thoughts: 'Old entry',
-      selectedEmotion: 'joy',
+      coreFeeling: 'joy',
     }),
   };
   await injectEntries(page, entries);
@@ -96,7 +96,7 @@ test('T102 [US27] load entry with weather, shows recorded weather data', async (
   const entries = {
     [todayKey]: createTestEntry({
       thoughts: 'With weather',
-      selectedEmotion: 'joy',
+      coreFeeling: 'joy',
       weather: { temperature: 18, weathercode: 1, description: 'Partly cloudy' },
     }),
   };

@@ -16,7 +16,7 @@ test('T054 [US10] search "walk" filters to matching entries', async ({ page }) =
     entries[getDateKey(i)] = createTestEntry({
       action: i % 3 === 0 ? 'Take a walk' : 'Rest',
       thoughts: `Day ${i}`,
-      selectedEmotion: 'joy',
+      coreFeeling: 'joy',
     });
   }
   await injectEntries(page, entries);

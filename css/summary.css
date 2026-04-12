@@ -67,10 +67,10 @@
   font-weight: 700;
 }
 
-/* Status colors (shared across heat-*, cal-*, score-*) */
-.heat-high, .cal-high  { background: var(--status-high); }
-.heat-mid,  .cal-mid   { background: var(--status-mid); }
-.heat-low,  .cal-low   { background: var(--status-low); }
+/* Status colors (shared across heat-*, cal-*, home-heat-*) */
+.heat-high, .cal-high, .home-heat-high  { background: var(--status-high); }
+.heat-mid,  .cal-mid,  .home-heat-mid   { background: var(--status-mid); }
+.heat-low,  .cal-low,  .home-heat-low   { background: var(--status-low); }
 .heat-empty, .cal-empty { background: var(--status-empty); }
 
 /* ── Summary: Stats Row ── */
@@ -135,7 +135,7 @@
 .cal-mode-btn.is-active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--text-on-accent);
   font-weight: 600;
 }
 
@@ -195,14 +195,14 @@
 .cal-day-num {
   font-size: 0.68rem;
   font-weight: 600;
-  color: rgba(0,0,0,0.55);
+  color: var(--cal-day-color);
   line-height: 1;
   pointer-events: none;
 }
 
 .cal-high .cal-day-num,
 .cal-mid  .cal-day-num,
-.cal-low  .cal-day-num { color: rgba(0,0,0,0.6); }
+.cal-low  .cal-day-num { color: var(--cal-day-filled-color); }
 
 .cal-today {
   box-shadow: 0 0 0 2px var(--accent);

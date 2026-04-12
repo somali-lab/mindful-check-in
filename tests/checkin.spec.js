@@ -69,11 +69,11 @@ test('T006 [US1] fill all fields and save creates entry in localStorage', async 
   const todayEntry = entries[todayKey] || entries[keys.find(k => k.startsWith(todayKey))];
   expect(todayEntry).toBeTruthy();
   expect(todayEntry.thoughts).toBe('Feeling good today');
-  expect(todayEntry.selectedEmotion).toBe('joy');
+  expect(todayEntry.coreFeeling).toBe('joy');
   expect(todayEntry.bodySignals).toEqual(expect.arrayContaining(['chest', 'head']));
-  expect(todayEntry.action).toBe('Take a walk');
+  expect(todayEntry.actions).toBe('Take a walk');
   expect(todayEntry.note).toBe('Good day overall');
-  expect(todayEntry.moodGrid).toBeTruthy();
+  expect(todayEntry.moodRow).toBeGreaterThanOrEqual(0);
 });
 
 // ─── T007: Existing entry for today — modify and save updates (no duplicate) ───
@@ -82,8 +82,8 @@ test('T007 [US1] modifying existing today entry updates without duplicating', as
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     thoughts: 'Original thought',
-    selectedEmotion: 'joy',
-    action: 'Original action',
+    coreFeeling: 'joy',
+    actions: 'Original action',
   });
 
   await injectEntries(page, { [todayKey]: entry });
@@ -112,7 +112,7 @@ test('T008 [US1] New check-in creates second timestamped entry for today', async
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     thoughts: 'First entry',
-    selectedEmotion: 'joy',
+    coreFeeling: 'joy',
   });
 
   await injectEntries(page, { [todayKey]: entry });
@@ -138,7 +138,7 @@ test('T008 [US1] New check-in creates second timestamped entry for today', async
   const timestampedKey = todayKeys.find(k => k.includes('_'));
   expect(timestampedKey).toBeTruthy();
   expect(entries[timestampedKey].thoughts).toBe('Second entry');
-  expect(entries[timestampedKey].selectedEmotion).toBe('sadness');
+  expect(entries[timestampedKey].coreFeeling).toBe('sadness');
 });
 
 // ─── T009: After save — summary card updates ───

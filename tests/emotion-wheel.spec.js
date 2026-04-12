@@ -63,7 +63,7 @@ test('T014 [US2] inject entry with plutchik wheel and trust emotion, verify on l
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     wheelType: 'plutchik',
-    selectedEmotion: 'trust',
+    coreFeeling: 'trust',
   });
 
   await injectEntries(page, { [todayKey]: entry });

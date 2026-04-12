@@ -14,7 +14,7 @@ const {
 test('T071 [US13] delete entry, accept confirm, removed from table and localStorage', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 5; i++) {
-    entries[getDateKey(i)] = createTestEntry({ thoughts: `Entry ${i}`, selectedEmotion: 'joy' });
+    entries[getDateKey(i)] = createTestEntry({ thoughts: `Entry ${i}`, coreFeeling: 'joy' });
   }
   await injectEntries(page, entries);
   await page.goto('/');
@@ -39,7 +39,7 @@ test('T071 [US13] delete entry, accept confirm, removed from table and localStor
 test('T072 [US13] delete entry, dismiss confirm, nothing changes', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 5; i++) {
-    entries[getDateKey(i)] = createTestEntry({ thoughts: `Entry ${i}`, selectedEmotion: 'joy' });
+    entries[getDateKey(i)] = createTestEntry({ thoughts: `Entry ${i}`, coreFeeling: 'joy' });
   }
   await injectEntries(page, entries);
   await page.goto('/');
@@ -64,8 +64,8 @@ test('T072 [US13] delete entry, dismiss confirm, nothing changes', async ({ page
 test('T073 [US13] delete today entry from overview, form resets', async ({ page }) => {
   const todayKey = getTodayKey();
   const entries = {
-    [todayKey]: createTestEntry({ thoughts: 'Today thoughts', selectedEmotion: 'joy' }),
-    [getDateKey(1)]: createTestEntry({ thoughts: 'Yesterday', selectedEmotion: 'sadness' }),
+    [todayKey]: createTestEntry({ thoughts: 'Today thoughts', coreFeeling: 'joy' }),
+    [getDateKey(1)]: createTestEntry({ thoughts: 'Yesterday', coreFeeling: 'sadness' }),
   };
   await injectEntries(page, entries);
   await page.goto('/');

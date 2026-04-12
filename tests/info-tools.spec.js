@@ -40,7 +40,7 @@ test('T125 [US24] demo data entries appear in overview', async ({ page }) => {
 
 test('T126 [US24] demo data adds alongside existing entries', async ({ page }) => {
   const existing = {
-    [getDateKey(100)]: createTestEntry({ thoughts: 'Original entry', selectedEmotion: 'joy' }),
+    [getDateKey(100)]: createTestEntry({ thoughts: 'Original entry', coreFeeling: 'joy' }),
   };
   await injectEntries(page, existing);
   await page.goto('/');
@@ -62,7 +62,7 @@ test('T127 [US25] clear all local data removes all localStorage keys', async ({ 
   // Inject entries AFTER page load (not via addInitScript which would re-inject on reload)
   const entries = {};
   for (let i = 0; i < 5; i++) {
-    entries[getDateKey(i)] = createTestEntry({ selectedEmotion: 'joy' });
+    entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy' });
   }
   await page.evaluate((data) => {
     localStorage.setItem('local-mood-tracker-entries', JSON.stringify(data));
@@ -89,7 +89,7 @@ test('T127 [US25] clear all local data removes all localStorage keys', async ({ 
 test('T128 [US25] dismiss clear data confirm, nothing deleted', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 5; i++) {
-    entries[getDateKey(i)] = createTestEntry({ selectedEmotion: 'joy' });
+    entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy' });
   }
   await injectEntries(page, entries);
   await page.goto('/');

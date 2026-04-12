@@ -84,7 +84,7 @@ test('T064 [US11] search reducing to 1 page disables all pagination', async ({ p
   for (let i = 0; i < 20; i++) {
     entries[getDateKey(i)] = createTestEntry({
       thoughts: i === 0 ? 'unique-search-term' : 'Regular thought',
-      selectedEmotion: 'joy',
+      coreFeeling: 'joy',
     });
   }
   await injectEntries(page, entries);

@@ -1,0 +1,9 @@
+{
+  "name": "mindful-checkin-v4",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mindful Check-in v4: Nav Rail (v3) + Handwritten CSS (original) + MCI Module Architecture (v2)",
+  "scripts": {
+    "dev": "npx serve . -p 3004"
+  }
+}
