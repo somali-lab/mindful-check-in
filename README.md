@@ -25,6 +25,7 @@ Each check-in is a snapshot of your current state across multiple dimensions:
 | **Optional note**   | Anything else to add                                                                                                           |
 
 **Save behaviour:**
+
 - **Save** — updates the latest check-in for today, or creates one if none exists
 - **New check-in** — clears the form so you can start a fresh entry (creates an additional check-in for the same day on save)
 
@@ -32,13 +33,13 @@ Each check-in is a snapshot of your current state across multiple dimensions:
 
 Five models to choose from (switch per check-in or set a default):
 
-| Variant  | Emotions                                                                    |
-|----------|-----------------------------------------------------------------------------|
-| ACT      | 8 (joy, serenity, love, acceptance, sadness, melancholy, anger, aggression) |
-| Plutchik | 8 (joy, trust, fear, surprise, sadness, disgust, anger, anticipation)       |
-| Ekman    | 6 (joy, sadness, anger, fear, surprise, disgust)                            |
-| Junto    | 6 (love, joy, surprise, anger, sadness, fear)                               |
-| Extended | 12                                                                          |
+| Variant  | Emotions                                                                                                |
+|----------|---------------------------------------------------------------------------------------------------------|
+| ACT      | 8 (joy, serenity, love, acceptance, sadness, melancholy, anger, aggression)                             |
+| Plutchik | 8 (joy, trust, fear, surprise, sadness, disgust, anger, anticipation)                                   |
+| Ekman    | 6 (joy, sadness, anger, fear, surprise, disgust)                                                        |
+| Junto    | 6 (love, joy, surprise, anger, sadness, fear)                                                           |
+| Extended | 12 (joy, love, trust, surprise, curiosity, anticipation, anxiety, fear, sadness, disgust, anger, shame) |
 
 ### Summary & History
 
@@ -114,18 +115,21 @@ Each entry contains:
 {
   "id": "a1b2c3d4-...",
   "thoughts": "...",
-  "selectedEmotion": "joy",
+  "coreFeeling": "joy",
   "wheelType": "act",
   "customFeelings": "...",
   "energy": { "physical": 70, "mental": 55, "emotional": 60 },
   "bodySignals": ["chest", "left-shoulder"],
   "bodyNote": "...",
   "energyNote": "...",
-  "action": "...",
+  "actions": "...",
   "note": "...",
-  "moodGrid": { "energy": 7, "valence": 8 },
-  "mood": "great",
-  "weather": { "temperature": 14, "code": 1, "icon": "🌤️", "description": "Mainly clear", "location": "Amsterdam" },
+  "moodRow": 2,
+  "moodCol": 8,
+  "moodLabel": "content",
+  "moodColor": "#7cb342",
+  "moodScore": 3,
+  "weather": { "temperature": 14, "weathercode": 1, "windspeed": 8.5, "description": "Mainly clear", "location": "Amsterdam" },
   "updatedAt": "2026-04-06T09:30:00.000Z"
 }
 ```
@@ -147,29 +151,46 @@ Other `localStorage` keys used by the app:
 ## File structure
 
 ```text
-index.html          — App shell, all HTML markup
-translations.js     — All UI strings in English and Dutch
+index.html            — App shell, all HTML markup
+boot.js               — DOMContentLoaded: calls Module.init() in dependency order
+lib/
+  core.js             — Event bus, Store, i18n engine, helpers, entry normalization
+  compute.js          — Mood score computation
+data/
+  static.js           — Pure data: wheel variants, mood grid labels, weather codes, body zones
+  translations.js     — All translation strings (flat object per language)
+modules/
+  navigation.js       — Tab routing, theme, language switching
+  home.js             — Home dashboard: stats, heatmap, streak
+  checkin.js          — Check-in form orchestration, save/load, visibility
+  wheel.js            — Emotion wheel SVG rendering and selection
+  body.js             — Body signals SVG interaction
+  energy.js           — Energy meters rendering and click handling
+  mood.js             — 10×10 mood matrix grid
+  weather.js          — Weather widget: Open-Meteo fetch, geocoding, caching
+  overview.js         — Overview table: sort, filter, search, pagination, export/import
+  settings.js         — Settings form, component toggles, quick actions editor
+  dashboard.js        — Summary card and 28-day history calendar
+  demo.js             — Demo data generator (30 random entries)
 css/
-  base.css          — CSS custom properties, reset, dark theme, shared utilities
-  layout.css        — App shell, hero header, tabs, grid layouts, responsive
-  components.css    — Buttons, form inputs, toggle switches, banners, chips
-  checkin.css       — Emotion wheel, body figure, energy meters, mood grid
-  overview.css      — Table, sorting, pagination, row styles
-  settings.css      — Settings grid, sub-items
-  summary.css       — Summary cards, heatmap, history calendar
-  weather.css       — Weather widget
-  info.css          — Info page, score legend
-js/
-  data.js           — Static data: mood grid words, color map, emotion wheel configs
-  storage.js        — localStorage read/write, entry normalization, migration
-  utils.js          — Shared helpers: i18n, HTML escaping, ID generation, date utils, file I/O
-  checkin.js        — Check-in tab: emotion wheel, body figure, mood grid, energy meters, summary, history
-  overview.js       — Overview tab: table rendering, sort, filter, search, export/import
-  settings-ui.js    — Settings tab: form sync, theme application, component visibility
-  weather.js        — Weather widget: Open-Meteo fetch, geocoding, caching, rendering
-  demo.js           — Demo data generator (30 random entries)
-  init.js           — App bootstrap: DOM references, event binding, tab routing
+  base.css            — CSS custom properties, reset, dark theme, shared utilities
+  layout.css          — App shell, nav rail, grid layouts, responsive
+  components.css      — Buttons, form inputs, banners, chips, toasts
+  checkin.css         — Emotion wheel, body figure, energy meters, mood grid
+  overview.css        — Table, sorting, pagination, row styles
+  settings.css        — Settings grid, sub-items
+  summary.css         — Summary cards, heatmap, history calendar
+  weather.css         — Weather widget
+  info.css            — Info page, score legend
 ```
+
+---
+
+## Architecture
+
+The app follows a modular ES5 IIFE pattern with a single global namespace (`MCI`). Modules communicate via an event bus — no module calls another directly.
+
+See [architecture.md](architecture.md) for the full specification: module contract, event bus API, standard events, data layer, and communication rules.
 
 ---
 
@@ -198,7 +219,7 @@ Both are free and require no API key. Disable the weather component in Settings 
 
 ## Testing
 
-The project includes a comprehensive [Playwright](https://playwright.dev/) end-to-end test suite (168 tests).
+The project includes a comprehensive [Playwright](https://playwright.dev/) end-to-end test suite (~380 tests).
 
 ### Prerequisites
 
@@ -269,6 +290,17 @@ COVERAGE=1 npx playwright test           # macOS/Linux
 ```
 
 Opens an interactive coverage report at `tests/coverage/report.html` showing per-file line, branch, and function coverage.
+
+### Run interactive visual demo
+
+A guided walkthrough of the entire app that runs in a visible browser at human-readable speed. Covers check-in, emotion wheel, energy meters, mood matrix, overview, settings, demo data, export, dark mode, and more.
+
+```bash
+cd tests/demo
+npx playwright test
+```
+
+The demo runs headed by default (~1.5 minutes) with a visible red cursor dot so you can follow along.
 
 ---
 

@@ -1,0 +1,36 @@
+{
+  "2026-04-14_152432142": {
+    "id": "cdce374b-e112-45a9-a1d9-fa861e76262b",
+    "thoughts": "lekker aan het werk, meer energie over s avonds of na een rit naar Amsterdam",
+    "coreFeeling": "trust",
+    "wheelType": "extended",
+    "customFeelings": "",
+    "energy": {
+      "physical": 75,
+      "mental": 84,
+      "emotional": 65
+    },
+    "energyNote": "",
+    "bodySignals": [
+      "left-shoulder",
+      "left-knee",
+      "left-lower-leg"
+    ],
+    "bodyNote": "weinig last van trombose been\nhelemaal linksom kijken is nog niet mogelijk",
+    "moodRow": 3,
+    "moodCol": 6,
+    "moodLabel": "Gefocust",
+    "moodColor": "#ffff99",
+    "actions": "Elke 2 uur een mini break van 10 minuten nemen",
+    "note": "",
+    "weather": {
+      "temperature": 16,
+      "weathercode": 2,
+      "windspeed": 8.6,
+      "description": "",
+      "location": ""
+    },
+    "moodScore": 3,
+    "updatedAt": "2026-04-14T13:24:57.827Z"
+  }
+}

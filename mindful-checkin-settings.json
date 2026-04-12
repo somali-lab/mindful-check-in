@@ -1,0 +1,33 @@
+{
+  "defaultLanguage": "nl",
+  "theme": "system",
+  "defaultWheelType": "extended",
+  "rowsPerPage": 12,
+  "overviewMaxChars": 120,
+  "toastDuration": 4,
+  "energyEmotionalLabel": "social",
+  "weatherLocation": "Amsterdam",
+  "weatherCoords": null,
+  "isDefaultQuickActions": true,
+  "quickActions": [
+    "Vaker tussen de middag een wandeling van 30 min maken",
+    "Elke 2 uur een mini break van 10 minuten nemen",
+    "Een massage afspraak boeken",
+    "Meer water gaan drinken",
+    "Vanavond 30 minuten eerder naar bed",
+    "Deze week een moment van ontspanning inplannen",
+    "Vertellen hoe ik me voel aan iemand die ik vertrouw"
+  ],
+  "components": {
+    "weather": true,
+    "thoughts": true,
+    "coreFeeling": true,
+    "bodySignals": true,
+    "energyPhysical": true,
+    "energyMental": true,
+    "energyEmotional": true,
+    "moodMatrix": true,
+    "actions": true,
+    "note": true
+  }
+}
