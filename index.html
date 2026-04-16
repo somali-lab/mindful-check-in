@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mindful Check-in</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
@@ -481,6 +482,60 @@
               <div class="quick-actions-list" id="qa-list"></div>
             </div>
           </div>
+
+          <div class="section-group" id="reminder-section">
+            <h3 class="subheading" data-t="settingReminderSection">Break reminders</h3>
+            <div class="settings-general-grid">
+
+              <div class="settings-general-item">
+                <label class="settings-item" for="cfg-reminder-enabled">
+                  <input type="checkbox" id="cfg-reminder-enabled"/>
+                  <span data-t="settingReminderEnabled">Enable break reminders</span>
+                </label>
+              </div>
+
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-reminder-interval" data-t="settingReminderInterval">Interval (minutes)</label>
+                <input id="cfg-reminder-interval" type="number" min="15" max="480" step="15"/>
+              </div>
+
+              <div class="settings-general-item" style="grid-column: 1 / -1;">
+                <span class="field-label" data-t="settingReminderDays">Active days</span>
+                <div class="reminder-days-row">
+                  <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="1"/><span data-t="reminderDayMon">Ma</span></label>
+                  <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="2"/><span data-t="reminderDayTue">Di</span></label>
+                  <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="3"/><span data-t="reminderDayWed">Wo</span></label>
+                  <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="4"/><span data-t="reminderDayThu">Do</span></label>
+                  <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="5"/><span data-t="reminderDayFri">Vr</span></label>
+                  <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="6"/><span data-t="reminderDaySat">Za</span></label>
+                  <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="0"/><span data-t="reminderDaySun">Zo</span></label>
+                </div>
+              </div>
+
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-reminder-start" data-t="settingReminderFrom">From</label>
+                <input id="cfg-reminder-start" type="number" min="0" max="23" step="1"/>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-reminder-end" data-t="settingReminderUntil">Until</label>
+                <input id="cfg-reminder-end" type="number" min="1" max="24" step="1"/>
+              </div>
+
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-reminder-title" data-t="settingReminderCustomTitle">Notification title (optional)</label>
+                <input id="cfg-reminder-title" type="text" maxlength="100"/>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-reminder-body" data-t="settingReminderCustomBody">Notification text (optional)</label>
+                <input id="cfg-reminder-body" type="text" maxlength="200"/>
+              </div>
+
+              <div class="settings-general-item" style="grid-column: 1 / -1;">
+                <button type="button" class="reset-button" id="cfg-reminder-test" data-t="settingReminderTest">Send test notification</button>
+              </div>
+
+            </div>
+          </div>
         </section>
       </div>
     </div>
@@ -637,6 +692,7 @@
 <script src="modules/checkin.js"></script>
 <script src="modules/overview.js"></script>
 <script src="modules/settings.js"></script>
+<script src="modules/reminder.js"></script>
 <script src="modules/dashboard.js"></script>
 <script src="modules/demo.js"></script>
 <script src="boot.js"></script>

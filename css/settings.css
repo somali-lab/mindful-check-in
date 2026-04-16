@@ -97,3 +97,44 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Reminder day toggle buttons ── */
+.reminder-days-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.reminder-day-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.reminder-day-btn input[type="checkbox"] {
+  display: none;
+}
+
+.reminder-day-btn span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border-input);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.reminder-day-btn input[type="checkbox"]:checked + span {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}

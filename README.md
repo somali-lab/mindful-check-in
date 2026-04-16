@@ -105,6 +105,29 @@ python -m http.server
 
 ---
 
+## Reminders (push notifications)
+
+The app can send browser notifications at set intervals as a reminder to check in. Enable this via **Settings → Reminders**.
+
+> **Note:** browser notifications do not work when `index.html` is opened directly as a file (`file://` protocol). You need to run the app through a local web server.
+
+Start a local web server in the project directory:
+
+```bash
+# Node.js (recommended)
+npx serve .
+
+# Python
+python -m http.server 8080
+
+# PHP
+php -S localhost:8080
+```
+
+Then open the app at `http://localhost:8080` (or whichever port you chose) and enable reminders in settings.
+
+---
+
 ## Data format
 
 Entries are stored in `localStorage` under the key `local-mood-tracker-entries` as a JSON object. Keys use the format `YYYY-MM-DD` (first entry of a day) or `YYYY-MM-DD_HHMMSSmmm` (subsequent entries on the same day).

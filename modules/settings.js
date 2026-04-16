@@ -14,6 +14,19 @@
     setVal("cfg-location", s.weatherLocation || "");
     setVal("cfg-lang", s.defaultLanguage || "en");
     setVal("cfg-theme", s.theme || "system");
+    setChecked("cfg-reminder-enabled", s.reminderEnabled === true);
+    setVal("cfg-reminder-interval", s.reminderInterval || 120);
+    setVal("cfg-reminder-start", s.reminderStartHour !== undefined ? s.reminderStartHour : 8);
+    setVal("cfg-reminder-end",   s.reminderEndHour   !== undefined ? s.reminderEndHour   : 18);
+    setVal("cfg-reminder-title", s.reminderCustomTitle || "");
+    setVal("cfg-reminder-body",  s.reminderCustomBody  || "");
+    /* day checkboxes */
+    var days = Array.isArray(s.reminderDays) ? s.reminderDays : [1, 2, 3, 4, 5];
+    var dayCbs = document.querySelectorAll("[data-reminder-day]");
+    for (var d = 0; d < dayCbs.length; d++) {
+      var dayVal = parseInt(dayCbs[d].getAttribute("data-reminder-day"), 10);
+      dayCbs[d].checked = days.indexOf(dayVal) !== -1;
+    }
     /* c8 ignore stop */
 
     /* component toggles */
@@ -39,6 +52,19 @@
     s.weatherLocation = getVal("cfg-location") || "";
     s.defaultLanguage = getVal("cfg-lang") || "en";
     s.theme = getVal("cfg-theme") || "system";
+    s.reminderEnabled      = getChecked("cfg-reminder-enabled");
+    s.reminderInterval     = parseInt(getVal("cfg-reminder-interval"), 10) || 120;
+    s.reminderStartHour    = parseInt(getVal("cfg-reminder-start"), 10);
+    s.reminderEndHour      = parseInt(getVal("cfg-reminder-end"), 10);
+    s.reminderCustomTitle  = getVal("cfg-reminder-title");
+    s.reminderCustomBody   = getVal("cfg-reminder-body");
+    /* day checkboxes */
+    var selDays = [];
+    var dayCbs2 = document.querySelectorAll("[data-reminder-day]");
+    for (var d2 = 0; d2 < dayCbs2.length; d2++) {
+      if (dayCbs2[d2].checked) selDays.push(parseInt(dayCbs2[d2].getAttribute("data-reminder-day"), 10));
+    }
+    s.reminderDays = selDays;
     /* c8 ignore stop */
 
     /* component toggles */
@@ -62,6 +88,16 @@
   function getVal(id) {
     var el = document.getElementById(id);
     return el ? el.value : "";
+  }
+
+  function setChecked(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.checked = !!val;
+  }
+
+  function getChecked(id) {
+    var el = document.getElementById(id);
+    return el ? el.checked : false;
   }
   /* c8 ignore stop */
 
