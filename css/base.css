@@ -229,6 +229,38 @@ html[data-theme="dark"] svg:not(.body-figure-svg):not(.emotion-wheel) {
   margin-top: 4px;
 }
 
+/* ── Utility classes replacing inline styles ── */
+.noscript-message {
+  padding: 2rem;
+  text-align: center;
+}
+
+.page-heading {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.file-label {
+  cursor: pointer;
+}
+
+.settings-item--full {
+  grid-column: 1 / -1;
+}
+
+.status-dot--high { background: var(--status-high); }
+.status-dot--mid  { background: var(--status-mid); }
+.status-dot--low  { background: var(--status-low); }
+
+.import-dialog {
+  max-width: 360px;
+}
+
+.import-dialog-actions {
+  gap: 8px;
+  margin-top: 12px;
+}
+
 /* ── Accessibility: reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="css/info.css">
 </head>
 <body>
-<noscript><p style="padding:2rem;text-align:center" data-t="noscript">JavaScript is required.</p></noscript>
+<noscript><p class="noscript-message" data-t="noscript">JavaScript is required.</p></noscript>
 
 <div class="app-layout">
 
@@ -329,11 +329,11 @@
       <div class="view-content">
         <div class="checkin-toolbar">
           <div class="checkin-toolbar-left">
-            <h2 id="overview-heading" data-t="overviewTitle" style="margin:0;font-size:1.3rem">Overview</h2>
+            <h2 id="overview-heading" data-t="overviewTitle" class="page-heading">Overview</h2>
           </div>
           <div class="checkin-save-row">
             <button type="button" class="save-button save-button--secondary" id="ov-export" data-t="btnExport">Export entries</button>
-            <label class="save-button save-button--secondary" style="cursor:pointer">
+            <label class="save-button save-button--secondary file-label">
               <span data-t="btnImport">Import entries</span>
               <input type="file" accept=".json" id="ov-import" class="is-hidden"/>
             </label>
@@ -380,13 +380,13 @@
       <div class="view-content">
         <div class="checkin-toolbar">
           <div class="checkin-toolbar-left">
-            <h2 id="settings-heading" data-t="settingsTitle" style="margin:0;font-size:1.3rem">Settings</h2>
+            <h2 id="settings-heading" data-t="settingsTitle" class="page-heading">Settings</h2>
           </div>
           <div class="checkin-save-row">
             <button type="button" class="save-button" id="cfg-btn-save" data-t="settingSave">Save settings</button>
             <button type="button" class="reset-button" id="cfg-btn-reset" data-t="settingReset">Reset to defaults</button>
             <button type="button" class="save-button save-button--secondary" id="cfg-btn-export" data-t="settingExport">Export settings</button>
-            <label class="save-button save-button--secondary" style="cursor:pointer">
+            <label class="save-button save-button--secondary file-label">
               <span data-t="settingImport">Import settings</span>
               <input type="file" accept=".json" id="cfg-inp-import" class="is-hidden"/>
             </label>
@@ -499,7 +499,7 @@
                 <input id="cfg-reminder-interval" type="number" min="15" max="480" step="15"/>
               </div>
 
-              <div class="settings-general-item" style="grid-column: 1 / -1;">
+              <div class="settings-general-item settings-item--full">
                 <span class="field-label" data-t="settingReminderDays">Active days</span>
                 <div class="reminder-days-row">
                   <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="1"/><span data-t="reminderDayMon">Ma</span></label>
@@ -530,7 +530,7 @@
                 <input id="cfg-reminder-body" type="text" maxlength="200"/>
               </div>
 
-              <div class="settings-general-item" style="grid-column: 1 / -1;">
+              <div class="settings-general-item settings-item--full">
                 <button type="button" class="reset-button" id="cfg-reminder-test" data-t="settingReminderTest">Send test notification</button>
               </div>
 
@@ -635,17 +635,17 @@
             <p data-t="infoScoreCoreDesc">Uses the combined mood score (same as summary). Score ≥ 3 = green, 2 = orange, 1 = red.</p>
             <div class="info-accordion-body">
               <div class="info-score-group">
-                <span class="info-score-dot-inline" style="background:var(--status-high)"></span>
+                <span class="info-score-dot-inline status-dot--high"></span>
                 <strong data-t="infoScoreGreen">Green (3)</strong>
                 <span data-t="infoScoreGreenList">joy, serenity, love, acceptance, trust, happiness, contentment, excitement, pride, gratitude, curiosity</span>
               </div>
               <div class="info-score-group">
-                <span class="info-score-dot-inline" style="background:var(--status-mid)"></span>
+                <span class="info-score-dot-inline status-dot--mid"></span>
                 <strong data-t="infoScoreOrange">Orange (2)</strong>
                 <span data-t="infoScoreOrangeList">surprise, anticipation, melancholy, anxiety</span>
               </div>
               <div class="info-score-group">
-                <span class="info-score-dot-inline" style="background:var(--status-low)"></span>
+                <span class="info-score-dot-inline status-dot--low"></span>
                 <strong data-t="infoScoreRed">Red (1)</strong>
                 <span data-t="infoScoreRedList">sadness, anger, aggression, fear, disgust, shame, guilt</span>
               </div>
@@ -669,9 +669,9 @@
 <div id="toast-container" aria-live="polite"></div>
 
 <!-- Import dialog -->
-<dialog id="dlg-import" class="card" style="max-width:360px">
+<dialog id="dlg-import" class="card import-dialog">
   <h3 data-t="importDialogTitle">Import mode</h3>
-  <div class="section-actions" style="gap:8px;margin-top:12px">
+  <div class="section-actions import-dialog-actions">
     <button class="save-button" id="dlg-overwrite" data-t="importOverwrite">Overwrite matching</button>
     <button class="save-button save-button--secondary" id="dlg-skip" data-t="importSkip">Skip matching</button>
   </div>
