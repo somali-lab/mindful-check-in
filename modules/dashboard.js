@@ -40,7 +40,7 @@
     html += '</div>';
 
     /* 7-day week heatmap */
-    var locale = MCI.lang === "nl" ? "nl-NL" : "en-US";
+    var locale = MCI.getLocale();
     html += '<div class="summary-week">';
     for (var w = 6; w >= 0; w--) {
       var wd = new Date();
@@ -160,8 +160,8 @@
   function energyCellClass(entry, key) {
     if (!entry.energy || typeof entry.energy[key] !== "number") return "cal-empty";
     var v = entry.energy[key];
-    if (v >= 67) return "cal-high";
-    if (v >= 34) return "cal-mid";
+    if (v >= MCI.THRESHOLDS.high) return "cal-high";
+    if (v >= MCI.THRESHOLDS.mid) return "cal-mid";
     return "cal-low";
   }
 

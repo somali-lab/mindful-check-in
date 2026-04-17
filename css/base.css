@@ -228,3 +228,32 @@ html[data-theme="dark"] svg:not(.body-figure-svg):not(.emotion-wheel) {
   color: var(--text-strong);
   margin-top: 4px;
 }
+
+/* ── Accessibility: reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: high contrast ── */
+@media (prefers-contrast: more) {
+  html {
+    --border-card: #000;
+    --border-input: #000;
+    --border-light: #000;
+    --text-muted: var(--text-primary);
+    --text-faint: var(--text-muted);
+  }
+  html[data-theme="dark"] {
+    --border-card: #e2e8f0;
+    --border-input: #e2e8f0;
+    --border-light: #e2e8f0;
+    --text-faint: var(--text-muted);
+  }
+}

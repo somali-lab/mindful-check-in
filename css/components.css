@@ -18,6 +18,16 @@ textarea {
   resize: vertical;
 }
 
+textarea:focus-visible,
+input[type="number"]:focus-visible,
+select:focus-visible,
+.wheel-select:focus-visible,
+.quick-action-input:focus-visible,
+.energy-note-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
 input[type="number"] {
   width: 100%;
   max-width: 140px;
@@ -305,6 +315,11 @@ select {
   left: 18px;
 }
 
+.settings-item input[type="checkbox"]:focus-visible + span::before {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ── Quick Actions: Settings Editor ── */
 .quick-actions-editor {
   margin-top: 8px;
@@ -395,4 +410,9 @@ select {
 .quick-action-chip:hover {
   background: var(--accent);
   color: var(--text-on-accent);
+}
+
+.quick-action-chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

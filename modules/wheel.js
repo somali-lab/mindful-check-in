@@ -6,6 +6,10 @@
 
   var _svg, _display, _select, _picked = "";
 
+  function _variant() {
+    return _select ? _select.value : "act";
+  }
+
   function drawWheel(variant) {
     /* c8 ignore next -- SVG always present */
     if (!_svg) return;
@@ -92,7 +96,7 @@
   function selectEmotion(emId) {
     _picked = _picked === emId ? "" : emId;
     /* c8 ignore next -- _select always present */
-    drawWheel(_select ? _select.value : "act");
+    drawWheel(_variant());
     MCI.emit("wheel:selected", _picked);
   }
 
@@ -130,8 +134,7 @@
       if (resetBtn) {
         resetBtn.addEventListener("click", function () {
           _picked = "";
-          /* c8 ignore next -- _select always present */
-          drawWheel(_select ? _select.value : "act");
+          drawWheel(_variant());
           /* c8 ignore next 2 -- custom field always present */
           var customFld = document.getElementById("fld-custom");
           if (customFld) customFld.value = "";
@@ -140,8 +143,7 @@
       }
 
       MCI.on("language:changed", function () {
-        /* c8 ignore next -- _select always present */
-        drawWheel(_select ? _select.value : "act");
+        drawWheel(_variant());
       });
       MCI.on("settings:changed", function (s) {
         /* c8 ignore next -- settings always has type and _select always present */
@@ -154,14 +156,12 @@
       var settings = MCI.loadSettings();
       /* c8 ignore next -- _select always present */
       if (_select && settings.defaultWheelType) _select.value = settings.defaultWheelType;
-      /* c8 ignore next -- _select always present */
-      drawWheel(_select ? _select.value : "act");
+      drawWheel(_variant());
     },
 
     setPicked: function (emId) {
       _picked = emId || /* c8 ignore next */ "";
-      /* c8 ignore next -- _select always present */
-      drawWheel(_select ? _select.value : "act");
+      drawWheel(_variant());
     },
 
     setVariant: function (variant) {
