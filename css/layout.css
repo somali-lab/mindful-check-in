@@ -74,6 +74,11 @@
   background: var(--bg-accent);
 }
 
+.nav-rail-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .nav-rail-btn.is-active {
   background: var(--accent-bg);
   color: var(--accent);
@@ -168,6 +173,12 @@
 .theme-button:hover,
 .language-button:hover {
   color: var(--text-muted);
+}
+
+.theme-button:focus-visible,
+.language-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .theme-button.is-selected,
@@ -538,6 +549,11 @@
 .home-cta:hover {
   background: var(--accent-hover);
   transform: translateY(-1px);
+}
+
+.home-cta:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .home-cta:active {
