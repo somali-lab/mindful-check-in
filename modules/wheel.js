@@ -86,16 +86,7 @@
       return;
     }
     _display.classList.remove("is-empty");
-    var label = _picked;
-    var wheels = Data.wheels;
-    var keys = Object.keys(wheels);
-    for (var w = 0; w < keys.length; w++) {
-      var ems = wheels[keys[w]].emotions;
-      for (var e = 0; e < ems.length; e++) {
-        if (ems[e].id === _picked) { label = MCI.t(ems[e].tKey) || /* c8 ignore next */ _picked; break; }
-      }
-    }
-    _display.textContent = label;
+    _display.textContent = MCI.emotionLabel(_picked);
   }
 
   function selectEmotion(emId) {

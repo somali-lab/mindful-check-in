@@ -65,5 +65,67 @@
     },
     "moodScore": 3,
     "updatedAt": "2026-04-15T12:10:46.263Z"
+  },
+  "2026-04-16_135225222": {
+    "id": "066ce8b5-b830-4d62-a609-2428d87f70bc",
+    "thoughts": "Bezorgd om Sylvia. Bij lopen voelde mn been vermoeider",
+    "coreFeeling": "anxiety",
+    "wheelType": "extended",
+    "customFeelings": "",
+    "energy": {
+      "physical": 71,
+      "mental": 65,
+      "emotional": 60
+    },
+    "energyNote": "",
+    "bodySignals": [
+      "left-lower-leg"
+    ],
+    "bodyNote": "",
+    "moodRow": 4,
+    "moodCol": 2,
+    "moodLabel": "Bezorgd",
+    "moodColor": "#ffb3ba",
+    "actions": "Elke 2 uur een mini break van 10 minuten nemen",
+    "note": "",
+    "weather": {
+      "temperature": 14.9,
+      "weathercode": 2,
+      "windspeed": 19.4,
+      "description": "",
+      "location": ""
+    },
+    "moodScore": 2,
+    "updatedAt": "2026-04-16T11:52:25.223Z"
+  },
+  "2026-04-17_103216208": {
+    "id": "b1559dd8-0dea-4c0a-8778-e544fc7b249c",
+    "thoughts": "Moe wakker geworden",
+    "coreFeeling": "trust",
+    "wheelType": "extended",
+    "customFeelings": "",
+    "energy": {
+      "physical": 58,
+      "mental": 75,
+      "emotional": 75
+    },
+    "energyNote": "",
+    "bodySignals": [],
+    "bodyNote": "",
+    "moodRow": 7,
+    "moodCol": 4,
+    "moodLabel": "Moe",
+    "moodColor": "#e0f6ff",
+    "actions": "Deze week een moment van ontspanning inplannen",
+    "note": "",
+    "weather": {
+      "temperature": 16.6,
+      "weathercode": 2,
+      "windspeed": 15.5,
+      "description": "",
+      "location": ""
+    },
+    "moodScore": 3,
+    "updatedAt": "2026-04-17T08:32:16.208Z"
   }
 }
