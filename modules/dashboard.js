@@ -166,7 +166,7 @@
   }
 
   function getCellLabel(entry) {
-    if (_historyMode === "core") return entry.coreFeeling || "\u2014";
+    if (_historyMode === "core") return entry.coreFeeling ? MCI.emotionLabel(entry.coreFeeling) : "\u2014";
     if (_historyMode === "mood") return entry.moodLabel || "\u2014";
     if (_historyMode === "physical" || _historyMode === "mental" || _historyMode === "emotional") {
       if (entry.energy && typeof entry.energy[_historyMode] === "number") {

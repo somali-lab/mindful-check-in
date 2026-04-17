@@ -150,7 +150,7 @@
       html += '<tr class="ov-row" data-ekey="' + MCI.esc(item.key) + '">';
       html += '<td>' + MCI.esc(dateStr) + '</td>';
       /* c8 ignore next -- entry fields may be undefined */
-      html += '<td>' + MCI.esc(e.coreFeeling || "\u2014") + '</td>';
+      html += '<td>' + MCI.esc(e.coreFeeling ? MCI.emotionLabel(e.coreFeeling) : "\u2014") + '</td>';
       /* c8 ignore next -- entry fields may be undefined */
       html += '<td>' + MCI.esc(truncate(e.moodLabel, 20) || "\u2014") + '</td>';
       html += '<td>';
