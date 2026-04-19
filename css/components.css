@@ -253,6 +253,30 @@ select {
 .checkin-context-pill--today { color: var(--text-muted); }
 .checkin-context-pill--history { color: var(--text-strong); }
 
+/* ── Date Override Picker ── */
+.ci-date-picker {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ci-date-input {
+  font-size: 0.82rem;
+  font-family: inherit;
+  padding: 4px 8px;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  max-width: 180px;
+}
+
+.ci-date-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
 /* ── Checkbox Toggle Switch ── */
 .settings-item {
   cursor: pointer;
