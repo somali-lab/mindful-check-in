@@ -164,13 +164,44 @@
       return;
     }
 
-    var dateKey = _currentKey || MCI.timestampKey();
+    var dateKey = _currentKey || getDateOverrideKey() || MCI.timestampKey();
     entry = MCI.normalize(entry);
     MCI.saveEntry(dateKey, entry);
     _currentKey = dateKey;
 
     updatePill();
     MCI.banner(MCI.t("saveDone") || /* c8 ignore next */ "Check-in saved!", "success");
+  }
+
+  /* ── date override from datetime-local input ── */
+  function getDateOverrideKey() {
+    var input = document.getElementById("ci-date-override");
+    if (!input || !input.value) return null;
+    var d = new Date(input.value);
+    if (isNaN(d.getTime())) return null;
+    return MCI.formatDate(d) + "_" +
+      ("0" + d.getHours()).slice(-2) +
+      ("0" + d.getMinutes()).slice(-2) +
+      ("0" + d.getSeconds()).slice(-2) +
+      "000";
+  }
+
+  function syncDateInput() {
+    var input = document.getElementById("ci-date-override");
+    if (!input) return;
+    if (_currentKey) {
+      var d = MCI.dateFromKey(_currentKey);
+      if (d) {
+        var iso = d.getFullYear() + "-" +
+          ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
+          ("0" + d.getDate()).slice(-2) + "T" +
+          ("0" + d.getHours()).slice(-2) + ":" +
+          ("0" + d.getMinutes()).slice(-2);
+        input.value = iso;
+      }
+    } else {
+      input.value = "";
+    }
   }
 
   /* ── context pill ── */
@@ -194,6 +225,7 @@
       pill.classList.add("is-new");
       pill.classList.remove("is-saved");
     }
+    syncDateInput();
   }
 
   /* ── quick action chips ── */

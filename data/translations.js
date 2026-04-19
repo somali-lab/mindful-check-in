@@ -38,6 +38,7 @@
       btnSave: "Save check-in",
       btnNewCheckin: "New check-in",
       btnReset: "Reset",
+      ariaDateOverride: "Check-in date and time",
 
       bannerSaved: "Check-in saved!",
       bannerUpdated: "Check-in updated!",
@@ -328,6 +329,7 @@
       btnSave: "Check-in opslaan",
       btnNewCheckin: "Nieuwe check-in",
       btnReset: "Reset",
+      ariaDateOverride: "Check-in datum en tijd",
 
       bannerSaved: "Check-in opgeslagen!",
       bannerUpdated: "Check-in bijgewerkt!",

@@ -127,5 +127,65 @@
     },
     "moodScore": 3,
     "updatedAt": "2026-04-17T08:32:16.208Z"
+  },
+  "2026-04-18_221100000": {
+    "id": "4bb4bc1a-c7da-42b0-8997-492f9cd2f3da",
+    "thoughts": "Lekker op pad geweest. Niet super moe geworden, beste wel blij hoe ik de dag ben doorgekomen",
+    "coreFeeling": "curiosity",
+    "wheelType": "extended",
+    "customFeelings": "",
+    "energy": {
+      "physical": 80,
+      "mental": 81,
+      "emotional": 81
+    },
+    "energyNote": "",
+    "bodySignals": [],
+    "bodyNote": "",
+    "moodRow": 4,
+    "moodCol": 6,
+    "moodLabel": "Vreugdevol",
+    "moodColor": "#fff8dc",
+    "actions": "",
+    "note": "",
+    "weather": {
+      "temperature": 10,
+      "weathercode": 3,
+      "windspeed": 15.5,
+      "description": "",
+      "location": ""
+    },
+    "moodScore": 3,
+    "updatedAt": "2026-04-19T20:13:44.076Z"
+  },
+  "2026-04-19_221232492": {
+    "id": "84e8bf59-35c0-4b2d-b920-34465a220ed8",
+    "thoughts": "Lekker gebadderd niet de energie uit mn gezogen lekker bezig geweest met ai. Geen energy drain. lekker ontspannen",
+    "coreFeeling": "trust",
+    "wheelType": "extended",
+    "customFeelings": "",
+    "energy": {
+      "physical": 77,
+      "mental": 77,
+      "emotional": 75
+    },
+    "energyNote": "",
+    "bodySignals": [],
+    "bodyNote": "",
+    "moodRow": 3,
+    "moodCol": 6,
+    "moodLabel": "Gefocust",
+    "moodColor": "#ffff99",
+    "actions": "",
+    "note": "",
+    "weather": {
+      "temperature": 10,
+      "weathercode": 3,
+      "windspeed": 15.5,
+      "description": "",
+      "location": ""
+    },
+    "moodScore": 3,
+    "updatedAt": "2026-04-19T20:13:16.602Z"
   }
 }

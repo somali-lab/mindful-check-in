@@ -159,10 +159,13 @@
     <div class="view" id="view-checkin">
       <div class="view-content">
 
-        <!-- Toolbar: context pill + save buttons -->
+        <!-- Toolbar: context pill + date picker + save buttons -->
         <div class="checkin-toolbar">
           <div class="checkin-toolbar-left">
             <div class="checkin-context-pill" id="ci-pill" data-t="pillNew">New · not saved yet</div>
+            <label class="ci-date-picker">
+              <input type="datetime-local" id="ci-date-override" class="ci-date-input" aria-label="Check-in date and time" data-t-aria="ariaDateOverride">
+            </label>
           </div>
           <div class="checkin-save-row">
             <button type="button" class="save-button save-button--secondary" id="ci-btn-new" data-t="btnNewCheckin">New check-in</button>
