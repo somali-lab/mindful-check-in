@@ -77,7 +77,7 @@
 .emotion-segment.is-selected {
   stroke: var(--segment-selected-stroke);
   stroke-width: 2.8;
-  filter: brightness(1.1) drop-shadow(0 0 0.35rem rgba(79, 70, 229, 0.4));
+  filter: brightness(1.06) drop-shadow(0 0 0.35rem rgba(191, 123, 70, 0.4));
 }
 
 #wheel-svg.has-selection .emotion-segment:not(.is-selected) {

@@ -198,7 +198,7 @@
   border: 1px solid var(--border-card);
   border-radius: 16px;
   background: var(--bg-surface);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 8px 30px rgba(60, 45, 30, 0.08);
 }
 
 /* ── Grid Layouts ── */
@@ -454,9 +454,11 @@
 }
 
 .home-greeting {
+  font-family: var(--font-serif);
   font-size: 2.75rem;
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1.12;
+  letter-spacing: -0.015em;
   margin: 10px 0 0;
   color: var(--text-strong);
 }
@@ -469,7 +471,7 @@
   padding: 22px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 2px 6px rgba(60, 45, 30, 0.05);
 }
 
 .home-body {
@@ -502,15 +504,18 @@
 }
 
 .bento-value {
-  font-size: 2.25rem;
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-size: 2.1rem;
+  font-weight: 500;
   line-height: 1;
-  color: var(--text-strong);
+  letter-spacing: -0.02em;
+  color: var(--accent);
 }
 
 .bento-mood {
+  font-family: var(--font-serif);
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-strong);
   margin-top: 4px;
 }
