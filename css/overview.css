@@ -42,18 +42,21 @@
 }
 
 .overview-table th {
-  background: var(--bg-surface-alt);
-  /* match the check-in labels (.ci-eyebrow) */
+  /* distinct header strip (the even rows also use surface-alt, so use a
+     stronger tan + a separating border to make the header stand out) */
+  background: var(--bg-energy-meter);
+  border-bottom: 1px solid var(--border-input);
+  /* check-in label shape, in a distinct colour from the rows */
   font-family: var(--font-sans);
   font-size: 0.69rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--text-body);
 }
 
 .overview-table td {
-  color: var(--text-muted);
+  color: var(--text-faint);
   max-width: 220px;
   white-space: normal;
 }
