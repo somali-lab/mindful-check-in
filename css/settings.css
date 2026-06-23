@@ -7,11 +7,11 @@
 }
 
 .settings-nav {
-  flex: 0 0 200px;
+  flex: 0 0 160px;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 16px 12px;
+  padding: 16px 10px;
   border-right: 1px solid var(--border-light);
   background: var(--bg-surface-alt);
 }

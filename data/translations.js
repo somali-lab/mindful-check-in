@@ -142,7 +142,7 @@
       settingMaxChars: "Max characters in overview",
       settingToastDuration: "Toast duration (sec)",
       settingWeatherLocation: "Weather location",
-      settingComponents: "Visible components",
+      settingComponents: "Components",
 
       compWeather: "Weather", compThoughts: "Thoughts",
       compCoreFeeling: "Core feeling", compBodySignals: "Body signals",
@@ -160,7 +160,7 @@
       settingsImportError: "Invalid settings file.",
       settingsReset: "Settings reset to defaults!",
 
-      settingReminderSection: "Break reminders",
+      settingReminderSection: "Reminders",
       settingReminderEnabled: "Enable break reminders",
       settingReminderInterval: "Interval (minutes)",
       settingReminderDays: "Active days",
@@ -464,7 +464,7 @@
       settingMaxChars: "Max tekens in overzicht",
       settingToastDuration: "Toastduur (sec)",
       settingWeatherLocation: "Weer locatie",
-      settingComponents: "Zichtbare componenten",
+      settingComponents: "Componenten",
 
       compWeather: "Weer", compThoughts: "Gedachten",
       compCoreFeeling: "Kerngevoel", compBodySignals: "Lichaamssignalen",
@@ -482,7 +482,7 @@
       settingsImportError: "Ongeldig instellingenbestand.",
       settingsReset: "Instellingen hersteld!",
 
-      settingReminderSection: "Pauzeherinneringen",
+      settingReminderSection: "Herinneringen",
       settingReminderEnabled: "Pauzeherinneringen inschakelen",
       settingReminderInterval: "Interval (minuten)",
       settingReminderDays: "Actieve dagen",
