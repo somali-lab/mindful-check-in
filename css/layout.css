@@ -216,6 +216,11 @@ body[data-active-route="info"] .app-shell-footer-bar[data-footer="info"] {
   flex: 0 0 auto;
 }
 
+/* the Home "Start check-in" CTA spans the full width */
+.app-shell-footer-bar[data-footer="home"] .ci-save-primary {
+  flex: 1 1 auto;
+}
+
 .app-header-right {
   display: flex;
   align-items: center;
