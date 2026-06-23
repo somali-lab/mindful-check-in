@@ -13,8 +13,7 @@
     { sel: ".ci-core-row",                                 tKey: "labelCoreFeeling" },
     { sel: ".ci-energy-section",                           tKey: "labelEnergy" },
     { sel: "#view-checkin [data-component='moodMatrix']",  tKey: "labelMoodMatrix" },
-    { sel: "#view-checkin [data-component='actions']",     tKey: "labelActions" },
-    { sel: "#view-checkin [data-component='note']",        tKey: "labelNote" },
+    { sel: ".ci-card-actions",                             tKey: "labelActions" },
     { sel: "#view-checkin .grid",                          tKey: "summaryTitle" }
   ];
 
@@ -118,7 +117,7 @@
         isCheckin = (route === "checkin");
         if (isCheckin) window.requestAnimationFrame(build);
       });
-      MCI.on("settings:changed", function () { if (isCheckin) build(); });
+      MCI.on("settings:changed", function () { if (isCheckin) window.requestAnimationFrame(build); });
       MCI.on("language:changed", function () { if (isCheckin) build(); });
 
       /* build immediately if the check-in view is the initial active view */

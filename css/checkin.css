@@ -116,7 +116,26 @@ html[data-theme="dark"] body[data-logo="logo3"] .info-hero-mark {
 
 /* Card body padding (header & footer stay full-bleed) */
 .ci-body {
-  padding: 14px 32px 30px;
+  padding: 18px 28px;
+}
+
+/* Each section is now its own card, stacked vertically with a gap. */
+#view-checkin .view-content > .checkin-card + .checkin-card,
+#view-checkin .view-content > .checkin-card + .grid {
+  margin-top: 16px;
+}
+
+/* The single (first) section in a card needs no extra top margin —
+   the card padding already spaces it. */
+.ci-body > .ci-section:first-child,
+.ci-body > .ci-core-row:first-child {
+  margin-top: 0;
+}
+
+/* Collapse a section card whose every component is hidden (visibility
+   settings) so no empty bordered card is left behind. */
+.checkin-card.ci-collapsible:not(:has([data-component]:not(.is-hidden))) {
+  display: none;
 }
 
 /* ── Greeting + thoughts side by side (greeting left, input ≥67% right) ── */
