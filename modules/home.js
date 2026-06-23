@@ -72,14 +72,113 @@
         + day.label + '</div>';
     }
     heatEl.innerHTML = html;
+
+    /* ── streak ring ── */
+    var ringEl = document.getElementById("home-streak-ring");
+    if (ringEl) ringEl.innerHTML = ringSvg(streak);
+
+    /* ── energy today ── */
+    var elEnergy = document.getElementById("home-energy");
+    if (elEnergy) {
+      var pct = todayEnergyPct(entries);
+      elEnergy.textContent = pct == null ? "—" : pct + "%";
+    }
+
+    /* ── this-week heatmap + recent list ── */
+    renderWeek(entries);
+    renderRecent(entries);
+  }
+
+  /* Build the circular streak progress ring (SVG markup). */
+  function ringSvg(streak) {
+    var target = 7, R = 30, C = 2 * Math.PI * R;
+    var ratio = Math.max(0, Math.min(1, target > 0 ? streak / target : 0));
+    var off = C * (1 - ratio);
+    var label = (MCI.t("homeDays") || /* c8 ignore next */ "days").toUpperCase();
+    return '<svg viewBox="0 0 80 80" width="78" height="78" aria-hidden="true">'
+      + '<circle class="home-ring-track" cx="40" cy="40" r="30" fill="none" stroke-width="7"/>'
+      + '<circle class="home-ring-arc" cx="40" cy="40" r="30" fill="none" stroke-width="7" stroke-linecap="round"'
+      + ' stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 40 40)"/>'
+      + '<text class="home-ring-num" x="40" y="46" text-anchor="middle" font-size="22">' + streak + '</text>'
+      + '<text class="home-ring-label" x="40" y="58" text-anchor="middle" font-size="8.5" letter-spacing="1">' + MCI.esc(label) + '</text>'
+      + '</svg>';
+  }
+
+  /* Average energy (%) of today's entry, or null when not set. */
+  function todayEnergyPct(entries) {
+    var keys = Object.keys(entries), tk = MCI.todayKey();
+    var fields = ["physical", "mental", "emotional"];
+    for (var i = 0; i < keys.length; i++) {
+      if (keys[i].indexOf(tk) !== 0) continue;
+      var en = entries[keys[i]].energy || {}, sum = 0, n = 0;
+      for (var f = 0; f < fields.length; f++) {
+        var v = en[fields[f]];
+        if (typeof v === "number") { sum += v; n++; }
+      }
+      return n === 0 ? null : Math.round(sum / n);
+    }
+    return null;
+  }
+
+  /* Render the 7-day "this week" heatmap row. */
+  function renderWeek(entries) {
+    var el = document.getElementById("home-week");
+    /* c8 ignore next -- week element always present */
+    if (!el) return;
+    var keys = Object.keys(entries), tk = MCI.todayKey();
+    var locale = MCI.lang === "nl" ? "nl-NL" : "en-US";
+    var html = "";
+    for (var w = 6; w >= 0; w--) {
+      var wd = new Date();
+      wd.setDate(wd.getDate() - w);
+      var wdk = MCI.formatDate(wd);
+      var found = MCI.findEntryForDay(entries, keys, wdk);
+      var sc = found ? (found.entry.moodScore || 2) : 0;
+      var cls = sc === 0 ? "heat-empty" : sc >= 3 ? "heat-high" : sc >= 2 ? "heat-mid" : "heat-low";
+      var lbl = wd.toLocaleDateString(locale, { weekday: "short" });
+      html += '<div class="heat-day' + (wdk === tk ? " heat-today" : "") + '">'
+        + '<div class="heat-dot ' + cls + '"></div>'
+        + '<span class="heat-label">' + MCI.esc(lbl) + '</span></div>';
+    }
+    el.innerHTML = html;
+  }
+
+  /* Render the recent check-ins list (newest first, up to 5). */
+  function renderRecent(entries) {
+    var el = document.getElementById("home-recent");
+    /* c8 ignore next -- recent element always present */
+    if (!el) return;
+    var keys = Object.keys(entries).sort().reverse();
+    if (!keys.length) {
+      el.innerHTML = '<p class="empty-state">' + MCI.esc(MCI.t("homeNoRecent") || /* c8 ignore next */ "No earlier check-ins yet.") + '</p>';
+      return;
+    }
+    var locale = MCI.lang === "nl" ? "nl-NL" : "en-US";
+    var html = "", max = Math.min(5, keys.length);
+    for (var i = 0; i < max; i++) {
+      var k = keys[i], e = entries[k];
+      var sc = e.moodScore || 2;
+      var scls = sc >= 3 ? "score-high" : sc >= 2 ? "score-mid" : "score-low";
+      var label = e.moodLabel || (e.coreFeeling ? MCI.emotionLabel(e.coreFeeling) : "") || "—";
+      var d = MCI.dateFromKey(k);
+      var ds = d ? d.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" }) : "";
+      html += '<div class="recent-item" data-entry-key="' + MCI.esc(k) + '">'
+        + '<span class="recent-dot ' + scls + '"></span>'
+        + '<div class="recent-main">'
+        + '<div class="recent-label">' + MCI.esc(label) + '</div>'
+        + '<div class="recent-date">' + MCI.esc(ds) + '</div>'
+        + '</div></div>';
+    }
+    el.innerHTML = html;
   }
 
   MCI.Home = {
     init: function () {
       render();
 
-      /* Click heatmap cell → load entry in checkin tab */
+      /* Click heatmap cell or recent item → load entry in checkin tab */
       MCI.bindEntryClick("home-heatmap");
+      MCI.bindEntryClick("home-recent");
 
       /* CTA button → navigate to checkin */
       var ctaBtn = document.getElementById("home-btn-checkin");
