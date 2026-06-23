@@ -74,14 +74,16 @@
     /* c8 ignore next -- slot always present and cw always provided when called */
     if (!_slot || !cw) return;
     var code = cw.weathercode != null ? cw.weathercode : cw.weather_code;
-    var wInfo = MCI.Data.weatherCodes[code] || { emoji: "\u2753", desc: "Unknown" };
+    var wInfo = MCI.Data.weatherCodes[code] || { emoji: "\u2753", desc: { en: "Unknown", nl: "Onbekend" } };
+    var lang = MCI.lang || "en";
+    var desc = wInfo.desc[lang] || wInfo.desc.en;
     var temp = cw.temperature != null ? cw.temperature : "?";
     /* compact header pill: icon \u00b7 temp\u00b0 \u00b7 description */
     if (locationName) _slot.setAttribute("title", locationName);
     _slot.innerHTML = '<span class="weather-icon">' + wInfo.emoji + '</span>'
       + '<span class="weather-temp">' + MCI.esc(temp + "\u00b0") + '</span>'
       + '<span class="weather-sep" aria-hidden="true">\u00b7</span>'
-      + '<span class="weather-desc">' + MCI.esc(wInfo.desc) + '</span>';
+      + '<span class="weather-desc">' + MCI.esc(desc) + '</span>';
   }
 
   function renderError() {
