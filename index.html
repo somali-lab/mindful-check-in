@@ -87,9 +87,6 @@
           <button type="button" class="ci-tab" data-route="info" data-t="infoTitle">About</button>
         </nav>
         <div class="app-shell-header-right">
-          <div class="ci-weather-pill" data-component="weather" id="weather-slot" title="">
-            <span data-t="weatherLoading">Loading weather…</span>
-          </div>
           <div class="theme-switch" id="theme-btns" role="group" aria-label="Theme switch">
             <button type="button" class="theme-button" data-theme-pick="light" aria-label="Light theme" title="Light">
               <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
@@ -140,6 +137,12 @@
             <div class="bento-card bento-card--ring">
               <span class="bento-label" data-t="statStreak">Streak</span>
               <div class="home-ring" id="home-streak-ring"></div>
+            </div>
+            <div class="bento-card home-weather-card" data-component="weather">
+              <span class="bento-label" data-t="statWeather">Weather</span>
+              <div class="home-weather" id="weather-slot" title="">
+                <span data-t="weatherLoading">Loading weather…</span>
+              </div>
             </div>
             <div class="bento-card">
               <span class="bento-label" data-t="statTotal">Total</span>
