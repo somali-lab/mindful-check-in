@@ -113,9 +113,8 @@
   }
 
   function scoreLabel(s) {
-    if (s >= 3) return "\ud83d\ude0a";
-    if (s >= 2) return "\ud83d\ude10";
-    return "\ud83d\ude1e";
+    var cls = s >= 3 ? "score-high" : s >= 2 ? "score-mid" : "score-low";
+    return '<span class="ov-score-dot ' + cls + '" aria-hidden="true"></span>';
   }
 
   function buildBody() {
@@ -165,8 +164,8 @@
       /* c8 ignore next -- entry fields may be undefined */
       html += '<td>' + MCI.esc(truncate(e.thoughts, _maxChars) || "\u2014") + '</td>';
       /* c8 ignore next -- moodScore defaults to 2 */
-      html += '<td>' + scoreLabel(e.moodScore || 2) + '</td>';
-      html += '<td><button type="button" class="ov-del" data-dk="' + MCI.esc(item.key) + '">\u2715</button></td>';
+      html += '<td class="ov-center">' + scoreLabel(e.moodScore || 2) + '</td>';
+      html += '<td class="ov-center"><button type="button" class="ov-del" data-dk="' + MCI.esc(item.key) + '">\u2715</button></td>';
       html += '</tr>';
     }
 

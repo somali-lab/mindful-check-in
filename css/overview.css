@@ -61,6 +61,26 @@
   white-space: normal;
 }
 
+/* Center the Score and Actions columns (header + cells) */
+.overview-table th[data-sortcol="score"],
+.overview-table th[data-sortcol="actions"],
+.overview-table td.ov-center {
+  text-align: center;
+}
+
+/* Score column: coloured dot (same palette as the summary dots) */
+.ov-score-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.ov-score-dot.score-high { background: var(--score-high); }
+.ov-score-dot.score-mid  { background: var(--score-mid); }
+.ov-score-dot.score-low  { background: var(--score-low); }
+
 /* ── Sorting ── */
 .ov-th-sortable {
   user-select: none;
