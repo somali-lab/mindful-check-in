@@ -1,4 +1,473 @@
-/* ── Checkin Block ── */
+/* ══════════════════════════════════════════════════════════════
+   CHECK-IN — "Atelier" editorial layout (Herontwerp)
+   ══════════════════════════════════════════════════════════════ */
+.checkin-card {
+  padding: 0;
+  overflow: hidden;
+  background: var(--bg-surface-alt);
+}
+
+/* contain the check-in like the design's app card */
+#view-checkin .view-content {
+  max-width: 980px;
+}
+
+/* In-card app header */
+.ci-appbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 15px 24px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.ci-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.ci-brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #cf8c54, #9d5f33);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font: 600 16px var(--font-serif);
+  flex: none;
+}
+
+.ci-brand-name {
+  font: 600 1.05rem var(--font-serif);
+  color: var(--text-strong);
+}
+
+.ci-appbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ci-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-energy-meter);
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.ci-tab {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font: 500 0.78rem var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ci-tab.is-active {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+
+.ci-weather-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--text-muted);
+  font: 500 0.78rem var(--font-sans);
+  white-space: nowrap;
+}
+
+.ci-weather-pill .weather-icon { font-size: 0.95rem; line-height: 1; }
+.ci-weather-pill .weather-temp { color: var(--text-body); font-weight: 600; }
+.ci-weather-pill .weather-sep { opacity: 0.5; }
+
+/* Card body padding (header & footer stay full-bleed) */
+.ci-body {
+  padding: 26px 32px 30px;
+}
+
+/* ── Greeting header ── */
+.ci-greeting {
+  margin-bottom: 6px;
+}
+
+.ci-hello {
+  font-family: var(--font-serif);
+  font-size: 1.95rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--text-strong);
+  margin: 0;
+}
+
+.ci-subline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.ci-subline .ci-dot {
+  opacity: 0.5;
+}
+
+/* date sits in the subline as a copper, editable value (design) */
+.ci-subline #ci-pill {
+  display: none;
+}
+
+.ci-date-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+  font: 500 0.9rem var(--font-sans);
+  cursor: pointer;
+}
+
+.ci-date-display {
+  border-bottom: 1px dashed var(--accent);
+  padding-bottom: 1px;
+}
+
+.ci-date-icon { flex: none; }
+
+/* native input kept only as the picker source — visually hidden */
+.ci-date-control .ci-date-input {
+  position: absolute;
+  left: 14px;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
+}
+
+/* ── Sections & eyebrow labels ── */
+.ci-section,
+.ci-core-row {
+  margin-top: 30px;
+}
+
+.ci-eyebrow {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 10px;
+}
+
+.ci-eyebrow--sub {
+  margin-top: 16px;
+  color: var(--text-faint);
+}
+
+.ci-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.ci-section-head .ci-eyebrow {
+  margin-bottom: 0;
+}
+
+/* ── Serif prose textareas (thoughts, note) ── */
+.ci-prose {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  padding: 15px 17px;
+  min-height: 84px;
+  border-radius: 12px;
+}
+
+/* ── Core feeling + Body, side by side with editorial divider ── */
+.ci-core-row {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.ci-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.ci-col-core {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.ci-col-body {
+  flex: 0 0 270px;
+  width: 270px;
+}
+
+.ci-col-body .body-figure {
+  max-width: 100%;
+  min-height: 330px;
+}
+
+#view-checkin .body-figure-svg {
+  width: 200px;
+  height: 352px;
+}
+
+.ci-col-body .selection-display {
+  text-align: center;
+}
+
+.ci-divider {
+  align-self: stretch;
+  width: 1px;
+  background: var(--border-light);
+  flex: none;
+}
+
+/* ── Energy — thin per-5% segmented bars, per-channel colours (exact design) ── */
+#energy-slot.energy-triple {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 13px;
+  margin-top: 8px;
+}
+
+.nrg-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nrg-label {
+  flex: 0 0 74px;
+  font: 500 0.78rem var(--font-sans);
+  color: var(--text-muted);
+}
+
+.nrg-track {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.nrg-seg {
+  flex: 1;
+  height: 10px;
+  border-radius: 2.5px;
+  background: var(--bg-energy-meter);
+  transition: background 130ms ease;
+}
+
+/* filled segments take the channel colour (copper / sage / blue) */
+.nrg-row[data-energy-type="physical"]  .nrg-seg.is-on { background: var(--accent); }
+.nrg-row[data-energy-type="mental"]    .nrg-seg.is-on { background: #7e8f56; }
+.nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { background: #7e93a8; }
+html[data-theme="dark"] .nrg-row[data-energy-type="mental"]    .nrg-seg.is-on { background: #9fb06a; }
+html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { background: #8ba3bd; }
+
+/* affordance: hovering the empty track darkens it slightly */
+.nrg-track:hover .nrg-seg:not(.is-on) {
+  background: var(--border-input);
+}
+
+/* the % is shown inline per bar — hide the verbose text readout (design) */
+#view-checkin #energy-display {
+  display: none;
+}
+
+.nrg-val {
+  flex: 0 0 40px;
+  text-align: right;
+  font: 500 0.82rem var(--font-mono);
+  color: var(--text-body);
+}
+
+.nrg-val.is-empty {
+  color: var(--text-faint);
+}
+
+/* ── Footer save row (full-bleed, like the design) ── */
+.ci-footer {
+  display: flex;
+  gap: 12px;
+  padding: 18px 32px;
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-body);
+}
+
+.ci-save-primary {
+  flex: 1;
+  padding: 13px 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font: 600 0.9rem var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+}
+
+.ci-save-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px var(--accent-shadow);
+}
+
+.ci-save-secondary {
+  padding: 13px 22px;
+  border: 1px solid var(--border-input);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-muted);
+  font: 500 0.9rem var(--font-sans);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.ci-save-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Responsive: stack core/body, smaller padding ── */
+@media (max-width: 760px) {
+  .checkin-card {
+    padding: 22px 18px 20px;
+  }
+  .ci-core-row {
+    flex-direction: column;
+    gap: 28px;
+  }
+  .ci-divider {
+    display: none;
+  }
+  .ci-col-body {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* ── Action pills (toggle + inline add, design style) ── */
+#view-checkin #fld-action { display: none; }
+
+#view-checkin #ci-chips {
+  gap: 8px;
+  margin: 0;
+}
+
+.ci-act-pill {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-input);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font: 500 0.8rem var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.ci-act-pill.is-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+
+.ci-act-pill:hover:not(.is-on) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ci-act-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px dashed var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font: 500 0.8rem var(--font-sans);
+  cursor: pointer;
+}
+
+.ci-act-add--editing {
+  padding: 4px 6px 4px 12px;
+  border-style: solid;
+}
+
+.ci-act-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font: 500 0.8rem var(--font-sans);
+  color: var(--text-body);
+  min-width: 120px;
+}
+
+/* custom-feeling chips (under the wheel, centred like the design) */
+#view-checkin #fld-custom { display: none; }
+
+#ci-feel-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.ci-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 7px 6px 13px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font: 500 0.78rem var(--font-sans);
+}
+
+.ci-chip-x {
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.75;
+  padding: 0 1px;
+}
+
+.ci-chip-x:hover { opacity: 1; }
+
+/* ── Checkin Block (legacy) ── */
 .checkin-block {
   background: var(--bg-surface-alt);
   border: 1px solid var(--border-light);
@@ -98,6 +567,105 @@
   fill: var(--text-on-color-inv);
 }
 
+/* ══ Donut wheel (Herontwerp) ══ */
+.emotion-wheel {
+  overflow: visible;
+  max-width: 348px;
+}
+
+/* Donut segments: gap-stroke in the surface colour for the segmented ring look */
+#wheel-svg .emotion-segment {
+  stroke: var(--bg-surface);
+  stroke-width: 2.5;
+  transition: opacity 160ms ease, filter 160ms ease, transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#wheel-svg .emotion-segment:hover {
+  filter: brightness(1.04);
+  stroke-width: 2.5;
+}
+
+#wheel-svg .emotion-segment.is-selected {
+  stroke: var(--segment-selected-stroke);
+  stroke-width: 2;
+  filter: brightness(1.03) drop-shadow(0 1px 4px rgba(191, 123, 70, 0.35));
+}
+
+#wheel-svg.has-selection .emotion-segment:not(.is-selected) {
+  opacity: 0.5;
+}
+
+.wheel-ext-label {
+  fill: var(--text-muted);
+  font: 500 11px var(--font-sans);
+  pointer-events: none;
+}
+
+.wheel-ext-label.is-selected {
+  fill: var(--text-strong);
+  font-weight: 600;
+}
+
+.wheel-center-sub {
+  fill: var(--text-faint);
+  font: 600 9px var(--font-sans);
+  letter-spacing: 0.14em;
+}
+
+.wheel-center-main {
+  fill: var(--accent);
+  font: 600 17px var(--font-serif);
+}
+
+.wheel-center-empty {
+  fill: var(--text-faint);
+  font: 400 12px var(--font-sans);
+}
+
+/* Wheel-type pills */
+.wheel-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.wheel-pill {
+  padding: 5px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border-input);
+  background: transparent;
+  color: var(--text-muted);
+  font: 500 11px var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.wheel-pill.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+
+.wheel-pill:hover:not(.is-active) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.wheel-hint {
+  text-align: center;
+  font: 400 0.78rem var(--font-sans);
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* Center readout replaces the redundant text readout under the wheel */
+#view-checkin #wheel-display {
+  display: none;
+}
+
 /* ── Body Figure ── */
 .body-figure {
   display: flex;
@@ -139,6 +707,90 @@
 .body-figure .body-part.is-on {
   fill: var(--body-part-selected-fill);
   stroke: var(--body-part-selected-stroke);
+}
+
+/* 3-level intensity (theme-stable warm tones) */
+.body-figure .body-part.lvl-1 { fill: #e7c08a; stroke: #cf9a6b; }
+.body-figure .body-part.lvl-2 { fill: #d99458; stroke: #bf7b46; }
+.body-figure .body-part.lvl-3 { fill: #bf6438; stroke: #9d4f2a; }
+
+/* Body intensity legend + hint */
+.body-hint {
+  text-align: center;
+  font: 400 0.76rem var(--font-sans);
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+.body-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.body-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 400 0.72rem var(--font-sans);
+  color: var(--text-muted);
+}
+
+.body-legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  flex: none;
+}
+
+.body-legend-swatch.lvl-1 { background: #e7c08a; }
+.body-legend-swatch.lvl-2 { background: #d99458; }
+.body-legend-swatch.lvl-3 { background: #bf6438; }
+
+/* compact "Selected" readout: intensity dot + name, wrapped (design) */
+.body-selected-label {
+  text-align: center;
+  font: 600 0.62rem var(--font-sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-top: 14px;
+}
+
+#view-checkin #body-display {
+  background: transparent;
+  border: none;
+  padding: 8px 0 0;
+  margin: 0;
+  min-height: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px 14px;
+}
+
+#view-checkin #body-display.is-empty {
+  display: block;
+  text-align: center;
+  font: italic 400 0.78rem var(--font-serif);
+  color: var(--text-faint);
+}
+
+.body-sig {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 0.72rem var(--font-sans);
+  color: var(--text-muted);
+}
+
+.body-sig-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
 }
 
 .body-figure .back-zone {

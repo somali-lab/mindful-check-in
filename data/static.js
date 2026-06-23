@@ -19,7 +19,7 @@
         { id: "anger", tKey: "emAnger" },
         { id: "aggression", tKey: "emAggression" }
       ],
-      colors: ["#f6c453","#9fd46f","#f08ac0","#8ec5e8","#80a7ee","#9a8fe0","#ef6a6a","#f28b4f"]
+      colors: ["#d6a85c","#9aa86a","#cf9aa6","#93aab5","#8593ad","#9c92b0","#c47158","#c98a5a"]
     },
     plutchik: {
       labelKey: "wheelPlutchik",
@@ -33,7 +33,7 @@
         { id: "anger", tKey: "emAnger" },
         { id: "anticipation", tKey: "emAnticipation" }
       ],
-      colors: ["#f9e547","#8ed16e","#4aac6e","#2da8c2","#4168b0","#ab4fa0","#ef3f36","#f28b2c"]
+      colors: ["#d6a85c","#8fb39a","#7f7ba2","#d9bd72","#8593ad","#a7a86a","#c47158","#cf9a6b"]
     },
     ekman: {
       labelKey: "wheelEkman",
@@ -45,7 +45,7 @@
         { id: "surprise", tKey: "emSurprise" },
         { id: "disgust", tKey: "emDisgust" }
       ],
-      colors: ["#f6c453","#80a7ee","#ef6a6a","#4aac6e","#2da8c2","#ab4fa0"]
+      colors: ["#d6a85c","#8593ad","#c47158","#7f7ba2","#d9bd72","#a7a86a"]
     },
     junto: {
       labelKey: "wheelJunto",
@@ -57,7 +57,7 @@
         { id: "sadness", tKey: "emSadness" },
         { id: "fear", tKey: "emFear" }
       ],
-      colors: ["#f08ac0","#f6c453","#2da8c2","#ef6a6a","#80a7ee","#4aac6e"]
+      colors: ["#cf9aa6","#d6a85c","#d9bd72","#c47158","#8593ad","#7f7ba2"]
     },
     extended: {
       labelKey: "wheelExtended",
@@ -75,7 +75,7 @@
         { id: "anger", tKey: "emAnger" },
         { id: "shame", tKey: "emShame" }
       ],
-      colors: ["#f9e547","#f08ac0","#8ed16e","#2da8c2","#f28b2c","#9a8fe0","#80a7ee","#4aac6e","#ef6a6a","#ab4fa0","#4168b0","#c19a6b"]
+      colors: ["#d6a85c","#cf9aa6","#8fb39a","#d9bd72","#7fa6a6","#cf9a6b","#9a8fb0","#7f7ba2","#8593ad","#a7a86a","#c47158","#b1906f"]
     }
   };
 
@@ -145,17 +145,19 @@
     ]
   };
 
+  /* Earthy "Herontwerp" palette — same quadrant semantics (energy × valence),
+     muted Somali tones: clay/amber (high), slate/sage (low), cream centre. */
   MCI.Data.moodColors = [
-    ["#8b0000","#8b0000","#a52a2a","#dc143c","#ffb3ba","#fff8dc","#ffff99","#ffd700","#ff8c00","#ff8c00"],
-    ["#8b0000","#8b0000","#a52a2a","#dc143c","#ffb3ba","#fff8dc","#ffff99","#ffd700","#ff8c00","#ff8c00"],
-    ["#a52a2a","#a52a2a","#a52a2a","#dc143c","#ffb3ba","#fff8dc","#ffff99","#ffd700","#ffd700","#ffd700"],
-    ["#dc143c","#dc143c","#dc143c","#dc143c","#ffb3ba","#fff8dc","#ffff99","#ffff99","#ffff99","#ffff99"],
-    ["#ffb3ba","#ffb3ba","#ffb3ba","#ffb3ba","#ffb3ba","#fff8dc","#fff8dc","#fff8dc","#fff8dc","#fff8dc"],
-    ["#e0f6ff","#e0f6ff","#e0f6ff","#e0f6ff","#e0f6ff","#f0fff0","#f0fff0","#f0fff0","#f0fff0","#f0fff0"],
-    ["#87ceeb","#87ceeb","#87ceeb","#87ceeb","#e0f6ff","#f0fff0","#98fb98","#98fb98","#98fb98","#98fb98"],
-    ["#6495ed","#6495ed","#6495ed","#87ceeb","#e0f6ff","#f0fff0","#98fb98","#228b22","#228b22","#228b22"],
-    ["#4169e1","#4169e1","#6495ed","#87ceeb","#e0f6ff","#f0fff0","#98fb98","#228b22","#006400","#006400"],
-    ["#4169e1","#4169e1","#6495ed","#87ceeb","#e0f6ff","#f0fff0","#98fb98","#228b22","#006400","#006400"]
+    ["#a3503a","#a3503a","#b35e46","#c47158","#e3c2b0","#efe7d9","#e8d29a","#d6a85c","#cf9a6b","#cf9a6b"],
+    ["#a3503a","#a3503a","#b35e46","#c47158","#e3c2b0","#efe7d9","#e8d29a","#d6a85c","#cf9a6b","#cf9a6b"],
+    ["#b35e46","#b35e46","#b35e46","#c47158","#e3c2b0","#efe7d9","#e8d29a","#d6a85c","#d6a85c","#d6a85c"],
+    ["#c47158","#c47158","#c47158","#c47158","#e3c2b0","#efe7d9","#e8d29a","#e8d29a","#e8d29a","#e8d29a"],
+    ["#e3c2b0","#e3c2b0","#e3c2b0","#e3c2b0","#e3c2b0","#efe7d9","#efe7d9","#efe7d9","#efe7d9","#efe7d9"],
+    ["#d2d6dd","#d2d6dd","#d2d6dd","#d2d6dd","#d2d6dd","#e6e6d6","#e6e6d6","#e6e6d6","#e6e6d6","#e6e6d6"],
+    ["#9aa6bb","#9aa6bb","#9aa6bb","#9aa6bb","#d2d6dd","#e6e6d6","#aebd8f","#aebd8f","#aebd8f","#aebd8f"],
+    ["#7e8da8","#7e8da8","#7e8da8","#9aa6bb","#d2d6dd","#e6e6d6","#aebd8f","#7e8f56","#7e8f56","#7e8f56"],
+    ["#6c7c9a","#6c7c9a","#7e8da8","#9aa6bb","#d2d6dd","#e6e6d6","#aebd8f","#7e8f56","#5f6e38","#5f6e38"],
+    ["#6c7c9a","#6c7c9a","#7e8da8","#9aa6bb","#d2d6dd","#e6e6d6","#aebd8f","#7e8f56","#5f6e38","#5f6e38"]
   ];
 
   // ── WMO Weather Codes ──

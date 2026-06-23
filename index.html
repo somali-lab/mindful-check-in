@@ -160,69 +160,80 @@
     <div class="view" id="view-checkin">
       <div class="view-content">
 
-        <!-- Toolbar: context pill + date picker + save buttons -->
-        <div class="checkin-toolbar">
-          <div class="checkin-toolbar-left">
-            <div class="checkin-context-pill" id="ci-pill" data-t="pillNew">New · not saved yet</div>
-            <label class="ci-date-picker">
-              <input type="datetime-local" id="ci-date-override" class="ci-date-input" aria-label="Check-in date and time" data-t-aria="ariaDateOverride">
-            </label>
-          </div>
-          <div class="checkin-save-row">
-            <button type="button" class="save-button save-button--secondary" id="ci-btn-new" data-t="btnNewCheckin">New check-in</button>
-            <button type="button" class="save-button" id="ci-btn-save" data-t="btnSave">Save check-in</button>
-          </div>
-        </div>
+        <section class="card checkin-card">
 
-        <section class="card">
-
-          <!-- Thoughts + Weather row -->
-          <div class="section-group thoughts-weather-row">
-            <div class="weather-column" data-component="weather">
-              <label class="field-label" data-t="labelWeather">Weather</label>
-              <div class="weather-widget" id="weather-slot">
+          <!-- In-card app header: brand · tabs · weather pill -->
+          <div class="ci-appbar">
+            <div class="ci-brand">
+              <span class="ci-brand-mark" aria-hidden="true">M</span>
+              <span class="ci-brand-name">Mindful</span>
+            </div>
+            <div class="ci-appbar-right">
+              <div class="ci-tabs" id="ci-tabs">
+                <button type="button" class="ci-tab is-active" data-route="checkin" data-t="ciTabCheckin">Check-in</button>
+                <button type="button" class="ci-tab" data-route="overview" data-t="ciTabSummary">Summary</button>
+              </div>
+              <div class="ci-weather-pill" data-component="weather" id="weather-slot" title="">
                 <span data-t="weatherLoading">Loading weather…</span>
               </div>
             </div>
-            <div class="thoughts-field" data-component="thoughts">
-              <label class="field-label" for="fld-thoughts" data-t="labelThoughts">Thoughts</label>
-              <textarea id="fld-thoughts" rows="4" data-t-placeholder="placeholderThoughts" placeholder="What's on your mind?"></textarea>
-            </div>
           </div>
 
-          <!-- Three-column: feeling, body, energy -->
-          <div class="section-group three-column">
+          <div class="ci-body">
+
+          <!-- Editorial greeting header -->
+          <header class="ci-greeting">
+            <h2 class="ci-hello" id="ci-greeting">Good morning</h2>
+            <div class="ci-subline">
+              <span data-t="ciHowFeel">How are you feeling now?</span>
+              <span class="ci-dot" aria-hidden="true">·</span>
+              <span class="checkin-context-pill checkin-context-pill--new" id="ci-pill" data-t="pillNew">New · not saved yet</span>
+              <span class="ci-date-control" id="ci-date-control">
+                <svg class="ci-date-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span id="ci-date-display" class="ci-date-display"></span>
+                <input type="datetime-local" id="ci-date-override" class="ci-date-input" aria-label="Check-in date and time" data-t-aria="ariaDateOverride">
+              </span>
+            </div>
+          </header>
+
+          <!-- Thoughts -->
+          <div class="ci-section" data-component="thoughts">
+            <label class="ci-eyebrow" for="fld-thoughts" data-t="labelThoughts">Thoughts</label>
+            <textarea id="fld-thoughts" class="ci-prose" rows="3" data-t-placeholder="placeholderThoughts" placeholder="What's on your mind?"></textarea>
+          </div>
+
+          <!-- Core feeling + Body signals (two columns, editorial divider) -->
+          <div class="ci-core-row">
 
             <!-- Core Feeling -->
-            <div class="checkin-block feeling-panel" data-component="coreFeeling">
-              <div class="checkin-block-header">
-                <label class="field-label" data-t="labelCoreFeeling">Core Feeling</label>
-                <div class="section-actions">
-                  <button type="button" class="reset-button" id="whl-btn-reset" data-t="btnReset">Reset</button>
-                </div>
+            <div class="ci-col ci-col-core" data-component="coreFeeling">
+              <div class="ci-section-head">
+                <label class="ci-eyebrow" data-t="labelCoreFeeling">Core Feeling</label>
+                <button type="button" class="reset-button" id="whl-btn-reset" data-t="btnReset">Reset</button>
               </div>
-              <div class="section-actions">
-                <select id="sel-wheel" class="wheel-select">
-                  <option value="act">ACT (8)</option>
-                  <option value="plutchik">Plutchik (8)</option>
-                  <option value="ekman">Ekman (6)</option>
-                  <option value="junto">Junto (6)</option>
-                  <option value="extended">Extended (12)</option>
-                </select>
-              </div>
+              <div class="wheel-tabs" id="wheel-tabs"></div>
+              <select id="sel-wheel" class="wheel-select is-hidden" aria-hidden="true" tabindex="-1">
+                <option value="act">ACT (8)</option>
+                <option value="plutchik">Plutchik (8)</option>
+                <option value="ekman">Ekman (6)</option>
+                <option value="junto">Junto (6)</option>
+                <option value="extended">Extended (12)</option>
+              </select>
               <svg class="emotion-wheel" id="wheel-svg" viewBox="0 0 360 360" role="group" data-t-aria="labelCoreFeeling"></svg>
+              <div class="wheel-hint" data-t="pickWheel">Tap a segment</div>
               <div class="selection-display is-empty" id="wheel-display" data-t="emotionNone">No feeling selected</div>
-              <label class="field-label checkin-block-note-label" for="fld-custom" data-t="labelCustomFeelings">Additional feelings</label>
+              <label class="ci-eyebrow ci-eyebrow--sub" data-t="labelCustomFeelings">Additional feelings</label>
               <textarea id="fld-custom" rows="2" data-t-placeholder="placeholderCustom" placeholder="Other feelings…"></textarea>
+              <div class="ci-chip-row" id="ci-feel-chips"></div>
             </div>
 
+            <div class="ci-divider" aria-hidden="true"></div>
+
             <!-- Body Signals -->
-            <div class="checkin-block body-panel" data-component="bodySignals">
-              <div class="checkin-block-header">
-                <label class="field-label" data-t="labelBodySignals">Body Signals</label>
-                <div class="section-actions">
-                  <button type="button" class="reset-button" id="bdy-btn-reset" data-t="btnReset">Reset</button>
-                </div>
+            <div class="ci-col ci-col-body" data-component="bodySignals">
+              <div class="ci-section-head">
+                <label class="ci-eyebrow" data-t="labelBodySignals">Body Signals</label>
+                <button type="button" class="reset-button" id="bdy-btn-reset" data-t="btnReset">Reset</button>
               </div>
               <div class="body-figure" id="body-svg" role="group" data-t-aria="labelBodySignals">
                 <svg class="body-figure-svg" viewBox="0 0 120 240" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -254,35 +265,38 @@
                   <rect x="55" y="90" width="10" height="34" rx="3" class="body-part bz back-zone" data-zone="lower-back"/>
                 </svg>
               </div>
+              <div class="body-hint" data-t="bodyStronger">Tap to make it stronger</div>
+              <div class="body-legend">
+                <span class="body-legend-item"><span class="body-legend-swatch lvl-1"></span><span data-t="bodyLight">Light</span></span>
+                <span class="body-legend-item"><span class="body-legend-swatch lvl-2"></span><span data-t="bodyMedium">Medium</span></span>
+                <span class="body-legend-item"><span class="body-legend-swatch lvl-3"></span><span data-t="bodyStrong">Strong</span></span>
+              </div>
+              <div class="body-selected-label" data-t="ciSelected">Selected</div>
               <div class="selection-display is-empty" id="body-display" data-t="bodyNone">No body signals selected</div>
-              <label class="field-label checkin-block-note-label" for="fld-body-note" data-t="labelBodyNote">Body note</label>
+              <label class="ci-eyebrow ci-eyebrow--sub" for="fld-body-note" data-t="labelBodyNote">Body note</label>
               <textarea id="fld-body-note" rows="2" data-t-placeholder="placeholderBodyNote" placeholder="Note about your body…"></textarea>
-            </div>
-
-            <!-- Energy Levels -->
-            <div class="checkin-block energy-panel" data-component="energyPanel">
-              <div class="checkin-block-header">
-                <label class="field-label" data-t="labelEnergy">Energy Levels</label>
-                <div class="section-actions">
-                  <button type="button" class="reset-button" id="nrg-btn-reset" data-t="btnReset">Reset</button>
-                </div>
-              </div>
-              <div class="energy-triple" id="energy-slot">
-                <!-- Built by energy.js -->
-              </div>
-              <div class="selection-display is-empty" id="energy-display"></div>
-              <label class="field-label checkin-block-note-label" for="fld-energy-note" data-t="labelEnergyNote">Energy note</label>
-              <textarea id="fld-energy-note" rows="2" data-t-placeholder="placeholderEnergyNote" placeholder="Note about your energy…"></textarea>
             </div>
           </div>
 
+          <!-- Energy Levels (full width) -->
+          <div class="ci-section ci-energy-section" data-component="energyPanel">
+            <div class="ci-section-head">
+              <label class="ci-eyebrow" data-t="labelEnergy">Energy Levels</label>
+              <button type="button" class="reset-button" id="nrg-btn-reset" data-t="btnReset">Reset</button>
+            </div>
+            <div class="energy-triple" id="energy-slot">
+              <!-- Built by energy.js -->
+            </div>
+            <div class="selection-display is-empty" id="energy-display"></div>
+            <label class="ci-eyebrow ci-eyebrow--sub" for="fld-energy-note" data-t="labelEnergyNote">Energy note</label>
+            <textarea id="fld-energy-note" rows="2" data-t-placeholder="placeholderEnergyNote" placeholder="Note about your energy…"></textarea>
+          </div>
+
           <!-- Mood Matrix -->
-          <div class="section-group" data-component="moodMatrix">
-            <div class="mood-header">
-              <h3 class="subheading" data-t="labelMoodMatrix">Mood Matrix</h3>
-              <div class="section-actions">
-                <button type="button" class="reset-button" id="mood-btn-reset" data-t="btnReset">Reset</button>
-              </div>
+          <div class="ci-section" data-component="moodMatrix">
+            <div class="ci-section-head">
+              <label class="ci-eyebrow" data-t="labelMoodMatrix">Mood Matrix</label>
+              <button type="button" class="reset-button" id="mood-btn-reset" data-t="btnReset">Reset</button>
             </div>
             <div class="mood-grid-wrapper">
               <div class="axis-label axis-energy-high" data-t="axisEnergyHigh">HIGH ENERGY</div>
@@ -295,17 +309,25 @@
           </div>
 
           <!-- Actions + Note -->
-          <div class="section-group two-column-fields">
+          <div class="ci-section two-column-fields">
             <div data-component="actions">
-              <label class="field-label" for="fld-action" data-t="labelActions">Actions</label>
+              <label class="ci-eyebrow" for="fld-action" data-t="labelActions">Actions</label>
               <textarea id="fld-action" rows="3" data-t-placeholder="placeholderActions" placeholder="What did you do or plan to do?"></textarea>
               <div class="quick-actions-chips" id="ci-chips"></div>
             </div>
             <div data-component="note">
-              <label class="field-label" for="fld-note" data-t="labelNote">Note</label>
-              <textarea id="fld-note" rows="3" data-t-placeholder="placeholderNote" placeholder="Anything else…"></textarea>
+              <label class="ci-eyebrow" for="fld-note" data-t="labelNote">Note</label>
+              <textarea id="fld-note" class="ci-prose" rows="3" data-t-placeholder="placeholderNote" placeholder="Anything else…"></textarea>
             </div>
           </div>
+
+          </div><!-- /ci-body -->
+
+          <!-- Footer save row -->
+          <footer class="ci-footer">
+            <button type="button" class="ci-save-primary" id="ci-btn-save" data-t="btnSave">Save check-in</button>
+            <button type="button" class="ci-save-secondary" id="ci-btn-new" data-t="btnNewCheckin">New check-in</button>
+          </footer>
         </section>
 
         <!-- Summary + History -->

@@ -76,16 +76,12 @@
     var code = cw.weathercode != null ? cw.weathercode : cw.weather_code;
     var wInfo = MCI.Data.weatherCodes[code] || { emoji: "\u2753", desc: "Unknown" };
     var temp = cw.temperature != null ? cw.temperature : "?";
-    var wind = cw.windspeed != null ? cw.windspeed : "?";
-    var locHtml = locationName ? '<span class="weather-location">' + MCI.esc(locationName) + '</span>' : '';
-
-    _slot.innerHTML = '<div class="weather-display">'
-      + '<span class="weather-icon">' + wInfo.emoji + '</span>'
-      + '<div class="weather-details">'
-      + '<span class="weather-temp">' + MCI.esc(temp + "\u00b0C") + '</span>'
-      + '<span class="weather-desc">' + MCI.esc(wInfo.desc) + ' \u00b7 ' + MCI.esc(wind + " km/h") + '</span>'
-      + locHtml
-      + '</div></div>';
+    /* compact header pill: icon \u00b7 temp\u00b0 \u00b7 description */
+    if (locationName) _slot.setAttribute("title", locationName);
+    _slot.innerHTML = '<span class="weather-icon">' + wInfo.emoji + '</span>'
+      + '<span class="weather-temp">' + MCI.esc(temp + "\u00b0") + '</span>'
+      + '<span class="weather-sep" aria-hidden="true">\u00b7</span>'
+      + '<span class="weather-desc">' + MCI.esc(wInfo.desc) + '</span>';
   }
 
   function renderError() {

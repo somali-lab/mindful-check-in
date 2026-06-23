@@ -22,6 +22,8 @@
     return labelMap[setting] || "energyEmotional";
   }
 
+  var SEGMENTS = 20;
+
   function buildMeters() {
     _slot = document.getElementById("energy-slot");
     /* c8 ignore next -- slot always present */
@@ -34,33 +36,25 @@
       var mt = METERS[m];
       if (settings.components && settings.components[mt.fld] === false) continue;
 
-      var labelKey = mt.key === "emotional" ? getEmotionalLabel(settings) : mt.labelKey;
-      var lbl = MCI.t(labelKey) || mt.key;
+      /* compact bar uses the short channel name (design: Fysiek/Mentaal/Emotioneel) */
+      var lbl = MCI.t(mt.labelKey) || mt.key;
       var val = _values[mt.key];
-      var pct = typeof val === "number" ? val : 0;
+      var hasVal = typeof val === "number";
+      var pct = hasVal ? val : 0;
+      var filled = Math.round((pct * SEGMENTS) / 100);
 
-      html += '<div class="energy-column">';
-      html += '<div class="energy-meter-row">';
-
-      /* scale labels (percentage: 100/75/50/25/0) */
-      html += '<div class="energy-scale">';
-      html += '<span data-sval="100" data-meter="' + mt.key + '">100</span>';
-      html += '<span data-sval="75" data-meter="' + mt.key + '">75</span>';
-      html += '<span data-sval="50" data-meter="' + mt.key + '">50</span>';
-      html += '<span data-sval="25" data-meter="' + mt.key + '">25</span>';
-      html += '<span data-sval="0" data-meter="' + mt.key + '">0</span>';
+      /* horizontal segmented bar: label · segments · value */
+      html += '<div class="nrg-row" data-energy-type="' + mt.key + '" data-meter="' + mt.key + '">';
+      html += '<div class="nrg-label">' + MCI.esc(lbl) + '</div>';
+      html += '<div class="nrg-track" data-meter="' + mt.key + '" data-energy-type="' + mt.key + '">';
+      for (var s = 1; s <= SEGMENTS; s++) {
+        html += '<span class="nrg-seg' + (s <= filled ? " is-on" : "") +
+          '" data-meter="' + mt.key + '" data-seg="' + s + '"></span>';
+      }
       html += '</div>';
-
-      /* meter column with label + bar */
-      html += '<div class="energy-meter-col">';
-      html += '<span class="energy-type-label">' + MCI.esc(lbl) + '</span>';
-      html += '<div class="energy-meter" data-energy-type="' + mt.key + '" data-meter="' + mt.key + '">';
-      html += '<div class="energy-fill" style="height:' + pct + '%"></div>';
-      html += '</div>';
-      html += '</div>'; /* /energy-meter-col */
-
-      html += '</div>'; /* /energy-meter-row */
-      html += '</div>'; /* /energy-column */
+      html += '<div class="nrg-val' + (hasVal ? "" : " is-empty") + '" data-meter="' + mt.key + '">' +
+        (hasVal ? pct + "%" : "–") + '</div>';
+      html += '</div>'; /* /nrg-row */
     }
 
     _slot.innerHTML = html;
@@ -93,38 +87,41 @@
   }
 
   function handleClick(e) {
-    /* handle scale number click */
-    var scaleSpan = e.target.closest("[data-sval]");
-    if (scaleSpan) {
-      var sKey = scaleSpan.getAttribute("data-meter");
-      var sVal = parseInt(scaleSpan.getAttribute("data-sval"), 10);
-      if (sKey && !isNaN(sVal)) {
-        setMeter(sKey, sVal);
+    /* click a specific segment → snap value to that segment */
+    var seg = e.target.closest(".nrg-seg");
+    if (seg) {
+      var segKey = seg.getAttribute("data-meter");
+      var idx = parseInt(seg.getAttribute("data-seg"), 10);
+      if (segKey && !isNaN(idx)) {
+        setMeter(segKey, Math.round((idx * 100) / SEGMENTS));
       }
       return;
     }
 
-    /* handle meter bar click */
-    var track = e.target.closest(".energy-meter");
+    /* click anywhere on the track → value from horizontal position */
+    var track = e.target.closest(".nrg-track");
     if (!track) return;
     var key = track.getAttribute("data-meter");
     if (!key) return;
-
     var rect = track.getBoundingClientRect();
-    var clickY = e.clientY - rect.top;
-    var pct = 1 - (clickY / rect.height);
+    var pct = (e.clientX - rect.left) / rect.width;
     var val = Math.max(0, Math.min(100, Math.round(pct * 100)));
-
     setMeter(key, val);
   }
 
   function setMeter(key, val) {
     _values[key] = val;
-    /* Update fill */
-    var meter = _slot.querySelector('[data-energy-type="' + key + '"]');
-    if (meter) {
-      var fill = meter.querySelector(".energy-fill");
-      if (fill) fill.style.height = val + "%";
+    /* update segment fill for this row */
+    var row = _slot.querySelector('.nrg-row[data-energy-type="' + key + '"]');
+    if (row) {
+      var filled = Math.round((val * SEGMENTS) / 100);
+      var segs = row.querySelectorAll(".nrg-seg");
+      for (var i = 0; i < segs.length; i++) {
+        if (i < filled) segs[i].classList.add("is-on");
+        else segs[i].classList.remove("is-on");
+      }
+      var valEl = row.querySelector(".nrg-val");
+      if (valEl) { valEl.textContent = val + "%"; valEl.classList.remove("is-empty"); }
     }
 
     updateDisplay();
