@@ -1,0 +1,130 @@
+/* ── Toast ── */
+.sf-toasts {
+  position: fixed;
+  bottom: var(--sf-sp-lg);
+  right: var(--sf-sp-lg);
+  z-index: var(--sf-z-toast);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--sf-sp-sm);
+}
+
+.sf-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--sf-sp-sm);
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--sf-surface);
+  border: 1px solid var(--sf-border-soft, var(--sf-border));
+  font-size: var(--sf-text-sm);
+  color: var(--sf-text);
+  box-shadow: var(--sf-shadow-md);
+  animation: sf-toast-in var(--sf-dur-base) ease;
+}
+
+.sf-toast--success { border-color: var(--sf-success); }
+.sf-toast--error   { border-color: var(--sf-danger); }
+.sf-toast--warn    { border-color: var(--sf-warn); }
+
+.sf-toast__icon {
+  font-weight: 700;
+  font-size: var(--sf-text-xs);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.sf-toast--success .sf-toast__icon { background: rgba(var(--sf-success-rgb) / 0.2); color: var(--sf-success); }
+.sf-toast--error .sf-toast__icon   { background: rgba(var(--sf-danger-rgb) / 0.2); color: var(--sf-danger); }
+.sf-toast--warn .sf-toast__icon    { background: rgba(var(--sf-warn-rgb) / 0.2); color: var(--sf-warn); }
+
+@keyframes sf-toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Modal / Confirm dialog ── */
+.sf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 22, 17, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: var(--sf-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sf-modal {
+  background: var(--sf-surface);
+  border: 1px solid var(--sf-border-soft, var(--sf-border));
+  border-radius: 14px;
+  padding: var(--sf-sp-lg);
+  min-width: 320px;
+  max-width: 480px;
+  box-shadow: var(--sf-shadow-lg);
+}
+
+.sf-modal__title {
+  font-family: var(--sf-font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--sf-sp-md);
+}
+
+.sf-modal__body {
+  font-size: var(--sf-text-sm);
+  color: var(--sf-text-muted);
+  margin-bottom: var(--sf-sp-lg);
+  /* Delete-impact previews build multi-line bodies with \n; preserve the breaks. */
+  white-space: pre-line;
+}
+
+/* Opt-in toggle row between body and actions (e.g. "also delete scoped lore"). */
+.sf-modal__checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sf-sp-sm);
+  font-size: var(--sf-text-sm);
+  color: var(--sf-text);
+  margin-bottom: var(--sf-sp-lg);
+  cursor: pointer;
+}
+.sf-modal__checkbox input {
+  margin-top: 2px;
+  accent-color: var(--sf-accent);
+  flex-shrink: 0;
+}
+
+.sf-modal__actions {
+  display: flex;
+  gap: var(--sf-sp-sm);
+  justify-content: flex-end;
+}
+
+/* ── Loading spinner ── */
+.sf-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--sf-border);
+  border-top-color: var(--sf-accent);
+  border-radius: 50%;
+  animation: sf-spin 0.8s linear infinite;
+}
+
+@keyframes sf-spin {
+  to { transform: rotate(360deg); }
+}
+
+.sf-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sf-sp-2xl);
+}
+

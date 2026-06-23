@@ -1,0 +1,35 @@
+/* typography.css — StoryForge type tokens.
+ *
+ * Two voices: Lora (serif) carries every TITLE and piece of narrative prose —
+ * it is the editorial soul of the product. Geist (sans) carries all UI: labels,
+ * buttons, metadata, form text. Fira Code is reserved for numerals/code.
+ *
+ * Scale is a tight 11→28px ramp (UI tool, not a marketing page). Titles use a
+ * negative tracking (-0.01 to -0.02em); the uppercase eyebrow/label style uses
+ * positive tracking (+0.08em). */
+
+:root {
+  /* Families */
+  --sf-font:       'Geist', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --sf-font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --sf-font-mono:  'Fira Code', 'Consolas', ui-monospace, monospace;
+
+  /* Size ramp */
+  --sf-text-xs:   11px;   /* captions, eyebrows, status chips */
+  --sf-text-sm:   13px;   /* body UI, form text, buttons */
+  --sf-text-base: 15px;   /* default document size */
+  --sf-text-lg:   18px;   /* h3 */
+  --sf-text-xl:   22px;   /* h2 / panel + modal titles */
+  --sf-text-2xl:  28px;   /* h1 / display */
+
+  /* Weights */
+  --sf-weight-regular: 400;
+  --sf-weight-medium:  500;
+  --sf-weight-semibold: 600;
+  --sf-weight-bold:    700;
+
+  /* Line heights */
+  --sf-leading-tight: 1.2;   /* titles */
+  --sf-leading-snug:  1.4;
+  --sf-leading-body:  1.55;  /* prose */
+}

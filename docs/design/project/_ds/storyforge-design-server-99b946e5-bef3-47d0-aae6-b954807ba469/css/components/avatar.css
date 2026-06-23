@@ -1,0 +1,33 @@
+/* avatar.css — deterministic walnut-tone avatars (Forge).
+ *
+ * Avatars are circular, carry up to two Lora-serif initials, and pick a tone
+ * from a fixed 8-slot walnut palette by hashing the character id/name — so a
+ * character keeps the same colour across reloads without inline styles.
+ * Two ring sizes: list (38px) and hero (44px). */
+
+.sf-avatar {
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-family: var(--sf-font-serif);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.sf-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.sf-avatar--sm  { width: 28px; height: 28px; font-size: 12px; }
+.sf-avatar--md  { width: 38px; height: 38px; font-size: 14px; box-shadow: 0 0 0 2px var(--sf-surface); }
+.sf-avatar--lg  { width: 44px; height: 44px; font-size: 16px; box-shadow: var(--sf-shadow-sm); }
+.sf-avatar--xl  { width: 64px; height: 64px; font-size: 22px; box-shadow: var(--sf-shadow-sm); }
+
+.sf-avatar-tone-0 { background: var(--sf-avatar-0); }
+.sf-avatar-tone-1 { background: var(--sf-avatar-1); }
+.sf-avatar-tone-2 { background: var(--sf-avatar-2); }
+.sf-avatar-tone-3 { background: var(--sf-avatar-3); }
+.sf-avatar-tone-4 { background: var(--sf-avatar-4); }
+.sf-avatar-tone-5 { background: var(--sf-avatar-5); }
+.sf-avatar-tone-6 { background: var(--sf-avatar-6); }
+.sf-avatar-tone-7 { background: var(--sf-avatar-7); }

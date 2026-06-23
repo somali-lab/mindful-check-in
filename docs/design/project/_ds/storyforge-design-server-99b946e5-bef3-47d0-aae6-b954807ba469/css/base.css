@@ -1,0 +1,69 @@
+/* base.css — reset + element defaults for StoryForge.
+ *
+ * The design tokens live in tokens/*.css; this file only sets the box model,
+ * element-level typography, link/focus styles, and the reduced-motion guard.
+ * Titles default to Lora serif; body to Geist sans. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--sf-font);
+  font-size: var(--sf-text-base);
+  color: var(--sf-text);
+  background: var(--sf-bg);
+  line-height: var(--sf-leading-body);
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--sf-font-serif);
+  font-weight: var(--sf-weight-semibold);
+  line-height: var(--sf-leading-tight);
+  color: var(--sf-text);
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: var(--sf-text-2xl); }
+h2 { font-size: var(--sf-text-xl); }
+h3 { font-size: var(--sf-text-lg); }
+h4 { font-size: var(--sf-text-base); }
+
+a { color: var(--sf-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+ul, ol { list-style: none; }
+button { cursor: pointer; font-family: var(--sf-font); }
+
+textarea, input, select {
+  font-family: var(--sf-font);
+  font-size: var(--sf-text-sm);
+  color: var(--sf-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 2px;
+}
+
+[hidden] { display: none !important; }
+
+/* Monochrome line-style SVG icons inherit colour via currentColor and align
+ * cleanly in flex rows (no descender drift). Stroke weight is 1.6. */
+.sf-icon {
+  display: inline-block;
+  vertical-align: middle;
+  color: currentColor;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

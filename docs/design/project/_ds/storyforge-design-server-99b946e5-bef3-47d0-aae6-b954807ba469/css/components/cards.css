@@ -1,0 +1,122 @@
+/* ── Cards ── */
+/* Max 4 cards wide — §3 frontend-design-spec */
+.sf-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(240px, calc(25% - 12px)), 1fr));
+  gap: var(--sf-sp-md);
+}
+
+.sf-card {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+  background: var(--sf-surface);
+  border: 1px solid var(--sf-border-soft, var(--sf-border));
+  border-radius: 10px;
+  cursor: default;
+  transition: border-color var(--sf-dur-fast), box-shadow var(--sf-dur-fast), background var(--sf-dur-fast);
+}
+.sf-card:hover {
+  border-color: var(--sf-border);
+  box-shadow: var(--sf-shadow-sm);
+}
+
+.sf-card__title {
+  font-family: var(--sf-font-serif);
+  font-size: var(--sf-text-base);
+  font-weight: 600;
+  color: var(--sf-text);
+  letter-spacing: -0.005em;
+  margin-bottom: var(--sf-sp-xs);
+}
+
+.sf-card__meta {
+  font-size: var(--sf-text-xs);
+  color: var(--sf-text-dim);
+}
+
+.sf-card__actions {
+  display: flex;
+  gap: var(--sf-sp-sm);
+  margin-top: auto;
+  padding-top: var(--sf-sp-sm);
+}
+
+.sf-card--clickable { cursor: pointer; }
+.sf-card--clickable:hover { border-color: var(--sf-accent); }
+
+/* Create-card: solid copper, calls to a new entry like a forge ingot. */
+.sf-card--add {
+  border-style: solid;
+  border-color: var(--sf-accent);
+  background: linear-gradient(180deg, var(--sf-accent), var(--sf-accent-dark));
+  box-shadow: var(--sf-shadow-sm);
+}
+.sf-card--add .sf-card__title {
+  color: var(--sf-on-accent);
+  font-family: var(--sf-font-serif);
+}
+.sf-card--add .sf-card__meta {
+  color: var(--sf-on-accent-muted);
+}
+.sf-card--add:hover {
+  filter: brightness(1.05);
+  box-shadow: var(--sf-shadow-md);
+}
+
+/* ── Empty state — editorial centred block on paper. ── */
+.sf-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sf-sp-2xl);
+  text-align: center;
+  gap: 6px;
+  background: var(--sf-bg-2);
+  border: 1px dashed var(--sf-border-soft, var(--sf-border));
+  border-radius: 12px;
+}
+.sf-empty__title {
+  font-family: var(--sf-font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--sf-text);
+}
+.sf-empty__text {
+  font-size: var(--sf-text-sm);
+  color: var(--sf-text-muted);
+  max-width: 420px;
+  line-height: 1.55;
+}
+
+.sf-empty--full-row {
+  grid-column: 1 / -1;
+}
+
+/* ── Character card — avatar | name+role | importance badge ── */
+.sf-character-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+.sf-character-card .sf-card__title {
+  margin-bottom: 2px;
+  font-size: 14.5px;
+  letter-spacing: 0;
+}
+.sf-character-card .sf-card__meta {
+  font-size: 12px;
+  color: var(--sf-text-muted);
+}
+.sf-character-card__body { min-width: 0; }
+.sf-character-card__body .sf-card__title,
+.sf-character-card__body .sf-card__meta {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sf-character-card__side { display: flex; align-items: center; flex-shrink: 0; }
+

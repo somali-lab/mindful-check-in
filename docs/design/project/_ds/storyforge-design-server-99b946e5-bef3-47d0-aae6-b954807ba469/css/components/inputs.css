@@ -1,0 +1,299 @@
+/* ── Inputs (Forge: paper field with copper focus ring) ── */
+.sf-input {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--sf-surface);
+  border: 1px solid var(--sf-border-soft, var(--sf-border));
+  border-radius: 8px;
+  color: var(--sf-text);
+  font-size: var(--sf-text-sm);
+  font-family: var(--sf-font);
+  transition: border-color var(--sf-dur-fast), box-shadow var(--sf-dur-fast), background var(--sf-dur-fast);
+}
+.sf-input:hover {
+  border-color: var(--sf-border);
+}
+.sf-input:focus {
+  outline: none;
+  border-color: var(--sf-accent);
+  box-shadow: 0 0 0 3px rgba(var(--sf-accent-rgb) / 0.20);
+}
+.sf-input::placeholder {
+  color: var(--sf-text-dim);
+}
+.sf-input--sm {
+  padding: 5px 9px;
+  font-size: var(--sf-text-xs);
+}
+.sf-input--invalid {
+  border-color: var(--sf-danger);
+}
+.sf-input--invalid:focus {
+  border-color: var(--sf-danger);
+  box-shadow: 0 0 0 3px rgba(var(--sf-danger-rgb) / 0.20);
+}
+
+.sf-textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 10px 12px;
+  background: var(--sf-surface);
+  border: 1px solid var(--sf-border-soft, var(--sf-border));
+  border-radius: 8px;
+  color: var(--sf-text);
+  font-size: var(--sf-text-sm);
+  font-family: var(--sf-font);
+  line-height: 1.55;
+  resize: vertical;
+  transition: border-color var(--sf-dur-fast), box-shadow var(--sf-dur-fast);
+}
+.sf-textarea:hover {
+  border-color: var(--sf-border);
+}
+.sf-textarea:focus {
+  outline: none;
+  border-color: var(--sf-accent);
+  box-shadow: 0 0 0 3px rgba(var(--sf-accent-rgb) / 0.20);
+}
+.sf-textarea::placeholder {
+  color: var(--sf-text-dim);
+}
+
+.sf-textarea--md {
+  min-height: 120px;
+}
+
+/* ── Form groups ── */
+.sf-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sf-sp-xs);
+  margin-bottom: var(--sf-sp-sm);
+}
+
+.sf-form-group--mt-md {
+  margin-top: var(--sf-sp-md);
+}
+
+.sf-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sf-text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sf-label--required::after {
+  content: ' *';
+  color: var(--sf-danger);
+}
+
+.sf-input-help {
+  font-size: var(--sf-text-xs);
+  color: var(--sf-text-dim);
+  margin-top: 2px;
+}
+
+.sf-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sf-sp-md);
+}
+
+.sf-form-row--3col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Auto-width row: first child grows, others size to content. */
+.sf-form-row--auto {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--sf-sp-md);
+}
+.sf-form-row--auto > * { min-width: 0; }
+.sf-form-group--grow { flex: 1 1 180px; }
+
+@media (max-width: 768px) {
+  .sf-form-row,
+  .sf-form-row--3col {
+    grid-template-columns: 1fr;
+  }
+  .sf-form-row--auto {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ── Chip grid ── */
+.sf-chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sf-sp-xs);
+}
+
+/* ── Toggle switch ──
+ * Drop-in replacement for a labelled checkbox. The hidden checkbox keeps
+ * accessibility intact (label-wraps-input pattern); the track + thumb are
+ * pure CSS. */
+.sf-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.sf-toggle__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.sf-toggle__track {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+  background: var(--sf-surface-2);
+  border: 1px solid var(--sf-border-soft, var(--sf-border));
+  border-radius: 999px;
+  transition: background var(--sf-dur-fast), border-color var(--sf-dur-fast);
+  flex-shrink: 0;
+}
+.sf-toggle__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--sf-text-muted);
+  transition: transform var(--sf-dur-fast), background var(--sf-dur-fast);
+}
+.sf-toggle__input:checked ~ .sf-toggle__track {
+  background: var(--sf-accent);
+  border-color: var(--sf-accent);
+}
+.sf-toggle__input:checked ~ .sf-toggle__track .sf-toggle__thumb {
+  transform: translateX(14px);
+  background: var(--sf-on-accent, #fff);
+}
+.sf-toggle__input:focus-visible ~ .sf-toggle__track {
+  box-shadow: 0 0 0 3px rgba(var(--sf-accent-rgb) / 0.25);
+}
+.sf-toggle__label {
+  font-size: var(--sf-text-sm);
+  color: var(--sf-text);
+}
+
+/* ── Tag chip input ──
+ * Inline chip-bar where each existing tag is a removable pill and the
+ * trailing input is for typing new tags (Enter / comma commits, Backspace
+ * on empty input removes the last tag). Designed to look like a single
+ * form control so users perceive it as one field, not a chip-grid. */
+.sf-tag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 6px;
+  background: var(--sf-surface);
+  border: 1px solid var(--sf-border-soft, var(--sf-border));
+  border-radius: var(--sf-radius-md);
+  min-height: 36px;
+  cursor: text;
+  transition: border-color var(--sf-dur-fast), box-shadow var(--sf-dur-fast);
+}
+.sf-tag-chips:focus-within {
+  border-color: var(--sf-accent);
+  box-shadow: 0 0 0 3px rgba(var(--sf-accent-rgb) / 0.18);
+}
+.sf-tag-chips .sf-chip {
+  padding: 3px 8px;
+  font-size: 11.5px;
+  line-height: 1.2;
+}
+.sf-tag-chips__input {
+  flex: 1 1 120px;
+  min-width: 80px;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 2px 4px;
+  font: inherit;
+  color: var(--sf-text);
+}
+.sf-tag-chips__input::placeholder {
+  color: var(--sf-text-dim);
+}
+
+.sf-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  background: var(--sf-chip-bg, var(--sf-surface));
+  border: 1px solid var(--sf-border-soft, var(--sf-border));
+  border-radius: var(--sf-radius-pill);
+  font-size: var(--sf-text-xs);
+  color: var(--sf-text-muted);
+  cursor: pointer;
+  transition: background var(--sf-dur-fast), border-color var(--sf-dur-fast), color var(--sf-dur-fast);
+  user-select: none;
+}
+.sf-chip:hover {
+  background: var(--sf-surface-2);
+  color: var(--sf-text);
+}
+.sf-chip--selected {
+  background: var(--sf-accent-soft, rgba(var(--sf-accent-rgb) / 0.18));
+  border-color: var(--sf-accent);
+  color: var(--sf-text);
+  font-weight: 600;
+}
+.sf-chip--add {
+  border-style: dashed;
+  color: var(--sf-text-dim);
+}
+.sf-chip--add:hover {
+  color: var(--sf-accent);
+  border-color: var(--sf-accent);
+}
+
+.sf-chip-custom-input {
+  display: flex;
+  gap: var(--sf-sp-xs);
+  margin-top: var(--sf-sp-xs);
+}
+.sf-chip-custom-input--hidden {
+  display: none;
+}
+
+
+/* Lorebook scope picker (req-08b §6) — three element columns side by side,
+   each a vertical list of toggle switches. */
+.sf-scope-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--sf-sp-md, 12px);
+  align-items: start;
+}
+.sf-scope-group { min-width: 0; }
+.sf-scope-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+.sf-scope-toggle { gap: 8px; }
+.sf-scope-toggle .sf-toggle__label {
+  font-size: var(--sf-text-sm);
+  word-break: break-word;
+}
+/* Keep the scopeMatch select from stretching full width. */
+.sf-input--inline { max-width: 360px; }

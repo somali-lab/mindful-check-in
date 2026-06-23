@@ -1,0 +1,89 @@
+/* themes.css — light Forge palette (parchment + walnut + burnt copper).
+ *
+ * Dark Forge is the default on :root (colors.css). This file supplies the
+ * light override, applied two ways:
+ *   • [data-theme="light"]                  — explicit light
+ *   • [data-theme="system"] @ light OS pref — follow the operating system
+ * Leave the attribute off entirely to stay on dark Forge. */
+
+[data-theme="light"] {
+  --sf-bg:           #f4ede0;
+  --sf-bg-2:         #fbf6eb;
+  --sf-bg-3:         #ece2cf;
+  --sf-bg-alt:       rgba(120, 80, 30, 0.04);
+  --sf-surface:      #fbf6eb;
+  --sf-surface-2:    #ece2cf;
+  --sf-surface-warm: #fbf2dc;
+  --sf-chip-bg:      #e9dec5;
+  --sf-border:       #d9cdb2;
+  --sf-border-soft:  #e6dbc2;
+  --sf-text:         #231b12;
+  --sf-text-muted:   #6a5e48;
+  --sf-text-dim:     #9c8d6f;
+  --sf-accent:       #b5732e;
+  --sf-accent-dark:  #7a5a3a;
+  --sf-accent-soft:  #e9d4b3;
+  --sf-ribbon:       #b5732e;
+  --sf-accent-rgb:        181 115 46;   /* @kind other */
+  --sf-accent-dark-rgb:   122 90 58;   /* @kind other */
+  --sf-on-accent:    #fff;
+  --sf-on-accent-muted: rgba(255, 255, 255, 0.85);
+  --sf-success:      #2e7d32;
+  --sf-warn:         #c25a00;
+  --sf-danger:       #b53d2e;
+  --sf-success-rgb:  46 125 50;   /* @kind other */
+  --sf-warn-rgb:     194 90 0;   /* @kind other */
+  --sf-danger-rgb:   181 61 46;   /* @kind other */
+  --sf-health-green:  #2e7d32;
+  --sf-health-yellow: #b58a00;
+  --sf-health-orange: #c25a00;
+  --sf-health-red:    #b53d2e;
+  --sf-diff-added:   #e2efd6;
+  --sf-diff-removed: #f4dad0;
+  --sf-diff-text-added:   #2e7d32;
+  --sf-diff-text-removed: #b53d2e;
+
+  --sf-shadow-sm: 0 1px 3px rgba(120, 80, 30, 0.12);
+  --sf-shadow-md: 0 12px 32px rgba(120, 80, 30, 0.14), 0 2px 8px rgba(120, 80, 30, 0.08);
+  --sf-shadow-lg: 0 24px 60px rgba(120, 80, 30, 0.20), 0 4px 12px rgba(120, 80, 30, 0.10);
+}
+
+@media (prefers-color-scheme: light) {
+  [data-theme="system"] {
+    --sf-bg:           #f4ede0;
+    --sf-bg-2:         #fbf6eb;
+    --sf-bg-3:         #ece2cf;
+    --sf-bg-alt:       rgba(120, 80, 30, 0.04);
+    --sf-surface:      #fbf6eb;
+    --sf-surface-2:    #ece2cf;
+    --sf-surface-warm: #fbf2dc;
+    --sf-chip-bg:      #e9dec5;
+    --sf-border:       #d9cdb2;
+    --sf-border-soft:  #e6dbc2;
+    --sf-text:         #231b12;
+    --sf-text-muted:   #6a5e48;
+    --sf-text-dim:     #9c8d6f;
+    --sf-accent:       #b5732e;
+    --sf-accent-dark:  #7a5a3a;
+    --sf-accent-soft:  #e9d4b3;
+    --sf-ribbon:       #b5732e;
+    --sf-accent-rgb:        181 115 46;   /* @kind other */
+    --sf-accent-dark-rgb:   122 90 58;   /* @kind other */
+    --sf-on-accent:    #fff;
+    --sf-on-accent-muted: rgba(255, 255, 255, 0.85);
+    --sf-success:      #2e7d32;
+    --sf-warn:         #c25a00;
+    --sf-danger:       #b53d2e;
+    --sf-success-rgb:  46 125 50;   /* @kind other */
+    --sf-warn-rgb:     194 90 0;   /* @kind other */
+    --sf-danger-rgb:   181 61 46;   /* @kind other */
+    --sf-health-green:  #2e7d32;
+    --sf-health-yellow: #b58a00;
+    --sf-health-orange: #c25a00;
+    --sf-health-red:    #b53d2e;
+
+    --sf-shadow-sm: 0 1px 3px rgba(120, 80, 30, 0.12);
+    --sf-shadow-md: 0 12px 32px rgba(120, 80, 30, 0.14), 0 2px 8px rgba(120, 80, 30, 0.08);
+    --sf-shadow-lg: 0 24px 60px rgba(120, 80, 30, 0.20), 0 4px 12px rgba(120, 80, 30, 0.10);
+  }
+}

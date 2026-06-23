@@ -1,0 +1,40 @@
+/* spacing.css — StoryForge spacing, radii, shadows, layout & z-index tokens.
+ *
+ * Spacing is a 4px base scale (xs 4 → 2xl 48). Radii run 4/8/12 + a pill.
+ * Shadows are warm-tinted and deep (this is a dark-first tool); the light theme
+ * overrides them with softer brown-tinted shadows in themes.css. */
+
+:root {
+  /* ── Spacing (4px base) ── */
+  --sf-sp-xs:  4px;
+  --sf-sp-sm:  8px;
+  --sf-sp-md:  16px;
+  --sf-sp-lg:  24px;
+  --sf-sp-xl:  32px;
+  --sf-sp-2xl: 48px;
+
+  /* ── Radius ── */
+  --sf-radius-sm: 4px;
+  --sf-radius-md: 8px;   /* buttons, inputs */
+  --sf-radius-lg: 12px;  /* cards, modals */
+  --sf-radius-pill: 999px;
+
+  /* ── Shadows (dark Forge) ── */
+  --sf-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --sf-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.30);
+  --sf-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.35);
+
+  /* ── App-shell layout ── */
+  --sf-sidebar-width:     184px;
+  --sf-sidebar-collapsed: 68px;
+  --sf-topbar-h:          52px;
+  --sf-statusbar-h:       28px;
+  --sf-detail-side-w:     300px;  /* read-only detail aside (S/M/L) */
+
+  /* ── Z-index ── */
+  --sf-z-modal:  1300;   /* @kind other */
+  --sf-z-toast:  2000;   /* @kind other */
+}
+
+:root[data-detail-side="s"] { --sf-detail-side-w: 250px; }
+:root[data-detail-side="l"] { --sf-detail-side-w: 360px; }

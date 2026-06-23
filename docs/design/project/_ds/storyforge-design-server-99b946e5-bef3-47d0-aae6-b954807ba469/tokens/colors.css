@@ -1,0 +1,74 @@
+/* colors.css — StoryForge "Forge" palette (paper + walnut + copper).
+ *
+ * Dark Forge is the DEFAULT (declared here on :root). The light Forge palette
+ * is a [data-theme="light"] override in themes.css. Set the active theme with
+ * a `data-theme` attribute on <html> ("light" | "system"); absence = dark.
+ *
+ * The palette is built from three families:
+ *   • Paper   — warm near-black backgrounds (#1b1611 …) / parchment in light
+ *   • Walnut  — the borders and muted text (warm browns, never neutral grey)
+ *   • Copper  — the single accent (#d99458), used sparingly for action + focus
+ */
+
+:root {
+  /* ── Surfaces (paper) ── */
+  --sf-bg:           #1b1611;  /* app canvas */
+  --sf-bg-2:         #241d15;  /* chrome: sidebar, breadcrumb, status bar */
+  --sf-bg-3:         #15110c;  /* deepest well */
+  --sf-bg-alt:       rgba(0, 0, 0, 0.18);
+  --sf-surface:      #241d15;  /* cards, inputs, modals */
+  --sf-surface-2:    #2c241a;  /* raised / hover surface */
+  --sf-surface-warm: #2a2114;
+  --sf-chip-bg:      #2c241a;
+
+  /* ── Lines (walnut) ── */
+  --sf-border:       #3a2f22;  /* default border */
+  --sf-border-soft:  #2c241a;  /* hairline / soft divider */
+
+  /* ── Text ── */
+  --sf-text:         #ede1c8;  /* primary ink on paper */
+  --sf-text-muted:   #b4a584;  /* secondary */
+  --sf-text-dim:     #766a52;  /* labels, captions, placeholders */
+
+  /* ── Accent (copper) ── */
+  --sf-accent:       #d99458;
+  --sf-accent-dark:  #c08750;  /* hover/pressed copper */
+  --sf-accent-soft:  #3a2c1c;  /* tinted copper fill (chips, active nav) */
+  --sf-ribbon:       #c08750;  /* the 3px active-nav ribbon */
+  --sf-on-accent:        #fff;            /* ink on a copper fill */
+  --sf-on-accent-muted:  rgba(255, 255, 255, 0.85);
+
+  /* ── Semantic ── */
+  --sf-success:      #7fb585;
+  --sf-warn:         #e0a05a;
+  --sf-danger:       #d97b6e;
+
+  /* RGB triples (for rgba(var(--x) / a) tints) */
+  --sf-accent-rgb:        217 148 88;   /* @kind other */
+  --sf-accent-dark-rgb:   192 135 80;   /* @kind other */
+  --sf-success-rgb:       127 181 133;  /* @kind other */
+  --sf-warn-rgb:          224 160 90;   /* @kind other */
+  --sf-danger-rgb:        217 123 110;  /* @kind other */
+
+  /* ── Story-health bands (Analysis screens) ── */
+  --sf-health-green:  #7fb585;
+  --sf-health-yellow: #e0c05a;
+  --sf-health-orange: #e0a05a;
+  --sf-health-red:    #d97b6e;
+
+  /* ── Diff (manuscript revisions) ── */
+  --sf-diff-added:          #243223;
+  --sf-diff-removed:        #3a221c;
+  --sf-diff-text-added:     #7fb585;
+  --sf-diff-text-removed:   #d97b6e;
+
+  /* ── Deterministic avatar tones (walnut family) ── */
+  --sf-avatar-0: #c97f3f;
+  --sf-avatar-1: #9a6b3f;
+  --sf-avatar-2: #7a8c5b;
+  --sf-avatar-3: #5b6e8c;
+  --sf-avatar-4: #6c4f7a;
+  --sf-avatar-5: #a35858;
+  --sf-avatar-6: #3f6a7a;
+  --sf-avatar-7: #7a6a3f;
+}

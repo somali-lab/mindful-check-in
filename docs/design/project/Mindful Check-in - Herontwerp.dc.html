@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/storyforge-design-server-99b946e5-bef3-47d0-aae6-b954807ba469/tokens/fonts.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0}
+  .mci-card{background:#fbf8f2;border:1px solid #e9e1d1;border-radius:12px}
+  .mci-eyebrow{font:600 11px Geist,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+</style>
+</helmet>
+
+<div style="min-width:100%;width:max-content;min-height:100vh;box-sizing:border-box;padding:44px 48px 72px;background:#e7e5df;font-family:Geist,sans-serif">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:8px">
+    <div>
+      <div style="font:600 12px Geist;letter-spacing:.14em;text-transform:uppercase;color:#9d5f33">Mindful Check-in · herontwerp</div>
+      <div style="font:600 30px/1.1 Lora,serif;color:#2c261f;margin-top:8px">Een rustige, aardse richting</div>
+      <div style="font:400 14px/1.5 Geist;color:#6f6354;margin-top:8px;max-width:560px">Palet ontleend aan de Somali-kat — warm taupe, koper, walnoot en zachte salie — bovenop het StoryForge fundament. Alle wielen, meters en rasters zijn klikbaar.</div>
+    </div>
+    <div style="display:flex;gap:6px;background:#fbf8f2;border:1px solid #ddd2bf;border-radius:999px;padding:5px">
+      <button onClick="{{ toNl }}" style="{{ nlBtn }}">NL</button>
+      <button onClick="{{ toEn }}" style="{{ enBtn }}">EN</button>
+    </div>
+  </div>
+
+  <!-- ROW 1 — CHECK-IN -->
+  <div style="font:600 11px Geist;letter-spacing:.12em;text-transform:uppercase;color:#a79683;margin:34px 0 16px">Check-in · licht &amp; donker</div>
+  <div style="display:flex;gap:48px;align-items:flex-start">
+
+    <!-- A1 ATELIER LIGHT -->
+    <div style="flex:none;width:740px">
+      <div style="font:500 12px Geist;color:#7c6f5d;margin-bottom:10px">01 · Atelier — licht, editorial</div>
+      <div data-screen-label="Atelier licht" style="width:740px;background:#f4efe6;border-radius:16px;box-shadow:0 8px 30px rgba(60,45,30,.1);overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #e2d8c6">
+          <div style="display:flex;align-items:center;gap:11px">
+            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#cf8c54,#9d5f33);display:flex;align-items:center;justify-content:center;color:#fff;font:600 16px Lora,serif">M</div>
+            <span style="font:600 17px Lora,serif;color:#2c261f">Mindful</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="display:flex;gap:4px;background:#ece2d0;border-radius:999px;padding:4px">
+              <span style="padding:6px 14px;border-radius:999px;background:#bf7b46;color:#fff;font:600 12.5px Geist">{{ t.checkin }}</span>
+              <span style="padding:6px 14px;border-radius:999px;color:#8c7e6b;font:500 12.5px Geist">{{ t.summary }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;background:#fbf8f2;border:1px solid #e2d8c6;border-radius:999px;padding:6px 12px;color:#6f6354;font:500 12.5px Geist">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#bf7b46" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>
+              14° · {{ t.weatherDesc }}
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:28px;display:flex;flex-direction:column;gap:26px">
+          <div>
+            <div style="font:600 30px/1.15 Lora,serif;color:#2c261f">{{ t.goodMorning }}</div>
+            <div style="font:400 14px Geist;color:#8c7e6b;margin-top:4px;display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span>{{ t.howFeel }}</span><span>·</span>{{ w.a1Date }}</div>
+          </div>
+
+          <div>
+            <div class="mci-eyebrow" style="color:#a08d76;margin-bottom:9px">{{ t.thoughts }}</div>
+            {{ w.a1Thoughts }}
+          </div>
+
+          <div style="display:flex;gap:30px;align-items:flex-start">
+            <div style="flex:1;min-width:0">
+              <div class="mci-eyebrow" style="color:#a08d76;margin-bottom:10px">{{ t.core }}</div>
+              {{ w.a1Core }}
+            </div>
+            <div style="width:1px;align-self:stretch;background:#e2d8c6"></div>
+            <div style="width:230px">
+              <div class="mci-eyebrow" style="color:#a08d76;margin-bottom:12px">{{ t.body }}</div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+                {{ w.a1Body }}
+                <div style="font:400 12px Geist;color:#8c7e6b">{{ t.tapStronger }}</div>
+                <div style="display:flex;align-items:center;gap:14px">
+                  <div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:4px;background:#e7c08a"></span><span style="font:400 11.5px Geist;color:#8c7e6b">{{ t.light }}</span></div>
+                  <div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:4px;background:#d99458"></span><span style="font:400 11.5px Geist;color:#8c7e6b">{{ t.medium }}</span></div>
+                  <div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:4px;background:#bf6438"></span><span style="font:400 11.5px Geist;color:#8c7e6b">{{ t.strong }}</span></div>
+                </div>
+                <div style="width:100%;border-top:1px solid #e2d8c6;padding-top:14px;display:flex;flex-direction:column;align-items:center;gap:9px">
+                  <div class="mci-eyebrow" style="color:#a08d76">{{ t.selected }}</div>
+                  {{ w.a1Readout }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="mci-eyebrow" style="color:#a08d76;margin-bottom:12px">{{ t.energy }}</div>
+            {{ w.a1Energy }}
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px">
+              <div class="mci-eyebrow" style="color:#a08d76">{{ t.mood }}</div>
+              <div style="font:600 14px Lora,serif;color:#bf7b46">{{ w.a1MoodLabel }}</div>
+            </div>
+            <div>{{ w.a1Mood }}</div>
+          </div>
+
+          <div>
+            <div class="mci-eyebrow" style="color:#a08d76;margin-bottom:10px">{{ t.actions }}</div>
+            {{ w.a1Actions }}
+          </div>
+
+          <div>
+            <div class="mci-eyebrow" style="color:#a08d76;margin-bottom:10px">{{ t.note }}</div>
+            {{ w.a1Note }}
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;padding:18px 28px;border-top:1px solid #e2d8c6;background:#efe7d9">
+          <button style="flex:1;padding:12px;border:none;border-radius:10px;background:#bf7b46;color:#fff;font:600 14px Geist;cursor:pointer">{{ t.save }}</button>
+          <button style="padding:12px 20px;border:1px solid #ddd2bf;border-radius:10px;background:transparent;color:#6f6354;font:500 14px Geist;cursor:pointer">{{ t.newCheckin }}</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- A2 ATELIER DARK -->
+    <div style="flex:none;width:740px">
+      <div style="font:500 12px Geist;color:#7c6f5d;margin-bottom:10px">02 · Atelier — donker, tegenhanger</div>
+      <div data-screen-label="Atelier donker" style="width:740px;background:#211b15;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.28);overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #352c22">
+          <div style="display:flex;align-items:center;gap:11px">
+            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#e0a064,#b06f3a);display:flex;align-items:center;justify-content:center;color:#211b15;font:600 16px Lora,serif">M</div>
+            <span style="font:600 17px Lora,serif;color:#ece3d4">Mindful</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="display:flex;gap:4px;background:#2b241c;border-radius:999px;padding:4px">
+              <span style="padding:6px 14px;border-radius:999px;background:#d99458;color:#211b15;font:600 12.5px Geist">{{ t.checkin }}</span>
+              <span style="padding:6px 14px;border-radius:999px;color:#9b8b76;font:500 12.5px Geist">{{ t.summary }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;background:#2b241c;border:1px solid #3e3429;border-radius:999px;padding:6px 12px;color:#9b8b76;font:500 12.5px Geist">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#d99458" stroke-width="1.6" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+              14° · {{ t.weatherDesc }}
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:28px;display:flex;flex-direction:column;gap:26px">
+          <div>
+            <div style="font:600 30px/1.15 Lora,serif;color:#ece3d4">{{ t.goodMorning }}</div>
+            <div style="font:400 14px Geist;color:#9b8b76;margin-top:4px;display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span>{{ t.howFeel }}</span><span>·</span>{{ w.a2Date }}</div>
+          </div>
+
+          <div>
+            <div class="mci-eyebrow" style="color:#8d7a64;margin-bottom:9px">{{ t.thoughts }}</div>
+            {{ w.a2Thoughts }}
+          </div>
+
+          <div style="display:flex;gap:30px;align-items:flex-start">
+            <div style="flex:1;min-width:0">
+              <div class="mci-eyebrow" style="color:#8d7a64;margin-bottom:10px">{{ t.core }}</div>
+              {{ w.a2Core }}
+            </div>
+            <div style="width:1px;align-self:stretch;background:#352c22"></div>
+            <div style="width:230px">
+              <div class="mci-eyebrow" style="color:#8d7a64;margin-bottom:12px">{{ t.body }}</div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+                {{ w.a2Body }}
+                <div style="font:400 12px Geist;color:#9b8b76">{{ t.tapStronger }}</div>
+                <div style="display:flex;align-items:center;gap:14px">
+                  <div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:4px;background:#e7c08a"></span><span style="font:400 11.5px Geist;color:#9b8b76">{{ t.light }}</span></div>
+                  <div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:4px;background:#d99458"></span><span style="font:400 11.5px Geist;color:#9b8b76">{{ t.medium }}</span></div>
+                  <div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:4px;background:#bf6438"></span><span style="font:400 11.5px Geist;color:#9b8b76">{{ t.strong }}</span></div>
+                </div>
+                <div style="width:100%;border-top:1px solid #352c22;padding-top:14px;display:flex;flex-direction:column;align-items:center;gap:9px">
+                  <div class="mci-eyebrow" style="color:#8d7a64">{{ t.selected }}</div>
+                  {{ w.a2Readout }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="mci-eyebrow" style="color:#8d7a64;margin-bottom:12px">{{ t.energy }}</div>
+            {{ w.a2Energy }}
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px">
+              <div class="mci-eyebrow" style="color:#8d7a64">{{ t.mood }}</div>
+              <div style="font:600 14px Lora,serif;color:#d99458">{{ w.a2MoodLabel }}</div>
+            </div>
+            <div>{{ w.a2Mood }}</div>
+          </div>
+
+          <div>
+            <div class="mci-eyebrow" style="color:#8d7a64;margin-bottom:10px">{{ t.actions }}</div>
+            {{ w.a2Actions }}
+          </div>
+
+          <div>
+            <div class="mci-eyebrow" style="color:#8d7a64;margin-bottom:10px">{{ t.note }}</div>
+            {{ w.a2Note }}
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;padding:18px 28px;border-top:1px solid #352c22;background:#2b241c">
+          <button style="flex:1;padding:12px;border:none;border-radius:10px;background:#d99458;color:#211b15;font:600 14px Geist;cursor:pointer">{{ t.save }}</button>
+          <button style="padding:12px 20px;border:1px solid #3e3429;border-radius:10px;background:transparent;color:#9b8b76;font:500 14px Geist;cursor:pointer">{{ t.newCheckin }}</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ROW 2 — SUMMARY -->
+  <div style="font:600 11px Geist;letter-spacing:.12em;text-transform:uppercase;color:#a79683;margin:46px 0 16px">Samenvatting · licht &amp; donker</div>
+  <div style="display:flex;gap:48px;align-items:flex-start">
+
+    <!-- C1 SUMMARY LIGHT -->
+    <div style="flex:none;width:820px">
+      <div style="font:500 12px Geist;color:#7c6f5d;margin-bottom:10px">03 · Samenvatting — licht</div>
+      <div data-screen-label="Samenvatting licht" style="width:820px;background:#f4efe6;border-radius:16px;box-shadow:0 8px 30px rgba(60,45,30,.1);overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #e2d8c6">
+          <div style="display:flex;align-items:center;gap:11px">
+            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#cf8c54,#9d5f33);display:flex;align-items:center;justify-content:center;color:#fff;font:600 16px Lora,serif">M</div>
+            <span style="font:600 17px Lora,serif;color:#2c261f">Mindful</span>
+          </div>
+          <div style="display:flex;gap:4px;background:#ece2d0;border-radius:999px;padding:4px">
+            <span style="padding:6px 14px;border-radius:999px;color:#8c7e6b;font:500 12.5px Geist">{{ t.checkin }}</span>
+            <span style="padding:6px 14px;border-radius:999px;background:#bf7b46;color:#fff;font:600 12.5px Geist">{{ t.summary }}</span>
+          </div>
+        </div>
+        <div style="padding:26px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;gap:18px">
+            <div style="flex:1.4;background:#fbf8f2;border:1px solid #e9e1d1;border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:space-between">
+              <div class="mci-eyebrow" style="color:#a08d76">{{ t.today }}</div>
+              <div style="display:flex;align-items:center;gap:13px;margin-top:14px">
+                <div style="width:46px;height:46px;border-radius:50%;background:#9aa86a"></div>
+                <div>
+                  <div style="font:600 26px Lora,serif;color:#2c261f">{{ w.todayName }}</div>
+                  <div style="font:400 13px Geist;color:#8c7e6b">{{ t.checkedIn }}</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1;background:#fbf8f2;border:1px solid #e9e1d1;border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px">
+              {{ w.c1Streak }}
+              <div>
+                <div style="font:600 14px Lora,serif;color:#2c261f">{{ t.streak }}</div>
+                <div style="font:400 12.5px Geist;color:#8c7e6b">{{ t.streakSub }}</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:18px">
+            <div style="flex:1;background:#fbf8f2;border:1px solid #e9e1d1;border-radius:14px;padding:18px 20px">
+              <div style="font:500 28px Fira Code,monospace;color:#bf7b46">128</div>
+              <div style="font:400 12.5px Geist;color:#8c7e6b;margin-top:2px">{{ t.totalCheckins }}</div>
+            </div>
+            <div style="flex:1;background:#fbf8f2;border:1px solid #e9e1d1;border-radius:14px;padding:18px 20px">
+              <div style="font:500 28px Fira Code,monospace;color:#7e8f56">2.4</div>
+              <div style="font:400 12.5px Geist;color:#8c7e6b;margin-top:2px">{{ t.avgMood }}</div>
+            </div>
+            <div style="flex:1;background:#fbf8f2;border:1px solid #e9e1d1;border-radius:14px;padding:18px 20px">
+              <div style="font:500 28px Fira Code,monospace;color:#2c261f">63<span style="font-size:15px;color:#8c7e6b">%</span></div>
+              <div style="font:400 12.5px Geist;color:#8c7e6b;margin-top:2px">{{ t.energyToday }}</div>
+            </div>
+          </div>
+          <div style="background:#fbf8f2;border:1px solid #e9e1d1;border-radius:14px;padding:20px">
+            <div class="mci-eyebrow" style="color:#a08d76;margin-bottom:16px">{{ t.thisWeek }}</div>
+            {{ w.c1Heat }}
+          </div>
+          <div style="background:#fbf8f2;border:1px solid #e9e1d1;border-radius:14px;padding:20px">
+            <div class="mci-eyebrow" style="color:#a08d76;margin-bottom:14px">{{ t.last28 }}</div>
+            {{ w.c1Cal }}
+          </div>
+          <div style="background:#fbf8f2;border:1px solid #e9e1d1;border-radius:14px;padding:20px">
+            <div class="mci-eyebrow" style="color:#a08d76;margin-bottom:6px">{{ t.recentTitle }}</div>
+            {{ w.c1Recent }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C2 SUMMARY DARK -->
+    <div style="flex:none;width:820px">
+      <div style="font:500 12px Geist;color:#7c6f5d;margin-bottom:10px">04 · Samenvatting — donker</div>
+      <div data-screen-label="Samenvatting donker" style="width:820px;background:#211b15;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.28);overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #352c22">
+          <div style="display:flex;align-items:center;gap:11px">
+            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#e0a064,#b06f3a);display:flex;align-items:center;justify-content:center;color:#211b15;font:600 16px Lora,serif">M</div>
+            <span style="font:600 17px Lora,serif;color:#ece3d4">Mindful</span>
+          </div>
+          <div style="display:flex;gap:4px;background:#2b241c;border-radius:999px;padding:4px">
+            <span style="padding:6px 14px;border-radius:999px;color:#9b8b76;font:500 12.5px Geist">{{ t.checkin }}</span>
+            <span style="padding:6px 14px;border-radius:999px;background:#d99458;color:#211b15;font:600 12.5px Geist">{{ t.summary }}</span>
+          </div>
+        </div>
+        <div style="padding:26px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;gap:18px">
+            <div style="flex:1.4;background:#2b241c;border:1px solid #352c22;border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:space-between">
+              <div class="mci-eyebrow" style="color:#8d7a64">{{ t.today }}</div>
+              <div style="display:flex;align-items:center;gap:13px;margin-top:14px">
+                <div style="width:46px;height:46px;border-radius:50%;background:#9aa86a"></div>
+                <div>
+                  <div style="font:600 26px Lora,serif;color:#ece3d4">{{ w.todayName }}</div>
+                  <div style="font:400 13px Geist;color:#9b8b76">{{ t.checkedIn }}</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1;background:#2b241c;border:1px solid #352c22;border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px">
+              {{ w.c2Streak }}
+              <div>
+                <div style="font:600 14px Lora,serif;color:#ece3d4">{{ t.streak }}</div>
+                <div style="font:400 12.5px Geist;color:#9b8b76">{{ t.streakSub }}</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:18px">
+            <div style="flex:1;background:#2b241c;border:1px solid #352c22;border-radius:14px;padding:18px 20px">
+              <div style="font:500 28px Fira Code,monospace;color:#d99458">128</div>
+              <div style="font:400 12.5px Geist;color:#9b8b76;margin-top:2px">{{ t.totalCheckins }}</div>
+            </div>
+            <div style="flex:1;background:#2b241c;border:1px solid #352c22;border-radius:14px;padding:18px 20px">
+              <div style="font:500 28px Fira Code,monospace;color:#9fb06a">2.4</div>
+              <div style="font:400 12.5px Geist;color:#9b8b76;margin-top:2px">{{ t.avgMood }}</div>
+            </div>
+            <div style="flex:1;background:#2b241c;border:1px solid #352c22;border-radius:14px;padding:18px 20px">
+              <div style="font:500 28px Fira Code,monospace;color:#ece3d4">63<span style="font-size:15px;color:#9b8b76">%</span></div>
+              <div style="font:400 12.5px Geist;color:#9b8b76;margin-top:2px">{{ t.energyToday }}</div>
+            </div>
+          </div>
+          <div style="background:#2b241c;border:1px solid #352c22;border-radius:14px;padding:20px">
+            <div class="mci-eyebrow" style="color:#8d7a64;margin-bottom:16px">{{ t.thisWeek }}</div>
+            {{ w.c2Heat }}
+          </div>
+          <div style="background:#2b241c;border:1px solid #352c22;border-radius:14px;padding:20px">
+            <div class="mci-eyebrow" style="color:#8d7a64;margin-bottom:14px">{{ t.last28 }}</div>
+            {{ w.c2Cal }}
+          </div>
+          <div style="background:#2b241c;border:1px solid #352c22;border-radius:14px;padding:20px">
+            <div class="mci-eyebrow" style="color:#8d7a64;margin-bottom:6px">{{ t.recentTitle }}</div>
+            {{ w.c2Recent }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400,&quot;height&quot;:900},&quot;emotionLabels&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;energyStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;segments&quot;,&quot;continuous&quot;],&quot;default&quot;:&quot;segments&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  L = { bg:'#f4efe6', surface:'#fbf8f2', surface2:'#efe7d9', border:'#ddd2bf', borderSoft:'#e9e1d1', text:'#2c261f', textMute:'#8c7e6b', copper:'#bf7b46', sage:'#7e8f56', blue:'#7e93a8', violet:'#9c8fb0' };
+  D = { bg:'#211b15', surface:'#2b241c', surface2:'#352c22', border:'#3e3429', borderSoft:'#2f2820', text:'#ece3d4', textMute:'#9b8b76', copper:'#d99458', sage:'#9fb06a', blue:'#8ba3bd', violet:'#b39ec4' };
+
+  EMOTIONS = {
+    joy:        {nl:'Vreugde',         en:'Joy',          c:'#d6a85c'},
+    serenity:   {nl:'Sereniteit',      en:'Serenity',     c:'#9aa86a'},
+    love:       {nl:'Liefde',          en:'Love',         c:'#cf9aa6'},
+    acceptance: {nl:'Acceptatie',      en:'Acceptance',   c:'#93aab5'},
+    sadness:    {nl:'Verdriet',        en:'Sadness',      c:'#8593ad'},
+    melancholy: {nl:'Melancholie',     en:'Melancholy',   c:'#9c92b0'},
+    anger:      {nl:'Woede',           en:'Anger',        c:'#c47158'},
+    aggression: {nl:'Agressie',        en:'Aggression',   c:'#c98a5a'},
+    trust:      {nl:'Vertrouwen',      en:'Trust',        c:'#8fb39a'},
+    fear:       {nl:'Angst',           en:'Fear',         c:'#7f7ba2'},
+    surprise:   {nl:'Verrassing',      en:'Surprise',     c:'#d9bd72'},
+    disgust:    {nl:'Walging',         en:'Disgust',      c:'#a7a86a'},
+    anticipation:{nl:'Verwachting',    en:'Anticipation', c:'#cf9a6b'},
+    curiosity:  {nl:'Nieuwsgierig',    en:'Curiosity',    c:'#7fa6a6'},
+    anxiety:    {nl:'Bezorgdheid',     en:'Anxiety',      c:'#9a8fb0'},
+    shame:      {nl:'Schaamte',        en:'Shame',        c:'#b1906f'}
+  };
+  ACTIONS = [
+    {key:'walk',     nl:'Wandeling',     en:'Walk'},
+    {key:'meditate', nl:'Mediteren',     en:'Meditate'},
+    {key:'call',     nl:'Vriend bellen', en:'Call a friend'},
+    {key:'sleep',    nl:'Vroeg slapen',  en:'Early night'},
+    {key:'breathe',  nl:'Ademhaling',    en:'Breathing'},
+    {key:'journal',  nl:'Journaling',    en:'Journal'},
+    {key:'stretch',  nl:'Stretchen',     en:'Stretch'},
+    {key:'outside',  nl:'Naar buiten',   en:'Go outside'}
+  ];
+  WHEELS = [
+    {key:'act',      label:{nl:'ACT',en:'ACT'},             ids:['joy','serenity','love','acceptance','sadness','melancholy','anger','aggression']},
+    {key:'plutchik', label:{nl:'Plutchik',en:'Plutchik'},   ids:['joy','trust','fear','surprise','sadness','disgust','anger','anticipation']},
+    {key:'ekman',    label:{nl:'Ekman',en:'Ekman'},         ids:['joy','sadness','anger','fear','surprise','disgust']},
+    {key:'junto',    label:{nl:'Junto',en:'Junto'},         ids:['love','joy','surprise','anger','sadness','fear']},
+    {key:'extended', label:{nl:'Uitgebreid',en:'Extended'}, ids:['joy','love','trust','surprise','curiosity','anticipation','anxiety','fear','sadness','disgust','anger','shame']}
+  ];
+
+  moodNL = [
+    ["Woedend","In paniek","Gestrest","Zenuwachtig","Geschokt","Verrast","Vrolijk","Feestelijk","Opgewonden","Extatisch"],
+    ["Pissig","Driftig","Gefrustreerd","Gespannen","Verbijsterd","Hyper","Opgewekt","Gemotiveerd","Geinspireerd","Verrukt"],
+    ["Verbolgen","Bang","Boos","Nerveus","Rusteloos","Opgeladen","Levendig","Opgetogen","Optimistisch","Enthousiast"],
+    ["Angstig","Ongerust","Bezorgd","Geirriteerd","Geergerd","Verheugd","Gefocust","Blij","Trots","Ontroerd"],
+    ["Aversie","Onrustig","Bezorgd","Ongemakkelijk","Geraakt","Monter","Vreugdevol","Hoopvol","Speels","Gelukkig"],
+    ["Walgend","Somber","Teleurgesteld","Verdrietig","Apathisch","Op je gemak","Meegaand","Content","Liefdevol","Vervuld"],
+    ["Pessimistisch","Chagrijnig","Ontmoedigd","Bedroefd","Verveeld","Kalm","Veilig","Tevreden","Dankbaar","Bewogen"],
+    ["Vervreemd","Ellendig","Eenzaam","Verslagen","Moe","Ontspannen","Meditatief","Vredig","Gezegend","In balans"],
+    ["Moedeloos","Depressief","Nors","Uitgeput","Leeg","Mild","Bedachtzaam","Rustig","Comfortabel","Zorgeloos"],
+    ["Wanhopig","Hopeloos","Troosteloos","Opgebrand","Leeggezogen","Slaperig","Voldaan","Serene","Knus","Serene"]
+  ];
+  moodEN = [
+    ["Furious","Panicked","Stressed","Nervous","Shocked","Surprised","Cheerful","Festive","Excited","Ecstatic"],
+    ["Pissed","Irate","Frustrated","Tense","Bewildered","Hyper","Upbeat","Motivated","Inspired","Delighted"],
+    ["Indignant","Afraid","Angry","Anxious","Restless","Energized","Lively","Elated","Optimistic","Enthusiastic"],
+    ["Fearful","Worried","Concerned","Irritated","Annoyed","Pleased","Focused","Happy","Proud","Moved"],
+    ["Aversion","Uneasy","Worried","Uncomfortable","Touched","Cheerful","Joyful","Hopeful","Playful","Happy"],
+    ["Disgusted","Gloomy","Disappointed","Sad","Apathetic","At ease","Compliant","Content","Loving","Fulfilled"],
+    ["Pessimistic","Grumpy","Discouraged","Sorrowful","Bored","Calm","Safe","Satisfied","Grateful","Touched"],
+    ["Alienated","Miserable","Lonely","Defeated","Tired","Relaxed","Meditative","Peaceful","Blessed","Balanced"],
+    ["Despondent","Depressed","Sullen","Exhausted","Depleted","Gentle","Thoughtful","Tranquil","Comfortable","Carefree"],
+    ["Desperate","Hopeless","Desolate","Burned out","Drained","Sleepy","Content","Serene","Cozy","Serene"]
+  ];
+
+  T = {
+    nl: { checkin:'Inchecken', summary:'Samenvatting', weatherDesc:'Helder', date:'ma 22 jun',
+      goodMorning:'Goedemorgen', howFeel:'Hoe voel je je nu?',
+      thoughts:'Gedachten', thoughtsSample:'Rustige ochtend. Koffie op de veranda, de kat keek mee. Lichte spanning in mijn schouders, maar het zakt.',
+      core:'Kerngevoel', pickWheel:'Tik een segment aan',
+      body:'Lichaamssignalen', bodyHint:'Markeer waar je iets voelt',
+      light:'licht', medium:'gemiddeld', strong:'sterk', front:'Voor', back:'Achter', selected:'Aangetikt', tapStronger:'Tik om sterker te maken',
+      energy:'Energie', physical:'Fysiek', mental:'Mentaal', emotional:'Emotioneel',
+      mood:'Stemming', actions:'Acties', note:'Notitie', noteSample:'Morgen de werkdag wat rustiger inplannen.',
+      act1:'Wandeling', act2:'Mediteren', act3:'Vriend bellen', act4:'Vroeg slapen',
+      save:'Opslaan', newCheckin:'Nieuwe check-in',
+      today:'Vandaag', checkedIn:'Vandaag ingecheckt', streak:'Reeks', streakSub:'dagen op rij', days:'dagen',
+      totalCheckins:'Totaal check-ins', avgMood:'Gem. stemming', energyToday:'Energie vandaag',
+      thisWeek:'Deze week', last28:'Laatste 28 dagen', recentTitle:'Recente check-ins' },
+    en: { checkin:'Check-in', summary:'Summary', weatherDesc:'Clear', date:'Mon 22 Jun',
+      goodMorning:'Good morning', howFeel:'How are you feeling now?',
+      thoughts:'Thoughts', thoughtsSample:'Quiet morning. Coffee on the porch, the cat watching. A little tension in my shoulders, but it is easing.',
+      core:'Core feeling', pickWheel:'Tap a segment',
+      body:'Body signals', bodyHint:'Mark where you notice it',
+      light:'light', medium:'medium', strong:'strong', front:'Front', back:'Back', selected:'Selected', tapStronger:'Tap to make it stronger',
+      energy:'Energy', physical:'Physical', mental:'Mental', emotional:'Emotional',
+      mood:'Mood', actions:'Actions', note:'Note', noteSample:'Plan a calmer workday tomorrow.',
+      act1:'Walk', act2:'Meditate', act3:'Call a friend', act4:'Early night',
+      save:'Save', newCheckin:'New check-in',
+      today:'Today', checkedIn:'Checked in today', streak:'Streak', streakSub:'days in a row', days:'days',
+      totalCheckins:'Total check-ins', avgMood:'Avg. mood', energyToday:'Energy today',
+      thisWeek:'This week', last28:'Last 28 days', recentTitle:'Recent check-ins' }
+  };
+
+  state = {
+    lang: 'nl',
+    sel: { a1:'serenity', a2:'trust' },
+    wheelType: { a1:'act', a2:'plutchik' },
+    energy: { a1:{physical:70,mental:55,emotional:65}, a2:{physical:60,mental:50,emotional:70} },
+    mood: { a1:{r:7,c:6}, a2:{r:3,c:8} },
+    body: { a1:{}, a2:{} },
+    bodyLevel: { a1:{chest:2,'left-shoulder':1,abdomen:1,'lower-back':2}, a2:{neck:2,chest:1} },
+    actChosen: { a1:{walk:1}, a2:{walk:1} },
+    actCustom: { a1:[], a2:[] },
+    actDraft: { a1:'', a2:'' },
+    actAdding: { a1:false, a2:false },
+    note: { a1:'', a2:'' },
+    thoughts: { a1:this.T.nl.thoughtsSample, a2:this.T.nl.thoughtsSample },
+    feelCustom: { a1:[], a2:[] }, feelAdding:{a1:false,a2:false}, feelDraft:{a1:'',a2:''},
+    sigCustom: { a1:[], a2:[] }, sigAdding:{a1:false,a2:false}, sigDraft:{a1:'',a2:''},
+    energyChannels: { a1:[], a2:[] }, enrAdding:{a1:false,a2:false}, enrDraft:{a1:'',a2:''},
+    checkDate: { a1:{date:'2026-06-22',time:'08:30'}, a2:{date:'2026-06-22',time:'08:30'} },
+    dateEditing: { a1:false, a2:false },
+    recent: { c1:this._seedRecent(), c2:this._seedRecent() },
+    recentEditing: { c1:null, c2:null }, recentDraft: { c1:{}, c2:{} }
+  };
+
+  _seedRecent(){ return [
+    {id:'r1',iso:'2026-06-22',label:'Sereniteit',score:3},
+    {id:'r2',iso:'2026-06-21',label:'Tevreden',score:3},
+    {id:'r3',iso:'2026-06-20',label:'Gespannen',score:1},
+    {id:'r4',iso:'2026-06-19',label:'Hoopvol',score:2},
+    {id:'r5',iso:'2026-06-18',label:'Moe',score:1}
+  ]; }
+  fmtDate(iso,time,lang){
+    const d=new Date((iso||'2026-06-22')+'T'+(time||'00:00'));
+    const dn=lang==='nl'?['zo','ma','di','wo','do','vr','za']:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const mn=lang==='nl'?['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec']:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    let s=dn[d.getDay()]+' '+d.getDate()+' '+mn[d.getMonth()];
+    if(time) s+=' · '+time;
+    return s;
+  }
+  setCheckDate(fid,patch){ this.setState(s=>({checkDate:Object.assign({},s.checkDate,{[fid]:Object.assign({},s.checkDate[fid],patch)})})); }
+  setDateEditing(fid,v){ this.setState(s=>({dateEditing:Object.assign({},s.dateEditing,{[fid]:v})})); }
+  dateControl(fid,pal){
+    const h=React.createElement, lang=this.state.lang, dark=pal===this.D;
+    const cd=this.state.checkDate[fid]||{date:'2026-06-22',time:'08:30'};
+    if(this.state.dateEditing[fid]){
+      const inpSt={background:pal.surface,border:'1px solid '+pal.border,borderRadius:8,padding:'4px 8px',font:'500 12.5px Geist,sans-serif',color:pal.text,outline:'none',colorScheme:dark?'dark':'light'};
+      return h('span',{style:{display:'inline-flex',alignItems:'center',gap:6}},
+        h('input',{key:'d',type:'date',value:cd.date,onChange:(e)=>this.setCheckDate(fid,{date:e.target.value}),style:inpSt}),
+        h('input',{key:'t',type:'time',value:cd.time,onChange:(e)=>this.setCheckDate(fid,{time:e.target.value}),style:inpSt}),
+        h('div',{key:'ok',onClick:()=>this.setDateEditing(fid,false),style:{width:24,height:24,borderRadius:999,background:pal.copper,color:dark?'#211b15':'#fff',display:'inline-flex',alignItems:'center',justifyContent:'center',cursor:'pointer',font:'600 13px Geist,sans-serif',flex:'none'}},'\u2713')
+      );
+    }
+    return h('span',{onClick:()=>this.setDateEditing(fid,true),style:{display:'inline-flex',alignItems:'center',gap:5,cursor:'pointer',color:pal.copper,fontWeight:500,borderBottom:'1px dashed '+pal.copper,paddingBottom:1}},
+      h('svg',{key:'i',width:13,height:13,viewBox:'0 0 24 24',fill:'none',stroke:pal.copper,strokeWidth:1.6,strokeLinecap:'round'},h('circle',{key:'c',cx:12,cy:12,r:9}),h('path',{key:'p',d:'M12 7v5l3 2'})),
+      this.fmtDate(cd.date,cd.time,lang)
+    );
+  }
+  startEditRecent(fid,e){ this.setState(s=>({recentEditing:Object.assign({},s.recentEditing,{[fid]:e.id}),recentDraft:Object.assign({},s.recentDraft,{[fid]:{iso:e.iso,label:e.label,score:e.score}})})); }
+  setRecentDraft(fid,patch){ this.setState(s=>({recentDraft:Object.assign({},s.recentDraft,{[fid]:Object.assign({},s.recentDraft[fid],patch)})})); }
+  cancelRecent(fid){ this.setState(s=>({recentEditing:Object.assign({},s.recentEditing,{[fid]:null})})); }
+  saveRecent(fid){ this.setState(s=>{const d=s.recentDraft[fid]||{}; const list=(s.recent[fid]||[]).map(e=>e.id===s.recentEditing[fid]?Object.assign({},e,{iso:d.iso||e.iso,label:(d.label||'').trim()||e.label,score:d.score||e.score}):e); return {recent:Object.assign({},s.recent,{[fid]:list}),recentEditing:Object.assign({},s.recentEditing,{[fid]:null})};}); }
+  deleteRecent(fid,id){ this.setState(s=>({recent:Object.assign({},s.recent,{[fid]:(s.recent[fid]||[]).filter(e=>e.id!==id)})})); }
+  recentList(fid,pal,dark){
+    const h=React.createElement, lang=this.state.lang, list=this.state.recent[fid]||[], editing=this.state.recentEditing[fid], draft=this.state.recentDraft[fid]||{};
+    const icon=(paths,col)=>h('svg',{width:15,height:15,viewBox:'0 0 24 24',fill:'none',stroke:col,strokeWidth:1.6,strokeLinecap:'round',strokeLinejoin:'round'},paths.map((p,i)=>h('path',{key:i,d:p})));
+    const ibtn=(paths,col,onClick,key)=>h('div',{key:key,onClick:onClick,style:{width:30,height:30,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:col,border:'1px solid '+pal.border,background:'transparent',flex:'none'}}, icon(paths,col));
+    if(!list.length) return h('div',{style:{font:'400 13.5px/1.5 Lora,serif',color:pal.textMute,fontStyle:'italic'}}, lang==='nl'?'Nog geen eerdere check-ins.':'No earlier check-ins yet.');
+    const inpSt={background:pal.surface,border:'1px solid '+pal.border,borderRadius:8,padding:'6px 9px',font:'500 12.5px Geist,sans-serif',color:pal.text,outline:'none',colorScheme:dark?'dark':'light'};
+    const rows=list.map((e,idx)=>{
+      const last=idx===list.length-1;
+      if(editing===e.id){
+        return h('div',{key:e.id,style:{display:'flex',flexDirection:'column',gap:9,padding:'12px 0',borderBottom:last?'none':'1px solid '+pal.borderSoft}},
+          h('div',{key:'r1',style:{display:'flex',gap:8}},
+            h('input',{key:'l',value:draft.label||'',onChange:(ev)=>this.setRecentDraft(fid,{label:ev.target.value}),placeholder:lang==='nl'?'Gevoel…':'Feeling…',style:Object.assign({},inpSt,{flex:1,minWidth:0,fontFamily:'Lora,serif',fontSize:13.5})}),
+            h('input',{key:'d',type:'date',value:draft.iso||'',onChange:(ev)=>this.setRecentDraft(fid,{iso:ev.target.value}),style:inpSt})
+          ),
+          h('div',{key:'r2',style:{display:'flex',alignItems:'center',gap:10}},
+            h('div',{key:'sc',style:{display:'flex',gap:6}}, [1,2,3].map(sv=>h('div',{key:sv,onClick:()=>this.setRecentDraft(fid,{score:sv}),style:{width:20,height:20,borderRadius:6,cursor:'pointer',background:this.scoreColor(sv,pal),boxShadow:draft.score===sv?('0 0 0 2px '+pal.surface+',0 0 0 4px '+pal.copper):'none'}}))),
+            h('div',{key:'sp',style:{flex:1}}),
+            h('div',{key:'ok',onClick:()=>this.saveRecent(fid),style:{padding:'6px 14px',borderRadius:8,background:pal.copper,color:dark?'#211b15':'#fff',font:'600 12.5px Geist,sans-serif',cursor:'pointer'}}, lang==='nl'?'Opslaan':'Save'),
+            h('div',{key:'cx',onClick:()=>this.cancelRecent(fid),style:{padding:'6px 12px',borderRadius:8,border:'1px solid '+pal.border,color:pal.textMute,font:'500 12.5px Geist,sans-serif',cursor:'pointer'}}, lang==='nl'?'Annuleren':'Cancel')
+          )
+        );
+      }
+      return h('div',{key:e.id,style:{display:'flex',alignItems:'center',gap:12,padding:'11px 0',borderBottom:last?'none':'1px solid '+pal.borderSoft}},
+        h('span',{key:'dot',style:{width:11,height:11,borderRadius:4,background:this.scoreColor(e.score,pal),flex:'none'}}),
+        h('div',{key:'mid',style:{flex:1,minWidth:0}},
+          h('div',{key:'l',style:{font:'600 14px Lora,serif',color:pal.text}}, e.label),
+          h('div',{key:'d',style:{font:'400 12px Geist,sans-serif',color:pal.textMute,marginTop:1}}, this.fmtDate(e.iso,null,lang))
+        ),
+        ibtn(['M12 20h9','M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z'],pal.textMute,()=>this.startEditRecent(fid,e),'ed'),
+        ibtn(['M3 6h18','M8 6V4h8v2','M6 6l1 14h10l1-14'],'#c47158',()=>this.deleteRecent(fid,e.id),'de')
+      );
+    });
+    return h('div',null, rows);
+  }
+
+  setNote(fid,v){ this.setState(s=>({note:Object.assign({},s.note,{[fid]:v})})); }
+  noteBlock(fid,pal){
+    const h=React.createElement, t=this.T[this.state.lang], v=this.state.note[fid]||'';
+    return h('textarea',{value:v,placeholder:t.noteSample,onChange:(e)=>this.setNote(fid,e.target.value),rows:3,style:{width:'100%',resize:'vertical',boxSizing:'border-box',background:pal.surface,border:'1px solid '+pal.border,borderRadius:12,padding:'13px 16px',font:'400 14.5px/1.6 Lora,serif',color:pal.text,outline:'none'}});
+  }
+  setThoughts(fid,v){ this.setState(s=>({thoughts:Object.assign({},s.thoughts,{[fid]:v})})); }
+  thoughtsBlock(fid,pal){
+    const h=React.createElement, t=this.T[this.state.lang], v=this.state.thoughts[fid]||'';
+    return h('textarea',{value:v,placeholder:t.thoughtsSample,onChange:(e)=>this.setThoughts(fid,e.target.value),rows:3,style:{width:'100%',resize:'vertical',boxSizing:'border-box',minHeight:78,background:pal.surface,border:'1px solid '+pal.border,borderRadius:12,padding:'16px 18px',font:'400 15px/1.6 Lora,serif',color:pal.text,outline:'none'}});
+  }
+  inlineAdd(o){
+    const h=React.createElement, pal=o.pal, onCol=o.dark?'#211b15':'#fff';
+    if(o.adding){
+      return h('div',{style:{display:'flex',alignItems:'center',gap:5,padding:'3px 4px 3px 12px',borderRadius:999,background:pal.surface,border:'1px solid '+pal.copper}},
+        h('input',{key:'i',autoFocus:true,value:o.draft||'',placeholder:o.placeholder,onChange:(e)=>o.onDraft(e.target.value),onKeyDown:(e)=>{if(e.key==='Enter')o.onAdd();if(e.key==='Escape')o.onCancel();},style:{border:'none',outline:'none',background:'transparent',font:'500 12.5px Geist,sans-serif',color:pal.text,width:o.width||110}}),
+        h('div',{key:'ok',onClick:o.onAdd,style:{width:24,height:24,borderRadius:999,background:pal.copper,color:onCol,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',font:'600 13px Geist,sans-serif',flex:'none'}},'\u2713'));
+    }
+    return h('div',{onClick:o.onOpen,style:{display:'flex',alignItems:'center',gap:5,padding:'7px 13px',borderRadius:999,cursor:'pointer',font:'500 12.5px Geist,sans-serif',color:pal.copper,background:'transparent',border:'1px dashed '+pal.copper}},
+      h('span',{key:'p',style:{fontSize:15,lineHeight:1,marginTop:-1}},'+'), h('span',{key:'t'},o.label));
+  }
+  rmChip(key,label,pal,dark,onRemove){
+    const h=React.createElement;
+    return h('div',{key:key,style:{display:'flex',alignItems:'center',gap:6,padding:'6px 13px',borderRadius:999,font:'500 12.5px Geist,sans-serif',background:pal.copper,color:dark?'#211b15':'#fff'}},
+      h('span',{key:'l'},label),
+      h('span',{key:'x',onClick:onRemove,style:{cursor:'pointer',opacity:0.7,fontWeight:700,fontSize:13,lineHeight:1}},'\u00d7'));
+  }
+  setFeelAdding(fid,v){ this.setState(s=>({feelAdding:Object.assign({},s.feelAdding,{[fid]:v})})); }
+  setFeelDraft(fid,v){ this.setState(s=>({feelDraft:Object.assign({},s.feelDraft,{[fid]:v})})); }
+  addFeeling(fid){ const v=(this.state.feelDraft[fid]||'').trim(); if(!v) return; this.setState(s=>{const c=Object.assign({},s.feelCustom); const list=(c[fid]||[]).slice(); const id='f'+Date.now(); list.push({id:id,label:v}); c[fid]=list; return {feelCustom:c,sel:Object.assign({},s.sel,{[fid]:id}),feelDraft:Object.assign({},s.feelDraft,{[fid]:''}),feelAdding:Object.assign({},s.feelAdding,{[fid]:false})};}); }
+  removeFeeling(fid,id){ this.setState(s=>{const c=Object.assign({},s.feelCustom); c[fid]=(c[fid]||[]).filter(x=>x.id!==id); const u={feelCustom:c}; if(s.sel[fid]===id) u.sel=Object.assign({},s.sel,{[fid]:''}); return u;}); }
+  feelingControl(fid,pal,dark){
+    const h=React.createElement, lang=this.state.lang, customs=this.state.feelCustom[fid]||[];
+    const chips=customs.map(c=>this.rmChip(c.id,c.label,pal,dark,()=>this.removeFeeling(fid,c.id)));
+    const add=this.inlineAdd({adding:this.state.feelAdding[fid],draft:this.state.feelDraft[fid],placeholder:lang==='nl'?'Eigen gevoel…':'Own feeling…',onDraft:(v)=>this.setFeelDraft(fid,v),onAdd:()=>this.addFeeling(fid),onOpen:()=>this.setFeelAdding(fid,true),onCancel:()=>this.setFeelAdding(fid,false),label:lang==='nl'?'Eigen gevoel':'Own feeling',pal:pal,dark:dark});
+    return h('div',{style:{display:'flex',flexWrap:'wrap',gap:7,justifyContent:'center'}}, chips.concat([add]));
+  }
+  setSigAdding(fid,v){ this.setState(s=>({sigAdding:Object.assign({},s.sigAdding,{[fid]:v})})); }
+  setSigDraft(fid,v){ this.setState(s=>({sigDraft:Object.assign({},s.sigDraft,{[fid]:v})})); }
+  addSignal(fid){ const v=(this.state.sigDraft[fid]||'').trim(); if(!v) return; this.setState(s=>{const c=Object.assign({},s.sigCustom); const list=(c[fid]||[]).slice(); list.push({id:'s'+Date.now(),label:v}); c[fid]=list; return {sigCustom:c,sigDraft:Object.assign({},s.sigDraft,{[fid]:''}),sigAdding:Object.assign({},s.sigAdding,{[fid]:false})};}); }
+  removeSignal(fid,id){ this.setState(s=>{const c=Object.assign({},s.sigCustom); c[fid]=(c[fid]||[]).filter(x=>x.id!==id); return {sigCustom:c};}); }
+  setEnrAdding(fid,v){ this.setState(s=>({enrAdding:Object.assign({},s.enrAdding,{[fid]:v})})); }
+  setEnrDraft(fid,v){ this.setState(s=>({enrDraft:Object.assign({},s.enrDraft,{[fid]:v})})); }
+  addChannel(fid){ const v=(this.state.enrDraft[fid]||'').trim(); if(!v) return; this.setState(s=>{const c=Object.assign({},s.energyChannels); const list=(c[fid]||[]).slice(); const key='e'+Date.now(); list.push({key:key,label:v}); c[fid]=list; const e=Object.assign({},s.energy); e[fid]=Object.assign({},e[fid],{[key]:50}); return {energyChannels:c,energy:e,enrDraft:Object.assign({},s.enrDraft,{[fid]:''}),enrAdding:Object.assign({},s.enrAdding,{[fid]:false})};}); }
+  removeChannel(fid,key){ this.setState(s=>{const c=Object.assign({},s.energyChannels); c[fid]=(c[fid]||[]).filter(x=>x.key!==key); const e=Object.assign({},s.energy); const ev=Object.assign({},e[fid]); delete ev[key]; e[fid]=ev; return {energyChannels:c,energy:e};}); }
+
+  toggleAct(fid,key){ this.setState(s=>{const a=Object.assign({},s.actChosen); const z=Object.assign({},a[fid]||{}); if(z[key]) delete z[key]; else z[key]=1; a[fid]=z; return {actChosen:a};}); }
+  setActAdding(fid,v){ this.setState(s=>({actAdding:Object.assign({},s.actAdding,{[fid]:v})})); }
+  setActDraft(fid,v){ this.setState(s=>({actDraft:Object.assign({},s.actDraft,{[fid]:v})})); }
+  addCustomAct(fid){ const v=(this.state.actDraft[fid]||'').trim(); if(!v) return; this.setState(s=>{const c=Object.assign({},s.actCustom); const list=(c[fid]||[]).slice(); const key='c'+Date.now(); list.push({key:key,label:v}); c[fid]=list; const a=Object.assign({},s.actChosen); a[fid]=Object.assign({},a[fid]||{},{[key]:1}); return {actCustom:c,actChosen:a,actDraft:Object.assign({},s.actDraft,{[fid]:''}),actAdding:Object.assign({},s.actAdding,{[fid]:false})};}); }
+  removeCustomAct(fid,key){ this.setState(s=>{const c=Object.assign({},s.actCustom); c[fid]=(c[fid]||[]).filter(x=>x.key!==key); const a=Object.assign({},s.actChosen); const z=Object.assign({},a[fid]||{}); delete z[key]; a[fid]=z; return {actCustom:c,actChosen:a};}); }
+  actionsBlock(fid,pal,dark){
+    const h=React.createElement, lang=this.state.lang;
+    const chosen=this.state.actChosen[fid]||{}, customs=this.state.actCustom[fid]||[];
+    const adding=this.state.actAdding[fid], draft=this.state.actDraft[fid]||'';
+    const onCol=dark?'#211b15':'#fff';
+    const chip=(key,label,sel,custom)=>{
+      const kids=[h('span',{key:'l'},label)];
+      if(custom) kids.push(h('span',{key:'x',onClick:(e)=>{e.stopPropagation();this.removeCustomAct(fid,key);},style:{marginLeft:1,opacity:0.65,fontWeight:700,fontSize:13,lineHeight:1}},'\u00d7'));
+      return h('div',{key:key,onClick:()=>this.toggleAct(fid,key),style:{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:999,cursor:'pointer',transition:'all .15s',font:(sel?'600 ':'500 ')+'12.5px Geist,sans-serif',background:sel?pal.copper:pal.surface,color:sel?onCol:pal.textMute,border:'1px solid '+(sel?pal.copper:pal.border)}},kids);
+    };
+    const chips=this.ACTIONS.map(a=>chip(a.key,a[lang],!!chosen[a.key],false))
+      .concat(customs.map(c=>chip(c.key,c.label,!!chosen[c.key],true)));
+    let addEl;
+    if(adding){
+      addEl=h('div',{key:'add',style:{display:'flex',alignItems:'center',gap:5,padding:'3px 4px 3px 12px',borderRadius:999,background:pal.surface,border:'1px solid '+pal.copper}},
+        h('input',{key:'i',autoFocus:true,value:draft,placeholder:lang==='nl'?'Eigen actie…':'Own action…',onChange:(e)=>this.setActDraft(fid,e.target.value),onKeyDown:(e)=>{if(e.key==='Enter')this.addCustomAct(fid);if(e.key==='Escape')this.setActAdding(fid,false);},style:{border:'none',outline:'none',background:'transparent',font:'500 12.5px Geist,sans-serif',color:pal.text,width:110}}),
+        h('div',{key:'ok',onClick:()=>this.addCustomAct(fid),style:{width:24,height:24,borderRadius:999,background:pal.copper,color:onCol,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',font:'600 13px Geist,sans-serif',flex:'none'}},'\u2713')
+      );
+    } else {
+      addEl=h('div',{key:'add',onClick:()=>this.setActAdding(fid,true),style:{display:'flex',alignItems:'center',gap:5,padding:'7px 13px',borderRadius:999,cursor:'pointer',font:'500 12.5px Geist,sans-serif',color:pal.copper,background:'transparent',border:'1px dashed '+pal.copper},'aria-label':'add'},
+        h('span',{key:'p',style:{fontSize:15,lineHeight:1,marginTop:-1}},'+'),
+        h('span',{key:'t'}, lang==='nl'?'Eigen actie':'Add your own'));
+    }
+    return h('div',{style:{display:'flex',flexWrap:'wrap',gap:8}}, chips.concat([addEl]));
+  }
+
+  pick(fid,id){ this.setState(s=>({sel:Object.assign({},s.sel,{[fid]:id})})); }
+  setWheel(fid,key){ this.setState(s=>({wheelType:Object.assign({},s.wheelType,{[fid]:key})})); }
+  coreBlock(fid,pal,size){
+    const h=React.createElement, t=this.T[this.state.lang], cur=(this.state.wheelType||{})[fid]||'act';
+    return h('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',gap:10,width:'100%'}},
+      React.cloneElement(this.wheelTabs(fid,pal),{key:'tabs-'+cur}),
+      React.cloneElement(this.wheel(fid,pal,size),{key:'wheel-'+cur}),
+      h('div',{key:'hint',style:{font:'400 12.5px Geist,sans-serif',color:pal.textMute}}, t.pickWheel),
+      React.cloneElement(this.feelingControl(fid,pal,pal===this.D),{key:'feel'})
+    );
+  }
+  wheelTabs(fid,pal){
+    const h=React.createElement, lang=this.state.lang, dark=pal===this.D, cur=(this.state.wheelType||{})[fid]||'act';
+    return h('div',{style:{display:'flex',flexWrap:'wrap',gap:6,justifyContent:'center'}},
+      this.WHEELS.map(w=>{const on=w.key===cur; return h('div',{key:w.key,onClick:()=>this.setWheel(fid,w.key),style:{padding:'5px 12px',borderRadius:999,cursor:'pointer',font:(on?'600 ':'500 ')+'11px Geist,sans-serif',transition:'all .15s',background:on?pal.copper:'transparent',color:on?(dark?'#211b15':'#fff'):pal.textMute,border:'1px solid '+(on?pal.copper:pal.border)}},w.label[lang]);})
+    );
+  }
+  setEnergy(fid,k,v){ this.setState(s=>{const e=Object.assign({},s.energy); e[fid]=Object.assign({},e[fid],{[k]:v}); return {energy:e};}); }
+  setMood(fid,r,c){ this.setState(s=>({mood:Object.assign({},s.mood,{[fid]:{r:r,c:c}})})); }
+  toggleZone(fid,id){ this.setState(s=>{const b=Object.assign({},s.body); const z=Object.assign({},b[fid]||{}); if(z[id]) delete z[id]; else z[id]=1; b[fid]=z; return {body:b};}); }
+  cycleZone(fid,id){ this.setState(s=>{const b=Object.assign({},s.bodyLevel||{}); const z=Object.assign({},b[fid]||{}); const nx=((z[id]||0)+1)%4; if(nx===0) delete z[id]; else z[id]=nx; b[fid]=z; return {bodyLevel:b};}); }
+  bodyReadout(fid,pal){
+    const h=React.createElement, lang=this.state.lang, lv=(this.state.bodyLevel||{})[fid]||{};
+    const order=["head","neck","left-shoulder","right-shoulder","chest","abdomen","upper-back","lower-back","left-upper-arm","right-upper-arm","left-elbow","right-elbow","left-forearm","right-forearm","left-hand","right-hand","left-hip","right-hip","left-upper-leg","right-upper-leg","left-knee","right-knee","left-lower-leg","right-lower-leg","left-foot","right-foot"];
+    const Z=lang==='nl'
+      ? {head:'Hoofd',neck:'Nek',chest:'Borst',abdomen:'Buik','left-shoulder':'Linkerschouder','right-shoulder':'Rechterschouder','left-upper-arm':'Linkerbovenarm','right-upper-arm':'Rechterbovenarm','left-elbow':'Linkerelleboog','right-elbow':'Rechterelleboog','left-forearm':'Linkeronderarm','right-forearm':'Rechteronderarm','left-hand':'Linkerhand','right-hand':'Rechterhand','left-hip':'Linkerheup','right-hip':'Rechterheup','left-upper-leg':'Linkerbovenbeen','right-upper-leg':'Rechterbovenbeen','left-knee':'Linkerknie','right-knee':'Rechterknie','left-lower-leg':'Linkeronderbeen','right-lower-leg':'Rechteronderbeen','left-foot':'Linkervoet','right-foot':'Rechtervoet','upper-back':'Bovenrug','lower-back':'Onderrug'}
+      : {head:'Head',neck:'Neck',chest:'Chest',abdomen:'Abdomen','left-shoulder':'Left shoulder','right-shoulder':'Right shoulder','left-upper-arm':'Left upper arm','right-upper-arm':'Right upper arm','left-elbow':'Left elbow','right-elbow':'Right elbow','left-forearm':'Left forearm','right-forearm':'Right forearm','left-hand':'Left hand','right-hand':'Right hand','left-hip':'Left hip','right-hip':'Right hip','left-upper-leg':'Left upper leg','right-upper-leg':'Right upper leg','left-knee':'Left knee','right-knee':'Right knee','left-lower-leg':'Left lower leg','right-lower-leg':'Right lower leg','left-foot':'Left foot','right-foot':'Right foot','upper-back':'Upper back','lower-back':'Lower back'};
+    const lw=lang==='nl'?{1:'licht',2:'gemiddeld',3:'sterk'}:{1:'light',2:'medium',3:'strong'};
+    const heatCols={1:'#e7c08a',2:'#d99458',3:'#bf6438'};
+    const items=order.filter(id=>lv[id]);
+    const dark=pal===this.D, customs=this.state.sigCustom[fid]||[];
+    const parts=[];
+    if(items.length){
+      parts.push(h('div',{key:'zones',style:{display:'flex',flexWrap:'wrap',gap:'7px 14px',justifyContent:'center'}},
+        items.map(id=>{const L=lv[id]; return h('div',{key:id,style:{display:'flex',alignItems:'center',gap:6}},
+          h('span',{key:'d',style:{width:8,height:8,borderRadius:'50%',background:heatCols[L],flex:'none'}}),
+          h('span',{key:'n',style:{font:'500 11.5px Geist,sans-serif',color:pal.textMute}},Z[id]||id)
+        );})
+      ));
+    } else if(!customs.length){
+      parts.push(h('div',{key:'empty',style:{font:'400 13px Geist,sans-serif',color:pal.textMute,fontStyle:'italic'}}, lang==='nl'?'Nog niets aangetikt':'Nothing tapped yet'));
+    }
+    if(customs.length){
+      parts.push(h('div',{key:'sigs',style:{display:'flex',flexWrap:'wrap',gap:6,justifyContent:'center'}},
+        customs.map(c=>this.rmChip(c.id,c.label,pal,dark,()=>this.removeSignal(fid,c.id)))));
+    }
+    parts.push(React.cloneElement(this.inlineAdd({adding:this.state.sigAdding[fid],draft:this.state.sigDraft[fid],placeholder:lang==='nl'?'Ander signaal…':'Other signal…',onDraft:(v)=>this.setSigDraft(fid,v),onAdd:()=>this.addSignal(fid),onOpen:()=>this.setSigAdding(fid,true),onCancel:()=>this.setSigAdding(fid,false),label:lang==='nl'?'Ander signaal':'Other signal',pal:pal,dark:dark,width:120}),{key:'add'}));
+    return h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',width:'100%'}}, parts);
+  }
+  bodyChips(fid,pal){
+    const h=React.createElement, act=this.state.body[fid]||{}, dark=pal===this.D;
+    const regions=this.state.lang==='nl'
+      ? [['head','Hoofd'],['neck','Nek'],['shoulders','Schouders'],['chest','Borst'],['abdomen','Buik'],['back','Rug'],['arms','Armen'],['hands','Handen'],['legs','Benen'],['feet','Voeten']]
+      : [['head','Head'],['neck','Neck'],['shoulders','Shoulders'],['chest','Chest'],['abdomen','Belly'],['back','Back'],['arms','Arms'],['hands','Hands'],['legs','Legs'],['feet','Feet']];
+    return h('div',{style:{display:'flex',flexWrap:'wrap',gap:9}},
+      regions.map(r=>{const on=!!act[r[0]]; return h('div',{key:r[0],onClick:()=>this.toggleZone(fid,r[0]),style:{padding:'10px 16px',borderRadius:999,cursor:'pointer',font:'500 13.5px Geist,sans-serif',transition:'all .15s',background:on?pal.copper:pal.surface,color:on?(dark?'#211b15':'#fff'):pal.textMute,border:'1px solid '+(on?pal.copper:pal.border)}},r[1]);})
+    );
+  }
+
+  arcPath(cx,cy,rIn,rOut,a0,a1){
+    const p=(r,a)=>[cx+r*Math.cos(a), cy+r*Math.sin(a)];
+    const A=p(rOut,a0), B=p(rOut,a1), C=p(rIn,a1), Dd=p(rIn,a0);
+    const large=(a1-a0)>Math.PI?1:0;
+    return 'M'+A[0]+' '+A[1]+' A'+rOut+' '+rOut+' 0 '+large+' 1 '+B[0]+' '+B[1]+' L'+C[0]+' '+C[1]+' A'+rIn+' '+rIn+' 0 '+large+' 0 '+Dd[0]+' '+Dd[1]+' Z';
+  }
+  moodCellColor(r,c){
+    const v=c/9, ar=(9-r)/9;
+    const hue=Math.round(20+v*78), sat=Math.round(20+ar*20), light=Math.round(86-ar*24);
+    return 'hsl('+hue+' '+sat+'% '+light+'%)';
+  }
+  scoreColor(s,pal){ if(s==null) return pal.surface2; return {1:'#c47158',2:'#d6a85c',3:'#8a9a5e'}[s]; }
+
+  wheel(fid,pal,size){
+    const h=React.createElement, lang=this.state.lang, labels=this.props.emotionLabels!==false;
+    const variant=this.WHEELS.find(w=>w.key===((this.state.wheelType||{})[fid]||'act'))||this.WHEELS[0];
+    const customs=this.state.feelCustom[fid]||[];
+    const list=variant.ids.map(id=>Object.assign({id:id},this.EMOTIONS[id]))
+      .concat(customs.map(c=>({id:c.id,nl:c.label,en:c.label,c:pal.copper})));
+    const n=list.length, step=360/n, big=n>8;
+    const padX=labels?(big?104:88):0, padY=labels?22:0;
+    const cx=size/2, cy=size/2, R=size/2-(labels?12:8), rIn=R*0.5;
+    const sel=this.state.sel[fid];
+    const slices=list.map((e,i)=>{
+      const a0=(-90+i*step)*Math.PI/180, a1=(-90+(i+1)*step)*Math.PI/180, mid=(a0+a1)/2;
+      const active=sel===e.id;
+      const kids=[ h('path',{key:'p',d:this.arcPath(cx,cy,rIn,R,a0,a1),fill:e.c,opacity:sel?(active?1:0.34):0.85,stroke:pal.bg,strokeWidth:2}) ];
+      if(labels){
+        const lx=cx+(R+13)*Math.cos(mid), ly=cy+(R+13)*Math.sin(mid);
+        const anchor=Math.abs(Math.cos(mid))<0.22?'middle':(Math.cos(mid)>0?'start':'end');
+        kids.push(h('text',{key:'t',x:lx,y:ly,fill:active?pal.text:pal.textMute,fontSize:big?8.5:11,fontFamily:'Geist,sans-serif',fontWeight:active?700:500,textAnchor:anchor,dominantBaseline:'middle'},e[lang]));
+      }
+      return h('g',{key:e.id,onClick:()=>this.pick(fid,e.id),style:{cursor:'pointer'}},kids);
+    });
+    const se=list.find(e=>e.id===sel)||null;
+    return h('svg',{viewBox:(-padX)+' '+(-padY)+' '+(size+2*padX)+' '+(size+2*padY),width:size+2*padX,height:size+2*padY,style:{display:'block',overflow:'visible'}},
+      slices,
+      h('circle',{cx:cx,cy:cy,r:rIn-4,fill:pal.surface,stroke:pal.borderSoft,strokeWidth:1}),
+      h('text',{x:cx,y:cy-8,textAnchor:'middle',fill:pal.textMute,fontSize:8,letterSpacing:1.3,fontFamily:'Geist,sans-serif'},lang==='nl'?'KERN':'CORE'),
+      h('text',{x:cx,y:cy+13,textAnchor:'middle',fill:se?se.c:pal.text,fontSize:size>240?20:16,fontFamily:'Lora,serif',fontWeight:600},se?se[lang]:'—')
+    );
+  }
+
+  energy(fid,pal){
+    const h=React.createElement, t=this.T[this.state.lang];
+    const vals=this.state.energy[fid]||{};
+    const cont=this.props.energyStyle==='continuous';
+    const lang=this.state.lang, customs=this.state.energyChannels[fid]||[], extra=[pal.violet,'#c98a5a','#7fa6a6'];
+    const chans=[['physical',t.physical,pal.copper,false],['mental',t.mental,pal.sage,false],['emotional',t.emotional,pal.blue,false]]
+      .concat(customs.map((c,i)=>[c.key,c.label,extra[i%extra.length],true]));
+    const addCtrl=h('div',{key:'add',style:{display:'flex',marginTop:2}}, this.inlineAdd({adding:this.state.enrAdding[fid],draft:this.state.enrDraft[fid],placeholder:lang==='nl'?'Eigen kanaal…':'Own channel…',onDraft:(v)=>this.setEnrDraft(fid,v),onAdd:()=>this.addChannel(fid),onOpen:()=>this.setEnrAdding(fid,true),onCancel:()=>this.setEnrAdding(fid,false),label:lang==='nl'?'Kanaal toevoegen':'Add channel',pal:pal,dark:pal===this.D}));
+    return h('div',{style:{display:'flex',flexDirection:'column',gap:13}},
+      chans.map(c=>{
+        const k=c[0], label=c[1], col=c[2], custom=c[3], v=vals[k]||0;
+        let track;
+        if(cont){
+          track=h('div',{onClick:(e)=>{const r=e.currentTarget.getBoundingClientRect();const ratio=(e.clientX-r.left)/r.width;this.setEnergy(fid,k,Math.max(5,Math.min(100,Math.round(ratio*20)*5)));},style:{flex:1,height:12,borderRadius:6,background:pal.surface2,cursor:'pointer',position:'relative',overflow:'hidden'}},
+            h('div',{style:{position:'absolute',left:0,top:0,bottom:0,width:v+'%',background:col,borderRadius:6,transition:'width .15s'}}));
+        } else {
+          const cells=[];
+          for(let i=0;i<20;i++){ const on=(i+1)*5<=v; cells.push(h('div',{key:i,onClick:()=>this.setEnergy(fid,k,(i+1)*5),style:{flex:1,height:10,borderRadius:2.5,cursor:'pointer',background:on?col:pal.surface2,transition:'background .15s'}})); }
+          track=h('div',{style:{display:'flex',gap:2,flex:1}},cells);
+        }
+        return h('div',{key:k,style:{display:'flex',alignItems:'center',gap:12}},
+          h('div',{key:'lbl',style:{width:62,fontSize:11.5,color:pal.textMute,fontFamily:'Geist,sans-serif',fontWeight:500,display:'flex',alignItems:'center',gap:4}},
+            label,
+            custom?h('span',{key:'x',onClick:()=>this.removeChannel(fid,k),style:{cursor:'pointer',color:pal.copper,fontWeight:700,fontSize:13,lineHeight:1}},'\u00d7'):null),
+          track,
+          h('div',{key:'v',style:{width:34,textAlign:'right',fontSize:12,color:pal.text,fontFamily:'Fira Code,monospace'}},v+'%')
+        );
+      }).concat([addCtrl])
+    );
+  }
+
+  mood(fid,pal,cell){
+    const h=React.createElement, m=this.state.mood[fid], rows=[];
+    const labels=(this.state.lang==='nl'?this.moodNL:this.moodEN);
+    const ax=this.state.lang==='nl'
+      ? {y:'Energie',yHi:'hoog',yLo:'laag',x:'Aangenaamheid',xLo:'onaangenaam',xHi:'aangenaam'}
+      : {y:'Energy',yHi:'high',yLo:'low',x:'Pleasantness',xLo:'unpleasant',xHi:'pleasant'};
+    for(let r=0;r<10;r++){ const cs=[];
+      for(let c=0;c<10;c++){ const on=m&&m.r===r&&m.c===c;
+        cs.push(h('div',{key:c,onClick:()=>this.setMood(fid,r,c),title:labels[r][c],style:{flex:1,minWidth:0,height:54,display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'3px 2px',borderRadius:5,cursor:'pointer',background:this.moodCellColor(r,c),color:'rgba(44,32,20,.82)',letterSpacing:'-0.2px',font:(on?'600 ':'500 ')+'9.5px/1.12 Geist,sans-serif',overflow:'hidden',overflowWrap:'break-word',boxShadow:on?('0 0 0 2px '+pal.bg+',0 0 0 4px '+pal.copper):'none',transform:on?'scale(1.1)':'none',transition:'transform .12s',position:'relative',zIndex:on?2:1}},labels[r][c])); }
+      rows.push(h('div',{key:r,style:{display:'flex',gap:4,width:'100%'}},cs));
+    }
+    const grid=h('div',{style:{flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:4}},rows);
+    const eyebrow={fontSize:9,fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:pal.copper,fontFamily:'Geist,sans-serif',whiteSpace:'nowrap'};
+    const tip={fontSize:9,color:pal.textMute,fontFamily:'Geist,sans-serif',fontWeight:500,whiteSpace:'nowrap'};
+    const yCol=h('div',{style:{width:16,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'space-between',paddingBlock:'2px'}},
+      h('span',{key:'h',style:tip},ax.yHi),
+      h('span',{key:'y',style:Object.assign({},eyebrow,{writingMode:'vertical-rl',transform:'rotate(180deg)'})},ax.y),
+      h('span',{key:'l',style:tip},ax.yLo)
+    );
+    return h('div',{style:{display:'flex',flexDirection:'column',gap:8,width:'100%'}},
+      h('div',{key:'g',style:{display:'flex',gap:8,width:'100%'}},yCol,grid),
+      h('div',{key:'x',style:{display:'flex',alignItems:'center',justifyContent:'space-between',paddingLeft:24}},
+        h('span',{key:'lo',style:tip},'\u2190 '+ax.xLo),
+        h('span',{key:'mid',style:eyebrow},ax.x),
+        h('span',{key:'hi',style:tip},ax.xHi+' \u2192')
+      )
+    );
+  }
+  moodLabel(fid){ const m=this.state.mood[fid]; if(!m) return ''; return (this.state.lang==='nl'?this.moodNL:this.moodEN)[m.r][m.c]; }
+
+  body(fid,pal,bh,intensity){
+    const h=React.createElement, ht=bh||300, w=Math.round(ht*120/240), act=this.state.body[fid]||{}, lv=(this.state.bodyLevel||{})[fid]||{};
+    const heatCols={1:'#e7c08a',2:'#d99458',3:'#bf6438'};
+    const z=(id,el,back)=>{ const L=intensity?(lv[id]||0):(act[id]?2:0); const on=!!L; let fill,stroke,op,sw=1.3,dash; if(back){ fill=on?(heatCols[L]||pal.copper):pal.surface2; stroke=on?'#9d5f33':pal.border; op=on?0.4:0.28; sw=1.5; dash='3 2.4'; } else if(intensity){ fill=on?heatCols[L]:pal.surface2; stroke=on?heatCols[L]:pal.border; op=on?0.95:1; } else { fill=on?pal.copper:pal.surface2; stroke=on?pal.copper:pal.border; op=on?0.95:1; } return React.cloneElement(el,{key:id,onClick:()=>intensity?this.cycleZone(fid,id):this.toggleZone(fid,id),style:{cursor:'pointer',transition:'fill .12s,opacity .12s'},fill:fill,stroke:stroke,strokeWidth:sw,strokeDasharray:dash,fillOpacity:op}); };
+    return h('svg',{viewBox:'0 0 120 240',width:w,height:ht,style:{display:'block'}},
+      z('head',h('ellipse',{cx:60,cy:25,rx:15,ry:18})),
+      z('neck',h('rect',{x:55,y:43,width:10,height:8})),
+      z('left-shoulder',h('ellipse',{cx:42,cy:58,rx:8,ry:6})),
+      z('right-shoulder',h('ellipse',{cx:78,cy:58,rx:8,ry:6})),
+      z('chest',h('ellipse',{cx:60,cy:77,rx:18,ry:20})),
+      z('abdomen',h('ellipse',{cx:60,cy:106,rx:16,ry:18})),
+      z('left-upper-arm',h('ellipse',{cx:35,cy:76,rx:6,ry:15})),
+      z('right-upper-arm',h('ellipse',{cx:85,cy:76,rx:6,ry:15})),
+      z('left-elbow',h('circle',{cx:32,cy:93,r:4.5})),
+      z('right-elbow',h('circle',{cx:88,cy:93,r:4.5})),
+      z('left-forearm',h('ellipse',{cx:28,cy:110,rx:5.5,ry:12})),
+      z('right-forearm',h('ellipse',{cx:92,cy:110,rx:5.5,ry:12})),
+      z('left-hand',h('ellipse',{cx:26,cy:126,rx:4.5,ry:6.5})),
+      z('right-hand',h('ellipse',{cx:94,cy:126,rx:4.5,ry:6.5})),
+      z('left-hip',h('ellipse',{cx:53,cy:136,rx:10,ry:11})),
+      z('right-hip',h('ellipse',{cx:67,cy:136,rx:10,ry:11})),
+      z('left-upper-leg',h('ellipse',{cx:50,cy:171,rx:9,ry:27})),
+      z('right-upper-leg',h('ellipse',{cx:70,cy:171,rx:9,ry:27})),
+      z('left-knee',h('circle',{cx:50,cy:198,r:6})),
+      z('right-knee',h('circle',{cx:70,cy:198,r:6})),
+      z('left-lower-leg',h('ellipse',{cx:48,cy:216,rx:6.5,ry:14})),
+      z('right-lower-leg',h('ellipse',{cx:72,cy:216,rx:6.5,ry:14})),
+      z('left-foot',h('ellipse',{cx:46,cy:232,rx:6,ry:7})),
+      z('right-foot',h('ellipse',{cx:74,cy:232,rx:6,ry:7})),
+      z('upper-back',h('rect',{x:55,y:51,width:10,height:36,rx:3}),true),
+      z('lower-back',h('rect',{x:55,y:90,width:10,height:34,rx:3}),true)
+    );
+  }
+
+  heatmap(pal){
+    const h=React.createElement, lang=this.state.lang;
+    const di=lang==='nl'?['M','D','W','D','V','Z','Z']:['M','T','W','T','F','S','S'];
+    const sc=[2,3,3,1,2,3,3];
+    return h('div',{style:{display:'flex',gap:8}},
+      sc.map((s,i)=>h('div',{key:i,style:{display:'flex',flexDirection:'column',alignItems:'center',gap:7,flex:1}},
+        h('div',{style:{width:'100%',aspectRatio:'1',borderRadius:8,background:this.scoreColor(s,pal),boxShadow:i===6?('0 0 0 2px '+pal.bg+',0 0 0 4px '+pal.copper):'none'}}),
+        h('div',{style:{fontSize:11,color:pal.textMute,fontFamily:'Geist,sans-serif'}},di[i])
+      ))
+    );
+  }
+  streak(pal){
+    const h=React.createElement, val=6, max=10, R=32, C=2*Math.PI*R, off=C*(1-val/max);
+    return h('svg',{viewBox:'0 0 84 84',width:78,height:78},
+      h('circle',{cx:42,cy:42,r:R,fill:'none',stroke:pal.surface2,strokeWidth:7}),
+      h('circle',{cx:42,cy:42,r:R,fill:'none',stroke:pal.copper,strokeWidth:7,strokeLinecap:'round',strokeDasharray:C,strokeDashoffset:off,transform:'rotate(-90 42 42)'}),
+      h('text',{x:42,y:40,textAnchor:'middle',fill:pal.text,fontSize:22,fontFamily:'Fira Code,monospace',fontWeight:500},'6'),
+      h('text',{x:42,y:55,textAnchor:'middle',fill:pal.textMute,fontSize:8.5,letterSpacing:1,fontFamily:'Geist,sans-serif'},(this.T[this.state.lang].days||'').toUpperCase())
+    );
+  }
+  cal(pal){
+    const h=React.createElement;
+    const data=[3,2,3,1,2,3,3,2,null,3,1,2,3,3,2,3,1,2,3,null,2,3,3,1,2,3,3,3];
+    return h('div',{style:{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:6}},
+      data.map((s,i)=>h('div',{key:i,style:{aspectRatio:'1',borderRadius:6,background:this.scoreColor(s,pal),opacity:s==null?0.45:1,boxShadow:i===27?('0 0 0 2px '+pal.bg+',0 0 0 3px '+pal.copper):'none'}}))
+    );
+  }
+
+  renderVals(){
+    const lang=this.state.lang, t=this.T[lang], L=this.L, D=this.D;
+    let se=this.EMOTIONS[this.state.sel.a1];
+    if(!se){ const fc=(this.state.feelCustom.a1||[]).find(c=>c.id===this.state.sel.a1); if(fc) se={nl:fc.label,en:fc.label}; }
+    const onStyle={padding:'6px 16px',border:'none',borderRadius:999,background:'#bf7b46',color:'#fff',font:'600 12.5px Geist,sans-serif',cursor:'pointer'};
+    const offStyle={padding:'6px 16px',border:'none',borderRadius:999,background:'transparent',color:'#8c7e6b',font:'500 12.5px Geist,sans-serif',cursor:'pointer'};
+    return {
+      t, lang,
+      toNl:()=>this.setState({lang:'nl'}), toEn:()=>this.setState({lang:'en'}),
+      nlBtn: lang==='nl'?onStyle:offStyle,
+      enBtn: lang==='en'?onStyle:offStyle,
+      w: {
+        a1Core:this.coreBlock('a1',L,270), a1Energy:this.energy('a1',L), a1Mood:this.mood('a1',L,24), a1MoodLabel:this.moodLabel('a1'), a1Body:this.body('a1',L,300,true), a1Readout:this.bodyReadout('a1',L), a1Actions:this.actionsBlock('a1',L,false), a1Note:this.noteBlock('a1',L), a1Thoughts:this.thoughtsBlock('a1',L),
+        a2Core:this.coreBlock('a2',D,270), a2Energy:this.energy('a2',D), a2Mood:this.mood('a2',D,24), a2MoodLabel:this.moodLabel('a2'), a2Body:this.body('a2',D,300,true), a2Readout:this.bodyReadout('a2',D), a2Actions:this.actionsBlock('a2',D,true), a2Note:this.noteBlock('a2',D), a2Thoughts:this.thoughtsBlock('a2',D),
+        c1Heat:this.heatmap(L), c1Streak:this.streak(L), c1Cal:this.cal(L), c1Recent:this.recentList('c1',L,false),
+        c2Heat:this.heatmap(D), c2Streak:this.streak(D), c2Cal:this.cal(D), c2Recent:this.recentList('c2',D,true),
+        a1Date:this.dateControl('a1',L), a2Date:this.dateControl('a2',D),
+        todayName: se?se[lang]:'—'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

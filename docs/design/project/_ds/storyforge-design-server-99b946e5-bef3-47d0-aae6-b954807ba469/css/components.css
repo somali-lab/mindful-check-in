@@ -1,0 +1,13 @@
+/* components.css — aggregates every StoryForge component stylesheet.
+ * Imported by the root styles.css after tokens + base reset. */
+
+@import url('./components/buttons.css');
+@import url('./components/cards.css');
+@import url('./components/inputs.css');
+@import url('./components/badges.css');
+@import url('./components/avatar.css');
+@import url('./components/feedback.css');
+@import url('./components/navigation.css');
+@import url('./components/tabs.css');
+@import url('./components/progress.css');
+@import url('./components/split-view.css');

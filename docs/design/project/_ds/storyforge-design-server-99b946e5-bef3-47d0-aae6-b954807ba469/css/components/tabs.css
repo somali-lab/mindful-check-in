@@ -1,0 +1,40 @@
+/* tabs.css — editorial underline tabs (Forge). Active tab = copper label with a
+ * 2px copper underline; the rest are muted walnut. Used for editor sections and
+ * manuscript-view switches. */
+.sf-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sf-sp-md);
+  border-bottom: 1px solid var(--sf-border-soft, var(--sf-border));
+}
+.sf-tab {
+  position: relative;
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 8px 2px;
+  font-family: var(--sf-font);
+  font-size: var(--sf-text-sm);
+  font-weight: 500;
+  color: var(--sf-text-muted);
+  cursor: pointer;
+  transition: color var(--sf-dur-fast);
+}
+.sf-tab:hover { color: var(--sf-text); }
+.sf-tab--active { color: var(--sf-text); font-weight: 600; }
+.sf-tab--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--sf-accent);
+}
+.sf-tab__count {
+  margin-left: 6px;
+  font-size: 11px;
+  color: var(--sf-text-dim);
+  font-variant-numeric: tabular-nums;
+}

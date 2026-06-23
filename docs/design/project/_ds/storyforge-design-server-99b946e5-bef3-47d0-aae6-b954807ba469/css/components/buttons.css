@@ -1,0 +1,110 @@
+/* components.css — Shared UI components */
+
+/* ── Buttons (Forge) ──
+ * Primary = solid copper. Secondary = ghost on parchment with soft border.
+ * Both use the same 8px radius from the Forge mockup (was 4px). */
+.sf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sf-sp-xs);
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  /* Default to no chrome — variants opt into a fill/border. Without this a bare
+   * <button class="sf-btn"> keeps the browser's grey default background, which
+   * clashes with the warm parchment palette. */
+  background: transparent;
+  color: inherit;
+  font-size: var(--sf-text-sm);
+  font-weight: 500;
+  line-height: 1.1;
+  transition: background var(--sf-dur-fast), border-color var(--sf-dur-fast), color var(--sf-dur-fast);
+}
+
+.sf-btn--primary {
+  background: var(--sf-accent);
+  color: var(--sf-on-accent);
+  border-color: var(--sf-accent);
+}
+.sf-btn--primary:hover {
+  background: var(--sf-accent-dark);
+  border-color: var(--sf-accent-dark);
+}
+
+.sf-btn--secondary {
+  background: transparent;
+  color: var(--sf-text-muted);
+  border-color: var(--sf-border-soft, var(--sf-border));
+}
+.sf-btn--secondary:hover {
+  background: var(--sf-surface-2);
+  color: var(--sf-text);
+  border-color: var(--sf-border);
+}
+
+.sf-btn--danger {
+  background: transparent;
+  color: var(--sf-danger);
+  border-color: rgba(var(--sf-danger-rgb) / 0.4);
+}
+.sf-btn--danger:hover {
+  background: rgba(var(--sf-danger-rgb) / 0.1);
+}
+
+.sf-btn--sm {
+  padding: var(--sf-sp-xs) var(--sf-sp-sm);
+  font-size: var(--sf-text-xs);
+}
+
+.sf-btn--xs {
+  padding: 2px var(--sf-sp-xs);
+  font-size: var(--sf-text-xs);
+}
+
+.sf-btn--icon {
+  padding: var(--sf-sp-xs);
+  aspect-ratio: 1;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--sf-text-muted);
+}
+.sf-btn--icon:hover:not(:disabled) {
+  color: var(--sf-accent);
+}
+
+/* Ghost danger icon button (e.g. the beat remove ×): muted by default, red on
+ * hover. Placed after --icon so its hover colour wins on buttons with both. */
+.sf-btn--danger-ghost {
+  color: var(--sf-text-muted);
+}
+.sf-btn--danger-ghost:hover:not(:disabled) {
+  color: var(--sf-danger);
+}
+
+.sf-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Forge-specific aliases */
+.sf-btn--ghost {
+  background: transparent;
+  color: var(--sf-text-muted);
+  border-color: var(--sf-border-soft, var(--sf-border));
+}
+.sf-btn--ghost:hover {
+  background: var(--sf-surface-2);
+  color: var(--sf-text);
+  border-color: var(--sf-border);
+}
+.sf-btn--solid {
+  background: var(--sf-accent);
+  color: var(--sf-on-accent);
+  border-color: var(--sf-accent);
+}
+.sf-btn--solid:hover {
+  background: var(--sf-accent-dark);
+  border-color: var(--sf-accent-dark);
+}
+

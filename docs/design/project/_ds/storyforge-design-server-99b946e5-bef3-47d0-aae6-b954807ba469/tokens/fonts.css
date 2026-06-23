@@ -1,0 +1,9 @@
+/* fonts.css — StoryForge webfonts.
+ *
+ * The Forge direction pairs Lora (editorial serif, used for every title and
+ * piece of narrative prose) with Geist (the UI/label sans), Inter as a metric
+ * fallback, and Fira Code for monospaced numerals/code. All four ship from
+ * Google Fonts. If you need to self-host, drop the .woff2 files in
+ * assets/fonts/ and replace this @import with local @font-face rules. */
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');

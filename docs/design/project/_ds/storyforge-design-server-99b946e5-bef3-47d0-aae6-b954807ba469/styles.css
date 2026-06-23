@@ -1,0 +1,25 @@
+/* styles.css — StoryForge design-system entry point.
+ *
+ * This is the ONE stylesheet consumers link. It is an @import manifest only:
+ *   1. tokens/   — design tokens (colours, type, spacing, motion) + fonts + themes
+ *   2. css/base  — reset + element defaults
+ *   3. css/components — the .sf-* component classes the React primitives emit
+ *
+ * Dark Forge is the default. For light, set data-theme="light" (or "system")
+ * on <html>. Everything is namespaced sf-* / --sf-*. */
+
+/* ── Fonts ── */
+@import url('./tokens/fonts.css');
+
+/* ── Tokens ── */
+@import url('./tokens/colors.css');
+@import url('./tokens/themes.css');
+@import url('./tokens/typography.css');
+@import url('./tokens/spacing.css');
+@import url('./tokens/motion.css');
+
+/* ── Base reset ── */
+@import url('./css/base.css');
+
+/* ── Components ── */
+@import url('./css/components.css');

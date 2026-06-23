@@ -1,0 +1,15 @@
+/* motion.css — StoryForge motion tokens.
+ *
+ * Motion is restrained: short copper-coloured fades and slides, never bounce.
+ * Three durations cover everything; reduced-motion users get all of it nulled
+ * (see reset.css). Standard easing is the browser default ease; col-resize and
+ * chevron flips use a custom cubic for a touch more snap. */
+
+:root {
+  --sf-dur-fast: 150ms;  /* @kind other */
+  --sf-dur-base: 200ms;  /* @kind other */
+  --sf-dur-slow: 400ms;  /* @kind other */
+
+  --sf-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);  /* @kind other */
+  --sf-ease-snap:     cubic-bezier(0.6, 0, 0.4, 1);  /* @kind other */
+}

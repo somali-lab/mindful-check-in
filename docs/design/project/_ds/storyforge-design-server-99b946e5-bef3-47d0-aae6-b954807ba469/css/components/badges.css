@@ -1,0 +1,46 @@
+/* badges.css — importance badges + status pills (Forge).
+ *
+ * Badges classify entities (main / supporting / minor). They are pill-shaped,
+ * capitalised, 11px, with a tinted fill + matching border. Main = copper
+ * (protagonist accent), supporting = green, minor = neutral walnut. */
+
+.sf-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 9px;
+  border-radius: var(--sf-radius-pill);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  border: 1px solid transparent;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+
+.sf-badge--main {
+  color: var(--sf-text);
+  border-color: var(--sf-accent);
+  background: var(--sf-accent-soft, rgba(var(--sf-accent-rgb) / 0.18));
+  font-weight: 600;
+}
+.sf-badge--supporting {
+  color: var(--sf-success);
+  border-color: rgba(var(--sf-success-rgb) / 0.50);
+  background: rgba(var(--sf-success-rgb) / 0.12);
+}
+.sf-badge--minor {
+  color: var(--sf-text-muted);
+  border-color: var(--sf-border-soft, var(--sf-border));
+  background: var(--sf-chip-bg, var(--sf-surface-2));
+}
+.sf-badge--accent {
+  color: var(--sf-accent);
+  border-color: rgba(var(--sf-accent-rgb) / 0.45);
+  background: rgba(var(--sf-accent-rgb) / 0.12);
+}
+.sf-badge--danger {
+  color: var(--sf-danger);
+  border-color: rgba(var(--sf-danger-rgb) / 0.45);
+  background: rgba(var(--sf-danger-rgb) / 0.12);
+}

@@ -1,0 +1,19 @@
+/* progress.css — thin copper progress meter (Forge). The track is a soft walnut
+ * pill; the fill is copper. A --dim variant uses walnut for secondary metrics. */
+.sf-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--sf-surface-2);
+  overflow: hidden;
+}
+.sf-progress--thin { height: 4px; }
+.sf-progress--thick { height: 8px; }
+.sf-progress__fill {
+  display: block;
+  height: 100%;
+  background: var(--sf-accent);
+  border-radius: 3px;
+  transition: width var(--sf-dur-base) ease;
+}
+.sf-progress__fill--dim { background: var(--sf-text-dim); }
+.sf-progress__fill--success { background: var(--sf-success); }
