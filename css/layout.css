@@ -28,12 +28,26 @@
   overflow-x: hidden;
 }
 
+/* Desktop navigates via the header chips — hide the icon rail there
+   (mobile keeps it as the bottom bar via the max-width query below) */
+@media (min-width: 768px) {
+  .nav-rail {
+    display: none;
+  }
+}
+
 .nav-rail-logo {
-  font-size: 2rem;
   line-height: 1;
   margin-bottom: 24px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
   user-select: none;
+}
+
+.nav-rail-logo svg {
+  display: block;
 }
 
 .nav-rail-main {
@@ -80,54 +94,126 @@
   box-shadow: 0 1px 4px var(--accent-shadow);
 }
 
-/* ── Main Content Area ── */
+/* ── Main Content Area — app shell: fixed header, scrolling body, fixed footer ── */
 .main-content {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
   min-width: 0;
   max-width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Scrollable body — inset a few px from the header/footer divider lines */
+.app-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 8px 0;
 }
 
 /* Custom scrollbar */
-.main-content::-webkit-scrollbar {
+.app-scroll::-webkit-scrollbar {
   width: 6px;
 }
 
-.main-content::-webkit-scrollbar-track {
+.app-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.main-content::-webkit-scrollbar-thumb {
+.app-scroll::-webkit-scrollbar-thumb {
   background: var(--text-faintest);
   border-radius: 999px;
 }
 
-.main-content::-webkit-scrollbar-thumb:hover {
+.app-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--text-faint);
 }
 
-/* ── App Header (sticky inside main) ── */
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 24px;
+/* ── App-shell header & footer (fixed, with divider lines) ── */
+.app-shell-header {
+  flex: none;
   background: var(--bg-body);
-  backdrop-filter: blur(4px);
   border-bottom: 1px solid var(--border-light);
+  z-index: 40;
 }
 
-.app-header h1 {
-  margin: 0;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  white-space: nowrap;
+.app-shell-footer {
+  flex: none;
+  background: var(--bg-body);
+  border-top: 1px solid var(--border-light);
+  z-index: 40;
+  display: none;
+}
+
+/* Footer appears only for screens whose action(s) it hosts */
+body[data-active-route="checkin"] .app-shell-footer,
+body[data-active-route="home"] .app-shell-footer,
+body[data-active-route="overview"] .app-shell-footer,
+body[data-active-route="settings"] .app-shell-footer,
+body[data-active-route="info"] .app-shell-footer {
+  display: block;
+}
+
+/* Show only the button group matching the active screen
+   (more specific than .app-shell-bar's display:flex) */
+.app-shell-footer .app-shell-footer-bar {
+  display: none;
+}
+
+body[data-active-route="checkin"] .app-shell-footer-bar[data-footer="checkin"],
+body[data-active-route="home"] .app-shell-footer-bar[data-footer="home"],
+body[data-active-route="overview"] .app-shell-footer-bar[data-footer="overview"],
+body[data-active-route="settings"] .app-shell-footer-bar[data-footer="settings"],
+body[data-active-route="info"] .app-shell-footer-bar[data-footer="info"] {
+  display: flex;
+}
+
+.app-shell-bar {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* section chips sit between the brand and the right-hand controls */
+.app-shell-header .ci-tabs {
+  flex-wrap: wrap;
+}
+
+.app-shell-header .app-shell-bar {
+  justify-content: space-between;
+}
+
+.app-shell-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* Footer: compact, right-aligned buttons (not full-width) */
+.app-shell-footer .app-shell-bar {
+  justify-content: flex-end;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.app-shell-footer-bar {
+  gap: 10px;
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+.app-shell-footer-bar .ci-save-primary {
+  flex: 0 0 auto;
 }
 
 .app-header-right {
@@ -189,7 +275,7 @@
 .view-content {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 16px 24px 48px;
+  padding: 16px 24px 4px;
 }
 
 /* ── Card ── */
@@ -261,7 +347,7 @@
   background: var(--bg-body);
   border-bottom: 1px solid var(--border-light);
   position: sticky;
-  top: 49px;
+  top: 0;
   z-index: 30;
 }
 
@@ -389,32 +475,46 @@
     height: 44px;
   }
 
+  /* leave room for the fixed bottom nav rail (56px) below the app shell */
   .main-content {
-    padding-bottom: 72px;
+    padding-bottom: 56px;
   }
 
-  .app-header {
+  .app-shell-bar {
     padding: 10px 16px;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
-  .app-header h1 {
-    font-size: 1.15rem;
+  .app-shell-header-right {
+    gap: 8px;
+  }
+
+  /* the bottom nav rail already covers Check-in / Summary on mobile */
+  .app-shell-header .ci-tabs {
+    display: none;
+  }
+
+  /* keep footer buttons compact on mobile too */
+  .app-shell-footer-bar .ci-save-primary,
+  .app-shell-footer-bar .ci-save-secondary {
+    white-space: nowrap;
   }
 
   .view-content {
-    padding: 12px 16px 48px;
+    padding: 12px 16px 4px;
   }
 
   .checkin-toolbar {
     margin: -12px -16px 0;
     padding: 10px 16px;
-    top: 41px;
+    top: 0;
   }
 
   .info-toolbar {
     margin: -12px -16px 0;
     padding: 10px 16px;
-    top: 41px;
+    top: 0;
     flex-wrap: wrap;
   }
 
@@ -461,6 +561,13 @@
   letter-spacing: -0.015em;
   margin: 10px 0 0;
   color: var(--text-strong);
+}
+
+/* Summary header reuses .ci-appbar; align it to the page content (no card) */
+.home-appbar {
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 24px;
 }
 
 /* ── Home Body: stats left + heatmap center + stats right ── */
@@ -604,6 +711,121 @@
 
 .home-heat-today {
   box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* ── Streak ring ── */
+.bento-card--ring {
+  justify-content: space-between;
+}
+
+.home-ring {
+  align-self: center;
+  margin-top: 8px;
+}
+
+.home-ring svg {
+  display: block;
+}
+
+.home-ring-track {
+  stroke: var(--bg-energy-meter);
+}
+
+.home-ring-arc {
+  stroke: var(--accent);
+}
+
+.home-ring-num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  fill: var(--text-strong);
+}
+
+.home-ring-label {
+  fill: var(--text-faint);
+}
+
+/* ── This-week + recent cards spacing ── */
+.home-week-card {
+  margin-bottom: 16px;
+}
+
+.home-week-card .summary-week {
+  margin-top: 10px;
+}
+
+.home-recent-card {
+  margin-bottom: 0;
+}
+
+/* ── Recent check-ins list ── */
+.home-recent {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.recent-item:last-child {
+  border-bottom: none;
+}
+
+.recent-item[data-entry-key] {
+  cursor: pointer;
+}
+
+.recent-item[data-entry-key]:hover .recent-label {
+  color: var(--accent);
+}
+
+.recent-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 4px;
+  flex: 0 0 auto;
+}
+
+.recent-dot.score-high {
+  background: var(--score-high);
+}
+
+.recent-dot.score-mid {
+  background: var(--score-mid);
+}
+
+.recent-dot.score-low {
+  background: var(--score-low);
+}
+
+.recent-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.recent-label {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-strong);
+  transition: color 0.15s;
+}
+
+.recent-date {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  margin-top: 1px;
+}
+
+.home-recent .empty-state {
+  padding: 12px 0;
+  text-align: left;
 }
 
 @media (max-width: 600px) {

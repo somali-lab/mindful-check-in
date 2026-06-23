@@ -7,11 +7,6 @@
   background: var(--bg-surface-alt);
 }
 
-/* contain the check-in like the design's app card */
-#view-checkin .view-content {
-  max-width: 980px;
-}
-
 /* In-card app header */
 .ci-appbar {
   display: flex;
@@ -44,6 +39,31 @@
 .ci-brand-name {
   font: 600 1.05rem var(--font-serif);
   color: var(--text-strong);
+}
+
+/* ── Logo variants — swap the brand mark (header) and About hero mark.
+   "mindful" = the default copper "M"; "wolf"/"logo3" use image assets
+   with light/dark variants. */
+body[data-logo="wolf"] .ci-brand-mark,
+body[data-logo="wolf"] .info-hero-mark {
+  background: center / cover no-repeat url(../assets/logos/wolf-light.png);
+  color: transparent;
+}
+
+html[data-theme="dark"] body[data-logo="wolf"] .ci-brand-mark,
+html[data-theme="dark"] body[data-logo="wolf"] .info-hero-mark {
+  background-image: url(../assets/logos/wolf-dark.png);
+}
+
+body[data-logo="logo3"] .ci-brand-mark,
+body[data-logo="logo3"] .info-hero-mark {
+  background: center / cover no-repeat url(../assets/logos/logo3-light.png);
+  color: transparent;
+}
+
+html[data-theme="dark"] body[data-logo="logo3"] .ci-brand-mark,
+html[data-theme="dark"] body[data-logo="logo3"] .info-hero-mark {
+  background-image: url(../assets/logos/logo3-dark.png);
 }
 
 .ci-appbar-right {
@@ -97,6 +117,35 @@
 /* Card body padding (header & footer stay full-bleed) */
 .ci-body {
   padding: 26px 32px 30px;
+}
+
+/* ── Greeting + thoughts side by side (greeting left, input ≥67% right) ── */
+.ci-intro-row {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.ci-intro-row .ci-greeting {
+  flex: 0 0 30%;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.ci-intro-thoughts {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .ci-intro-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .ci-intro-row .ci-greeting {
+    flex: none;
+  }
 }
 
 /* ── Greeting header ── */
@@ -323,13 +372,12 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 }
 
 .ci-save-primary {
-  flex: 1;
-  padding: 13px 16px;
+  padding: 7px 16px;
   border: none;
-  border-radius: 12px;
+  border-radius: 9px;
   background: var(--accent);
   color: var(--text-on-accent);
-  font: 600 0.9rem var(--font-sans);
+  font: 600 0.82rem var(--font-sans);
   cursor: pointer;
   transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
 }
@@ -341,12 +389,14 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 }
 
 .ci-save-secondary {
-  padding: 13px 22px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
   border: 1px solid var(--border-input);
-  border-radius: 12px;
+  border-radius: 9px;
   background: transparent;
   color: var(--text-muted);
-  font: 500 0.9rem var(--font-sans);
+  font: 500 0.82rem var(--font-sans);
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
 }
@@ -518,7 +568,7 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 /* ── Emotion Wheel ── */
 .emotion-wheel {
   width: 100%;
-  max-width: 340px;
+  max-width: 384px;
   height: auto;
   display: block;
   margin: 0 auto;
@@ -570,7 +620,7 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 /* ══ Donut wheel (Herontwerp) ══ */
 .emotion-wheel {
   overflow: visible;
-  max-width: 348px;
+  max-width: 384px;
 }
 
 /* Donut segments: gap-stroke in the surface colour for the segmented ring look */
@@ -585,14 +635,16 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   stroke-width: 2.5;
 }
 
+/* Selected segment stays fully opaque with the same gap-stroke; the others
+   fade back (matches Herontwerp: active opacity 1, the rest 0.34). */
 #wheel-svg .emotion-segment.is-selected {
-  stroke: var(--segment-selected-stroke);
-  stroke-width: 2;
-  filter: brightness(1.03) drop-shadow(0 1px 4px rgba(191, 123, 70, 0.35));
+  stroke: var(--bg-surface);
+  stroke-width: 2.5;
+  filter: none;
 }
 
 #wheel-svg.has-selection .emotion-segment:not(.is-selected) {
-  opacity: 0.5;
+  opacity: 0.34;
 }
 
 .wheel-ext-label {
@@ -620,6 +672,14 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 .wheel-center-empty {
   fill: var(--text-faint);
   font: 400 12px var(--font-sans);
+}
+
+/* Central disc — lighter surface with a thin ring inside the donut hole */
+.wheel-center-disc {
+  fill: var(--bg-surface);
+  stroke: var(--border-light);
+  stroke-width: 1;
+  pointer-events: none;
 }
 
 /* Wheel-type pills */
@@ -985,19 +1045,26 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   border: 1px solid var(--border-mood-cell);
   border-radius: 10px;
   margin: 0;
-  padding: 6px;
+  padding: 3px 2px;
   font: inherit;
-  font-size: 0.76rem;
-  line-height: 1.1;
+  font-size: 9.5px;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  color: var(--text-on-color);
-  text-shadow: var(--mood-cell-text-shadow);
-  overflow-wrap: anywhere;
+  /* Cells are soft light pastels in both themes → uniform dark text (design) */
+  color: var(--text-on-color-inv);
+  text-shadow: none;
+  overflow: hidden;
+  overflow-wrap: break-word;
   cursor: pointer;
   transition: transform 110ms ease, box-shadow 110ms ease;
 }
 
-/* Light-background cells get dark text, no shadow */
+/* (kept for back-compat; all cells already use dark text) */
 .mood-cell.mood-cell--light {
   color: var(--text-on-color-inv);
   text-shadow: none;
@@ -1011,13 +1078,13 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   outline-offset: 1px;
 }
 
+/* Clean copper halo ring with a thin background gap (matches Herontwerp:
+   box-shadow 0 0 0 2px bg, 0 0 0 4px copper + scale 1.1). */
 .mood-cell.is-selected {
-  outline: 3px solid var(--mood-cell-selected-outline);
-  outline-offset: 2px;
-  box-shadow: inset 0 0 0 3px var(--mood-cell-selected-inset), var(--mood-cell-selected-shadow);
-  transform: scale(1.12);
+  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent);
+  transform: scale(1.1);
   z-index: 2;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .axis-label {

@@ -25,7 +25,11 @@
        NAVIGATION RAIL — icon sidebar (bottom-bar on mobile)
        ════════════════════════════════════════════════════════ -->
   <nav class="nav-rail" role="navigation" aria-label="Main navigation">
-    <div class="nav-rail-logo" aria-hidden="true">🧘</div>
+    <div class="nav-rail-logo" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="26" height="26" fill="currentColor" aria-hidden="true">
+        <path d="M16 23.5c-.3 0-.6-.1-.8-.3l-7-6.8C7 15.2 6.5 14 6.5 12.7c0-2.7 2.1-4.7 4.7-4.7 1.3 0 2.5.5 3.4 1.4l1.4 1.4 1.4-1.4c.9-.9 2.1-1.4 3.4-1.4 2.6 0 4.7 2.1 4.7 4.7 0 1.3-.5 2.5-1.4 3.4l-7.1 6.8c-.3.2-.6.3-1 .3z"/>
+      </svg>
+    </div>
 
     <div class="nav-rail-main">
       <button class="nav-rail-btn is-active" data-route="home" aria-label="Home" title="Home">
@@ -67,63 +71,74 @@
        ════════════════════════════════════════════════════════ -->
   <div class="main-content">
 
-    <!-- App Header -->
-    <header class="app-header">
-      <div class="app-header-left">
-        <h1 data-t="appTitle">Mindful Check-in</h1>
-      </div>
-      <div class="app-header-right">
-        <div class="theme-switch" id="theme-btns" role="group" aria-label="Theme switch">
-          <button type="button" class="theme-button" data-theme-pick="light" aria-label="Light theme" title="Light">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
-              <circle cx="8" cy="8" r="3"/>
-              <line x1="8" y1="1" x2="8" y2="2.5"/>
-              <line x1="8" y1="13.5" x2="8" y2="15"/>
-              <line x1="1" y1="8" x2="2.5" y2="8"/>
-              <line x1="13.5" y1="8" x2="15" y2="8"/>
-              <line x1="3.1" y1="3.1" x2="4.2" y2="4.2"/>
-              <line x1="11.8" y1="11.8" x2="12.9" y2="12.9"/>
-              <line x1="12.9" y1="3.1" x2="11.8" y2="4.2"/>
-              <line x1="4.2" y1="11.8" x2="3.1" y2="12.9"/>
-            </svg>
-          </button>
-          <button type="button" class="theme-button" data-theme-pick="dark" aria-label="Dark theme" title="Dark">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-              <path d="M13.5 10.5A6 6 0 0 1 5.5 2.5a6 6 0 1 0 8 8z"/>
-            </svg>
-          </button>
-          <button type="button" class="theme-button is-selected" data-theme-pick="system" aria-label="System theme" title="System">
-            <svg width="16" height="15" viewBox="0 0 18 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="1" y="1.5" width="16" height="10" rx="1.5"/>
-              <line x1="6" y1="14" x2="12" y2="14"/>
-              <line x1="9" y1="11.5" x2="9" y2="14"/>
-            </svg>
-          </button>
+    <!-- Fixed app-shell header: brand · section chips · weather · theme · language -->
+    <header class="app-shell-header">
+      <div class="app-shell-bar">
+        <div class="ci-brand">
+          <span class="ci-brand-mark" aria-hidden="true">M</span>
+          <span class="ci-brand-name">Mindful</span>
         </div>
-        <div class="language-switch" id="lang-btns" role="group" aria-label="Language switch">
-          <button type="button" class="language-button is-selected" data-lang-pick="en" aria-pressed="true">EN</button>
-          <button type="button" class="language-button" data-lang-pick="nl" aria-pressed="false">NL</button>
+        <nav class="ci-tabs" id="ci-tabs" aria-label="Sections">
+          <button type="button" class="ci-tab" data-route="checkin" data-t="ciTabCheckin">Check-in</button>
+          <button type="button" class="ci-tab" data-route="home" data-t="ciTabSummary">Summary</button>
+          <button type="button" class="ci-tab" data-route="overview" data-t="overviewTitle">Overview</button>
+          <button type="button" class="ci-tab" data-route="settings" data-t="settingsTitle">Settings</button>
+          <button type="button" class="ci-tab" data-route="info" data-t="infoTitle">About</button>
+        </nav>
+        <div class="app-shell-header-right">
+          <div class="ci-weather-pill" data-component="weather" id="weather-slot" title="">
+            <span data-t="weatherLoading">Loading weather…</span>
+          </div>
+          <div class="theme-switch" id="theme-btns" role="group" aria-label="Theme switch">
+            <button type="button" class="theme-button" data-theme-pick="light" aria-label="Light theme" title="Light">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+                <circle cx="8" cy="8" r="3"/>
+                <line x1="8" y1="1" x2="8" y2="2.5"/>
+                <line x1="8" y1="13.5" x2="8" y2="15"/>
+                <line x1="1" y1="8" x2="2.5" y2="8"/>
+                <line x1="13.5" y1="8" x2="15" y2="8"/>
+                <line x1="3.1" y1="3.1" x2="4.2" y2="4.2"/>
+                <line x1="11.8" y1="11.8" x2="12.9" y2="12.9"/>
+                <line x1="12.9" y1="3.1" x2="11.8" y2="4.2"/>
+                <line x1="4.2" y1="11.8" x2="3.1" y2="12.9"/>
+              </svg>
+            </button>
+            <button type="button" class="theme-button" data-theme-pick="dark" aria-label="Dark theme" title="Dark">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <path d="M13.5 10.5A6 6 0 0 1 5.5 2.5a6 6 0 1 0 8 8z"/>
+              </svg>
+            </button>
+            <button type="button" class="theme-button is-selected" data-theme-pick="system" aria-label="System theme" title="System">
+              <svg width="16" height="15" viewBox="0 0 18 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="1" y="1.5" width="16" height="10" rx="1.5"/>
+                <line x1="6" y1="14" x2="12" y2="14"/>
+                <line x1="9" y1="11.5" x2="9" y2="14"/>
+              </svg>
+            </button>
+          </div>
+          <div class="language-switch" id="lang-btns" role="group" aria-label="Language switch">
+            <button type="button" class="language-button is-selected" data-lang-pick="en" aria-pressed="true">EN</button>
+            <button type="button" class="language-button" data-lang-pick="nl" aria-pressed="false">NL</button>
+          </div>
         </div>
       </div>
     </header>
+
+    <!-- Scrollable body — sits a few px in from the header/footer divider lines -->
+    <div class="app-scroll">
 
     <!-- ══════════════════════════════════════════════════════
          HOME / DASHBOARD VIEW
          ══════════════════════════════════════════════════════ -->
     <div class="view is-active" id="view-home">
       <div class="view-content">
-        <div class="home-hero">
-          <p class="home-subtitle" data-t="appTitle">Mindful Check-in</p>
-          <h1 class="home-greeting" data-t="homeGreeting">How are you today?</h1>
-        </div>
 
         <!-- Stats left + Heatmap center + Stats right -->
         <div class="home-body">
           <div class="home-stats home-stats--left">
-            <div class="bento-card">
+            <div class="bento-card bento-card--ring">
               <span class="bento-label" data-t="statStreak">Streak</span>
-              <span class="bento-value" id="home-streak">0</span>
-              <span class="bento-sub" data-t="homeDays">days</span>
+              <div class="home-ring" id="home-streak-ring"></div>
             </div>
             <div class="bento-card">
               <span class="bento-label" data-t="statTotal">Total</span>
@@ -142,6 +157,11 @@
               <span class="bento-sub" id="home-status"></span>
             </div>
             <div class="bento-card">
+              <span class="bento-label" data-t="statEnergyToday">Energy today</span>
+              <span class="bento-value" id="home-energy">&mdash;</span>
+              <span class="bento-sub" data-t="homeEnergySub">average</span>
+            </div>
+            <div class="bento-card">
               <span class="bento-label" data-t="statTopFeeling">Top Feeling</span>
               <span class="bento-mood" id="home-mood">&mdash;</span>
               <span class="bento-sub" data-t="homeLastMood">Last mood</span>
@@ -149,8 +169,17 @@
           </div>
         </div>
 
-        <!-- Start CTA button -->
-        <button type="button" class="home-cta" id="home-btn-checkin" data-t="homeStartCheckin">Start today's check-in</button>
+        <!-- This week -->
+        <div class="bento-card home-week-card">
+          <span class="bento-label" data-t="homeThisWeek">This week</span>
+          <div class="summary-week" id="home-week"></div>
+        </div>
+
+        <!-- Recent check-ins -->
+        <div class="bento-card home-recent-card">
+          <span class="bento-label" data-t="homeRecent">Recent check-ins</span>
+          <div class="home-recent" id="home-recent"></div>
+        </div>
       </div>
     </div>
 
@@ -162,26 +191,10 @@
 
         <section class="card checkin-card">
 
-          <!-- In-card app header: brand · tabs · weather pill -->
-          <div class="ci-appbar">
-            <div class="ci-brand">
-              <span class="ci-brand-mark" aria-hidden="true">M</span>
-              <span class="ci-brand-name">Mindful</span>
-            </div>
-            <div class="ci-appbar-right">
-              <div class="ci-tabs" id="ci-tabs">
-                <button type="button" class="ci-tab is-active" data-route="checkin" data-t="ciTabCheckin">Check-in</button>
-                <button type="button" class="ci-tab" data-route="overview" data-t="ciTabSummary">Summary</button>
-              </div>
-              <div class="ci-weather-pill" data-component="weather" id="weather-slot" title="">
-                <span data-t="weatherLoading">Loading weather…</span>
-              </div>
-            </div>
-          </div>
-
           <div class="ci-body">
 
-          <!-- Editorial greeting header -->
+          <!-- Greeting + date beside the thoughts input -->
+          <div class="ci-intro-row">
           <header class="ci-greeting">
             <h2 class="ci-hello" id="ci-greeting">Good morning</h2>
             <div class="ci-subline">
@@ -196,11 +209,12 @@
             </div>
           </header>
 
-          <!-- Thoughts -->
-          <div class="ci-section" data-component="thoughts">
+          <!-- Thoughts (right, ≥67% width) -->
+          <div class="ci-section ci-intro-thoughts" data-component="thoughts">
             <label class="ci-eyebrow" for="fld-thoughts" data-t="labelThoughts">Thoughts</label>
             <textarea id="fld-thoughts" class="ci-prose" rows="3" data-t-placeholder="placeholderThoughts" placeholder="What's on your mind?"></textarea>
           </div>
+          </div><!-- /ci-intro-row -->
 
           <!-- Core feeling + Body signals (two columns, editorial divider) -->
           <div class="ci-core-row">
@@ -308,26 +322,20 @@
             <div class="selection-display is-empty" id="mood-display" data-t="moodNone">No mood selected</div>
           </div>
 
-          <!-- Actions + Note -->
-          <div class="ci-section two-column-fields">
-            <div data-component="actions">
-              <label class="ci-eyebrow" for="fld-action" data-t="labelActions">Actions</label>
-              <textarea id="fld-action" rows="3" data-t-placeholder="placeholderActions" placeholder="What did you do or plan to do?"></textarea>
-              <div class="quick-actions-chips" id="ci-chips"></div>
-            </div>
-            <div data-component="note">
-              <label class="ci-eyebrow" for="fld-note" data-t="labelNote">Note</label>
-              <textarea id="fld-note" class="ci-prose" rows="3" data-t-placeholder="placeholderNote" placeholder="Anything else…"></textarea>
-            </div>
+          <!-- Actions -->
+          <div class="ci-section" data-component="actions">
+            <label class="ci-eyebrow" for="fld-action" data-t="labelActions">Actions</label>
+            <textarea id="fld-action" rows="3" data-t-placeholder="placeholderActions" placeholder="What did you do or plan to do?"></textarea>
+            <div class="quick-actions-chips" id="ci-chips"></div>
+          </div>
+
+          <!-- Note (below Actions, like the design) -->
+          <div class="ci-section" data-component="note">
+            <label class="ci-eyebrow" for="fld-note" data-t="labelNote">Note</label>
+            <textarea id="fld-note" class="ci-prose" rows="3" data-t-placeholder="placeholderNote" placeholder="Anything else…"></textarea>
           </div>
 
           </div><!-- /ci-body -->
-
-          <!-- Footer save row -->
-          <footer class="ci-footer">
-            <button type="button" class="ci-save-primary" id="ci-btn-save" data-t="btnSave">Save check-in</button>
-            <button type="button" class="ci-save-secondary" id="ci-btn-new" data-t="btnNewCheckin">New check-in</button>
-          </footer>
         </section>
 
         <!-- Summary + History -->
@@ -353,19 +361,7 @@
          ══════════════════════════════════════════════════════ -->
     <div class="view" id="view-overview">
       <div class="view-content">
-        <div class="checkin-toolbar">
-          <div class="checkin-toolbar-left">
-            <h2 id="overview-heading" data-t="overviewTitle" style="margin:0;font-size:1.3rem">Overview</h2>
-          </div>
-          <div class="checkin-save-row">
-            <button type="button" class="save-button save-button--secondary" id="ov-export" data-t="btnExport">Export entries</button>
-            <label class="save-button save-button--secondary" style="cursor:pointer">
-              <span data-t="btnImport">Import entries</span>
-              <input type="file" accept=".json" id="ov-import" class="is-hidden"/>
-            </label>
-          </div>
-        </div>
-        <section class="card" aria-labelledby="overview-heading">
+        <section class="card" data-t-aria="overviewTitle" aria-label="Overview">
 
           <div class="overview-controls">
             <input id="ov-search" type="search" data-t-placeholder="searchPlaceholder" placeholder="Search entries…"/>
@@ -404,23 +400,18 @@
          ══════════════════════════════════════════════════════ -->
     <div class="view" id="view-settings">
       <div class="view-content">
-        <div class="checkin-toolbar">
-          <div class="checkin-toolbar-left">
-            <h2 id="settings-heading" data-t="settingsTitle" style="margin:0;font-size:1.3rem">Settings</h2>
-          </div>
-          <div class="checkin-save-row">
-            <button type="button" class="save-button" id="cfg-btn-save" data-t="settingSave">Save settings</button>
-            <button type="button" class="reset-button" id="cfg-btn-reset" data-t="settingReset">Reset to defaults</button>
-            <button type="button" class="save-button save-button--secondary" id="cfg-btn-export" data-t="settingExport">Export settings</button>
-            <label class="save-button save-button--secondary" style="cursor:pointer">
-              <span data-t="settingImport">Import settings</span>
-              <input type="file" accept=".json" id="cfg-inp-import" class="is-hidden"/>
-            </label>
-          </div>
-        </div>
-        <section class="card" aria-labelledby="settings-heading">
+        <section class="card settings-card" data-t-aria="settingsTitle" aria-label="Settings">
 
-          <div class="section-group">
+          <nav class="settings-nav" aria-label="Settings sections">
+            <button type="button" class="settings-tab is-active" data-settings-tab="general" data-t="settingsTabGeneral">General</button>
+            <button type="button" class="settings-tab" data-settings-tab="components" data-t="settingComponents">Visible components</button>
+            <button type="button" class="settings-tab" data-settings-tab="actions" data-t="quickActionsTitle">Quick actions</button>
+            <button type="button" class="settings-tab" data-settings-tab="reminders" data-t="settingReminderSection">Break reminders</button>
+          </nav>
+
+          <div class="settings-panels">
+
+          <div class="section-group settings-panel is-active" data-settings-panel="general">
             <div class="settings-general-grid">
               <div class="settings-general-item">
                 <label class="field-label" for="cfg-lang" data-t="settingLanguage">Language</label>
@@ -435,6 +426,14 @@
                   <option value="system" data-t="themeSystem">System</option>
                   <option value="light" data-t="themeLight">Light</option>
                   <option value="dark" data-t="themeDark">Dark</option>
+                </select>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-logo" data-t="settingLogo">Logo</label>
+                <select id="cfg-logo" class="wheel-select">
+                  <option value="mindful" data-t="logoMindful">Mindful (M)</option>
+                  <option value="wolf" data-t="logoWolf">Wolf</option>
+                  <option value="logo3" data-t="logoThree">Wolf emblem</option>
                 </select>
               </div>
               <div class="settings-general-item">
@@ -475,8 +474,7 @@
             </div>
           </div>
 
-          <div class="section-group">
-            <h3 class="subheading" data-t="settingComponents">Visible components</h3>
+          <div class="section-group settings-panel" data-settings-panel="components">
             <div class="settings-grid">
               <div class="settings-column">
                 <label class="settings-item"><input type="checkbox" data-comp="weather" checked> <span data-t="compWeather">Weather</span></label>
@@ -498,8 +496,7 @@
             </div>
           </div>
 
-          <div class="section-group">
-            <h3 class="subheading" data-t="quickActionsTitle">Quick actions</h3>
+          <div class="section-group settings-panel" data-settings-panel="actions">
             <div class="quick-actions-editor">
               <div class="quick-actions-input-row">
                 <input type="text" id="qa-input" class="quick-action-input" data-t-placeholder="quickActionsPlaceholder" placeholder="New action…" maxlength="100"/>
@@ -509,8 +506,11 @@
             </div>
           </div>
 
-          <div class="section-group" id="reminder-section">
-            <h3 class="subheading" data-t="settingReminderSection">Break reminders</h3>
+          <div class="section-group settings-panel" id="reminder-section" data-settings-panel="reminders">
+            <div class="settings-note">
+              <span class="settings-note-icon" aria-hidden="true">&#9432;</span>
+              <span data-t="settingReminderServerNote">Break reminders use Web Notifications, which only work when the app runs on a web server. Start it locally with a small server (e.g. “npx serve”) instead of opening the file directly.</span>
+            </div>
             <div class="settings-general-grid">
 
               <div class="settings-general-item">
@@ -562,6 +562,8 @@
 
             </div>
           </div>
+
+          </div><!-- /settings-panels -->
         </section>
       </div>
     </div>
@@ -572,20 +574,33 @@
     <div class="view" id="view-info">
       <div class="view-content">
 
-        <!-- Info Toolbar: buttons + version -->
-        <div class="info-toolbar">
-          <div class="info-toolbar-left">
-            <h2 id="info-heading" data-t="infoTitle">About</h2>
-            <span class="info-version-badge" data-t="version">v1.0.0</span>
-          </div>
-          <div class="info-toolbar-actions">
-            <button type="button" class="save-button save-button--secondary" id="demo-btn-generate" data-t="btnDemo">Generate demo data</button>
-            <button type="button" class="save-button save-button--secondary info-btn-danger" id="demo-btn-clear" data-t="btnClearAll">Clear all data</button>
-          </div>
-        </div>
+        <section class="card settings-card" data-t-aria="infoTitle" aria-label="About">
 
-        <section class="card" aria-labelledby="info-heading">
-          <p class="intro" data-t="infoDesc">A small private web app for a regular check-in with yourself. Runs entirely in your browser — no server, no account, no tracking.</p>
+          <nav class="settings-nav" aria-label="About sections">
+            <button type="button" class="settings-tab is-active" data-settings-tab="about" data-t="infoTabAbout">About</button>
+            <button type="button" class="settings-tab" data-settings-tab="guide" data-t="infoTabGuide">Guide</button>
+            <button type="button" class="settings-tab" data-settings-tab="privacy" data-t="infoTabPrivacy">Privacy</button>
+            <button type="button" class="settings-tab" data-settings-tab="heatmap" data-t="infoTabHeatmap">Heatmap</button>
+          </nav>
+
+          <div class="settings-panels">
+
+          <div class="settings-panel is-active" data-settings-panel="about">
+            <div class="info-hero">
+              <span class="info-hero-mark" aria-hidden="true">M</span>
+              <div class="info-hero-text">
+                <h2 class="info-hero-title" data-t="appTitle">Mindful Check-in</h2>
+                <span class="info-version-badge" data-t="version">v1.0.0</span>
+              </div>
+            </div>
+            <p class="intro" data-t="infoDesc">A small private web app for a regular check-in with yourself. Runs entirely in your browser — no server, no account, no tracking.</p>
+            <a href="https://github.com/somali-lab/mindful-check-in" target="_blank" rel="noopener noreferrer" class="info-source-link">
+              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.63 7.63 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              <span data-t="infoSourceGitHub">View source on GitHub</span>
+            </a>
+          </div>
+
+          <div class="settings-panel" data-settings-panel="guide">
 
           <div class="section-group">
             <h3 class="subheading" data-t="infoQuickGuide">Quick guide</h3>
@@ -623,6 +638,10 @@
             </div>
           </div>
 
+          </div><!-- /panel guide -->
+
+          <div class="settings-panel" data-settings-panel="privacy">
+
           <div class="section-group">
             <h3 class="subheading" data-t="infoPrivacyTitle">Privacy</h3>
             <div class="info-privacy-block">
@@ -649,6 +668,10 @@
               <p data-t="infoStorageBackupDesc">Use Export in the Overview tab to save a JSON backup. Use Import to restore it or move entries to another browser.</p>
             </div>
           </div>
+
+          </div><!-- /panel privacy -->
+
+          <div class="settings-panel" data-settings-panel="heatmap">
 
           <div class="section-group">
             <h3 class="subheading" data-t="infoScoreTitle">How are the heatmap colours calculated?</h3>
@@ -684,14 +707,45 @@
             <p data-t="infoScoreEnergyDesc">Based on the slider value (0–100%) of that energy type. 67–100% = green, 34–66% = orange, 0–33% = red.</p>
           </div>
 
-        </section>
+          </div><!-- /panel heatmap -->
 
-        <a href="https://github.com/somali-lab/mindful-check-in" target="_blank" rel="noopener noreferrer" class="info-source-link">
-          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.63 7.63 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-          <span data-t="infoSourceGitHub">View source on GitHub</span>
-        </a>
+          </div><!-- /settings-panels -->
+        </section>
       </div>
     </div>
+
+    </div><!-- /app-scroll -->
+
+    <!-- Fixed app-shell footer: primary action(s) of the active screen -->
+    <footer class="app-shell-footer">
+      <div class="app-shell-bar app-shell-footer-bar" data-footer="checkin">
+        <button type="button" class="ci-save-secondary" id="ci-btn-new" data-t="btnNewCheckin">New check-in</button>
+        <button type="button" class="ci-save-primary" id="ci-btn-save" data-t="btnSave">Save check-in</button>
+      </div>
+      <div class="app-shell-bar app-shell-footer-bar" data-footer="home">
+        <button type="button" class="ci-save-primary" id="home-btn-checkin" data-t="homeStartCheckin">Start today's check-in</button>
+      </div>
+      <div class="app-shell-bar app-shell-footer-bar" data-footer="overview">
+        <button type="button" class="ci-save-secondary" id="ov-export" data-t="btnExport">Export entries</button>
+        <label class="ci-save-secondary ci-save-file" style="cursor:pointer">
+          <span data-t="btnImport">Import entries</span>
+          <input type="file" accept=".json" id="ov-import" class="is-hidden"/>
+        </label>
+      </div>
+      <div class="app-shell-bar app-shell-footer-bar" data-footer="settings">
+        <button type="button" class="ci-save-secondary" id="cfg-btn-reset" data-t="settingReset">Reset to defaults</button>
+        <button type="button" class="ci-save-secondary" id="cfg-btn-export" data-t="settingExport">Export settings</button>
+        <label class="ci-save-secondary ci-save-file" style="cursor:pointer">
+          <span data-t="settingImport">Import settings</span>
+          <input type="file" accept=".json" id="cfg-inp-import" class="is-hidden"/>
+        </label>
+        <button type="button" class="ci-save-primary" id="cfg-btn-save" data-t="settingSave">Save settings</button>
+      </div>
+      <div class="app-shell-bar app-shell-footer-bar" data-footer="info">
+        <button type="button" class="ci-save-secondary" id="demo-btn-generate" data-t="btnDemo">Generate demo data</button>
+        <button type="button" class="ci-save-secondary info-btn-danger" id="demo-btn-clear" data-t="btnClearAll">Clear all data</button>
+      </div>
+    </footer>
 
   </div><!-- /main-content -->
 </div><!-- /app-layout -->

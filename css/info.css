@@ -1,3 +1,40 @@
+/* ── Info: About hero (brand + version, in-card) ── */
+.info-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.info-hero-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #cf8c54, #9d5f33);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font: 600 24px var(--font-serif);
+  flex: none;
+}
+
+.info-hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.info-hero-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--text-strong);
+}
+
 /* ── Info: Quick Guide ── */
 .info-guide-grid {
   display: grid;

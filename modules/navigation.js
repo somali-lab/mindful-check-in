@@ -39,6 +39,7 @@
     /* c8 ignore stop */
 
     _activeRoute = route;
+    document.body.setAttribute("data-active-route", route);
     MCI.put(MCI.KEYS.activeTab, route);
     MCI.emit("tab:changed", route);
     history.replaceState(null, "", "#" + route);
@@ -168,6 +169,30 @@
   }
 
   /* ════════════════════════════════════════════
+     LOGO
+     ════════════════════════════════════════════ */
+
+  /* Apply the chosen brand logo: a body attribute (CSS swaps the mark) and
+     the matching favicon in the browser tab. */
+  function applyLogo(choice) {
+    choice = choice || "mindful";
+    document.body.setAttribute("data-logo", choice);
+
+    var icons = {
+      mindful: { href: "favicon.svg", type: "image/svg+xml" },
+      wolf: { href: "assets/logos/wolf-light.png", type: "image/png" },
+      logo3: { href: "assets/logos/logo3-light.png", type: "image/png" }
+    };
+    var ic = icons[choice] || icons.mindful;
+    var link = document.querySelector('link[rel="icon"]');
+    /* c8 ignore next */
+    if (link) {
+      link.setAttribute("type", ic.type);
+      link.setAttribute("href", ic.href);
+    }
+  }
+
+  /* ════════════════════════════════════════════
      PUBLIC API
      ════════════════════════════════════════════ */
 
@@ -176,6 +201,8 @@
       initTabs();
       initTheme();
       initLang();
+      /* c8 ignore next -- settings always have a logo default */
+      applyLogo(MCI.loadSettings().logo);
 
       /* sync header buttons when settings change from settings page */
       MCI.on("settings:changed", function (s) {
@@ -183,6 +210,8 @@
         if (s && s.theme && s.theme !== _theme) {
           applyThemeVisual(s.theme);
         }
+        /* c8 ignore next -- logo always present in settings */
+        if (s && s.logo) applyLogo(s.logo);
       });
       MCI.on("language:changed", function (lang) {
         updateLangButtons(lang);
