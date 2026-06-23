@@ -116,7 +116,7 @@ html[data-theme="dark"] body[data-logo="logo3"] .info-hero-mark {
 
 /* Card body padding (header & footer stay full-bleed) */
 .ci-body {
-  padding: 26px 32px 30px;
+  padding: 14px 32px 30px;
 }
 
 /* ── Greeting + thoughts side by side (greeting left, input ≥67% right) ── */
@@ -133,9 +133,16 @@ html[data-theme="dark"] body[data-logo="logo3"] .info-hero-mark {
   margin-bottom: 0;
 }
 
-.ci-intro-thoughts {
+.ci-intro-row .ci-intro-thoughts {
   flex: 1 1 auto;
   min-width: 0;
+  margin-top: 0;
+}
+
+/* greeting already labels this area — drop the eyebrow so the input
+   lines up with "Goedenavond" at the top */
+.ci-intro-thoughts > .ci-eyebrow {
+  display: none;
 }
 
 @media (max-width: 767px) {
