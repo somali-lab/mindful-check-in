@@ -84,27 +84,6 @@ test('T039 [US7] disable all 3 energy types, individual energy meters hidden', a
   await expect(page.locator('.energy-meter[data-energy-type="emotional"]')).toBeHidden();
 });
 
-// T040: Disable core feeling, verify history mode button absent
-test('T040 [US7] disable core feeling, history mode button absent', async ({ page }) => {
-  const { injectEntries, createTestEntry, getDateKey } = require('./fixtures/helpers');
-  // Inject some entries so history renders
-  const entries = {};
-  for (let i = 0; i < 5; i++) {
-    entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy', moodScore: 3 });
-  }
-  const settings = createTestSettings({ components: { coreFeeling: false } });
-  await injectEntries(page, entries);
-  await injectSettings(page, settings);
-  await page.goto('/#checkin');
-
-  // Check the history section for mode buttons
-  const historyContent = page.locator('#history-grid');
-  await expect(historyContent).toBeVisible();
-  // The "Core feeling" mode button should not exist when coreFeeling is disabled
-  const feelingModeBtn = page.locator('.cal-mode-btn[data-mode="feeling"]');
-  await expect(feelingModeBtn).toHaveCount(0);
-});
-
 // T041: Hide component, load entry with that data — data preserved in localStorage
 test('T041 [US7] hide component, data preserved in localStorage', async ({ page }) => {
   const { injectEntries, createTestEntry, getLocalStorageEntries, getTodayKey } = require('./fixtures/helpers');

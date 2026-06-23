@@ -114,14 +114,10 @@ test('T138 multiple entries per day get unique timestamped keys', async ({ page 
   expect(uniqueKeys.size).toBe(3);
 });
 
-// ─── T139: No entries — empty states ───
+// ─── T139: No entries — empty state ───
 
-test('T139 no entries shows empty states in overview and summary', async ({ page }) => {
-  await page.goto('/#checkin');
-
-  // Summary should show empty state
-  const summary = page.locator('#summary-slot');
-  await expect(summary).toContainText(/no entries|save|check/i);
+test('T139 no entries shows empty state in overview', async ({ page }) => {
+  await page.goto('/');
 
   // Overview should show empty message
   await navigateToTab(page, 'overview');

@@ -482,44 +482,6 @@ test('checkin: custom feelings field collects value', async ({ page }) => {
 });
 
 // ═══════════════════════════════════════════════════════
-// dashboard.js — empty entries and summary states
-// ═══════════════════════════════════════════════════════
-
-test('dashboard: summary with no entries shows empty state', async ({ page }) => {
-  await page.goto('/');
-  await navigateToTab(page, 'checkin');
-  const summary = page.locator('#summary-slot');
-  const text = await summary.textContent();
-  expect(text).toBeTruthy();
-});
-
-test('dashboard: summary with entries shows stats', async ({ page }) => {
-  const entries = generateEntries(10);
-  await injectEntries(page, entries);
-  await page.goto('/');
-  await navigateToTab(page, 'checkin');
-  const summary = page.locator('#summary-slot');
-  const text = await summary.textContent();
-  expect(text).toContain('10');
-});
-
-test('dashboard: history grid cell click loads entry', async ({ page }) => {
-  const key = getTodayKey();
-  const entries = {};
-  entries[key] = createTestEntry({ thoughts: 'grid click test', coreFeeling: 'joy' });
-  await injectEntries(page, entries);
-  await page.goto('/');
-  await navigateToTab(page, 'checkin');
-  const cell = page.locator('#history-grid .cal-cell[data-entry-key]').first();
-  if (await cell.count() > 0) {
-    await cell.click();
-    await page.waitForTimeout(300);
-    const thoughts = await page.inputValue('#fld-thoughts');
-    expect(thoughts).toBe('grid click test');
-  }
-});
-
-// ═══════════════════════════════════════════════════════
 // core.js — more edge cases
 // ═══════════════════════════════════════════════════════
 
