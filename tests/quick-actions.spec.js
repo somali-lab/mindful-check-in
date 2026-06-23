@@ -4,6 +4,7 @@ const {
   injectSettings,
   createTestSettings,
   navigateToTab,
+  openSettingsTab,
 } = require('./fixtures/helpers');
 
 // ─── T107: Default quick actions render as chips ───
@@ -30,7 +31,7 @@ test('T108 [US16] click chip appends text to action textarea', async ({ page }) 
 
 test('T109 [US16] type new action in settings and add', async ({ page }) => {
   await page.goto('/');
-  await navigateToTab(page, 'settings');
+  await openSettingsTab(page, 'actions');
 
   await page.locator('#qa-input').fill('Meditate');
   await page.locator('#cfg-btn-add-qa').click();
@@ -43,7 +44,7 @@ test('T109 [US16] type new action in settings and add', async ({ page }) => {
 
 test('T110 [US16] remove quick action from list', async ({ page }) => {
   await page.goto('/');
-  await navigateToTab(page, 'settings');
+  await openSettingsTab(page, 'actions');
 
   // Count items before
   const itemsBefore = await page.locator('#qa-list .quick-action-tag').count();
@@ -61,7 +62,7 @@ test('T110 [US16] remove quick action from list', async ({ page }) => {
 
 test('T111 [US16] save custom actions, verify chips on check-in', async ({ page }) => {
   await page.goto('/');
-  await navigateToTab(page, 'settings');
+  await openSettingsTab(page, 'actions');
 
   // Add a custom action
   await page.locator('#qa-input').fill('Yoga session');

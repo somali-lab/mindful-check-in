@@ -9,6 +9,7 @@ const {
   createTestSettings,
   getLocalStorageEntries,
   navigateToTab,
+  openSettingsTab,
   generateEntries,
   getDateKey,
   getTodayKey,
@@ -488,7 +489,7 @@ test('settings: add quick action via Enter key', async ({ page }) => {
 
 test('settings: component toggle checkboxes have data-comp', async ({ page }) => {
   await page.goto('/');
-  await navigateToTab(page, 'settings');
+  await openSettingsTab(page, 'components');
   // Toggle the thoughts component off (this is more accessible than weather)
   const thoughtsCheck = page.locator('[data-comp="thoughts"]');
   if (await thoughtsCheck.isVisible()) {

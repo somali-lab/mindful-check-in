@@ -220,8 +220,17 @@ const VISIBILITY_PRESETS = {
 // ─── Navigation helpers ───
 
 async function navigateToTab(page, tabName) {
-  await page.locator(`[data-route="${tabName}"]`).click();
+  // Two nav surfaces share data-route (desktop header chips + mobile icon rail);
+  // click whichever is currently visible.
+  await page.locator(`[data-route="${tabName}"]:visible`).first().click();
   await page.locator(`#view-${tabName}`).waitFor({ state: 'visible' });
+}
+
+// Settings has vertical sub-tabs (general / components / actions / reminders).
+async function openSettingsTab(page, key) {
+  await navigateToTab(page, 'settings');
+  await page.locator(`[data-settings-tab="${key}"]`).click();
+  await page.locator(`[data-settings-panel="${key}"]`).waitFor({ state: 'visible' });
 }
 
 // ─── Date helpers ───
@@ -294,6 +303,7 @@ module.exports = {
   createTestSettings,
   VISIBILITY_PRESETS,
   navigateToTab,
+  openSettingsTab,
   getTodayKey,
   getDateKey,
   generateEntries,
