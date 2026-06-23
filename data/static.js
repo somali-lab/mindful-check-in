@@ -145,20 +145,47 @@
     ]
   };
 
-  /* Earthy "Herontwerp" palette — same quadrant semantics (energy × valence),
-     muted Somali tones: clay/amber (high), slate/sage (low), cream centre. */
-  MCI.Data.moodColors = [
-    ["#a3503a","#a3503a","#b35e46","#c47158","#e3c2b0","#efe7d9","#e8d29a","#d6a85c","#cf9a6b","#cf9a6b"],
-    ["#a3503a","#a3503a","#b35e46","#c47158","#e3c2b0","#efe7d9","#e8d29a","#d6a85c","#cf9a6b","#cf9a6b"],
-    ["#b35e46","#b35e46","#b35e46","#c47158","#e3c2b0","#efe7d9","#e8d29a","#d6a85c","#d6a85c","#d6a85c"],
-    ["#c47158","#c47158","#c47158","#c47158","#e3c2b0","#efe7d9","#e8d29a","#e8d29a","#e8d29a","#e8d29a"],
-    ["#e3c2b0","#e3c2b0","#e3c2b0","#e3c2b0","#e3c2b0","#efe7d9","#efe7d9","#efe7d9","#efe7d9","#efe7d9"],
-    ["#d2d6dd","#d2d6dd","#d2d6dd","#d2d6dd","#d2d6dd","#e6e6d6","#e6e6d6","#e6e6d6","#e6e6d6","#e6e6d6"],
-    ["#9aa6bb","#9aa6bb","#9aa6bb","#9aa6bb","#d2d6dd","#e6e6d6","#aebd8f","#aebd8f","#aebd8f","#aebd8f"],
-    ["#7e8da8","#7e8da8","#7e8da8","#9aa6bb","#d2d6dd","#e6e6d6","#aebd8f","#7e8f56","#7e8f56","#7e8f56"],
-    ["#6c7c9a","#6c7c9a","#7e8da8","#9aa6bb","#d2d6dd","#e6e6d6","#aebd8f","#7e8f56","#5f6e38","#5f6e38"],
-    ["#6c7c9a","#6c7c9a","#7e8da8","#9aa6bb","#d2d6dd","#e6e6d6","#aebd8f","#7e8f56","#5f6e38","#5f6e38"]
-  ];
+  /* Earthy "Herontwerp" mood palette — soft HSL gradient (matches the design's
+     moodCellColor): hue warms left → cools right (20 → 98); upper rows are
+     darker and more saturated (high energy), lower rows lighter. Generated as
+     hex so the light/dark text helper (hasLightBackground) can read them. */
+  MCI.Data.moodColors = (function () {
+    function hslToHex(h, s, l) {
+      s /= 100; l /= 100;
+      var c = (1 - Math.abs(2 * l - 1)) * s;
+      var hp = h / 60;
+      var x = c * (1 - Math.abs((hp % 2) - 1));
+      var r = 0, g = 0, b = 0;
+      if (hp < 1) { r = c; g = x; }
+      else if (hp < 2) { r = x; g = c; }
+      else if (hp < 3) { g = c; b = x; }
+      else if (hp < 4) { g = x; b = c; }
+      else if (hp < 5) { r = x; b = c; }
+      else { r = c; b = x; }
+      var m = l - c / 2;
+      function hx(v) {
+        var n = Math.round((v + m) * 255);
+        if (n < 0) n = 0;
+        if (n > 255) n = 255;
+        var str = n.toString(16);
+        return str.length < 2 ? "0" + str : str;
+      }
+      return "#" + hx(r) + hx(g) + hx(b);
+    }
+    var grid = [], row, rr, cc;
+    for (rr = 0; rr < 10; rr++) {
+      row = [];
+      for (cc = 0; cc < 10; cc++) {
+        var v = cc / 9, ar = (9 - rr) / 9;
+        var hue = Math.round(20 + v * 78);
+        var sat = Math.round(20 + ar * 20);
+        var light = Math.round(86 - ar * 24);
+        row.push(hslToHex(hue, sat, light));
+      }
+      grid.push(row);
+    }
+    return grid;
+  })();
 
   // ── WMO Weather Codes ──
   MCI.Data.weatherCodes = {
