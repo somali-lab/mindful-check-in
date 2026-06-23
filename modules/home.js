@@ -84,9 +84,8 @@
       elEnergy.textContent = pct == null ? "—" : pct + "%";
     }
 
-    /* ── this-week heatmap + recent list ── */
+    /* ── this-week heatmap ── */
     renderWeek(entries);
-    renderRecent(entries);
   }
 
   /* Build the circular streak progress ring (SVG markup). */
@@ -143,42 +142,13 @@
     el.innerHTML = html;
   }
 
-  /* Render the recent check-ins list (newest first, up to 5). */
-  function renderRecent(entries) {
-    var el = document.getElementById("home-recent");
-    /* c8 ignore next -- recent element always present */
-    if (!el) return;
-    var keys = Object.keys(entries).sort().reverse();
-    if (!keys.length) {
-      el.innerHTML = '<p class="empty-state">' + MCI.esc(MCI.t("homeNoRecent") || /* c8 ignore next */ "No earlier check-ins yet.") + '</p>';
-      return;
-    }
-    var locale = MCI.lang === "nl" ? "nl-NL" : "en-US";
-    var html = "", max = Math.min(5, keys.length);
-    for (var i = 0; i < max; i++) {
-      var k = keys[i], e = entries[k];
-      var sc = e.moodScore || 2;
-      var scls = sc >= 3 ? "score-high" : sc >= 2 ? "score-mid" : "score-low";
-      var label = e.moodLabel || (e.coreFeeling ? MCI.emotionLabel(e.coreFeeling) : "") || "—";
-      var d = MCI.dateFromKey(k);
-      var ds = d ? d.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" }) : "";
-      html += '<div class="recent-item" data-entry-key="' + MCI.esc(k) + '">'
-        + '<span class="recent-dot ' + scls + '"></span>'
-        + '<div class="recent-main">'
-        + '<div class="recent-label">' + MCI.esc(label) + '</div>'
-        + '<div class="recent-date">' + MCI.esc(ds) + '</div>'
-        + '</div></div>';
-    }
-    el.innerHTML = html;
-  }
 
   MCI.Home = {
     init: function () {
       render();
 
-      /* Click heatmap cell or recent item → load entry in checkin tab */
+      /* Click heatmap cell → load entry in checkin tab */
       MCI.bindEntryClick("home-heatmap");
-      MCI.bindEntryClick("home-recent");
 
       /* CTA button → navigate to checkin */
       var ctaBtn = document.getElementById("home-btn-checkin");
