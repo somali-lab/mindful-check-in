@@ -131,9 +131,8 @@ select {
 /* ── Toast Notifications ── */
 #toast-container {
   position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 16px;
+  left: 16px;
   z-index: 99999;
   display: flex;
   flex-direction: column;
@@ -149,11 +148,11 @@ select {
   font-weight: 500;
   line-height: 1.4;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  transform: translateY(-20px);
+  transform: translateY(20px);
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.3s ease;
   max-width: 400px;
-  text-align: center;
+  text-align: left;
 }
 
 .toast--visible {
@@ -162,7 +161,7 @@ select {
 }
 
 .toast--exit {
-  transform: translateY(-20px);
+  transform: translateY(20px);
   opacity: 0;
 }
 
@@ -180,10 +179,10 @@ select {
 
 @media (max-width: 767px) {
   #toast-container {
-    top: 12px;
+    /* sit above the bottom nav bar (56px) on mobile */
+    bottom: 64px;
     left: 8px;
     right: 8px;
-    transform: none;
   }
   .toast {
     max-width: 100%;
