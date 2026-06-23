@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+body{background:#e7e5df;margin:0;padding:40px;display:flex;flex-wrap:wrap;gap:36px;font-family:sans-serif}
+.cell{display:flex;flex-direction:column;align-items:center;gap:12px}
+.box{width:170px;height:170px;border-radius:24px;background:#f4efe6;border:1px solid #ddd2bf;display:flex;align-items:center;justify-content:center}
+.ingot{width:120px;height:120px;border-radius:28px;background:linear-gradient(135deg,#cf8c54,#9d5f33);display:flex;align-items:center;justify-content:center}
+.lab{font:12px sans-serif;color:#555}
+.small{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#cf8c54,#9d5f33);display:flex;align-items:center;justify-content:center}
+.row{display:flex;gap:10px;align-items:center}
+</style></head><body>
+
+<!-- P: profile head, long pointed muzzle up-right, open mouth, two sharp ears -->
+<div class="cell"><div class="box">
+  <svg width="130" height="130" viewBox="0 0 100 100" fill="#9d5f33">
+    <path d="M86 18
+      L66 30
+      C62 32 60 30 60 27
+      L57 26 L60 9 L50 21
+      L47 22 L46 25 L43 13 L41 29
+      C40 33 36 36 32 39
+      C27 43 24 50 25 57
+      C26 53 29 50 33 49
+      C30 53 30 58 33 62
+      L40 64 L48 64
+      C45 60 45 55 47 52
+      C49 55 50 58 50 62
+      L57 60
+      C61 58 63 53 62 48
+      C61 43 62 38 65 35
+      L60 46
+      L78 27 L80 25
+      C82 24 84 22 86 18 Z"/>
+    <circle cx="58" cy="33" r="2.2" fill="#f4efe6"/>
+  </svg>
+</div><div class="lab">P</div></div>
+
+<!-- Q: cleaner profile, closed muzzle, classic howl -->
+<div class="cell"><div class="box">
+  <svg width="130" height="130" viewBox="0 0 100 100" fill="#9d5f33">
+    <path d="M88 22
+      C82 24 76 27 71 31
+      L70 24 L66 13 L62 26
+      L58 22 L55 12 L53 27
+      C49 30 47 35 47 40
+      C47 44 48 47 50 50
+      C46 52 41 53 36 51
+      C39 55 43 57 48 57
+      L48 64
+      C48 66 50 67 52 66
+      L54 64
+      C54 58 56 53 59 50
+      C62 54 64 58 64 62
+      L72 60
+      C75 59 77 56 77 52
+      C77 47 75 42 72 38
+      C74 36 76 33 78 31
+      C81 28 84 25 88 22 Z"/>
+    <circle cx="64" cy="33" r="2.4" fill="#f4efe6"/>
+  </svg>
+</div><div class="lab">Q</div></div>
+
+<!-- R: P with moon, in ingot white -->
+<div class="cell"><div class="ingot">
+  <svg width="84" height="84" viewBox="0 0 100 100" fill="#fff">
+    <path d="M86 18 L66 30 C62 32 60 30 60 27 L57 26 L60 9 L50 21 L47 22 L46 25 L43 13 L41 29 C40 33 36 36 32 39 C27 43 24 50 25 57 C26 53 29 50 33 49 C30 53 30 58 33 62 L40 64 L48 64 C45 60 45 55 47 52 C49 55 50 58 50 62 L57 60 C61 58 63 53 62 48 C61 43 62 38 65 35 L60 46 L78 27 L80 25 C82 24 84 22 86 18 Z"/>
+    <circle cx="58" cy="33" r="2.2" fill="#9d5f33"/>
+  </svg>
+</div><div class="lab">P in ingot</div></div>
+
+<!-- S: Q in ingot white -->
+<div class="cell"><div class="ingot">
+  <svg width="84" height="84" viewBox="0 0 100 100" fill="#fff">
+    <path d="M88 22 C82 24 76 27 71 31 L70 24 L66 13 L62 26 L58 22 L55 12 L53 27 C49 30 47 35 47 40 C47 44 48 47 50 50 C46 52 41 53 36 51 C39 55 43 57 48 57 L48 64 C48 66 50 67 52 66 L54 64 C54 58 56 53 59 50 C62 54 64 58 64 62 L72 60 C75 59 77 56 77 52 C77 47 75 42 72 38 C74 36 76 33 78 31 C81 28 84 25 88 22 Z"/>
+    <circle cx="64" cy="33" r="2.4" fill="#9d5f33"/>
+  </svg>
+</div><div class="lab">Q in ingot</div></div>
+
+<div class="cell" style="align-self:flex-start">
+  <div class="row">
+    <div class="small"><svg width="19" height="19" viewBox="0 0 100 100" fill="#fff"><path d="M86 18 L66 30 C62 32 60 30 60 27 L57 26 L60 9 L50 21 L47 22 L46 25 L43 13 L41 29 C40 33 36 36 32 39 C27 43 24 50 25 57 C26 53 29 50 33 49 C30 53 30 58 33 62 L40 64 L48 64 C45 60 45 55 47 52 C49 55 50 58 50 62 L57 60 C61 58 63 53 62 48 C61 43 62 38 65 35 L60 46 L78 27 L80 25 C82 24 84 22 86 18 Z"/></svg></div>
+    <div class="small"><svg width="19" height="19" viewBox="0 0 100 100" fill="#fff"><path d="M88 22 C82 24 76 27 71 31 L70 24 L66 13 L62 26 L58 22 L55 12 L53 27 C49 30 47 35 47 40 C47 44 48 47 50 50 C46 52 41 53 36 51 C39 55 43 57 48 57 L48 64 C48 66 50 67 52 66 L54 64 C54 58 56 53 59 50 C62 54 64 58 64 62 L72 60 C75 59 77 56 77 52 C77 47 75 42 72 38 C74 36 76 33 78 31 C81 28 84 25 88 22 Z"/></svg></div>
+  </div>
+  <div class="lab">P · Q @ 28px</div>
+</div>
+
+</body></html>

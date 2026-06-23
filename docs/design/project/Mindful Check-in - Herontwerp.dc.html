@@ -9,11 +9,14 @@
 <x-dc>
 <helmet>
 <link rel="stylesheet" href="_ds/storyforge-design-server-99b946e5-bef3-47d0-aae6-b954807ba469/tokens/fonts.css">
+<script src="./image-slot.js"></script>
 <style>
   *{box-sizing:border-box}
   body{margin:0}
   .mci-card{background:#fbf8f2;border:1px solid #e9e1d1;border-radius:12px}
   .mci-eyebrow{font:600 11px Geist,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+  image-slot::part(frame){background:transparent}
+  image-slot::part(ring){display:none}
 </style>
 </helmet>
 
@@ -41,7 +44,7 @@
       <div data-screen-label="Atelier licht" style="width:740px;background:#f4efe6;border-radius:16px;box-shadow:0 8px 30px rgba(60,45,30,.1);overflow:hidden">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #e2d8c6">
           <div style="display:flex;align-items:center;gap:11px">
-            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#cf8c54,#9d5f33);display:flex;align-items:center;justify-content:center;color:#fff;font:600 16px Lora,serif">M</div>
+            <image-slot id="mci-wolf-logo" shape="rounded" radius="8" fit="cover" placeholder="Sleep je wolf" src="./assets/wolf-kw-light.png" style="width:37px;height:49px;flex:none"></image-slot>
             <span style="font:600 17px Lora,serif;color:#2c261f">Mindful</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
@@ -128,7 +131,7 @@
       <div data-screen-label="Atelier donker" style="width:740px;background:#211b15;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.28);overflow:hidden">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #352c22">
           <div style="display:flex;align-items:center;gap:11px">
-            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#e0a064,#b06f3a);display:flex;align-items:center;justify-content:center;color:#211b15;font:600 16px Lora,serif">M</div>
+            <image-slot id="mci-wolf-logo" shape="rounded" radius="8" fit="cover" placeholder="Sleep je wolf" src="./assets/wolf-kw-dark.png" style="width:37px;height:49px;flex:none"></image-slot>
             <span style="font:600 17px Lora,serif;color:#ece3d4">Mindful</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
@@ -221,7 +224,7 @@
       <div data-screen-label="Samenvatting licht" style="width:820px;background:#f4efe6;border-radius:16px;box-shadow:0 8px 30px rgba(60,45,30,.1);overflow:hidden">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #e2d8c6">
           <div style="display:flex;align-items:center;gap:11px">
-            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#cf8c54,#9d5f33);display:flex;align-items:center;justify-content:center;color:#fff;font:600 16px Lora,serif">M</div>
+            <image-slot id="mci-wolf-logo" shape="rounded" radius="8" fit="cover" placeholder="Sleep je wolf" src="./assets/wolf-kw-light.png" style="width:37px;height:49px;flex:none"></image-slot>
             <span style="font:600 17px Lora,serif;color:#2c261f">Mindful</span>
           </div>
           <div style="display:flex;gap:4px;background:#ece2d0;border-radius:999px;padding:4px">
@@ -285,7 +288,7 @@
       <div data-screen-label="Samenvatting donker" style="width:820px;background:#211b15;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.28);overflow:hidden">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #352c22">
           <div style="display:flex;align-items:center;gap:11px">
-            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#e0a064,#b06f3a);display:flex;align-items:center;justify-content:center;color:#211b15;font:600 16px Lora,serif">M</div>
+            <image-slot id="mci-wolf-logo" shape="rounded" radius="8" fit="cover" placeholder="Sleep je wolf" src="./assets/wolf-kw-dark.png" style="width:37px;height:49px;flex:none"></image-slot>
             <span style="font:600 17px Lora,serif;color:#ece3d4">Mindful</span>
           </div>
           <div style="display:flex;gap:4px;background:#2b241c;border-radius:999px;padding:4px">
