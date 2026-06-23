@@ -594,7 +594,7 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 /* ── Emotion Wheel ── */
 .emotion-wheel {
   width: 100%;
-  max-width: 384px;
+  max-width: 414px;
   height: auto;
   display: block;
   margin: 0 auto;
@@ -646,7 +646,7 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 /* ══ Donut wheel (Herontwerp) ══ */
 .emotion-wheel {
   overflow: visible;
-  max-width: 384px;
+  max-width: 414px;
 }
 
 /* Donut segments: gap-stroke in the surface colour for the segmented ring look */
@@ -714,7 +714,7 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   flex-wrap: wrap;
   gap: 6px;
   justify-content: center;
-  margin-bottom: 14px;
+  margin-bottom: 6px;
 }
 
 .wheel-pill {
