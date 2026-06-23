@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/summary.css">
   <link rel="stylesheet" href="css/weather.css">
   <link rel="stylesheet" href="css/info.css">
+  <link rel="stylesheet" href="css/section-nav.css">
 </head>
 <body>
 <noscript><p style="padding:2rem;text-align:center" data-t="noscript">JavaScript is required.</p></noscript>
@@ -181,6 +182,18 @@
          CHECK-IN VIEW
          ══════════════════════════════════════════════════════ -->
     <div class="view" id="view-checkin">
+
+      <!-- Section navigator: jump to previous / next section -->
+      <nav class="section-rail is-hidden" id="section-rail" aria-label="Sections" data-t-aria="sectionNavLabel">
+        <button type="button" class="section-rail-arrow" data-dir="prev" aria-label="Previous section" data-t-aria="sectionNavPrev">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+        </button>
+        <div class="section-rail-dots" id="section-rail-dots"></div>
+        <button type="button" class="section-rail-arrow" data-dir="next" aria-label="Next section" data-t-aria="sectionNavNext">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </nav>
+
       <div class="view-content">
 
         <section class="card checkin-card">
@@ -772,6 +785,7 @@
 <script src="modules/settings.js"></script>
 <script src="modules/reminder.js"></script>
 <script src="modules/dashboard.js"></script>
+<script src="modules/section-nav.js"></script>
 <script src="modules/demo.js"></script>
 <script src="boot.js"></script>
 </body>
