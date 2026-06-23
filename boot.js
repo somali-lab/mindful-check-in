@@ -15,6 +15,7 @@
     MCI.Overview.init();  /* overview table */
     MCI.Settings.init();  /* settings form */
     MCI.Reminder.init();  /* pauze-herinneringen via Web Notifications */
+    MCI.Dashboard.init(); /* summary + 28-day history */
     MCI.Demo.init();      /* demo data + clear all */
   });
 })();

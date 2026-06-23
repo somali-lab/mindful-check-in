@@ -332,6 +332,21 @@
           </div><!-- /ci-body -->
         </section>
 
+        <!-- Summary + History -->
+        <section class="grid">
+          <article class="card" aria-labelledby="summary-heading">
+            <h2 id="summary-heading" data-t="summaryTitle">Summary</h2>
+            <div id="summary-slot" class="summary-content" aria-live="polite">
+              <p class="empty-state" data-t="summaryEmpty">No entries yet.</p>
+            </div>
+          </article>
+          <article class="card" aria-labelledby="history-heading">
+            <h2 id="history-heading" data-t="historyTitle">28-Day History</h2>
+            <div id="history-modes" class="cal-mode-row"></div>
+            <div id="history-grid" class="cal-grid" aria-live="polite"></div>
+          </article>
+        </section>
+
       </div>
     </div>
 
@@ -756,6 +771,7 @@
 <script src="modules/overview.js"></script>
 <script src="modules/settings.js"></script>
 <script src="modules/reminder.js"></script>
+<script src="modules/dashboard.js"></script>
 <script src="modules/demo.js"></script>
 <script src="boot.js"></script>
 </body>

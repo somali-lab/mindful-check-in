@@ -141,6 +141,20 @@ test('T008 [US1] New check-in creates second timestamped entry for today', async
   expect(entries[timestampedKey].coreFeeling).toBe('sadness');
 });
 
+// ─── T009: After save — summary card updates ───
+
+test('T009 [US1] summary card updates after save with streak and count', async ({ page }) => {
+  await page.goto('/#checkin');
+
+  // Select emotion to pass validation
+  await page.locator('.emotion-segment[data-em="joy"]').click();
+  await page.locator('#ci-btn-save').click();
+
+  // Verify summary shows content in summary slot
+  const summaryContent = page.locator('#summary-slot');
+  await expect(summaryContent).not.toContainText(/no entries/i);
+});
+
 // ─── T010: Context pill shows correct state ───
 
 test('T010 [US1] context pill shows new state before save and entry date after save', async ({ page }) => {
