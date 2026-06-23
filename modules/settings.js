@@ -14,6 +14,7 @@
     setVal("cfg-location", s.weatherLocation || "");
     setVal("cfg-lang", s.defaultLanguage || "en");
     setVal("cfg-theme", s.theme || "system");
+    setVal("cfg-logo", s.logo || "mindful");
     setChecked("cfg-reminder-enabled", s.reminderEnabled === true);
     setVal("cfg-reminder-interval", s.reminderInterval || 120);
     setVal("cfg-reminder-start", s.reminderStartHour !== undefined ? s.reminderStartHour : 8);
@@ -52,6 +53,7 @@
     s.weatherLocation = getVal("cfg-location") || "";
     s.defaultLanguage = getVal("cfg-lang") || "en";
     s.theme = getVal("cfg-theme") || "system";
+    s.logo = getVal("cfg-logo") || "mindful";
     s.reminderEnabled      = getChecked("cfg-reminder-enabled");
     s.reminderInterval     = parseInt(getVal("cfg-reminder-interval"), 10) || 120;
     s.reminderStartHour    = parseInt(getVal("cfg-reminder-start"), 10);
@@ -149,6 +151,28 @@
   MCI.Settings = {
     init: function () {
       loadForm();
+
+      /* vertical section tabs — shared by Settings and About; each .settings-nav
+         toggles only the tabs/panels within its own .settings-card */
+      var navs = document.querySelectorAll(".settings-nav");
+      for (var ni = 0; ni < navs.length; ni++) {
+        navs[ni].addEventListener("click", function (e) {
+          var tab = e.target.closest("[data-settings-tab]");
+          if (!tab) return;
+          var card = tab.closest(".settings-card");
+          /* c8 ignore next */
+          if (!card) return;
+          var key = tab.getAttribute("data-settings-tab");
+          var tabs = card.querySelectorAll(".settings-tab");
+          for (var ti = 0; ti < tabs.length; ti++) {
+            tabs[ti].classList.toggle("is-active", tabs[ti].getAttribute("data-settings-tab") === key);
+          }
+          var panels = card.querySelectorAll(".settings-panel");
+          for (var pi = 0; pi < panels.length; pi++) {
+            panels[pi].classList.toggle("is-active", panels[pi].getAttribute("data-settings-panel") === key);
+          }
+        });
+      }
 
       /* c8 ignore next 2 -- save button always present */
       var saveBtn = document.getElementById("cfg-btn-save");

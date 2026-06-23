@@ -1,3 +1,114 @@
+/* ── Settings: vertical tab layout (left nav + panels) ── */
+.settings-card {
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  overflow: hidden;
+}
+
+.settings-nav {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 12px;
+  border-right: 1px solid var(--border-light);
+  background: var(--bg-surface-alt);
+}
+
+.settings-tab {
+  text-align: left;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-muted);
+  font: 500 0.78rem var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+/* Info note (e.g. reminders need a local server) */
+.settings-note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 11px 14px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border-accent);
+  border-radius: 10px;
+  background: var(--accent-bg);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.settings-note-icon {
+  flex: none;
+  color: var(--accent);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+/* Settings field labels match the check-in labels (.ci-eyebrow) */
+.settings-panels .field-label,
+.settings-panels .subheading {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.settings-tab:hover {
+  background: var(--bg-surface);
+  color: var(--text-body);
+}
+
+.settings-tab.is-active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.settings-panels {
+  flex: 1;
+  min-width: 0;
+  padding: 22px;
+}
+
+.settings-panel {
+  display: none;
+}
+
+.settings-panel.is-active {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .settings-card {
+    flex-direction: column;
+  }
+  .settings-nav {
+    flex: none;
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-light);
+    padding: 10px;
+  }
+  .settings-tab {
+    white-space: nowrap;
+  }
+  .settings-panels {
+    padding: 16px;
+  }
+}
+
 /* ── Settings Grid ── */
 .settings-general-grid {
   display: grid;
