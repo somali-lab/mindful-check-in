@@ -7,7 +7,9 @@
 
   var _svg, _display, _select, _tabs, _picked = "";
 
-  var CENTER = 180, RO = 100, RI = 60, LABEL_R = 118;
+  /* Donut geometry — band ≈ 50% of radius (matches Herontwerp: rIn = R*0.5),
+     larger outer radius so segments read taller/bigger like the design. */
+  var CENTER = 180, RO = 116, RI = 58, LABEL_R = 130;
 
   function polar(cx, cy, r, a) {
     return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
@@ -59,11 +61,6 @@
         tabindex: "0",
         "aria-label": label
       });
-      /* pop selected segment outward slightly */
-      if (isSelected) {
-        var d = polar(0, 0, 6, mid);
-        path.style.transform = "translate(" + d.x.toFixed(2) + "px," + d.y.toFixed(2) + "px)";
-      }
       frag.appendChild(path);
 
       /* external horizontal label */
@@ -80,6 +77,11 @@
       t.textContent = label;
       frag.appendChild(t);
     }
+
+    /* central disc with a subtle ring (matches Herontwerp inner circle) */
+    frag.appendChild(el("circle", {
+      cx: CENTER, cy: CENTER, r: RI - 4, "class": "wheel-center-disc"
+    }));
 
     /* center readout */
     if (_picked) {
