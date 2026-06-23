@@ -42,8 +42,14 @@
 }
 
 .overview-table th {
-  color: var(--text-strong);
   background: var(--bg-surface-alt);
+  /* match the check-in labels (.ci-eyebrow) */
+  font-family: var(--font-sans);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
 .overview-table td {
