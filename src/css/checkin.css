@@ -891,100 +891,6 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   margin-top: 12px;
 }
 
-.energy-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 0 0 auto;
-}
-
-.energy-meter-row {
-  display: flex;
-  gap: 8px;
-  align-items: stretch;
-}
-
-.energy-meter-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.energy-type-label {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text-strong);
-  text-align: center;
-  margin-bottom: 6px;
-  white-space: pre-line;
-}
-
-.energy-meter {
-  position: relative;
-  width: 78px;
-  height: 344px;
-  margin: 4px 0;
-  border: 2px solid var(--text-strong);
-  border-radius: 32px;
-  background: var(--bg-energy-meter);
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.energy-fill {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 0;
-  background-size: 100% 344px;
-  background-position: bottom center;
-  background-repeat: no-repeat;
-  transition: height 160ms ease-out;
-}
-
-[data-energy-type="physical"] .energy-fill { background-image: var(--energy-physical); }
-[data-energy-type="mental"]   .energy-fill { background-image: var(--energy-mental); }
-[data-energy-type="emotional"] .energy-fill { background-image: var(--energy-emotional); }
-
-.energy-scale {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 344px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--text-muted);
-  text-align: right;
-  padding-top: 22px;
-  padding-bottom: 12px;
-}
-
-.energy-scale span {
-  cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: background 120ms ease, color 120ms ease;
-}
-
-.energy-scale span:hover {
-  background: var(--accent);
-  color: var(--text-on-accent);
-}
-
-.energy-note-input {
-  width: 100%;
-  margin-top: 16px;
-  padding: 6px 8px;
-  font: inherit;
-  font-size: 0.82rem;
-  border: 1px solid var(--border-input);
-  border-radius: 8px;
-  background: var(--bg-surface);
-  color: var(--text-body);
-}
-
 #energy-display {
   white-space: nowrap;
   margin-top: 16px;
@@ -993,33 +899,7 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 /* ── Three-column layout adjustments ── */
 .three-column .emotion-wheel { max-width: 100%; }
 
-.three-column .energy-meter {
-  width: 50px;
-  flex: 1;
-  min-height: 160px;
-}
-
-.three-column .energy-scale {
-  flex: 1;
-  min-height: 160px;
-}
-
-.three-column .energy-meter-col,
-.three-column .energy-column {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.three-column .energy-meter-row {
-  height: 100%;
-  flex: 1;
-}
-
-.three-column .energy-note-input { display: none; }
 .three-column .energy-triple { gap: 2px; flex: 1; }
-.three-column .energy-type-label { font-size: 0.75rem; }
 .three-column .body-figure-svg { width: auto; height: 310px; }
 
 .three-column .selection-display {
@@ -1154,10 +1034,6 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   .mood-grid { grid-template-rows: repeat(10, 46px); }
   .mood-grid-wrapper { padding-left: 66px; }
   .axis-label { font-size: 0.64rem; }
-
-  .energy-meter,
-  .energy-scale { height: 260px; }
-  .energy-meter { width: 70px; }
 
   #energy-display {
     white-space: normal;
