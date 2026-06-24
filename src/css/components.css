@@ -292,12 +292,43 @@ select {
   margin-top: 10px;
 }
 
-.quick-action-tag {
+/* ── Pills & tags (shared primitives) ── */
+/* Toggle pill: rounded outline that fills with accent when active. Used by the
+   check-in action chips (.ci-act-pill) and the wheel-type tabs (.wheel-pill). */
+.pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border-input);
+  background: transparent;
+  color: var(--text-muted);
+  font: 500 0.8rem var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.pill.is-active,
+.pill.is-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+.pill:hover:not(.is-active):not(.is-on) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Tag: solid accent chip (optionally with a delete affordance). Used by the
+   custom-feeling chips (.ci-chip) and the quick-actions editor (.quick-action-tag). */
+.tag {
+  display: inline-flex;
+  align-items: center;
   background: var(--accent);
   color: var(--text-on-accent);
+}
+
+.quick-action-tag {
+  gap: 6px;
   padding: 4px 10px;
   border-radius: 16px;
   font-size: 0.82rem;

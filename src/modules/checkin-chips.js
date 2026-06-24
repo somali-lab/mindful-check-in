@@ -55,7 +55,7 @@
     var html = "";
     for (var i = 0; i < all.length; i++) {
       var on = sel.indexOf(all[i]) !== -1;
-      html += '<button type="button" class="ci-act-pill' + (on ? " is-on" : "")
+      html += '<button type="button" class="pill ci-act-pill' + (on ? " is-on" : "")
         + '" data-act="' + MCI.esc(all[i]) + '">' + MCI.esc(all[i]) + '</button>';
     }
     html += '<button type="button" class="ci-act-add" data-add="1">+ '
@@ -90,7 +90,7 @@
     var list = fieldList("fld-custom");
     var html = "";
     for (var i = 0; i < list.length; i++) {
-      html += '<span class="ci-chip" data-feel="' + i + '">' + MCI.esc(list[i])
+      html += '<span class="tag ci-chip" data-feel="' + i + '">' + MCI.esc(list[i])
         + '<button type="button" class="ci-chip-x" data-felrm="' + i + '" aria-label="remove">×</button></span>';
     }
     html += '<button type="button" class="ci-act-add" data-feladd="1">+ '

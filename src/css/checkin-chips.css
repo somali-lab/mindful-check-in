@@ -7,27 +7,10 @@
   margin: 0;
 }
 
+/* extends .pill (components.css) — only the action-pill specifics here */
 .ci-act-pill {
   padding: 7px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border-input);
   background: var(--bg-surface);
-  color: var(--text-muted);
-  font: 500 0.8rem var(--font-sans);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.ci-act-pill.is-on {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--text-on-accent);
-  font-weight: 600;
-}
-
-.ci-act-pill:hover:not(.is-on) {
-  border-color: var(--accent);
-  color: var(--accent);
 }
 
 .ci-act-add {
@@ -68,14 +51,11 @@
   margin-top: 6px;
 }
 
+/* extends .tag (components.css) — pill-shaped feeling chip */
 .ci-chip {
-  display: inline-flex;
-  align-items: center;
   gap: 3px;
   padding: 6px 7px 6px 13px;
   border-radius: 999px;
-  background: var(--accent);
-  color: var(--text-on-accent);
   font: 500 0.78rem var(--font-sans);
 }
 

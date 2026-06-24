@@ -111,27 +111,10 @@
   margin-bottom: 6px;
 }
 
+/* extends .pill (components.css) — only the wheel-tab specifics here */
 .wheel-pill {
   padding: 5px 13px;
-  border-radius: 999px;
-  border: 1px solid var(--border-input);
-  background: transparent;
-  color: var(--text-muted);
   font: 500 11px var(--font-sans);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.wheel-pill.is-active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--text-on-accent);
-  font-weight: 600;
-}
-
-.wheel-pill:hover:not(.is-active) {
-  border-color: var(--accent);
-  color: var(--accent);
 }
 
 .wheel-hint {

@@ -101,7 +101,7 @@
     if (!ct) return;
     var html = "";
     for (var i = 0; i < actions.length; i++) {
-      html += '<span class="quick-action-tag">'
+      html += '<span class="tag quick-action-tag">'
         + MCI.esc(actions[i])
         + '<button type="button" class="qa-del" data-qi="' + i + '">\u2715</button>'
         + '</span>';
