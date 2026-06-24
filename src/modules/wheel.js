@@ -110,7 +110,7 @@
       if (!Data.wheels[key]) continue;
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "pill wheel-pill" + (key === cur ? " is-active" : "");
+      btn.className = "pill pill--sm wheel-pill" + (key === cur ? " is-active" : "");
       btn.setAttribute("data-wheel", key);
       btn.textContent = MCI.t(Data.wheels[key].labelKey) || key;
       _tabs.appendChild(btn);

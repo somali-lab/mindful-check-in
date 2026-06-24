@@ -298,6 +298,7 @@ select {
 .pill {
   display: inline-flex;
   align-items: center;
+  padding: 7px 14px;
   border-radius: 999px;
   border: 1px solid var(--border-input);
   background: transparent;
@@ -305,6 +306,11 @@ select {
   font: 500 0.8rem var(--font-sans);
   cursor: pointer;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+/* compact variant — e.g. the wheel-type tab row */
+.pill--sm {
+  padding: 5px 13px;
+  font-size: 11px;
 }
 .pill.is-active,
 .pill.is-on {

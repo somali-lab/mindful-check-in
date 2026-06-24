@@ -111,11 +111,8 @@
   margin-bottom: 6px;
 }
 
-/* extends .pill (components.css) — only the wheel-tab specifics here */
-.wheel-pill {
-  padding: 5px 13px;
-  font: 500 11px var(--font-sans);
-}
+/* wheel-type tabs render as .pill .pill--sm (size from the base); the
+   .wheel-pill class is kept only as a JS/behaviour hook */
 
 .wheel-hint {
   text-align: center;

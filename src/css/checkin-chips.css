@@ -7,9 +7,8 @@
   margin: 0;
 }
 
-/* extends .pill (components.css) — only the action-pill specifics here */
+/* extends .pill (components.css) — action pills just add a surface fill */
 .ci-act-pill {
-  padding: 7px 14px;
   background: var(--bg-surface);
 }
 
