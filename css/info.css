@@ -7,16 +7,24 @@
 }
 
 .info-hero-mark {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 104px;
+  height: 104px;
+  border-radius: 18px;
   background: linear-gradient(135deg, #cf8c54, #9d5f33);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font: 600 24px var(--font-serif);
+  font: 600 54px var(--font-serif);
   flex: none;
+}
+
+/* image logos (wolf / keep-the-wolves-away) show the full emblem incl. its
+   rim text — use contain so nothing is cropped at this larger size */
+body[data-logo="wolf"] .info-hero-mark,
+body[data-logo="logo3"] .info-hero-mark {
+  background-size: contain;
+  background-color: transparent;
 }
 
 .info-hero-text {
