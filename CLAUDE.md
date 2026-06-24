@@ -51,7 +51,7 @@ Hand-written CSS with custom properties; design tokens (light + dark palettes) l
 
 - Cover both the happy path and the sad path (error/edge conditions), not just the success case.
 - Any check you run by hand while working that isn't already in the suite should be added to it.
-- Tests import `test` from `tests/fixtures/` (use `base.js`, or `coverage.js` when `COVERAGE=1`); the base fixture mocks the Open-Meteo weather/geocoding APIs (no real network). Helpers: `injectEntries`, `injectSettings`, `createTestEntry`.
+- Tests import `test` from `tests/fixtures/base.js`; the base fixture mocks the Open-Meteo weather/geocoding APIs (no real network). Helpers: `injectEntries`, `injectSettings`, `createTestEntry`.
 - Clicking SVG elements (emotion wheel, body figure) in tests requires `dispatchEvent('click')` to bypass overlap.
 
 ## Bugs and scope
