@@ -340,9 +340,10 @@ html[data-theme="dark"] body[data-logo="logo3"] .info-hero-mark {
 }
 
 .nrg-label {
-  flex: 0 0 74px;
+  flex: 0 0 118px;
   font: 500 0.78rem var(--font-sans);
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .nrg-track {
