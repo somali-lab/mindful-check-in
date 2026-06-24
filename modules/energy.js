@@ -36,8 +36,10 @@
       var mt = METERS[m];
       if (settings.components && settings.components[mt.fld] === false) continue;
 
-      /* compact bar uses the short channel name (design: Fysiek/Mentaal/Emotioneel) */
-      var lbl = MCI.t(mt.labelKey) || mt.key;
+      /* compact bar label; the emotional channel honours the configured
+         third-label setting (Emotional / Social / Emotional + Social) */
+      var labelKey = mt.key === "emotional" ? getEmotionalLabel(settings) : mt.labelKey;
+      var lbl = MCI.t(labelKey) || mt.key;
       var val = _values[mt.key];
       var hasVal = typeof val === "number";
       var pct = hasVal ? val : 0;

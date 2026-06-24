@@ -79,8 +79,8 @@ test('T077 [US14] set energy emotional label to Social, verify label updates', a
   await page.locator('#cfg-btn-save').click();
 
   await navigateToTab(page, 'checkin');
-  // v4 renders the label dynamically as .energy-type-label inside the emotional meter column
-  const label = page.locator('.energy-type-label').last();
+  // the emotional meter's bar label honours the third-label setting
+  const label = page.locator('.nrg-row[data-energy-type="emotional"] .nrg-label');
   await expect(label).toContainText(/social/i);
 });
 

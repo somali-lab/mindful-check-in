@@ -631,19 +631,15 @@ test('energy: emotional label "social" maps correctly', async ({ page }) => {
   await injectSettings(page, settings);
   await page.goto('/');
   await navigateToTab(page, 'checkin');
-  // Check the emotional column label
-  const labels = page.locator('.energy-type-label');
-  const count = await labels.count();
-  if (count >= 3) {
-    const lastLabel = await labels.nth(2).textContent();
-    expect(lastLabel).toBeTruthy();
-  }
+  // the emotional bar label reflects the "social" setting
+  const label = page.locator('.nrg-row[data-energy-type="emotional"] .nrg-label');
+  await expect(label).toContainText(/social/i);
 });
 
 test('energy: emotional label "emotionalSocial" as default', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'checkin');
-  const labels = page.locator('.energy-type-label');
+  const labels = page.locator('.nrg-label');
   const count = await labels.count();
   expect(count).toBeGreaterThanOrEqual(3);
 });

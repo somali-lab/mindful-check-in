@@ -552,7 +552,7 @@ test('energy emotional label: "emotional" maps to correct translation key', asyn
   await injectSettings(page, settings);
   await page.goto('/');
   await navigateToTab(page, 'checkin');
-  const label = page.locator('.energy-type-label').last();
+  const label = page.locator('.nrg-row[data-energy-type="emotional"] .nrg-label');
   const text = await label.textContent();
   expect(text).toBeTruthy();
 });
