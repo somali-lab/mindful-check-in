@@ -62,8 +62,9 @@ test('T038 [US7] disable all except thoughts, save without mood requirement', as
   await page.locator('#fld-thoughts').fill('Just thoughts');
   await page.locator('#ci-btn-save').click();
 
-  // App bug: renderHistory crashes when all history modes are disabled,
-  // preventing the success banner. Verify save via localStorage instead.
+  // Even with every history mode disabled, the save must complete and toast.
+  await expect(page.locator('.toast--success')).toBeVisible();
+
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
   const keys = Object.keys(entries).filter(k => k.startsWith(todayKey));
