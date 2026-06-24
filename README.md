@@ -251,88 +251,25 @@ Both are free and require no API key. Disable the weather component in Settings 
 
 ## Testing
 
-The project includes a comprehensive [Playwright](https://playwright.dev/) end-to-end test suite (~380 tests).
-
-### Prerequisites
+[Playwright](https://playwright.dev/) end-to-end suite (desktop Chromium + Pixel-7 mobile), run on every push/PR to `main` by GitHub Actions.
 
 ```bash
 cd tests
-npm install
+npm install                                  # first time only
 npx playwright install chromium
+
+npx playwright test                          # all projects
+npx playwright test --project=chromium       # desktop only
+npx playwright test -g "wheel"               # filter by test name
+npx playwright test --ui                     # interactive UI mode
+npx playwright show-report                   # open the last HTML report
 ```
 
-### Run tests (headless)
+A guided visual walkthrough (headed, ~1.5 min, with a red cursor dot) lives in `tests/demo`:
 
 ```bash
-cd tests
-npx playwright test                            # all projects (desktop + mobile)
-npx playwright test --project=chromium         # desktop only
-npx playwright test --project=mobile-chrome    # mobile only (Pixel 7 emulation)
+cd tests/demo && npx playwright test
 ```
-
-### Run tests (headed — visible browser)
-
-```bash
-cd tests
-npx playwright test --headed --workers=1
-```
-
-Slow down each action by 500 ms for easier observation:
-
-```bash
-cd tests
-SLOW_MO=500 npx playwright test --headed --workers=1        # macOS/Linux
-$env:SLOW_MO=500; npx playwright test --headed --workers=1   # PowerShell
-```
-
-### Run tests (interactive UI mode)
-
-```bash
-cd tests
-npx playwright test --ui
-```
-
-### Run a single test file
-
-```bash
-cd tests
-npx playwright test checkin.spec.js
-```
-
-### Run a specific test by name
-
-```bash
-cd tests
-npx playwright test -g "T005"
-```
-
-### View the HTML test report
-
-```bash
-cd tests
-npx playwright show-report
-```
-
-### Run tests with code coverage
-
-```bash
-cd tests
-$env:COVERAGE=1; npx playwright test     # PowerShell
-COVERAGE=1 npx playwright test           # macOS/Linux
-```
-
-Opens an interactive coverage report at `tests/coverage/report.html` showing per-file line, branch, and function coverage.
-
-### Run interactive visual demo
-
-A guided walkthrough of the entire app that runs in a visible browser at human-readable speed. Covers check-in, emotion wheel, energy meters, mood matrix, overview, settings, demo data, export, dark mode, and more.
-
-```bash
-cd tests/demo
-npx playwright test
-```
-
-The demo runs headed by default (~1.5 minutes) with a visible red cursor dot so you can follow along.
 
 ---
 

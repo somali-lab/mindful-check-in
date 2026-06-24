@@ -1,7 +1,7 @@
 # Mindful Check-in — Improvement Plan
 
 **Created**: 2026-06-24
-**Status**: Workstreams 1–4 complete (2026-06-24). Optional polish only: consolidate the 4 overlapping guidance docs, strip orphaned `Txxx [USyy]` test names, and remove the now-moot `COVERAGE`/`c8 ignore` plumbing.
+**Status**: Complete (2026-06-24) — all four workstreams plus the optional polish: guidance docs consolidated (architecture.md canonical), orphaned `Txxx [USyy]` test names stripped, and the `COVERAGE` / `c8 ignore` plumbing removed.
 **Scope**: Architectural consistency, SOLID/DRY/SoC, test relevance, documentation & agent files.
 
 This plan is the output of a full review of `src/` (~4,575 LoC JS, ~4,058 LoC CSS), the Playwright suite (~6,475 LoC across 30 specs), the docs, and the `.claude` / `.github` config.
@@ -74,10 +74,9 @@ Fixed verified drift across `architecture.md`, `CLAUDE.md`, `README.md`, `.githu
 - Added `reminder.js` / `section-nav.js` to the README module list; qualified the misleading "open directly as a file" claim.
 - `copilot-instructions.md`: replaced stale auto-generated header (fake `backend/frontend` layout, non-existent `npm test`/`npm run lint`), fixed the wrong `normalize` description and the `MCI.Bus.on` typo.
 
-**Remaining doc decisions:**
-- Four overlapping guidance docs (CLAUDE.md, architecture.md, README testing section, copilot-instructions.md). Consider making `architecture.md` canonical, trimming README's 85-line testing section to a pointer, and deciding whether to keep `copilot-instructions.md` (delete if Copilot isn't used).
-- `.vscode/settings.json` points Copilot at `.github/instructions|prompts|agents|skills` and `AGENTS.md` — none exist. Harmless (opt-in), low priority.
-- README "~380 tests" and the "Built with" model names are unverified; update after Workstream 1.
+**Doc consolidation (done):** `docs/architecture.md` is the canonical technical reference; `CLAUDE.md` and `copilot-instructions.md` now point to it instead of duplicating the Core API / event / data-layer / HTML-conventions tables; README's testing section trimmed to a pointer (stale "~380 tests" and `-g "T005"` removed).
+
+**Left as-is (intentional):** `.vscode/settings.json` references `.github/instructions|prompts|agents|skills` / `AGENTS.md` that don't exist — harmless opt-in locations. The README "Built with" model names are the author's own notes.
 
 ---
 
