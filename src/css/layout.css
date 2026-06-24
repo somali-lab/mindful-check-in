@@ -183,7 +183,7 @@ body[data-active-route="info"] .app-shell-footer-bar[data-footer="info"] {
 }
 
 /* section chips sit between the brand and the right-hand controls */
-.app-shell-header .ci-tabs {
+.app-shell-header .nav-tabs {
   flex-wrap: wrap;
 }
 
@@ -201,14 +201,14 @@ body[data-active-route="info"] .app-shell-footer-bar[data-footer="info"] {
 
 
 /* ── App-shell brand mark, logo variants & section tabs (moved from checkin.css) ── */
-.ci-brand {
+.app-brand {
   display: flex;
   align-items: center;
   gap: 11px;
   cursor: pointer;
 }
 
-.ci-brand-mark {
+.app-brand-mark {
   width: 28px;
   height: 28px;
   border-radius: 8px;
@@ -221,7 +221,7 @@ body[data-active-route="info"] .app-shell-footer-bar[data-footer="info"] {
   flex: none;
 }
 
-.ci-brand-name {
+.app-brand-name {
   font: 600 1.05rem var(--font-serif);
   color: var(--text-strong);
 }
@@ -230,25 +230,25 @@ body[data-active-route="info"] .app-shell-footer-bar[data-footer="info"] {
    "mindful" = the default copper "M"; "cat" (Somali) and "wolf" (Keep The
    Wolves Away emblem) use image assets with light/dark variants.
    (The About hero always shows the wolf emblem — see info.css.) */
-body[data-logo="cat"] .ci-brand-mark {
+body[data-logo="cat"] .app-brand-mark {
   background: center / cover no-repeat url(../assets/logos/cat-light.png);
   color: transparent;
 }
 
-html[data-theme="dark"] body[data-logo="cat"] .ci-brand-mark {
+html[data-theme="dark"] body[data-logo="cat"] .app-brand-mark {
   background-image: url(../assets/logos/cat-dark.png);
 }
 
-body[data-logo="wolf"] .ci-brand-mark {
+body[data-logo="wolf"] .app-brand-mark {
   background: center / cover no-repeat url(../assets/logos/wolf-light.png);
   color: transparent;
 }
 
-html[data-theme="dark"] body[data-logo="wolf"] .ci-brand-mark {
+html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   background-image: url(../assets/logos/wolf-dark.png);
 }
 
-.ci-tabs {
+.nav-tabs {
   display: flex;
   gap: 4px;
   background: var(--bg-energy-meter);
@@ -256,7 +256,7 @@ html[data-theme="dark"] body[data-logo="wolf"] .ci-brand-mark {
   padding: 4px;
 }
 
-.ci-tab {
+.nav-tab {
   padding: 6px 14px;
   border: none;
   border-radius: 999px;
@@ -267,7 +267,7 @@ html[data-theme="dark"] body[data-logo="wolf"] .ci-brand-mark {
   transition: background 0.15s, color 0.15s;
 }
 
-.ci-tab.is-active {
+.nav-tab.is-active {
   background: var(--accent);
   color: var(--text-on-accent);
   font-weight: 600;
@@ -468,7 +468,7 @@ html[data-theme="dark"] body[data-logo="wolf"] .ci-brand-mark {
   }
 
   /* the bottom nav rail already covers Check-in / Summary on mobile */
-  .app-shell-header .ci-tabs {
+  .app-shell-header .nav-tabs {
     display: none;
   }
 

@@ -192,7 +192,7 @@
       /* in-card tabs (Check-in / Summary) — present in both the check-in card
          and the summary header; route via Nav and keep all in sync */
       function syncCiTabs(route) {
-        var tabs = document.querySelectorAll(".ci-tab");
+        var tabs = document.querySelectorAll(".nav-tab");
         for (var t = 0; t < tabs.length; t++) {
           tabs[t].classList.toggle("is-active", tabs[t].getAttribute("data-route") === route);
         }
@@ -200,7 +200,7 @@
       var mainEl = document.querySelector(".main-content");
       if (mainEl) {
         mainEl.addEventListener("click", function (e) {
-          var tab = e.target.closest(".ci-tab[data-route]");
+          var tab = e.target.closest(".nav-tab[data-route]");
           if (!tab) return;
           if (MCI.Nav && MCI.Nav.switchTo) MCI.Nav.switchTo(tab.getAttribute("data-route"));
         });

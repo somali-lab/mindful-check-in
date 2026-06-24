@@ -54,7 +54,7 @@
     }
 
     /* clicking the brand (logo + name) goes to the home page */
-    var brand = document.querySelector(".ci-brand");
+    var brand = document.querySelector(".app-brand");
     if (brand) {
       brand.setAttribute("role", "button");
       brand.setAttribute("tabindex", "0");
