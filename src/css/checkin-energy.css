@@ -1,0 +1,85 @@
+/* Mindful Check-in v4 – Check-in: energy meters (split out of checkin.css) */
+/* ── Energy — thin per-5% segmented bars, per-channel colours (exact design) ── */
+#energy-slot.energy-triple {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 13px;
+  margin-top: 8px;
+}
+
+.nrg-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nrg-label {
+  flex: 0 0 118px;
+  font: 500 0.78rem var(--font-sans);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.nrg-track {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.nrg-seg {
+  flex: 1;
+  height: 10px;
+  border-radius: 2.5px;
+  background: var(--bg-energy-meter);
+  transition: background 130ms ease;
+}
+
+/* filled segments take the channel colour (copper / sage / blue) */
+.nrg-row[data-energy-type="physical"]  .nrg-seg.is-on { background: var(--accent); }
+.nrg-row[data-energy-type="mental"]    .nrg-seg.is-on { background: var(--energy-mental); }
+.nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { background: var(--energy-emotional); }
+
+/* affordance: hovering the empty track darkens it slightly */
+.nrg-track:hover .nrg-seg:not(.is-on) {
+  background: var(--border-input);
+}
+
+/* the % is shown inline per bar — hide the verbose text readout (design) */
+#view-checkin #energy-display {
+  display: none;
+}
+
+.nrg-val {
+  flex: 0 0 40px;
+  text-align: right;
+  font: 500 0.82rem var(--font-mono);
+  color: var(--text-body);
+}
+
+.nrg-val.is-empty {
+  color: var(--text-faint);
+}
+
+/* ── Energy Meters ── */
+.energy-triple {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 12px;
+}
+
+#energy-display {
+  white-space: nowrap;
+  margin-top: 16px;
+}
+
+@media (max-width: 620px) {
+  #energy-display {
+    white-space: normal;
+    font-size: 0.82rem;
+    text-align: center;
+    line-height: 1.4;
+  }
+}

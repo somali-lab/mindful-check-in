@@ -1,0 +1,93 @@
+/* Mindful Check-in v4 – Check-in: action pills & custom-feeling tags (split out of checkin.css) */
+/* ── Action pills (toggle + inline add, design style) ── */
+#view-checkin #fld-action { display: none; }
+
+#view-checkin #ci-chips {
+  gap: 8px;
+  margin: 0;
+}
+
+.ci-act-pill {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-input);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font: 500 0.8rem var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.ci-act-pill.is-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+
+.ci-act-pill:hover:not(.is-on) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ci-act-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px dashed var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font: 500 0.8rem var(--font-sans);
+  cursor: pointer;
+}
+
+.ci-act-add--editing {
+  padding: 4px 6px 4px 12px;
+  border-style: solid;
+}
+
+.ci-act-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font: 500 0.8rem var(--font-sans);
+  color: var(--text-body);
+  min-width: 120px;
+}
+
+/* custom-feeling chips (under the wheel, centred like the design) */
+#view-checkin #fld-custom { display: none; }
+
+#ci-feel-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.ci-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 7px 6px 13px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font: 500 0.78rem var(--font-sans);
+}
+
+.ci-chip-x {
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.75;
+  padding: 0 1px;
+}
+
+.ci-chip-x:hover { opacity: 1; }
