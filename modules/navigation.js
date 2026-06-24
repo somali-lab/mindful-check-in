@@ -172,12 +172,11 @@
      LOGO
      ════════════════════════════════════════════ */
 
-  /* Apply the chosen brand logo: a body attribute (CSS swaps the mark) and
-     the matching favicon in the browser tab. */
+  /* Apply the chosen brand logo via a body attribute (CSS swaps the mark). */
   function applyLogo(choice) {
     choice = choice || "mindful";
     document.body.setAttribute("data-logo", choice);
-    /* the favicon always stays the neutral "M" (favicon.svg), regardless
+    /* the favicon always stays the Mindful heart (favicon.svg), regardless
        of the selected in-app logo */
   }
 
