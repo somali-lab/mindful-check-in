@@ -7,17 +7,17 @@ const {
   openSettingsTab,
 } = require('./fixtures/helpers');
 
-// ─── T107: Default quick actions render as chips ───
+// ─── Default quick actions render as chips ───
 
-test('T107 [US16] default quick actions render chips on check-in', async ({ page }) => {
+test('default quick actions render chips on check-in', async ({ page }) => {
   await page.goto('/#checkin');
   const chips = page.locator('#ci-chips .ci-act-pill');
   await expect(chips.first()).toBeVisible();
 });
 
-// ─── T108: Click chip appends to action textarea ───
+// ─── Click chip appends to action textarea ───
 
-test('T108 [US16] click chip appends text to action textarea', async ({ page }) => {
+test('click chip appends text to action textarea', async ({ page }) => {
   await page.goto('/#checkin');
   const firstChip = page.locator('#ci-chips .ci-act-pill').first();
   const chipText = await firstChip.textContent();
@@ -27,9 +27,9 @@ test('T108 [US16] click chip appends text to action textarea', async ({ page }) 
   expect(action).toContain(chipText.trim());
 });
 
-// ─── T109: Add new quick action in settings editor ───
+// ─── Add new quick action in settings editor ───
 
-test('T109 [US16] type new action in settings and add', async ({ page }) => {
+test('type new action in settings and add', async ({ page }) => {
   await page.goto('/');
   await openSettingsTab(page, 'actions');
 
@@ -40,9 +40,9 @@ test('T109 [US16] type new action in settings and add', async ({ page }) => {
   await expect(list).toContainText('Meditate');
 });
 
-// ─── T110: Remove quick action from list ───
+// ─── Remove quick action from list ───
 
-test('T110 [US16] remove quick action from list', async ({ page }) => {
+test('remove quick action from list', async ({ page }) => {
   await page.goto('/');
   await openSettingsTab(page, 'actions');
 
@@ -58,9 +58,9 @@ test('T110 [US16] remove quick action from list', async ({ page }) => {
   }
 });
 
-// ─── T111: Custom actions persist to check-in chips ───
+// ─── Custom actions persist to check-in chips ───
 
-test('T111 [US16] save custom actions, verify chips on check-in', async ({ page }) => {
+test('save custom actions, verify chips on check-in', async ({ page }) => {
   await page.goto('/');
   await openSettingsTab(page, 'actions');
 

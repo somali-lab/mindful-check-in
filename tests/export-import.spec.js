@@ -9,9 +9,9 @@ const {
   getDateKey,
 } = require('./fixtures/helpers');
 
-// ─── T065: Export entries downloads JSON ───
+// ─── Export entries downloads JSON ───
 
-test('T065 [US12] export entries triggers download with correct JSON', async ({ page }) => {
+test('export entries triggers download with correct JSON', async ({ page }) => {
   await injectEntries(page, generateEntries(10));
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -32,9 +32,9 @@ test('T065 [US12] export entries triggers download with correct JSON', async ({ 
   expect(Object.keys(content).length).toBe(10);
 });
 
-// ─── T066: Import valid JSON into empty app ───
+// ─── Import valid JSON into empty app ───
 
-test('T066 [US12] import valid JSON into empty app adds entries', async ({ page }) => {
+test('import valid JSON into empty app adds entries', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'overview');
 
@@ -65,9 +65,9 @@ test('T066 [US12] import valid JSON into empty app adds entries', async ({ page 
   try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
-// ─── T067: Import with overlap — overwrite mode ───
+// ─── Import with overlap — overwrite mode ───
 
-test('T067 [US12] import overlapping entries, overwrite updates them', async ({ page }) => {
+test('import overlapping entries, overwrite updates them', async ({ page }) => {
   const dateKey = getDateKey(0);
   const testId = 'test-overwrite-id';
   const existing = { [dateKey]: createTestEntry({ thoughts: 'Original', id: testId }) };
@@ -95,9 +95,9 @@ test('T067 [US12] import overlapping entries, overwrite updates them', async ({ 
   try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
-// ─── T068: Import with overlap — skip mode ───
+// ─── Import with overlap — skip mode ───
 
-test('T068 [US12] import overlapping entries, skip preserves originals', async ({ page }) => {
+test('import overlapping entries, skip preserves originals', async ({ page }) => {
   const dateKey = getDateKey(0);
   const testId = 'test-skip-id';
   const existing = { [dateKey]: createTestEntry({ thoughts: 'Original', id: testId }) };
@@ -125,9 +125,9 @@ test('T068 [US12] import overlapping entries, skip preserves originals', async (
   try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
-// ─── T069: Import invalid JSON — error ───
+// ─── Import invalid JSON — error ───
 
-test('T069 [US12] import invalid JSON shows error, no data changes', async ({ page }) => {
+test('import invalid JSON shows error, no data changes', async ({ page }) => {
   await injectEntries(page, generateEntries(3));
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -145,9 +145,9 @@ test('T069 [US12] import invalid JSON shows error, no data changes', async ({ pa
   try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
-// ─── T070: Per-row export button ───
+// ─── Per-row export button ───
 
-test('T070 [US12] per-row export button downloads single entry', async ({ page }) => {
+test('per-row export button downloads single entry', async ({ page }) => {
   await injectEntries(page, generateEntries(3));
   await page.goto('/');
   await navigateToTab(page, 'overview');

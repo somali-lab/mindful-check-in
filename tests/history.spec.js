@@ -8,9 +8,9 @@ const {
   getDateKey,
 } = require('./fixtures/helpers');
 
-// ─── T094: 28 entries render colored history grid ───
+// ─── 28 entries render colored history grid ───
 
-test('T094 [US22] 28 days of entries render history calendar grid', async ({ page }) => {
+test('28 days of entries render history calendar grid', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 28; i++) {
     entries[getDateKey(i)] = createTestEntry({
@@ -29,9 +29,9 @@ test('T094 [US22] 28 days of entries render history calendar grid', async ({ pag
   await expect(cells.first()).toBeVisible();
 });
 
-// ─── T095: Core feeling mode — joy entry shows positive color ───
+// ─── Core feeling mode — joy entry shows positive color ───
 
-test('T095 [US22] core feeling mode, joy entry has positive color', async ({ page }) => {
+test('core feeling mode, joy entry has positive color', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 7; i++) {
     entries[getDateKey(i)] = createTestEntry({
@@ -53,9 +53,9 @@ test('T095 [US22] core feeling mode, joy entry has positive color', async ({ pag
   await expect(cellWithEntry).toBeVisible();
 });
 
-// ─── T096: Physical energy mode — colors reflect energy levels ───
+// ─── Physical energy mode — colors reflect energy levels ───
 
-test('T096 [US22] physical energy mode, colors reflect energy levels', async ({ page }) => {
+test('physical energy mode, colors reflect energy levels', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 7; i++) {
     entries[getDateKey(i)] = createTestEntry({
@@ -78,9 +78,9 @@ test('T096 [US22] physical energy mode, colors reflect energy levels', async ({ 
   }
 });
 
-// ─── T097: Click history cell loads entry into form ───
+// ─── Click history cell loads entry into form ───
 
-test('T097 [US22] click history cell with entry loads into form', async ({ page }) => {
+test('click history cell with entry loads into form', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 7; i++) {
     entries[getDateKey(i)] = createTestEntry({
@@ -102,9 +102,9 @@ test('T097 [US22] click history cell with entry loads into form', async ({ page 
   }
 });
 
-// ─── T098: Disable core feeling — mode button absent ───
+// ─── Disable core feeling — mode button absent ───
 
-test('T098 [US22] disable core feeling, Core feeling mode button absent', async ({ page }) => {
+test('disable core feeling, Core feeling mode button absent', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 7; i++) {
     entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy' });

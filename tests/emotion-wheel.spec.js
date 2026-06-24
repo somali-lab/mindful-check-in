@@ -9,9 +9,9 @@ const {
   getTodayKey,
 } = require('./fixtures/helpers');
 
-// ─── T011: ACT wheel — select emotion and verify highlight ───
+// ─── ACT wheel — select emotion and verify highlight ───
 
-test('T011 [US2] ACT wheel — click joy segment highlights and shows display', async ({ page }) => {
+test('ACT wheel — click joy segment highlights and shows display', async ({ page }) => {
   await page.goto('/#checkin');
   await page.locator('.emotion-segment[data-em="joy"]').click();
   await expect(page.locator('.emotion-segment[data-em="joy"]')).toHaveClass(/is-selected/);
@@ -20,9 +20,9 @@ test('T011 [US2] ACT wheel — click joy segment highlights and shows display', 
   await expect(display).toContainText(/joy/i);
 });
 
-// ─── T012: Select emotion then reset clears selection ───
+// ─── Select emotion then reset clears selection ───
 
-test('T012 [US2] reset clears emotion selection and display', async ({ page }) => {
+test('reset clears emotion selection and display', async ({ page }) => {
   await page.goto('/#checkin');
   await page.locator('.emotion-segment[data-em="joy"]').click();
   await expect(page.locator('#wheel-display')).not.toHaveClass(/is-empty/);
@@ -34,9 +34,9 @@ test('T012 [US2] reset clears emotion selection and display', async ({ page }) =
   await expect(selectedSegments).toHaveCount(0);
 });
 
-// ─── T013: Switch wheel types — verify segment count changes ───
+// ─── Switch wheel types — verify segment count changes ───
 
-test('T013 [US2] switch from Ekman (6) to Extended (12) redraws wheel', async ({ page }) => {
+test('switch from Ekman (6) to Extended (12) redraws wheel', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Switch to Ekman via the pill tabs (#sel-wheel is hidden; pills drive the variant)
@@ -56,9 +56,9 @@ test('T013 [US2] switch from Ekman (6) to Extended (12) redraws wheel', async ({
   await expect(selectedSegments).toHaveCount(0);
 });
 
-// ─── T014: Load saved entry with specific wheel type ───
+// ─── Load saved entry with specific wheel type ───
 
-test('T014 [US2] inject entry with plutchik wheel and trust emotion, verify on load', async ({ page }) => {
+test('inject entry with plutchik wheel and trust emotion, verify on load', async ({ page }) => {
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     wheelType: 'plutchik',
@@ -79,7 +79,7 @@ test('T014 [US2] inject entry with plutchik wheel and trust emotion, verify on l
   await expect(page.locator('.emotion-segment[data-em="trust"]')).toHaveClass(/is-selected/);
 });
 
-// ─── T015: Parameterized test for all 5 wheel variants ───
+// ─── Parameterized test for all 5 wheel variants ───
 
 const wheelVariants = [
   { type: 'act', emotions: ['joy', 'serenity', 'love', 'acceptance', 'sadness', 'melancholy', 'anger', 'aggression'], count: 8 },
@@ -90,7 +90,7 @@ const wheelVariants = [
 ];
 
 for (const variant of wheelVariants) {
-  test(`T015 [US2] ${variant.type} wheel — renders ${variant.count} segments and each selects correctly`, async ({ page }) => {
+  test(`${variant.type} wheel — renders ${variant.count} segments and each selects correctly`, async ({ page }) => {
     await page.goto('/#checkin');
     await page.locator(`#wheel-tabs .wheel-pill[data-wheel="${variant.type}"]`).click();
     await expect(page.locator('.emotion-segment')).toHaveCount(variant.count);

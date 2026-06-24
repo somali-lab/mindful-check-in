@@ -7,9 +7,9 @@ const {
   VISIBILITY_PRESETS,
 } = require('./fixtures/helpers');
 
-// ─── T031: Both mood inputs enabled, neither selected — warning ───
+// ─── Both mood inputs enabled, neither selected — warning ───
 
-test('T031 [US6] both feeling and mood matrix enabled, nothing selected, Save shows warning', async ({ page }) => {
+test('both feeling and mood matrix enabled, nothing selected, Save shows warning', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Both coreFeeling and moodMatrix are enabled by default
@@ -26,9 +26,9 @@ test('T031 [US6] both feeling and mood matrix enabled, nothing selected, Save sh
   expect(Object.keys(entries)).toHaveLength(0);
 });
 
-// ─── T032: Only core feeling enabled, select feeling → success ───
+// ─── Only core feeling enabled, select feeling → success ───
 
-test('T032 [US6] only core feeling enabled, select feeling, Save succeeds', async ({ page }) => {
+test('only core feeling enabled, select feeling, Save succeeds', async ({ page }) => {
   const settings = createTestSettings({
     components: { moodMatrix: false, coreFeeling: true },
   });
@@ -43,9 +43,9 @@ test('T032 [US6] only core feeling enabled, select feeling, Save succeeds', asyn
   expect(Object.keys(entries).length).toBeGreaterThanOrEqual(1);
 });
 
-// ─── T033: Only mood matrix enabled, select cell → success ───
+// ─── Only mood matrix enabled, select cell → success ───
 
-test('T033 [US6] only mood matrix enabled, select cell + thoughts, Save succeeds', async ({ page }) => {
+test('only mood matrix enabled, select cell + thoughts, Save succeeds', async ({ page }) => {
   const settings = createTestSettings({
     components: { moodMatrix: true, coreFeeling: false },
   });
@@ -62,9 +62,9 @@ test('T033 [US6] only mood matrix enabled, select cell + thoughts, Save succeeds
   expect(Object.keys(entries).length).toBeGreaterThanOrEqual(1);
 });
 
-// ─── T034: Both mood inputs disabled — Save succeeds without mood ───
+// ─── Both mood inputs disabled — Save succeeds without mood ───
 
-test('T034 [US6] both mood inputs disabled, Save succeeds without mood requirement', async ({ page }) => {
+test('both mood inputs disabled, Save succeeds without mood requirement', async ({ page }) => {
   const settings = createTestSettings({
     components: { moodMatrix: false, coreFeeling: false },
   });
@@ -79,9 +79,9 @@ test('T034 [US6] both mood inputs disabled, Save succeeds without mood requireme
   expect(Object.keys(entries).length).toBeGreaterThanOrEqual(1);
 });
 
-// ─── T035: Core feeling selected + mood matrix NOT selected → success ───
+// ─── Core feeling selected + mood matrix NOT selected → success ───
 
-test('T035 [US6] core feeling selected, mood matrix not selected, Save succeeds', async ({ page }) => {
+test('core feeling selected, mood matrix not selected, Save succeeds', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Both enabled by default — select only core feeling

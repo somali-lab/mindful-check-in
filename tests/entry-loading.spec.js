@@ -9,9 +9,9 @@ const {
   getTodayKey,
 } = require('./fixtures/helpers');
 
-// ─── T099: Click overview row loads entry into form ───
+// ─── Click overview row loads entry into form ───
 
-test('T099 [US27] click overview row loads entry and switches to checkin', async ({ page }) => {
+test('click overview row loads entry and switches to checkin', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 5; i++) {
     entries[getDateKey(i)] = createTestEntry({
@@ -35,9 +35,9 @@ test('T099 [US27] click overview row loads entry and switches to checkin', async
   expect(thoughts).toBeTruthy();
 });
 
-// ─── T100: Context pill shows entry date after loading ───
+// ─── Context pill shows entry date after loading ───
 
-test('T100 [US27] load historical entry, context pill shows date', async ({ page }) => {
+test('load historical entry, context pill shows date', async ({ page }) => {
   const threeDaysAgo = getDateKey(3);
   const entries = {
     [threeDaysAgo]: createTestEntry({
@@ -58,9 +58,9 @@ test('T100 [US27] load historical entry, context pill shows date', async ({ page
   await expect(pill).not.toBeEmpty();
 });
 
-// ─── T101: Load historical entry, save creates new today entry ───
+// ─── Load historical entry, save creates new today entry ───
 
-test('T101 [US27] load historical entry, save updates the same entry', async ({ page }) => {
+test('load historical entry, save updates the same entry', async ({ page }) => {
   const twoDaysAgo = getDateKey(2);
   const entries = {
     [twoDaysAgo]: createTestEntry({
@@ -86,9 +86,9 @@ test('T101 [US27] load historical entry, save updates the same entry', async ({ 
   expect(stored[twoDaysAgo].coreFeeling).toBe('joy');
 });
 
-// ─── T102: Load entry with weather data shows recorded weather ───
+// ─── Load entry with weather data shows recorded weather ───
 
-test('T102 [US27] load entry with weather, shows recorded weather data', async ({ page }) => {
+test('load entry with weather, shows recorded weather data', async ({ page }) => {
   const todayKey = getTodayKey();
   const entries = {
     [todayKey]: createTestEntry({

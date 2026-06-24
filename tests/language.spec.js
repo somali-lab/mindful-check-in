@@ -1,9 +1,9 @@
 // @ts-check
 const { test, expect } = require('./fixtures/base');
 
-// ─── T084: Switch to NL, verify Dutch text ───
+// ─── Switch to NL, verify Dutch text ───
 
-test('T084 [US18] click NL button, verify Dutch text appears', async ({ page }) => {
+test('click NL button, verify Dutch text appears', async ({ page }) => {
   await page.goto('/');
   await page.locator('.language-button[data-lang-pick="nl"]').click();
 
@@ -11,9 +11,9 @@ test('T084 [US18] click NL button, verify Dutch text appears', async ({ page }) 
   await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('Hoe voel je je nu?');
 });
 
-// ─── T085: Switch NL → EN, verify English restores ───
+// ─── Switch NL → EN, verify English restores ───
 
-test('T085 [US18] switch NL then back to EN restores English', async ({ page }) => {
+test('switch NL then back to EN restores English', async ({ page }) => {
   await page.goto('/');
   await page.locator('.language-button[data-lang-pick="nl"]').click();
   await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('Hoe voel je je nu?');
@@ -22,9 +22,9 @@ test('T085 [US18] switch NL then back to EN restores English', async ({ page }) 
   await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('How are you feeling now?');
 });
 
-// ─── T086: NL language persists across reload ───
+// ─── NL language persists across reload ───
 
-test('T086 [US18] NL language persists across reload', async ({ page }) => {
+test('NL language persists across reload', async ({ page }) => {
   await page.goto('/');
   await page.locator('.language-button[data-lang-pick="nl"]').click();
   await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('Hoe voel je je nu?');
@@ -33,9 +33,9 @@ test('T086 [US18] NL language persists across reload', async ({ page }) => {
   await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('Hoe voel je je nu?');
 });
 
-// ─── T087: NL active, mood matrix shows Dutch labels ───
+// ─── NL active, mood matrix shows Dutch labels ───
 
-test('T087 [US18] NL active, mood matrix shows Dutch labels', async ({ page }) => {
+test('NL active, mood matrix shows Dutch labels', async ({ page }) => {
   await page.goto('/#checkin');
   await page.locator('.language-button[data-lang-pick="nl"]').click();
 
@@ -45,9 +45,9 @@ test('T087 [US18] NL active, mood matrix shows Dutch labels', async ({ page }) =
   await expect(firstCell).toContainText('Woedend');
 });
 
-// ─── T088: EN active, body signals show English names ───
+// ─── EN active, body signals show English names ───
 
-test('T088 [US18] EN active, body signals show English part names', async ({ page }) => {
+test('EN active, body signals show English part names', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Click a body part and verify English name

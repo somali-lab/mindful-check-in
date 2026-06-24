@@ -1,34 +1,34 @@
 // @ts-check
 const { test, expect } = require('./fixtures/base');
 
-// ─── T119: Click Overview tab — URL hash #overview ───
+// ─── Click Overview tab — URL hash #overview ───
 
-test('T119 [US23] click Overview tab, URL hash is #overview', async ({ page }) => {
+test('click Overview tab, URL hash is #overview', async ({ page }) => {
   await page.goto('/');
   await page.locator('[data-route="overview"]:visible').first().click();
   await expect(page.locator('#view-overview')).toBeVisible();
   expect(page.url()).toContain('#overview');
 });
 
-// ─── T120: Navigate with hash #settings ───
+// ─── Navigate with hash #settings ───
 
-test('T120 [US23] navigate with #settings hash, settings tab active', async ({ page }) => {
+test('navigate with #settings hash, settings tab active', async ({ page }) => {
   await page.goto('/#settings');
   await expect(page.locator('#view-settings')).toBeVisible();
   await expect(page.locator('[data-route="settings"]:visible').first()).toHaveClass(/is-active/);
 });
 
-// ─── T122: Invalid hash falls back to check-in ───
+// ─── Invalid hash falls back to check-in ───
 
-test('T122 [US23] invalid hash #nonexistent defaults to home tab', async ({ page }) => {
+test('invalid hash #nonexistent defaults to home tab', async ({ page }) => {
   await page.goto('/#nonexistent');
   // v4 falls back to "home" for unknown routes
   await expect(page.locator('#view-home')).toHaveClass(/is-active/);
 });
 
-// ─── T123: Exactly one tab button selected and one panel visible ───
+// ─── Exactly one tab button selected and one panel visible ───
 
-test('T123 [US23] exactly one tab button selected and one panel visible', async ({ page }) => {
+test('exactly one tab button selected and one panel visible', async ({ page }) => {
   await page.goto('/');
 
   // Only one visible nav button should have is-active

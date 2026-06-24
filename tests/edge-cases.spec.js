@@ -14,9 +14,9 @@ const {
   VISIBILITY_PRESETS,
 } = require('./fixtures/helpers');
 
-// ─── T134: XSS in thoughts field — escaped ───
+// ─── XSS in thoughts field — escaped ───
 
-test('T134 XSS script tag in thoughts escaped as literal text', async ({ page }) => {
+test('XSS script tag in thoughts escaped as literal text', async ({ page }) => {
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     thoughts: '<script>alert(1)</script>',
@@ -34,9 +34,9 @@ test('T134 XSS script tag in thoughts escaped as literal text', async ({ page })
   expect(bodyHtml).not.toContain('<script>');
 });
 
-// ─── T135: XSS in note field via img onerror ───
+// ─── XSS in note field via img onerror ───
 
-test('T135 XSS img onerror in note escaped in rendered output', async ({ page }) => {
+test('XSS img onerror in note escaped in rendered output', async ({ page }) => {
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     note: '<img onerror=alert(1) src=x>',
@@ -51,9 +51,9 @@ test('T135 XSS img onerror in note escaped in rendered output', async ({ page })
   expect(bodyHtml).not.toContain('<img');
 });
 
-// ─── T136: 10,000+ characters in note ───
+// ─── 10,000+ characters in note ───
 
-test('T136 very long text (10000 chars) in note saves without hang', async ({ page }) => {
+test('very long text (10000 chars) in note saves without hang', async ({ page }) => {
   await page.goto('/#checkin');
   const longText = 'A'.repeat(10000);
   await page.locator('#fld-note').fill(longText);
@@ -68,9 +68,9 @@ test('T136 very long text (10000 chars) in note saves without hang', async ({ pa
   expect(entry.note.length).toBe(10000);
 });
 
-// ─── T137: Double-click Save — only one entry ───
+// ─── Double-click Save — only one entry ───
 
-test('T137 double-click Save creates only one entry', async ({ page }) => {
+test('double-click Save creates only one entry', async ({ page }) => {
   await page.goto('/#checkin');
   await page.locator('.emotion-segment[data-em="joy"]').click();
 
@@ -87,9 +87,9 @@ test('T137 double-click Save creates only one entry', async ({ page }) => {
   expect(todayEntries.length).toBe(1);
 });
 
-// ─── T138: 5+ entries on same day — unique timestamped keys ───
+// ─── 5+ entries on same day — unique timestamped keys ───
 
-test('T138 multiple entries per day get unique timestamped keys', async ({ page }) => {
+test('multiple entries per day get unique timestamped keys', async ({ page }) => {
   await page.goto('/#checkin');
 
   for (let i = 0; i < 3; i++) {
@@ -114,9 +114,9 @@ test('T138 multiple entries per day get unique timestamped keys', async ({ page 
   expect(uniqueKeys.size).toBe(3);
 });
 
-// ─── T139: No entries — empty states ───
+// ─── No entries — empty states ───
 
-test('T139 no entries shows empty states in overview and summary', async ({ page }) => {
+test('no entries shows empty states in overview and summary', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Summary should show empty state
@@ -129,9 +129,9 @@ test('T139 no entries shows empty states in overview and summary', async ({ page
   await expect(emptyMsg).not.toBeEmpty();
 });
 
-// ─── T140: Overview pagination out of bounds ───
+// ─── Overview pagination out of bounds ───
 
-test('T140 pagination clamps to valid range', async ({ page }) => {
+test('pagination clamps to valid range', async ({ page }) => {
   await injectEntries(page, generateEntries(10));
   await injectSettings(page, createTestSettings({ rowsPerPage: 5 }));
   await page.goto('/');
@@ -144,9 +144,9 @@ test('T140 pagination clamps to valid range', async ({ page }) => {
   await expect(page.locator('#ov-next')).toBeDisabled();
 });
 
-// ─── T141: Clear search after date filter — filter remains ───
+// ─── Clear search after date filter — filter remains ───
 
-test('T141 clear search after date filter, filter remains active', async ({ page }) => {
+test('clear search after date filter, filter remains active', async ({ page }) => {
   await injectEntries(page, generateEntries(30));
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -165,9 +165,9 @@ test('T141 clear search after date filter, filter remains active', async ({ page
   await expect(page.locator('#ov-filter')).toHaveValue('7');
 });
 
-// ─── T142: Import entries with extra unknown fields ───
+// ─── Import entries with extra unknown fields ───
 
-test('T142 import entries with unknown fields, only known fields kept', async ({ page }) => {
+test('import entries with unknown fields, only known fields kept', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'overview');
 
@@ -197,9 +197,9 @@ test('T142 import entries with unknown fields, only known fields kept', async ({
   try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
-// ─── T143: Import settings with unknown keys ───
+// ─── Import settings with unknown keys ───
 
-test('T143 import settings with unknown keys, unknown keys ignored', async ({ page }) => {
+test('import settings with unknown keys, unknown keys ignored', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
@@ -218,9 +218,9 @@ test('T143 import settings with unknown keys, unknown keys ignored', async ({ pa
   try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
-// ─── T144: Disable and re-enable components ───
+// ─── Disable and re-enable components ───
 
-test('T144 disable then re-enable components, no stale state', async ({ page }) => {
+test('disable then re-enable components, no stale state', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Inject all-off settings after page load (not via addInitScript to avoid re-injection on reload)
@@ -254,9 +254,9 @@ test('T144 disable then re-enable components, no stale state', async ({ page }) 
   await expect(page.locator('[data-component="moodMatrix"]')).toBeVisible();
 });
 
-// ─── T145: localStorage persistence across reload ───
+// ─── localStorage persistence across reload ───
 
-test('T145 localStorage persistence across page reload', async ({ page }) => {
+test('localStorage persistence across page reload', async ({ page }) => {
   const todayKey = getTodayKey();
   const entries = { [todayKey]: createTestEntry({ thoughts: 'Persist test', coreFeeling: 'joy' }) };
   const settings = createTestSettings({ theme: 'dark' });
@@ -279,9 +279,9 @@ test('T145 localStorage persistence across page reload', async ({ page }) => {
   expect(storedSettings.theme).toBe('dark');
 });
 
-// ─── T146: Special characters in text fields ───
+// ─── Special characters in text fields ───
 
-test('T146 special characters safely escaped in text fields', async ({ page }) => {
+test('special characters safely escaped in text fields', async ({ page }) => {
   await page.goto('/#checkin');
 
   await page.locator('#fld-thoughts').fill('"quotes" & <tags>');
@@ -301,9 +301,9 @@ test('T146 special characters safely escaped in text fields', async ({ page }) =
   expect(bodyHtml).not.toMatch(/<b>/);
 });
 
-// ─── T154: localStorage quota full — app does not crash ───
+// ─── localStorage quota full — app does not crash ───
 
-test('T154 localStorage quota full, save does not crash the app', async ({ page }) => {
+test('localStorage quota full, save does not crash the app', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Fill localStorage to near capacity (5MB limit in most browsers)
@@ -339,9 +339,9 @@ test('T154 localStorage quota full, save does not crash the app', async ({ page 
   });
 });
 
-// ─── T155: Date boundary — entries at 23:59 and 00:01 get different date keys ───
+// ─── Date boundary — entries at 23:59 and 00:01 get different date keys ───
 
-test('T155 entries at 23:59 and 00:01 stored under different date keys', async ({ page }) => {
+test('entries at 23:59 and 00:01 stored under different date keys', async ({ page }) => {
   // Create two entries with timestamps straddling midnight
   const today = new Date();
   const yesterday = new Date(today);

@@ -8,9 +8,9 @@ const {
   navigateToTab,
 } = require('./fixtures/helpers');
 
-// ─── T060: 30 entries with 7 rows/page, verify pagination state ───
+// ─── 30 entries with 7 rows/page, verify pagination state ───
 
-test('T060 [US11] 30 entries with 7 rows/page shows correct pagination', async ({ page }) => {
+test('30 entries with 7 rows/page shows correct pagination', async ({ page }) => {
   await injectEntries(page, generateEntries(30));
   await injectSettings(page, createTestSettings({ rowsPerPage: 7 }));
   await page.goto('/');
@@ -24,9 +24,9 @@ test('T060 [US11] 30 entries with 7 rows/page shows correct pagination', async (
   await expect(page.locator('#ov-prev')).toBeDisabled();
 });
 
-// ─── T061: Click Next from page 1 → page 2 ───
+// ─── Click Next from page 1 → page 2 ───
 
-test('T061 [US11] click Next goes to page 2 with all nav enabled', async ({ page }) => {
+test('click Next goes to page 2 with all nav enabled', async ({ page }) => {
   await injectEntries(page, generateEntries(30));
   await injectSettings(page, createTestSettings({ rowsPerPage: 7 }));
   await page.goto('/');
@@ -42,9 +42,9 @@ test('T061 [US11] click Next goes to page 2 with all nav enabled', async ({ page
   await expect(page.locator('#ov-last')).toBeEnabled();
 });
 
-// ─── T062: Navigate to last page → Next/Last disabled ───
+// ─── Navigate to last page → Next/Last disabled ───
 
-test('T062 [US11] last page has Next and Last disabled', async ({ page }) => {
+test('last page has Next and Last disabled', async ({ page }) => {
   await injectEntries(page, generateEntries(30));
   await injectSettings(page, createTestSettings({ rowsPerPage: 7 }));
   await page.goto('/');
@@ -58,9 +58,9 @@ test('T062 [US11] last page has Next and Last disabled', async ({ page }) => {
   await expect(page.locator('#ov-prev')).toBeEnabled();
 });
 
-// ─── T063: From page 3, click First → page 1 ───
+// ─── From page 3, click First → page 1 ───
 
-test('T063 [US11] from page 3, click First goes to page 1', async ({ page }) => {
+test('from page 3, click First goes to page 1', async ({ page }) => {
   await injectEntries(page, generateEntries(30));
   await injectSettings(page, createTestSettings({ rowsPerPage: 7 }));
   await page.goto('/');
@@ -76,9 +76,9 @@ test('T063 [US11] from page 3, click First goes to page 1', async ({ page }) => 
   await expect(page.locator('#ov-page-info')).toContainText('Page 1');
 });
 
-// ─── T064: Search reduces to 1 page → all pagination disabled ───
+// ─── Search reduces to 1 page → all pagination disabled ───
 
-test('T064 [US11] search reducing to 1 page disables all pagination', async ({ page }) => {
+test('search reducing to 1 page disables all pagination', async ({ page }) => {
   const { createTestEntry, getDateKey } = require('./fixtures/helpers');
   const entries = {};
   for (let i = 0; i < 20; i++) {

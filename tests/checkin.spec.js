@@ -22,9 +22,9 @@ test('smoke: page loads with correct title and check-in tab visible', async ({ p
   await expect(page.locator('#view-checkin')).toBeVisible();
 });
 
-// ─── T006: Fresh app — fill all fields, save, verify entry in localStorage ───
+// ─── Fresh app — fill all fields, save, verify entry in localStorage ───
 
-test('T006 [US1] fill all fields and save creates entry in localStorage', async ({ page }) => {
+test('fill all fields and save creates entry in localStorage', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Fill thoughts
@@ -71,9 +71,9 @@ test('T006 [US1] fill all fields and save creates entry in localStorage', async 
   expect(todayEntry.moodRow).toBeGreaterThanOrEqual(0);
 });
 
-// ─── T007: Existing entry for today — modify and save updates (no duplicate) ───
+// ─── Existing entry for today — modify and save updates (no duplicate) ───
 
-test('T007 [US1] modifying existing today entry updates without duplicating', async ({ page }) => {
+test('modifying existing today entry updates without duplicating', async ({ page }) => {
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     thoughts: 'Original thought',
@@ -101,9 +101,9 @@ test('T007 [US1] modifying existing today entry updates without duplicating', as
   expect(entries[todayKeys[0]].thoughts).toBe('Modified thought');
 });
 
-// ─── T008: New check-in creates timestamped entry ───
+// ─── New check-in creates timestamped entry ───
 
-test('T008 [US1] New check-in creates second timestamped entry for today', async ({ page }) => {
+test('New check-in creates second timestamped entry for today', async ({ page }) => {
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     thoughts: 'First entry',
@@ -136,9 +136,9 @@ test('T008 [US1] New check-in creates second timestamped entry for today', async
   expect(entries[timestampedKey].coreFeeling).toBe('sadness');
 });
 
-// ─── T009: After save — summary card updates ───
+// ─── After save — summary card updates ───
 
-test('T009 [US1] summary card updates after save with streak and count', async ({ page }) => {
+test('summary card updates after save with streak and count', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Select emotion to pass validation
@@ -150,9 +150,9 @@ test('T009 [US1] summary card updates after save with streak and count', async (
   await expect(summaryContent).not.toContainText(/no entries/i);
 });
 
-// ─── T010: Context pill shows correct state ───
+// ─── Context pill shows correct state ───
 
-test('T010 [US1] context pill shows new state before save and entry date after save', async ({ page }) => {
+test('context pill shows new state before save and entry date after save', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Before save: pill should show new state text

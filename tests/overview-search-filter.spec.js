@@ -8,9 +8,9 @@ const {
   getDateKey,
 } = require('./fixtures/helpers');
 
-// ─── T054: Search "walk" matches only entries with that text ───
+// ─── Search "walk" matches only entries with that text ───
 
-test('T054 [US10] search "walk" filters to matching entries', async ({ page }) => {
+test('search "walk" filters to matching entries', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 10; i++) {
     entries[getDateKey(i)] = createTestEntry({
@@ -33,9 +33,9 @@ test('T054 [US10] search "walk" filters to matching entries', async ({ page }) =
   expect(count).toBeLessThan(10);
 });
 
-// ─── T055: Date filter "Last 7 days" shows only recent entries ───
+// ─── Date filter "Last 7 days" shows only recent entries ───
 
-test('T055 [US10] Last 7 days filter shows only recent entries', async ({ page }) => {
+test('Last 7 days filter shows only recent entries', async ({ page }) => {
   const { injectSettings, createTestSettings } = require('./fixtures/helpers');
   await injectEntries(page, generateEntries(30));
   await injectSettings(page, createTestSettings({ rowsPerPage: 50 }));
@@ -52,9 +52,9 @@ test('T055 [US10] Last 7 days filter shows only recent entries', async ({ page }
   expect(count).toBeGreaterThan(0);
 });
 
-// ─── T056: Search with no matches shows empty state ───
+// ─── Search with no matches shows empty state ───
 
-test('T056 [US10] search "xyz" with no matches shows empty state', async ({ page }) => {
+test('search "xyz" with no matches shows empty state', async ({ page }) => {
   await injectEntries(page, generateEntries(5));
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -66,9 +66,9 @@ test('T056 [US10] search "xyz" with no matches shows empty state', async ({ page
   await expect(emptyMessage).not.toBeEmpty();
 });
 
-// ─── T058: Clear search field restores all entries ───
+// ─── Clear search field restores all entries ───
 
-test('T058 [US10] clear search field shows all entries again', async ({ page }) => {
+test('clear search field shows all entries again', async ({ page }) => {
   await injectEntries(page, generateEntries(10));
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -84,7 +84,7 @@ test('T058 [US10] clear search field shows all entries again', async ({ page }) 
   expect(allRowsAfter).toBe(allRowsBefore);
 });
 
-// ─── T059: All date filter options work ───
+// ─── All date filter options work ───
 
 const dateFilters = [
   { value: 'all', label: 'All' },
@@ -96,7 +96,7 @@ const dateFilters = [
 ];
 
 for (const filter of dateFilters) {
-  test(`T059 [US10] date filter "${filter.label}" applies correctly`, async ({ page }) => {
+  test(`date filter "${filter.label}" applies correctly`, async ({ page }) => {
     await injectEntries(page, generateEntries(90));
     await page.goto('/');
     await navigateToTab(page, 'overview');

@@ -9,9 +9,9 @@ const {
   getTodayKey,
 } = require('./fixtures/helpers');
 
-// ─── T071: Delete entry — accept confirm — removed from table & localStorage ───
+// ─── Delete entry — accept confirm — removed from table & localStorage ───
 
-test('T071 [US13] delete entry, accept confirm, removed from table and localStorage', async ({ page }) => {
+test('delete entry, accept confirm, removed from table and localStorage', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 5; i++) {
     entries[getDateKey(i)] = createTestEntry({ thoughts: `Entry ${i}`, coreFeeling: 'joy' });
@@ -34,9 +34,9 @@ test('T071 [US13] delete entry, accept confirm, removed from table and localStor
   expect(Object.keys(stored).length).toBe(4);
 });
 
-// ─── T072: Delete entry — dismiss confirm — nothing changes ───
+// ─── Delete entry — dismiss confirm — nothing changes ───
 
-test('T072 [US13] delete entry, dismiss confirm, nothing changes', async ({ page }) => {
+test('delete entry, dismiss confirm, nothing changes', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 5; i++) {
     entries[getDateKey(i)] = createTestEntry({ thoughts: `Entry ${i}`, coreFeeling: 'joy' });
@@ -59,9 +59,9 @@ test('T072 [US13] delete entry, dismiss confirm, nothing changes', async ({ page
   expect(Object.keys(stored).length).toBe(5);
 });
 
-// ─── T073: Delete today's loaded entry — form resets ───
+// ─── Delete today's loaded entry — form resets ───
 
-test('T073 [US13] delete today entry from overview, form resets', async ({ page }) => {
+test('delete today entry from overview, form resets', async ({ page }) => {
   const todayKey = getTodayKey();
   const entries = {
     [todayKey]: createTestEntry({ thoughts: 'Today thoughts', coreFeeling: 'joy' }),

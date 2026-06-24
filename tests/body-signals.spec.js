@@ -12,9 +12,9 @@ async function clickBodyPart(page, partName) {
   await page.locator(`.body-part[data-zone="${partName}"]`).dispatchEvent('click');
 }
 
-// ─── T016: Click body part — highlights and shows in display ───
+// ─── Click body part — highlights and shows in display ───
 
-test('T016 [US3] click chest zone highlights and shows in display', async ({ page }) => {
+test('click chest zone highlights and shows in display', async ({ page }) => {
   await page.goto('/#checkin');
   await clickBodyPart(page, 'chest');
   const chest = page.locator('.body-part[data-zone="chest"]');
@@ -25,9 +25,9 @@ test('T016 [US3] click chest zone highlights and shows in display', async ({ pag
   await expect(display).toContainText(/chest/i);
 });
 
-// ─── T017: Cycling a zone's intensity returns it to off ───
+// ─── Cycling a zone's intensity returns it to off ───
 
-test('T017 [US3] tapping a body zone cycles intensity and clears after a full cycle', async ({ page }) => {
+test('tapping a body zone cycles intensity and clears after a full cycle', async ({ page }) => {
   await page.goto('/#checkin');
   const chest = page.locator('.body-part[data-zone="chest"]');
 
@@ -43,9 +43,9 @@ test('T017 [US3] tapping a body zone cycles intensity and clears after a full cy
   await expect(page.locator('#body-display')).toHaveClass(/is-empty/);
 });
 
-// ─── T018: Multiple body parts — reset clears all ───
+// ─── Multiple body parts — reset clears all ───
 
-test('T018 [US3] select multiple parts then reset clears all', async ({ page }) => {
+test('select multiple parts then reset clears all', async ({ page }) => {
   await page.goto('/#checkin');
 
   await clickBodyPart(page, 'head');
@@ -67,9 +67,9 @@ test('T018 [US3] select multiple parts then reset clears all', async ({ page }) 
   await expect(page.locator('#body-display')).toHaveClass(/is-empty/);
 });
 
-// ─── T019: Save with body parts, reload, verify persistence ───
+// ─── Save with body parts, reload, verify persistence ───
 
-test('T019 [US3] select 5 body parts, save, reload, verify re-highlight', async ({ page }) => {
+test('select 5 body parts, save, reload, verify re-highlight', async ({ page }) => {
   const parts = ['head', 'chest', 'left-shoulder', 'right-hand', 'left-knee'];
 
   await page.goto('/#checkin');
@@ -95,7 +95,7 @@ test('T019 [US3] select 5 body parts, save, reload, verify re-highlight', async 
   }
 });
 
-// ─── T020: Parameterized test — all body part zones toggle independently ───
+// ─── Parameterized test — all body part zones toggle independently ───
 
 const allBodyParts = [
   'head', 'neck', 'left-shoulder', 'right-shoulder', 'chest', 'abdomen',
@@ -106,7 +106,7 @@ const allBodyParts = [
   'left-foot', 'right-foot', 'upper-back', 'lower-back',
 ];
 
-test('T020 [US3] all body part zones toggle on/off independently', async ({ page }) => {
+test('all body part zones toggle on/off independently', async ({ page }) => {
   await page.goto('/#checkin');
 
   for (const part of allBodyParts) {

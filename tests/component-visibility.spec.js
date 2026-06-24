@@ -8,15 +8,15 @@ const {
 
 // ─── Phase 9: User Story 7 — Component Visibility Toggles ───
 
-// T036: Disable weather in settings, verify hidden
-test('T036 [US7] disable weather in settings, verify widget hidden', async ({ page }) => {
+// Disable weather in settings, verify hidden
+test('disable weather in settings, verify widget hidden', async ({ page }) => {
   const settings = createTestSettings({ components: { weather: false } });
   await injectSettings(page, settings);
   await page.goto('/#checkin');
   await expect(page.locator('[data-component="weather"]')).toBeHidden();
 });
 
-// T037: Parameterized — each of 10 component toggles
+// Parameterized — each of 10 component toggles
 const componentToggles = [
   { id: 'weather', selector: '[data-component="weather"]' },
   { id: 'thoughts', selector: '[data-component="thoughts"]' },
@@ -31,7 +31,7 @@ const componentToggles = [
 ];
 
 for (const toggle of componentToggles) {
-  test(`T037 [US7] disable ${toggle.id} — section disappears`, async ({ page }) => {
+  test(`disable ${toggle.id} — section disappears`, async ({ page }) => {
     const settings = createTestSettings({ components: { [toggle.id]: false } });
     await injectSettings(page, settings);
     await page.goto('/#checkin');
@@ -45,8 +45,8 @@ for (const toggle of componentToggles) {
   });
 }
 
-// T038: Disable all except thoughts — save works
-test('T038 [US7] disable all except thoughts, save without mood requirement', async ({ page }) => {
+// Disable all except thoughts — save works
+test('disable all except thoughts, save without mood requirement', async ({ page }) => {
   const { getLocalStorageEntries, getTodayKey } = require('./fixtures/helpers');
   const settings = createTestSettings({
     components: {
@@ -72,8 +72,8 @@ test('T038 [US7] disable all except thoughts, save without mood requirement', as
   expect(entries[keys[0]].thoughts).toBe('Just thoughts');
 });
 
-// T039: Disable all 3 energy types — energy panel hidden
-test('T039 [US7] disable all 3 energy types, individual energy meters hidden', async ({ page }) => {
+// Disable all 3 energy types — energy panel hidden
+test('disable all 3 energy types, individual energy meters hidden', async ({ page }) => {
   const settings = createTestSettings({
     components: { energyPhysical: false, energyMental: false, energyEmotional: false },
   });
@@ -85,8 +85,8 @@ test('T039 [US7] disable all 3 energy types, individual energy meters hidden', a
   await expect(page.locator('.nrg-row[data-energy-type="emotional"]')).toBeHidden();
 });
 
-// T040: Disable core feeling, verify history mode button absent
-test('T040 [US7] disable core feeling, history mode button absent', async ({ page }) => {
+// Disable core feeling, verify history mode button absent
+test('disable core feeling, history mode button absent', async ({ page }) => {
   const { injectEntries, createTestEntry, getDateKey } = require('./fixtures/helpers');
   // Inject some entries so history renders
   const entries = {};
@@ -106,8 +106,8 @@ test('T040 [US7] disable core feeling, history mode button absent', async ({ pag
   await expect(feelingModeBtn).toHaveCount(0);
 });
 
-// T041: Hide component, load entry with that data — data preserved in localStorage
-test('T041 [US7] hide component, data preserved in localStorage', async ({ page }) => {
+// Hide component, load entry with that data — data preserved in localStorage
+test('hide component, data preserved in localStorage', async ({ page }) => {
   const { injectEntries, createTestEntry, getLocalStorageEntries, getTodayKey } = require('./fixtures/helpers');
   const todayKey = getTodayKey();
   const entry = createTestEntry({
@@ -130,8 +130,8 @@ test('T041 [US7] hide component, data preserved in localStorage', async ({ page 
 
 // ─── Phase 10: User Story 8 — Visibility Combination Matrix ───
 
-// T042: All-on preset — fill everything, save, verify all data
-test('T042 [US8] all-on preset — all fields fillable and saved', async ({ page }) => {
+// All-on preset — fill everything, save, verify all data
+test('all-on preset — all fields fillable and saved', async ({ page }) => {
   const { getLocalStorageEntries, getTodayKey } = require('./fixtures/helpers');
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['all-on'] });
   await injectSettings(page, settings);
@@ -160,8 +160,8 @@ test('T042 [US8] all-on preset — all fields fillable and saved', async ({ page
   expect(entry.note).toBe('A note');
 });
 
-// T043: All-off preset — save works without error
-test('T043 [US8] all-off preset — save works without mood requirement', async ({ page }) => {
+// All-off preset — save works without error
+test('all-off preset — save works without mood requirement', async ({ page }) => {
   const { getLocalStorageEntries, getTodayKey } = require('./fixtures/helpers');
   const settings = createTestSettings({
     components: VISIBILITY_PRESETS['all-off'],
@@ -180,8 +180,8 @@ test('T043 [US8] all-off preset — save works without mood requirement', async 
   expect(Object.keys(entries)).toHaveLength(0);
 });
 
-// T044: Mood-only preset — only mood fields populated
-test('T044 [US8] mood-only preset — select emotion, save, only mood fields', async ({ page }) => {
+// Mood-only preset — only mood fields populated
+test('mood-only preset — select emotion, save, only mood fields', async ({ page }) => {
   const { getLocalStorageEntries, getTodayKey } = require('./fixtures/helpers');
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['mood-only'] });
   await injectSettings(page, settings);
@@ -197,8 +197,8 @@ test('T044 [US8] mood-only preset — select emotion, save, only mood fields', a
   expect(entry.coreFeeling).toBe('joy');
 });
 
-// T045: Energy-only preset — only energy panel visible
-test('T045 [US8] energy-only preset — only 3 energy meters visible', async ({ page }) => {
+// Energy-only preset — only energy panel visible
+test('energy-only preset — only 3 energy meters visible', async ({ page }) => {
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['energy-only'] });
   await injectSettings(page, settings);
   await page.goto('/#checkin');
@@ -211,8 +211,8 @@ test('T045 [US8] energy-only preset — only 3 energy meters visible', async ({ 
   await expect(page.locator('[data-component="moodMatrix"]')).toBeHidden();
 });
 
-// T046: Single-energy preset — only mental meter visible
-test('T046 [US8] single-energy preset — only mental meter visible', async ({ page }) => {
+// Single-energy preset — only mental meter visible
+test('single-energy preset — only mental meter visible', async ({ page }) => {
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['single-energy'] });
   await injectSettings(page, settings);
   await page.goto('/#checkin');
@@ -222,8 +222,8 @@ test('T046 [US8] single-energy preset — only mental meter visible', async ({ p
   await expect(page.locator('.nrg-row[data-energy-type="emotional"]')).toBeHidden();
 });
 
-// T047: Text-only preset — no interactive visualizations
-test('T047 [US8] text-only preset — no wheel, body, grid visible', async ({ page }) => {
+// Text-only preset — no interactive visualizations
+test('text-only preset — no wheel, body, grid visible', async ({ page }) => {
   const settings = createTestSettings({ components: VISIBILITY_PRESETS['text-only'] });
   await injectSettings(page, settings);
   await page.goto('/#checkin');

@@ -12,9 +12,9 @@ async function setMeter(page, type, segment) {
   await page.locator(`.nrg-seg[data-meter="${type}"][data-seg="${segment}"]`).dispatchEvent('click');
 }
 
-// ─── T021: Click the top segment of the physical meter — high value ───
+// ─── Click the top segment of the physical meter — high value ───
 
-test('T021 [US4] click top segment of physical energy meter shows 100%', async ({ page }) => {
+test('click top segment of physical energy meter shows 100%', async ({ page }) => {
   await page.goto('/#checkin');
   await setMeter(page, 'physical', 20);
 
@@ -22,18 +22,18 @@ test('T021 [US4] click top segment of physical energy meter shows 100%', async (
   await expect(page.locator('#energy-display')).not.toHaveClass(/is-empty/);
 });
 
-// ─── T022: Set the mental meter to 75% (segment 15) ───
+// ─── Set the mental meter to 75% (segment 15) ───
 
-test('T022 [US4] click mental energy meter at the 75% segment', async ({ page }) => {
+test('click mental energy meter at the 75% segment', async ({ page }) => {
   await page.goto('/#checkin');
   await setMeter(page, 'mental', 15);
 
   await expect(page.locator('.nrg-val[data-meter="mental"]')).toHaveText('75%');
 });
 
-// ─── T023: Set all three meters, reset, verify all clear ───
+// ─── Set all three meters, reset, verify all clear ───
 
-test('T023 [US4] set all three meters then reset clears all', async ({ page }) => {
+test('set all three meters then reset clears all', async ({ page }) => {
   await page.goto('/#checkin');
 
   for (const type of ['physical', 'mental', 'emotional']) {
@@ -49,9 +49,9 @@ test('T023 [US4] set all three meters then reset clears all', async ({ page }) =
   }
 });
 
-// ─── T024: Set energy, save, reload — verify persistence ───
+// ─── Set energy, save, reload — verify persistence ───
 
-test('T024 [US4] set energy levels, save, reload, verify meters persist', async ({ page }) => {
+test('set energy levels, save, reload, verify meters persist', async ({ page }) => {
   await page.goto('/#checkin');
 
   // Select emotion to pass validation
@@ -75,9 +75,9 @@ test('T024 [US4] set energy levels, save, reload, verify meters persist', async 
   await expect(page.locator('#energy-display')).not.toHaveClass(/is-empty/);
 });
 
-// ─── T025: Boundary segments — lowest (5%) and highest (100%) ───
+// ─── Boundary segments — lowest (5%) and highest (100%) ───
 
-test('T025 [US4] click lowest and highest segments of a meter', async ({ page }) => {
+test('click lowest and highest segments of a meter', async ({ page }) => {
   await page.goto('/#checkin');
 
   await setMeter(page, 'physical', 1); // lowest segment → 5%

@@ -8,9 +8,9 @@ const {
   navigateToTab,
 } = require('./fixtures/helpers');
 
-// ─── T048: Inject 30 entries — table renders with pagination ───
+// ─── Inject 30 entries — table renders with pagination ───
 
-test('T048 [US9] inject 30 entries, table renders with pagination', async ({ page }) => {
+test('inject 30 entries, table renders with pagination', async ({ page }) => {
   await injectEntries(page, generateEntries(30));
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -21,9 +21,9 @@ test('T048 [US9] inject 30 entries, table renders with pagination', async ({ pag
   await expect(pageInfo).toContainText('Page');
 });
 
-// ─── T049: Default sort date descending, click to flip ───
+// ─── Default sort date descending, click to flip ───
 
-test('T049 [US9] default sort date descending, click header to flip', async ({ page }) => {
+test('default sort date descending, click header to flip', async ({ page }) => {
   await injectEntries(page, generateEntries(10));
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -39,9 +39,9 @@ test('T049 [US9] default sort date descending, click header to flip', async ({ p
   expect(firstRowAfter).not.toBe(firstRowBefore);
 });
 
-// ─── T050: Sort by Core Feeling column ───
+// ─── Sort by Core Feeling column ───
 
-test('T050 [US9] click Core Feeling header to sort by emotion', async ({ page }) => {
+test('click Core Feeling header to sort by emotion', async ({ page }) => {
   await injectEntries(page, generateEntries(10));
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -54,9 +54,9 @@ test('T050 [US9] click Core Feeling header to sort by emotion', async ({ page })
   }
 });
 
-// ─── T051: Sort state persists across tab switches ───
+// ─── Sort state persists across tab switches ───
 
-test('T051 [US9] sort state persists across tab switches', async ({ page }) => {
+test('sort state persists across tab switches', async ({ page }) => {
   await injectEntries(page, generateEntries(10));
   await page.goto('/');
   await navigateToTab(page, 'overview');
@@ -71,9 +71,9 @@ test('T051 [US9] sort state persists across tab switches', async ({ page }) => {
   await expect(page.locator('#ov-tbody tr').first()).toBeVisible();
 });
 
-// ─── T052: Hide components → corresponding columns absent ───
+// ─── Hide components → corresponding columns absent ───
 
-test('T052 [US9] hide components, overview columns absent', async ({ page }) => {
+test('hide components, overview columns absent', async ({ page }) => {
   const settings = createTestSettings({
     components: { bodySignals: false, moodMatrix: false },
   });
@@ -88,14 +88,14 @@ test('T052 [US9] hide components, overview columns absent', async ({ page }) => 
   await expect(page.locator('#ov-tbody')).toBeVisible();
 });
 
-// ─── T053: Sort by each sortable column ───
+// ─── Sort by each sortable column ───
 
 const sortableColumns = [
   'date', 'feeling', 'mood', 'energy', 'thoughts', 'score', 'actions',
 ];
 
 for (const sortKey of sortableColumns) {
-  test(`T053 [US9] sort by ${sortKey} changes order`, async ({ page }) => {
+  test(`sort by ${sortKey} changes order`, async ({ page }) => {
     await injectEntries(page, generateEntries(10));
     await page.goto('/');
     await navigateToTab(page, 'overview');

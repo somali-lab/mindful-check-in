@@ -13,9 +13,9 @@ const {
   getTodayKey,
 } = require('./fixtures/helpers');
 
-// ─── T112: Weather API success — widget shows data ───
+// ─── Weather API success — widget shows data ───
 
-test('T112 [US19] mock weather API success, widget shows temperature', async ({ page }) => {
+test('mock weather API success, widget shows temperature', async ({ page }) => {
   await mockWeatherAPI(page, { temperature: 18, weathercode: 1, is_day: 1 });
   await mockGeocodingAPI(page);
   const settings = createTestSettings({ components: { weather: true } });
@@ -27,9 +27,9 @@ test('T112 [US19] mock weather API success, widget shows temperature', async ({ 
   await expect(page.locator('.weather-temp')).toContainText('18');
 });
 
-// ─── T113: Cached weather — no API call ───
+// ─── Cached weather — no API call ───
 
-test('T113 [US19] cached weather (< 1h old) uses cache, no API call', async ({ page }) => {
+test('cached weather (< 1h old) uses cache, no API call', async ({ page }) => {
   // v4 cache format: single { ts, data } object where data = current_weather fields
   const cache = {
     ts: Date.now(),
@@ -57,9 +57,9 @@ test('T113 [US19] cached weather (< 1h old) uses cache, no API call', async ({ p
   expect(temp).toContain('22');
 });
 
-// ─── T114: Weather API failure — app doesn't crash ───
+// ─── Weather API failure — app doesn't crash ───
 
-test('T114 [US19] weather API failure, app does not crash', async ({ page }) => {
+test('weather API failure, app does not crash', async ({ page }) => {
   await mockWeatherAPIFailure(page);
   const settings = createTestSettings({ components: { weather: true } });
   await injectSettings(page, settings);
@@ -76,9 +76,9 @@ test('T114 [US19] weather API failure, app does not crash', async ({ page }) => 
   expect(errors.filter(e => !e.includes('fetch'))).toHaveLength(0);
 });
 
-// ─── T115: Weather disabled — widget hidden ───
+// ─── Weather disabled — widget hidden ───
 
-test('T115 [US19] disable weather in settings, widget hidden', async ({ page }) => {
+test('disable weather in settings, widget hidden', async ({ page }) => {
   const settings = createTestSettings({ components: { weather: false } });
   await injectSettings(page, settings);
   await page.goto('/#checkin');
@@ -86,9 +86,9 @@ test('T115 [US19] disable weather in settings, widget hidden', async ({ page }) 
   await expect(page.locator('[data-component="weather"]')).toBeHidden();
 });
 
-// ─── T116: Save with weather — weather data in entry ───
+// ─── Save with weather — weather data in entry ───
 
-test('T116 [US19] save with mocked weather, weather data in entry', async ({ page }) => {
+test('save with mocked weather, weather data in entry', async ({ page }) => {
   await mockWeatherAPI(page, { temperature: 15, weathercode: 2, is_day: 1 });
   await mockGeocodingAPI(page);
   const settings = createTestSettings({ components: { weather: true } });
@@ -109,9 +109,9 @@ test('T116 [US19] save with mocked weather, weather data in entry', async ({ pag
   expect(entry.weather.temperature).toBe(15);
 });
 
-// ─── T117: Geocoding — change location ───
+// ─── Geocoding — change location ───
 
-test('T117 [US20] change weather location to Berlin, verify coords update', async ({ page }) => {
+test('change weather location to Berlin, verify coords update', async ({ page }) => {
   await mockGeocodingAPI(page, [
     { name: 'Berlin', latitude: 52.52, longitude: 13.405, country: 'Germany' },
   ]);
@@ -129,9 +129,9 @@ test('T117 [US20] change weather location to Berlin, verify coords update', asyn
   expect(settings.weatherLocation).toBe('Berlin');
 });
 
-// ─── T118: Geocoding empty results — warning ───
+// ─── Geocoding empty results — warning ───
 
-test('T118 [US20] geocoding empty results for nonsense city', async ({ page }) => {
+test('geocoding empty results for nonsense city', async ({ page }) => {
   await mockGeocodingAPIEmpty(page);
   await mockWeatherAPI(page);
   await page.goto('/');

@@ -9,9 +9,9 @@ const {
   getLocalStorageSettings,
 } = require('./fixtures/helpers');
 
-// ─── T074: Change theme to Dark ───
+// ─── Change theme to Dark ───
 
-test('T074 [US14] change theme to Dark, verify data-theme attribute', async ({ page }) => {
+test('change theme to Dark, verify data-theme attribute', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
@@ -21,9 +21,9 @@ test('T074 [US14] change theme to Dark, verify data-theme attribute', async ({ p
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
 
-// ─── T075: Set rows per page to 5 ───
+// ─── Set rows per page to 5 ───
 
-test('T075 [US14] set rows per page to 5, verify overview shows 5 rows', async ({ page }) => {
+test('set rows per page to 5, verify overview shows 5 rows', async ({ page }) => {
   await injectEntries(page, generateEntries(30));
   await page.goto('/');
   await navigateToTab(page, 'settings');
@@ -40,9 +40,9 @@ test('T075 [US14] set rows per page to 5, verify overview shows 5 rows', async (
   await expect(rows).toHaveCount(5);
 });
 
-// ─── T076: Set max chars to 30 ───
+// ─── Set max chars to 30 ───
 
-test('T076 [US14] set max chars to 30, overview cells truncated', async ({ page }) => {
+test('set max chars to 30, overview cells truncated', async ({ page }) => {
   const { createTestEntry, getDateKey } = require('./fixtures/helpers');
   const entries = {};
   for (let i = 0; i < 3; i++) {
@@ -69,9 +69,9 @@ test('T076 [US14] set max chars to 30, overview cells truncated', async ({ page 
   expect(truncated).toBeTruthy();
 });
 
-// ─── T077: Set energy emotional label to Social ───
+// ─── Set energy emotional label to Social ───
 
-test('T077 [US14] set energy emotional label to Social, verify label updates', async ({ page }) => {
+test('set energy emotional label to Social, verify label updates', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
@@ -84,9 +84,9 @@ test('T077 [US14] set energy emotional label to Social, verify label updates', a
   await expect(label).toContainText(/social/i);
 });
 
-// ─── T078: Set default wheel to Extended ───
+// ─── Set default wheel to Extended ───
 
-test('T078 [US14] set default wheel to Extended, verify wheel renders', async ({ page }) => {
+test('set default wheel to Extended, verify wheel renders', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
@@ -98,9 +98,9 @@ test('T078 [US14] set default wheel to Extended, verify wheel renders', async ({
   await expect(page.locator('.emotion-segment')).toHaveCount(12);
 });
 
-// ─── T079: Settings persist across reload ───
+// ─── Settings persist across reload ───
 
-test('T079 [US14] changed settings persist across reload', async ({ page }) => {
+test('changed settings persist across reload', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'settings');
 

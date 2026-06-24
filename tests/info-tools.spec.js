@@ -10,9 +10,9 @@ const {
   getTodayKey,
 } = require('./fixtures/helpers');
 
-// ─── T124: Generate demo data — entries created ───
+// ─── Generate demo data — entries created ───
 
-test('T124 [US24] generate demo data creates entries in localStorage', async ({ page }) => {
+test('generate demo data creates entries in localStorage', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'info');
 
@@ -26,9 +26,9 @@ test('T124 [US24] generate demo data creates entries in localStorage', async ({ 
   expect(Object.keys(entries).length).toBeGreaterThanOrEqual(20);
 });
 
-// ─── T125: Demo data appears in overview ───
+// ─── Demo data appears in overview ───
 
-test('T125 [US24] demo data entries appear in overview', async ({ page }) => {
+test('demo data entries appear in overview', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'info');
 
@@ -43,9 +43,9 @@ test('T125 [US24] demo data entries appear in overview', async ({ page }) => {
   expect(count).toBeGreaterThan(0);
 });
 
-// ─── T126: Demo data doesn't delete existing entries ───
+// ─── Demo data doesn't delete existing entries ───
 
-test('T126 [US24] demo data adds alongside existing entries', async ({ page }) => {
+test('demo data adds alongside existing entries', async ({ page }) => {
   const existing = {
     [getDateKey(100)]: createTestEntry({ thoughts: 'Original entry', coreFeeling: 'joy' }),
   };
@@ -64,9 +64,9 @@ test('T126 [US24] demo data adds alongside existing entries', async ({ page }) =
   expect(Object.keys(entries).length).toBeGreaterThan(1);
 });
 
-// ─── T127: Clear all data — everything removed ───
+// ─── Clear all data — everything removed ───
 
-test('T127 [US25] clear all local data removes all localStorage keys', async ({ page }) => {
+test('clear all local data removes all localStorage keys', async ({ page }) => {
   await page.goto('/');
 
   // Inject entries AFTER page load (not via addInitScript which would re-inject on reload)
@@ -94,9 +94,9 @@ test('T127 [US25] clear all local data removes all localStorage keys', async ({ 
   expect(!stored || Object.keys(stored).length === 0).toBeTruthy();
 });
 
-// ─── T128: Clear all data — dismiss confirm — nothing deleted ───
+// ─── Clear all data — dismiss confirm — nothing deleted ───
 
-test('T128 [US25] dismiss clear data confirm, nothing deleted', async ({ page }) => {
+test('dismiss clear data confirm, nothing deleted', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 5; i++) {
     entries[getDateKey(i)] = createTestEntry({ coreFeeling: 'joy' });

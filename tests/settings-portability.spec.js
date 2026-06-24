@@ -7,9 +7,9 @@ const {
   navigateToTab,
 } = require('./fixtures/helpers');
 
-// ─── T103: Export settings downloads JSON ───
+// ─── Export settings downloads JSON ───
 
-test('T103 [US15] export settings downloads JSON file', async ({ page }) => {
+test('export settings downloads JSON file', async ({ page }) => {
   const settings = createTestSettings({ theme: 'dark', rowsPerPage: 10 });
   await injectSettings(page, settings);
   await page.goto('/');
@@ -28,9 +28,9 @@ test('T103 [US15] export settings downloads JSON file', async ({ page }) => {
   expect(content.theme).toBe('dark');
 });
 
-// ─── T104: Import valid settings ───
+// ─── Import valid settings ───
 
-test('T104 [US15] import valid settings JSON applies immediately', async ({ page }) => {
+test('import valid settings JSON applies immediately', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
@@ -49,9 +49,9 @@ test('T104 [US15] import valid settings JSON applies immediately', async ({ page
   try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
-// ─── T105: Import corrupt settings — error ───
+// ─── Import corrupt settings — error ───
 
-test('T105 [US15] import corrupt settings shows error, settings unchanged', async ({ page }) => {
+test('import corrupt settings shows error, settings unchanged', async ({ page }) => {
   const settings = createTestSettings({ theme: 'light' });
   await injectSettings(page, settings);
   await page.goto('/');
@@ -70,9 +70,9 @@ test('T105 [US15] import corrupt settings shows error, settings unchanged', asyn
   try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
 
-// ─── T106: Reset settings ───
+// ─── Reset settings ───
 
-test('T106 [US15] reset settings restores defaults', async ({ page }) => {
+test('reset settings restores defaults', async ({ page }) => {
   const settings = createTestSettings({ theme: 'dark', rowsPerPage: 50 });
   await injectSettings(page, settings);
   await page.goto('/');
