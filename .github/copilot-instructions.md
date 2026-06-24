@@ -103,7 +103,7 @@ Every module MUST follow this pattern:
 4. **Allowed direct references**:
    - Modules MAY call `MCI.t()`, `MCI.esc()`, `MCI.loadSettings()`, `MCI.loadEntries()` and other core helpers
    - Modules MAY read `MCI.Data.*` for static data (wheels, zones, weather codes)
-   - Checkin MAY call getter/setter methods on sub-modules it orchestrates (`MCI.Wheel.getPicked()`, `MCI.Body.getZones()`, `MCI.Energy.getValues()`, `MCI.Mood.getSelection()`) — these are its direct children for form collect/restore
+   - Checkin MAY call getter/setter methods on sub-modules it orchestrates (`MCI.Wheel.getPicked()`, `MCI.Body.getZones()`, `MCI.Energy.getValues()`, `MCI.Mood.getSelection()`, `MCI.CheckinMeta.getOverrideKey()`) and may read `MCI.Weather.getCurrent()` / `MCI.Nav.activeRoute()`. The `CheckinChips`/`CheckinMeta` helpers otherwise react to the entry-lifecycle bus events
 
 5. **boot.js is declarative only** — It calls `<Module>.init()` in dependency order. No business logic, no render calls, no state hydration.
 

@@ -94,7 +94,7 @@ Every file is a self-contained IIFE attaching its public API to `MCI`:
 - **Event bus** (`MCI.on`, `MCI.off`, `MCI.emit`) for cross-module communication
 - Modules MUST NOT call other modules directly — use events
 - Modules own their own rendering — no module tells another what to render
-- **Exception**: Checkin may call getter/setter methods on its direct sub-modules (Wheel, Body, Energy, Mood)
+- **Exception**: Checkin orchestrates its form sub-modules directly — getter/setters on Wheel, Body, Energy, Mood and `CheckinMeta.getOverrideKey()` on save; it also reads `Weather.getCurrent()` and drives the in-card Check-in/Summary tabs via `Nav.switchTo`/`Nav.activeRoute`. The `CheckinChips` and `CheckinMeta` sub-modules otherwise react to the entry-lifecycle events Checkin emits
 
 ### Standard Events
 

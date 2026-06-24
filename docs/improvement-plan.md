@@ -1,7 +1,7 @@
 # Mindful Check-in — Improvement Plan
 
 **Created**: 2026-06-24
-**Status**: Active — Workstreams 1 (tests + reminders coverage) & 2 (docs) done + CI added; Workstream 4 mostly done (week-strip + tier-threshold dedup, mood/reminder i18n, energy guard, T138 key fix); remaining W4: `checkin.js` god-module split + date-key helper + Checkin-exception doc (2026-06-24)
+**Status**: Workstreams 1–4 complete (2026-06-24). Optional polish only: consolidate the 4 overlapping guidance docs, strip orphaned `Txxx [USyy]` test names, and remove the now-moot `COVERAGE`/`c8 ignore` plumbing.
 **Scope**: Architectural consistency, SOLID/DRY/SoC, test relevance, documentation & agent files.
 
 This plan is the output of a full review of `src/` (~4,575 LoC JS, ~4,058 LoC CSS), the Playwright suite (~6,475 LoC across 30 specs), the docs, and the `.claude` / `.github` config.
@@ -94,14 +94,14 @@ Architecture is fine; debt is localized. Highest value first:
 
 | Severity | Item | Location |
 |---|---|---|
-| High | **`checkin.js` god module (546 LoC)** — orchestration + action chips + feeling chips + date formatting + greeting + pill + visibility. `startAddAction`/`startAddFeeling`, `buildChips`/`buildFeelChips`, `selectedActions`/`setSelectedActions` vs `feelList`/`setFeelList` are near-identical pairs. Extract a generic comma-list chip editor; split chips/date into own files. | `checkin.js:279–412` |
+| ✅ done | **`checkin.js` god module** — split into `checkin-chips.js` (deduplicated action/feeling editors behind shared helpers) and `checkin-meta.js` (date/greeting/pill); orchestrator trimmed from 546 → ~280 LoC. | `checkin.js`, `checkin-chips.js`, `checkin-meta.js` |
 | ✅ done | **Duplicated 7-day week heatmap** — extracted into shared `MCI.weekStripHtml(entries)`; home + dashboard both call it. | `compute.js`, `home.js`, `dashboard.js` |
 | Med | **`energy.js:72` unguarded `settings.components`** — `updateDisplay()` didn't guard while `buildMeters()` did. ✅ Fixed in this pass (defensive `var comps = settings.components || {}`). Path is unreachable in practice (loadSettings always merges components), so no test added. | `energy.js` |
-| Med | **ISO/date-key string-building duplicated** — `timestampKey` (core), `getDateOverrideKey` + `syncDateInput` (checkin) hand-roll the same zero-padded format. Add a `pad2`/key-builder helper. | core + checkin |
+| ✅ done | **ISO/date-key string-building duplicated** — added `MCI.pad2`, used in the core date helpers + `checkin-meta`. | `core.js`, `checkin-meta.js` |
 | ✅ done | **Domain thresholds in the render layer** — extracted to `MCI.scoreTier/energyTier/valenceTier` in `compute.js`; home/dashboard/week-strip prefix the tier. | `compute.js`, `home.js`, `dashboard.js` |
 | ✅ done | **Hardcoded UI string** — mood readout now uses the `moodReadout` i18n key (EN + NL). | `mood.js`, `translations.js` |
 | ✅ done | **`reminder.js` Dutch fallbacks** — fallbacks and comments switched to English to match convention. | `reminder.js` |
-| Low | **Doc'd Checkin exception too narrow** — `checkin.js` also calls `MCI.Nav.switchTo/activeRoute` and `MCI.Weather.getCurrent()`. Widen the documented exception or route via the bus. | `checkin.js:470,475,520` |
+| ✅ done | **Doc'd Checkin exception too narrow** — widened the exception in architecture.md / CLAUDE.md / copilot-instructions to cover `CheckinMeta`, plus the `Weather`/`Nav` reads. | docs |
 
 ---
 

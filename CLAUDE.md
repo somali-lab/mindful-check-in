@@ -28,7 +28,7 @@ All JS in `src/lib/`, `src/modules/`, `src/data/`, and `src/boot.js` must be **E
 ## Architecture
 
 - Every source file is an IIFE attaching its public API to the single global `window.MCI` (e.g. `MCI.Wheel = { init, ... }`). `src/boot.js` calls each module's `init()` in dependency order on `DOMContentLoaded`.
-- Modules communicate **only** via the event bus (`MCI.on` / `MCI.off` / `MCI.emit`) — no direct module-to-module calls. Exception: `Checkin` may call getters/setters on its sub-modules `Wheel`, `Body`, `Energy`, `Mood`. Each module owns its own rendering.
+- Modules communicate **only** via the event bus (`MCI.on` / `MCI.off` / `MCI.emit`) — no direct module-to-module calls. Exception: `Checkin` orchestrates its form sub-modules directly — getters/setters on `Wheel`, `Body`, `Energy`, `Mood`, `CheckinMeta` (and reads `Weather`/`Nav` getters); the `CheckinChips`/`CheckinMeta` helpers otherwise react to bus events. Each module owns its own rendering.
 - `src/lib/core.js` = event bus, localStorage Store (`MCI.get/put/del`), i18n, helpers, entry normalization. `src/lib/compute.js` = mood scoring / streaks. `src/data/static.js` = wheel/mood/weather/body data. `src/data/translations.js` = all UI strings.
 - Persistence is `localStorage` only (6 JSON keys). Full module contract, event list, storage keys, and entry schema: @architecture.md
 

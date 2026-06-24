@@ -191,6 +191,8 @@ modules/
   navigation.js       — Tab routing, theme, language switching
   home.js             — Home dashboard: stats, heatmap, streak
   checkin.js          — Check-in form orchestration, save/load, visibility
+  checkin-chips.js    — Quick-action pills and custom-feeling tags
+  checkin-meta.js     — Check-in date control, greeting, save-state pill
   section-nav.js      — Check-in left-rail section navigator (scroll-spy)
   wheel.js            — Emotion wheel SVG rendering and selection
   body.js             — Body signals SVG interaction
