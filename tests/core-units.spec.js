@@ -3,7 +3,7 @@
 // These replace the deleted branch-coverage suite: a handful of genuine
 // edge-case assertions on logic that the behavioural specs don't exercise,
 // rather than ~225 browser-driven tests written to chase a coverage number.
-const { test, expect } = process.env.COVERAGE === '1' ? require('./fixtures/coverage') : require('./fixtures/base');
+const { test, expect } = require('./fixtures/base');
 
 test.describe('compute + core units', () => {
   test.beforeEach(async ({ page }) => {

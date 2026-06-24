@@ -1,5 +1,5 @@
 // @ts-check
-const { test, expect } = process.env.COVERAGE === '1' ? require('./fixtures/coverage') : require('./fixtures/base');
+const { test, expect } = require('./fixtures/base');
 
 // ─── T080: Click dark theme button ───
 

@@ -1,5 +1,5 @@
 // @ts-check
-const { test, expect } = process.env.COVERAGE === '1' ? require('./fixtures/coverage') : require('./fixtures/base');
+const { test, expect } = require('./fixtures/base');
 const { navigateToTab } = require('./fixtures/helpers');
 
 // ── Wheel → allowed emotions lookup (mirrors MCI.Data.wheels in static.js) ──

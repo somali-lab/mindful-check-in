@@ -18,7 +18,6 @@ Mindful Check-in is a private, offline-first mood/check-in web app. Vanilla Java
 
 - Run locally: `npm run dev` (= `npx serve src -p 3004`). The app must be served over HTTP, not opened as `file://` (Web Notifications + fetch).
 - Tests: `cd tests && npx playwright test` (Playwright auto-serves the app on `http://localhost:3000`; runs desktop chromium + Pixel-7 mobile). Filter with `--project=chromium`, `-g "<name>"`, `--headed --workers=1`.
-- Coverage: `cd tests && COVERAGE=1 npx playwright test` → report at `tests/coverage/report.html`.
 - Visual demo walkthrough: `cd tests/demo && npx playwright test` (headed, ~1.5 min).
 
 ## Hard constraint: ES5 only
