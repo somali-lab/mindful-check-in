@@ -542,7 +542,12 @@
           <div class="section-group settings-panel" id="reminder-section" data-settings-panel="reminders">
             <div class="settings-note">
               <span class="settings-note-icon" aria-hidden="true">&#9432;</span>
-              <span data-t="settingReminderServerNote">Break reminders use Web Notifications, which only work when the app runs on a web server. Start it locally with a small server (e.g. “npx serve”) instead of opening the file directly.</span>
+              <span>
+                <span data-t="settingReminderServerNote">Break reminders use Web Notifications, which only work when the app runs on a web server — not when you open the file directly. Start it with</span>
+                <code class="settings-note-code">npm run dev</code>
+                <span data-t="settingReminderServerNoteUrl">and open</span>
+                <code class="settings-note-code">http://localhost:3004</code>
+              </span>
             </div>
             <div class="settings-general-grid">
 
