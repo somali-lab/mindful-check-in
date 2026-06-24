@@ -57,6 +57,18 @@
       });
     }
 
+    /* clicking the brand (logo + name) goes to the home page */
+    var brand = document.querySelector(".ci-brand");
+    /* c8 ignore next 9 -- brand always present */
+    if (brand) {
+      brand.setAttribute("role", "button");
+      brand.setAttribute("tabindex", "0");
+      brand.addEventListener("click", function () { switchTo("home"); });
+      brand.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); switchTo("home"); }
+      });
+    }
+
     var hash = location.hash.replace("#", "");
     var saved = MCI.get(MCI.KEYS.activeTab, null);
     /* c8 ignore next -- hash or saved always resolve */
