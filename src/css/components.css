@@ -401,21 +401,3 @@ select {
 .quick-actions-chips:empty {
   display: none;
 }
-
-.quick-action-chip {
-  display: inline-block;
-  background: var(--bg-surface);
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  padding: 3px 12px;
-  border-radius: 16px;
-  font-size: 0.82rem;
-  cursor: pointer;
-  transition: background 120ms ease, color 120ms ease;
-  white-space: nowrap;
-}
-
-.quick-action-chip:hover {
-  background: var(--accent);
-  color: var(--text-on-accent);
-}
