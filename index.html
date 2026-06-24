@@ -563,6 +563,15 @@
                 <input id="cfg-reminder-interval" type="number" min="15" max="480" step="15"/>
               </div>
 
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-reminder-start" data-t="settingReminderFrom">From</label>
+                <input id="cfg-reminder-start" type="number" min="0" max="23" step="1"/>
+              </div>
+              <div class="settings-general-item">
+                <label class="field-label" for="cfg-reminder-end" data-t="settingReminderUntil">Until</label>
+                <input id="cfg-reminder-end" type="number" min="1" max="24" step="1"/>
+              </div>
+
               <div class="settings-general-item" style="grid-column: 1 / -1;">
                 <span class="field-label" data-t="settingReminderDays">Active days</span>
                 <div class="reminder-days-row">
@@ -574,15 +583,6 @@
                   <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="6"/><span data-t="reminderDaySat">Za</span></label>
                   <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="0"/><span data-t="reminderDaySun">Zo</span></label>
                 </div>
-              </div>
-
-              <div class="settings-general-item">
-                <label class="field-label" for="cfg-reminder-start" data-t="settingReminderFrom">From</label>
-                <input id="cfg-reminder-start" type="number" min="0" max="23" step="1"/>
-              </div>
-              <div class="settings-general-item">
-                <label class="field-label" for="cfg-reminder-end" data-t="settingReminderUntil">Until</label>
-                <input id="cfg-reminder-end" type="number" min="1" max="24" step="1"/>
               </div>
 
               <div class="settings-general-item">
