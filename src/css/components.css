@@ -43,21 +43,41 @@ input[type="number"] { width: 100%; max-width: 140px; color: var(--text-strong);
 }
 
 /* ── Buttons ── */
-.save-button {
-  border: 1px solid var(--accent);
-  border-radius: 8px;
-  background: var(--accent);
-  color: var(--text-on-accent);
-  padding: 6px 14px;
-  font: inherit;
-  font-size: 0.82rem;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 16px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font: 600 0.82rem var(--font-sans);
   cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.15s;
 }
 
-.save-button--secondary {
-  background: var(--bg-surface-alt);
-  border-color: var(--border-accent);
-  color: var(--text-strong);
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-on-accent);
+}
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px var(--accent-shadow);
+}
+
+.btn--ghost {
+  padding: 7px 14px;
+  border-color: var(--border-input);
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .reset-button {
@@ -79,8 +99,6 @@ input[type="number"] { width: 100%; max-width: 140px; color: var(--text-strong);
   font-size: 0.82rem;
 }
 
-.save-button:hover,
-.save-button:focus-visible,
 .reset-button:hover,
 .reset-button:focus-visible {
   transform: translateY(-1px);

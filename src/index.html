@@ -763,31 +763,31 @@
     <!-- Fixed app-shell footer: primary action(s) of the active screen -->
     <footer class="app-shell-footer">
       <div class="app-shell-bar app-shell-footer-bar" data-footer="checkin">
-        <button type="button" class="ci-save-secondary" id="ci-btn-new" data-t="btnNewCheckin">New check-in</button>
-        <button type="button" class="ci-save-primary" id="ci-btn-save" data-t="btnSave">Save check-in</button>
+        <button type="button" class="btn btn--ghost" id="ci-btn-new" data-t="btnNewCheckin">New check-in</button>
+        <button type="button" class="btn btn--primary" id="ci-btn-save" data-t="btnSave">Save check-in</button>
       </div>
       <div class="app-shell-bar app-shell-footer-bar" data-footer="home">
-        <button type="button" class="ci-save-primary" id="home-btn-checkin" data-t="homeStartCheckin">Start today's check-in</button>
+        <button type="button" class="btn btn--primary" id="home-btn-checkin" data-t="homeStartCheckin">Start today's check-in</button>
       </div>
       <div class="app-shell-bar app-shell-footer-bar" data-footer="overview">
-        <button type="button" class="ci-save-secondary" id="ov-export" data-t="btnExport">Export entries</button>
-        <label class="ci-save-secondary ci-save-file" style="cursor:pointer">
+        <button type="button" class="btn btn--ghost" id="ov-export" data-t="btnExport">Export entries</button>
+        <label class="btn btn--ghost" style="cursor:pointer">
           <span data-t="btnImport">Import entries</span>
           <input type="file" accept=".json" id="ov-import" class="is-hidden"/>
         </label>
       </div>
       <div class="app-shell-bar app-shell-footer-bar" data-footer="settings">
-        <button type="button" class="ci-save-secondary" id="cfg-btn-reset" data-t="settingReset">Reset to defaults</button>
-        <button type="button" class="ci-save-secondary" id="cfg-btn-export" data-t="settingExport">Export settings</button>
-        <label class="ci-save-secondary ci-save-file" style="cursor:pointer">
+        <button type="button" class="btn btn--ghost" id="cfg-btn-reset" data-t="settingReset">Reset to defaults</button>
+        <button type="button" class="btn btn--ghost" id="cfg-btn-export" data-t="settingExport">Export settings</button>
+        <label class="btn btn--ghost" style="cursor:pointer">
           <span data-t="settingImport">Import settings</span>
           <input type="file" accept=".json" id="cfg-inp-import" class="is-hidden"/>
         </label>
-        <button type="button" class="ci-save-primary" id="cfg-btn-save" data-t="settingSave">Save settings</button>
+        <button type="button" class="btn btn--primary" id="cfg-btn-save" data-t="settingSave">Save settings</button>
       </div>
       <div class="app-shell-bar app-shell-footer-bar" data-footer="info">
-        <button type="button" class="ci-save-secondary" id="demo-btn-generate" data-t="btnDemo">Generate demo data</button>
-        <button type="button" class="ci-save-secondary info-btn-danger" id="demo-btn-clear" data-t="btnClearAll">Clear all data</button>
+        <button type="button" class="btn btn--ghost" id="demo-btn-generate" data-t="btnDemo">Generate demo data</button>
+        <button type="button" class="btn btn--ghost info-btn-danger" id="demo-btn-clear" data-t="btnClearAll">Clear all data</button>
       </div>
     </footer>
 
@@ -801,8 +801,8 @@
 <dialog id="dlg-import" class="card" style="max-width:360px">
   <h3 data-t="importDialogTitle">Import mode</h3>
   <div class="section-actions" style="gap:8px;margin-top:12px">
-    <button class="save-button" id="dlg-overwrite" data-t="importOverwrite">Overwrite matching</button>
-    <button class="save-button save-button--secondary" id="dlg-skip" data-t="importSkip">Skip matching</button>
+    <button class="btn btn--primary" id="dlg-overwrite" data-t="importOverwrite">Overwrite matching</button>
+    <button class="btn btn--ghost" id="dlg-skip" data-t="importSkip">Skip matching</button>
   </div>
 </dialog>
 

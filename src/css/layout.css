@@ -285,12 +285,12 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   row-gap: 8px;
 }
 
-.app-shell-footer-bar .ci-save-primary {
+.app-shell-footer-bar .btn {
   flex: 0 0 auto;
 }
 
 /* the Home "Start check-in" CTA spans the full width */
-.app-shell-footer-bar[data-footer="home"] .ci-save-primary {
+.app-shell-footer-bar[data-footer="home"] .btn--primary {
   flex: 1 1 auto;
 }
 
@@ -473,8 +473,7 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   }
 
   /* keep footer buttons compact on mobile too */
-  .app-shell-footer-bar .ci-save-primary,
-  .app-shell-footer-bar .ci-save-secondary {
+  .app-shell-footer-bar .btn {
     white-space: nowrap;
   }
 

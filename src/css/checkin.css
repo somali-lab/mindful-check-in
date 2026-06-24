@@ -209,40 +209,7 @@
 }
 
 
-.ci-save-primary {
-  padding: 7px 16px;
-  border: none;
-  border-radius: 9px;
-  background: var(--accent);
-  color: var(--text-on-accent);
-  font: 600 0.82rem var(--font-sans);
-  cursor: pointer;
-  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
-}
-
-.ci-save-primary:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px var(--accent-shadow);
-}
-
-.ci-save-secondary {
-  display: inline-flex;
-  align-items: center;
-  padding: 7px 14px;
-  border: 1px solid var(--border-input);
-  border-radius: 9px;
-  background: transparent;
-  color: var(--text-muted);
-  font: 500 0.82rem var(--font-sans);
-  cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-}
-
-.ci-save-secondary:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
+/* footer Save / New buttons use the shared .btn system (components.css) */
 
 /* ── Responsive: stack core/body, smaller padding ── */
 @media (max-width: 760px) {
