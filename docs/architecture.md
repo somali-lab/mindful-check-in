@@ -2,9 +2,8 @@
 
 **Created**: 2026-04-12
 **Status**: Active
-**Related**: [specs/000-specs-mindful-checkin/spec.md](../specs/000-specs-mindful-checkin/spec.md) (layout-agnostic functional specification)
 
-This document captures the technology choices and constraints of the **current implementation**. The functional specification is deliberately layout-agnostic; this file records how the application is built today. A different implementation could satisfy the same spec with different technology choices.
+This document captures the technology choices and constraints of the **current implementation** — how the application is built today.
 
 ---
 
@@ -34,7 +33,7 @@ ES5-compatible code ensures the widest browser support without requiring transpi
 - **Format**: JSON for all keys
 - **Error handling**: All reads wrapped in `try/catch` (parse errors return defaults); all writes wrapped in `try/catch` (quota exceeded → silent degradation)
 
-### Storage Keys (7)
+### Storage Keys (6)
 
 | Key | Type | Content |
 |-----|------|---------|
@@ -44,11 +43,12 @@ ES5-compatible code ensures the widest browser support without requiring transpi
 | `local-mood-tracker-active-tab` | String | Active section (`"checkin"`, `"overview"`, `"settings"`, `"info"`) |
 | `local-mood-tracker-overview-ui` | Object | Overview table state (search, filter, sort, page) |
 | `local-mood-tracker-weather-cache` | Object | Cached weather responses with TTL timestamps |
-| `moodTrackerWheelType` | String | Currently selected emotion wheel variant |
+
+The keys live in one place, `MCI.KEYS` (`lib/core.js`). The active emotion-wheel variant is **not** a separate key — it is stored inside settings as `defaultWheelType` and on each entry as `wheelType`.
 
 ### Entry Key Format
 
-All entries use: `YYYY-MM-DD_HHMMSSmmm` (e.g., `2026-04-12_143052123`)
+The first entry of a day uses `YYYY-MM-DD` (e.g., `2026-04-12`); each additional entry the same day uses `YYYY-MM-DD_HHMMSSmmm` (e.g., `2026-04-12_143052123`). `MCI.dateFromKey()` parses both.
 
 ---
 
@@ -104,12 +104,18 @@ Every file is a self-contained IIFE attaching its public API to `MCI`:
 | `language:changed` | `MCI.setLang()` | lang string |
 | `entry:saved` | `MCI.saveEntry()` | `{ key, entry }` |
 | `entry:deleted` | `MCI.deleteEntry()` | `{ key }` |
+| `entries:changed` | `MCI.saveAllEntries()` | — (bulk import / replace) |
 | `entry:load` | Checkin | `{ key, entry }` |
 | `entry:new` | Checkin | — |
+| `entry:request-load` | `MCI.bindEntryClick()`, Overview | `{ key, entry }` |
 | `tab:changed` | Nav | route string |
 | `theme:changed` | Nav | theme string |
+| `navigate:route` | Home | route string |
 | `body:toggled` | Body | zones array |
 | `energy:set` | Energy | `{ key, value }` or null |
+| `mood:selected` | Mood | selection `{ row, col, label, color }` or null |
+| `wheel:selected` | Wheel | picked emotion id (string) |
+| `weather:fetched` | Weather | weather data object |
 
 ---
 
@@ -130,7 +136,7 @@ Every file is a self-contained IIFE attaching its public API to `MCI`:
 
 | Dataset | Stored as | Content |
 |---------|-----------|---------|
-| Emotion wheel variants | `MCI.Data.wheels` | 5 variants, each: `{ name, emotions[], colors[] }` |
+| Emotion wheel variants | `MCI.Data.wheels` | 5 variants, each: `{ labelKey, emotions: [{ id, tKey }], colors[] }` |
 | Mood grid labels | `MCI.Data.moodLabels` | Two 10×10 arrays (EN, NL) — 100 labels each |
 | Mood grid colors | `MCI.Data.moodColors` | 10×10 hex color array |
 | Body zone definitions | `MCI.Data.bodyZones` | 26 zone IDs |
@@ -183,14 +189,24 @@ Every file is a self-contained IIFE attaching its public API to `MCI`:
 |-------|------|---------|
 | `defaultLanguage` | `"en"` or `"nl"` | `"en"` |
 | `theme` | `"system"`, `"light"`, `"dark"` | `"system"` |
+| `logo` | logo id (e.g. `"wolf"`, `"cat"`) | `"wolf"` |
 | `defaultWheelType` | one of 5 variant IDs | `"act"` |
 | `rowsPerPage` | number (5–100) | `7` |
 | `overviewMaxChars` | number (20–500) | `120` |
-| `energyEmotionalLabel` | `"emotionalSocial"`, `"emotional"`, `"social"` | `"emotionalSocial"` |
-| `weatherLocation` | string | `""` |
+| `toastDuration` | number (seconds) | `4` |
+| `energyEmotionalLabel` | `"emotionalSocial"`, `"emotional"`, `"social"` | `"social"` |
+| `weatherLocation` | string | `"Amsterdam"` |
 | `weatherCoords` | `{ lat, lon, name }` or null | `null` |
+| `isDefaultQuickActions` | boolean (still using language defaults) | `true` |
 | `quickActions` | string[] | language-specific defaults |
 | `components` | 10 booleans | all `true` |
+| `reminderEnabled` | boolean | `false` |
+| `reminderInterval` | number (minutes) | `120` |
+| `reminderDays` | number[] (day indices, 0 = Sunday) | `[1, 2, 3, 4, 5]` |
+| `reminderStartHour` | number (0–23) | `8` |
+| `reminderEndHour` | number (0–23) | `18` |
+| `reminderCustomTitle` | string | `""` |
+| `reminderCustomBody` | string | `""` |
 
 ### Component Visibility Toggles
 

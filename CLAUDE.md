@@ -30,7 +30,7 @@ All JS in `src/lib/`, `src/modules/`, `src/data/`, and `src/boot.js` must be **E
 - Every source file is an IIFE attaching its public API to the single global `window.MCI` (e.g. `MCI.Wheel = { init, ... }`). `src/boot.js` calls each module's `init()` in dependency order on `DOMContentLoaded`.
 - Modules communicate **only** via the event bus (`MCI.on` / `MCI.off` / `MCI.emit`) — no direct module-to-module calls. Exception: `Checkin` may call getters/setters on its sub-modules `Wheel`, `Body`, `Energy`, `Mood`. Each module owns its own rendering.
 - `src/lib/core.js` = event bus, localStorage Store (`MCI.get/put/del`), i18n, helpers, entry normalization. `src/lib/compute.js` = mood scoring / streaks. `src/data/static.js` = wheel/mood/weather/body data. `src/data/translations.js` = all UI strings.
-- Persistence is `localStorage` only (7 JSON keys). Full module contract, event list, storage keys, and entry schema: @architecture.md
+- Persistence is `localStorage` only (6 JSON keys). Full module contract, event list, storage keys, and entry schema: @architecture.md
 
 ## i18n — never hardcode UI text
 
@@ -38,7 +38,7 @@ The app is bilingual (EN + NL). All user-facing strings live in `src/data/transl
 
 ## Styling
 
-Hand-written CSS with custom properties; design tokens (light + dark palettes) live in `src/css/base.css`, one stylesheet per concern. **No Tailwind / preprocessor** — ignore `.github/workflows/build-tw-css.yml`, it is stale and does not apply to this codebase. Fonts are self-hosted in `src/assets/fonts/` (loaded via `src/css/fonts.css`) to keep the app fully offline with no external requests.
+Hand-written CSS with custom properties; design tokens (light + dark palettes) live in `src/css/base.css`, one stylesheet per concern. **No Tailwind / preprocessor.** Fonts are self-hosted in `src/assets/fonts/` (loaded via `src/css/fonts.css`) to keep the app fully offline with no external requests.
 
 ## Before a change is "done"
 

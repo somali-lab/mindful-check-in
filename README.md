@@ -79,7 +79,7 @@ Five models to choose from (switch per check-in or set a default):
 
 ## Privacy
 
-- **No server.** The app is a static HTML file — open it directly in a browser.
+- **No server.** The app runs entirely in your browser — no backend, no account, no build step.
 - **No network requests** except for the optional weather widget (Open-Meteo, no personal data sent).
 - **No cookies, no tracking, no analytics.**
 - Data is stored as plain JSON in `localStorage`. It is not encrypted by the app.
@@ -96,6 +96,8 @@ All app sources live under `src/`.
 # Clone or download the repo, then open src/index.html in any modern browser:
 open src/index.html
 ```
+
+Opening the file directly works for the core app. The **weather widget and reminders** need the app served over HTTP (see below) — `fetch` and Web Notifications are blocked on the `file://` protocol.
 
 Or serve it locally for development:
 
@@ -171,7 +173,6 @@ Other `localStorage` keys used by the app:
 | `local-mood-tracker-active-tab`    | Last active tab                         |
 | `local-mood-tracker-overview-ui`   | Overview UI state (sort, filters, page) |
 | `local-mood-tracker-weather-cache` | Cached weather responses (1 hour TTL)   |
-| `moodTrackerWheelType`             | Currently selected emotion wheel type   |
 
 ---
 
@@ -190,6 +191,7 @@ modules/
   navigation.js       — Tab routing, theme, language switching
   home.js             — Home dashboard: stats, heatmap, streak
   checkin.js          — Check-in form orchestration, save/load, visibility
+  section-nav.js      — Check-in left-rail section navigator (scroll-spy)
   wheel.js            — Emotion wheel SVG rendering and selection
   body.js             — Body signals SVG interaction
   energy.js           — Energy meters rendering and click handling
@@ -199,6 +201,7 @@ modules/
   settings.js         — Settings form, component toggles, quick actions editor
   dashboard.js        — Summary card and 28-day history calendar
   demo.js             — Demo data generator (30 random entries)
+  reminder.js         — Break reminders via Web Notifications
 css/
   base.css            — CSS custom properties, reset, dark theme, shared utilities
   layout.css          — App shell, nav rail, grid layouts, responsive

@@ -1,33 +1,28 @@
 # mindful-check-in Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2026-04-07
+Guidance for AI coding assistants working in this repo. See also `CLAUDE.md` and `docs/architecture.md`.
 
 ## Active Technologies
-- Vanilla JavaScript (ES5-compatible IIFEs, `"use strict"`) + None (zero runtime dependencies) (002-build-mindful-checkin)
-- `localStorage` — 7 JSON keys for entries, settings, language, active tab, overview UI state, weather cache, wheel type (002-build-mindful-checkin)
-
-- JavaScript (ES2020+ for test files; app under test is ES5) + @playwright/test (dev-only), static file server (npx serve) (001-playwright-e2e-tests)
+- Vanilla JavaScript (ES5-compatible IIFEs, `"use strict"`), zero runtime dependencies, no build step
+- `localStorage` — 6 JSON keys: entries, settings, language, active tab, overview UI state, weather cache
+- Tests: `@playwright/test` (dev-only), served via `npx serve` — test files are modern JS (ES2020+)
 
 ## Project Structure
 
 ```text
-backend/
-frontend/
-tests/
+src/      — application source (index.html, boot.js, lib/, modules/, data/, css/, assets/)
+docs/     — architecture reference
+tests/    — Playwright E2E suite
 ```
 
 ## Commands
 
-npm test; npm run lint
+- `npm run dev` — serve the app on http://localhost:3004
+- `cd tests && npx playwright test` — run the E2E suite
 
 ## Code Style
 
-JavaScript (ES2020+ for test files; app under test is ES5): Follow standard conventions
-
-## Recent Changes
-- 002-build-mindful-checkin: Added Vanilla JavaScript (ES5-compatible IIFEs, `"use strict"`) + None (zero runtime dependencies)
-
-- 001-playwright-e2e-tests: Added JavaScript (ES2020+ for test files; app under test is ES5) + @playwright/test (dev-only), static file server (npx serve)
+ES5 for all app code under `src/` (no `let`/`const`/arrow functions/`class`/template literals/modules). Test files may use modern JS.
 
 <!-- MANUAL ADDITIONS START -->
 
@@ -63,7 +58,7 @@ src/boot.js              — DOMContentLoaded: only calls <Module>.init() in dep
 | **Typed loaders** | `MCI.loadSettings()`, `MCI.loadEntries()`, `MCI.saveEntry(key, entry)`, `MCI.saveSettings(settings)`, `MCI.deleteEntry(key)` | Merge with defaults, normalize, and **emit events on save/delete** |
 | **i18n** | `MCI.t(key, params)`, `MCI.setLang(lang)` | Translation lookup with `{param}` substitution, scans `[data-t]`, `[data-t-placeholder]`, `[data-t-aria]` |
 | **Helpers** | `MCI.esc(str)`, `MCI.uid()`, `MCI.formatDate(d)`, `MCI.formatTime(d)`, `MCI.todayKey()`, `MCI.timestampKey()`, `MCI.dateFromKey(key)`, `MCI.download(data, filename)`, `MCI.readFile(file, cb)` | HTML escaping, dates, file I/O |
-| **Normalize** | `MCI.normalize(entry)` | Migrates legacy Dutch field names, fills missing fields with defaults |
+| **Normalize** | `MCI.normalize(entry)` | Fills missing fields with defaults |
 
 ### Module Contract
 
@@ -85,7 +80,7 @@ Every module MUST follow this pattern:
     init: function () {
       // 1. Cache DOM references
       // 2. Bind event listeners
-      // 3. Subscribe to bus events: MCI.Bus.on("event:name", handler)
+      // 3. Subscribe to bus events: MCI.on("event:name", handler)
       // 4. Initial render
     },
     // Getter/setter methods for Checkin to collect/restore form state
@@ -118,14 +113,20 @@ Every module MUST follow this pattern:
 |-------|-----------|---------|-------------|
 | `settings:changed` | `MCI.saveSettings()` | settings object | Energy, Wheel, Body, Checkin (visibility), Overview |
 | `language:changed` | `MCI.setLang()` | lang string | All modules that render text |
-| `entry:saved` | `MCI.saveEntry()` | `{ key, entry }` | Overview, Dashboard |
-| `entry:deleted` | `MCI.deleteEntry()` | `{ key }` | Overview, Dashboard |
+| `entry:saved` | `MCI.saveEntry()` | `{ key, entry }` | Overview, Dashboard, Home |
+| `entry:deleted` | `MCI.deleteEntry()` | `{ key }` | Overview, Dashboard, Home |
+| `entries:changed` | `MCI.saveAllEntries()` | — | Overview, Dashboard, Home |
 | `entry:load` | Checkin | `{ key, entry }` | — |
 | `entry:new` | Checkin | — | — |
+| `entry:request-load` | `MCI.bindEntryClick()`, Overview | `{ key, entry }` | Checkin |
 | `tab:changed` | Nav | route string | Dashboard, Overview |
 | `theme:changed` | Nav | theme string | — |
-| `body:toggled` | Body | zones array | — |
-| `energy:set` | Energy | `{ key, value }` or null | — |
+| `navigate:route` | Home | route string | Nav |
+| `body:toggled` | Body | zones array | Checkin |
+| `energy:set` | Energy | `{ key, value }` or null | Checkin |
+| `mood:selected` | Mood | selection `{ row, col, label, color }` or null | Checkin |
+| `wheel:selected` | Wheel | picked emotion id (string) | Checkin |
+| `weather:fetched` | Weather | weather data object | Checkin |
 
 ### Data Layer
 
