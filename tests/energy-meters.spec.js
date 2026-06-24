@@ -1,44 +1,34 @@
 // @ts-check
 const { test, expect } = process.env.COVERAGE === '1' ? require('./fixtures/coverage') : require('./fixtures/base');
 const {
-  injectEntries,
-  createTestEntry,
   getLocalStorageEntries,
   getTodayKey,
 } = require('./fixtures/helpers');
 
-// ─── T021: Click near top of physical energy meter — high value ───
+// Energy meters are a horizontal 20-segment bar (src/modules/energy.js).
+// Clicking segment N sets the value to round(N * 100 / 20) = N * 5 %.
+// dispatchEvent('click') targets the exact segment, bypassing overlap.
+async function setMeter(page, type, segment) {
+  await page.locator(`.nrg-seg[data-meter="${type}"][data-seg="${segment}"]`).dispatchEvent('click');
+}
 
-test('T021 [US4] click near top of physical energy meter shows ~90-100%', async ({ page }) => {
+// ─── T021: Click the top segment of the physical meter — high value ───
+
+test('T021 [US4] click top segment of physical energy meter shows 100%', async ({ page }) => {
   await page.goto('/#checkin');
-  const meter = page.locator('.energy-meter[data-energy-type="physical"]');
-  const box = await meter.boundingBox();
-  // Click near the very top of the meter
-  await meter.click({ position: { x: box.width / 2, y: 5 } });
+  await setMeter(page, 'physical', 20);
 
-  // Verify fill height is high
-  const fillHeight = await meter.locator('.energy-fill').evaluate(el => el.style.height);
-  const value = parseInt(fillHeight);
-  expect(value).toBeGreaterThanOrEqual(85);
-
-  // Verify display updates
-  const display = page.locator('#energy-display');
-  await expect(display).not.toHaveClass(/is-empty/);
+  await expect(page.locator('.nrg-val[data-meter="physical"]')).toHaveText('100%');
+  await expect(page.locator('#energy-display')).not.toHaveClass(/is-empty/);
 });
 
-// ─── T022: Click scale label 75 on mental meter ───
+// ─── T022: Set the mental meter to 75% (segment 15) ───
 
-test('T022 [US4] click on mental energy meter at 75% position', async ({ page }) => {
+test('T022 [US4] click mental energy meter at the 75% segment', async ({ page }) => {
   await page.goto('/#checkin');
-  const meter = page.locator('.energy-meter[data-energy-type="mental"]');
-  const box = await meter.boundingBox();
-  // 75% from bottom = 25% from top
-  await meter.click({ position: { x: box.width / 2, y: Math.round(box.height * 0.25) } });
+  await setMeter(page, 'mental', 15);
 
-  const fillHeight = await meter.locator('.energy-fill').evaluate(el => el.style.height);
-  const value = parseInt(fillHeight);
-  expect(value).toBeGreaterThanOrEqual(65);
-  expect(value).toBeLessThanOrEqual(85);
+  await expect(page.locator('.nrg-val[data-meter="mental"]')).toHaveText('75%');
 });
 
 // ─── T023: Set all three meters, reset, verify all clear ───
@@ -46,23 +36,16 @@ test('T022 [US4] click on mental energy meter at 75% position', async ({ page })
 test('T023 [US4] set all three meters then reset clears all', async ({ page }) => {
   await page.goto('/#checkin');
 
-  // Click each meter
   for (const type of ['physical', 'mental', 'emotional']) {
-    const meter = page.locator(`.energy-meter[data-energy-type="${type}"]`);
-    await meter.click({ position: { x: 15, y: 50 } });
+    await setMeter(page, type, 10); // 50%
   }
-
-  // Verify display is not empty
   await expect(page.locator('#energy-display')).not.toHaveClass(/is-empty/);
 
-  // Reset
   await page.locator('#nrg-btn-reset').click();
 
-  // Verify all cleared
   await expect(page.locator('#energy-display')).toHaveClass(/is-empty/);
   for (const type of ['physical', 'mental', 'emotional']) {
-    const fill = await page.locator(`.energy-meter[data-energy-type="${type}"] .energy-fill`).evaluate(el => el.style.height);
-    expect(fill === '0%' || fill === '').toBeTruthy();
+    await expect(page.locator(`.nrg-val[data-meter="${type}"]`)).not.toContainText('%');
   }
 });
 
@@ -74,51 +57,32 @@ test('T024 [US4] set energy levels, save, reload, verify meters persist', async 
   // Select emotion to pass validation
   await page.locator('.emotion-segment[data-em="joy"]').click();
 
-  // Set energy meters at approximate positions
-  const physicalMeter = page.locator('.energy-meter[data-energy-type="physical"]');
-  const physBox = await physicalMeter.boundingBox();
-  await physicalMeter.click({ position: { x: physBox.width / 2, y: Math.round(physBox.height * 0.7) } });
+  await setMeter(page, 'physical', 14);  // 70%
+  await setMeter(page, 'mental', 8);     // 40%
+  await setMeter(page, 'emotional', 2);  // 10%
 
-  const mentalMeter = page.locator('.energy-meter[data-energy-type="mental"]');
-  const menBox = await mentalMeter.boundingBox();
-  await mentalMeter.click({ position: { x: menBox.width / 2, y: Math.round(menBox.height * 0.4) } });
-
-  const emotionalMeter = page.locator('.energy-meter[data-energy-type="emotional"]');
-  const emoBox = await emotionalMeter.boundingBox();
-  await emotionalMeter.click({ position: { x: emoBox.width / 2, y: Math.round(emoBox.height * 0.1) } });
-
-  // Save
   await page.locator('#ci-btn-save').click();
   await expect(page.locator('.toast--success')).toBeVisible();
 
-  // Read localStorage values before reload
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
   const entry = entries[todayKey] || entries[Object.keys(entries).find(k => k.startsWith(todayKey))];
-  expect(entry.energy.physical).toBeDefined();
-  expect(entry.energy.mental).toBeDefined();
-  expect(entry.energy.emotional).toBeDefined();
+  expect(entry.energy.physical).toBe(70);
+  expect(entry.energy.mental).toBe(40);
+  expect(entry.energy.emotional).toBe(10);
 
-  // Reload and verify
   await page.reload();
   await expect(page.locator('#energy-display')).not.toHaveClass(/is-empty/);
 });
 
-// ─── T025: Boundary values — 0% and 100% ───
+// ─── T025: Boundary segments — lowest (5%) and highest (100%) ───
 
-test('T025 [US4] click at very bottom (0%) and very top (100%) of meter', async ({ page }) => {
+test('T025 [US4] click lowest and highest segments of a meter', async ({ page }) => {
   await page.goto('/#checkin');
 
-  const meter = page.locator('.energy-meter[data-energy-type="physical"]');
-  const box = await meter.boundingBox();
+  await setMeter(page, 'physical', 1); // lowest segment → 5%
+  await expect(page.locator('.nrg-val[data-meter="physical"]')).toHaveText('5%');
 
-  // Click at bottom — 0%
-  await meter.click({ position: { x: box.width / 2, y: box.height - 2 }, force: true });
-  let fill = await meter.locator('.energy-fill').evaluate(el => el.style.height);
-  expect(parseInt(fill)).toBeLessThanOrEqual(5);
-
-  // Click at top — 100%
-  await meter.click({ position: { x: box.width / 2, y: 2 }, force: true });
-  fill = await meter.locator('.energy-fill').evaluate(el => el.style.height);
-  expect(parseInt(fill)).toBeGreaterThanOrEqual(95);
+  await setMeter(page, 'physical', 20); // highest segment → 100%
+  await expect(page.locator('.nrg-val[data-meter="physical"]')).toHaveText('100%');
 });

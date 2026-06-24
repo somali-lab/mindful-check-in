@@ -17,7 +17,7 @@ const {
 test('smoke: page loads with correct title and check-in tab visible', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle('Mindful Check-in');
-  await expect(page.locator('[data-route="checkin"]')).toBeVisible();
+  await expect(page.locator('[data-route="checkin"]:visible').first()).toBeVisible();
   await navigateToTab(page, 'checkin');
   await expect(page.locator('#view-checkin')).toBeVisible();
 });
@@ -37,21 +37,16 @@ test('T006 [US1] fill all fields and save creates entry in localStorage', async 
   await page.locator('.body-part[data-zone="chest"]').dispatchEvent('click');
   await page.locator('.body-part[data-zone="head"]').dispatchEvent('click');
 
-  // Set energy meters by clicking scale labels
-  const physicalMeter = page.locator('.energy-meter[data-energy-type="physical"]');
-  await physicalMeter.click({ position: { x: 15, y: 10 } });
-
-  const mentalMeter = page.locator('.energy-meter[data-energy-type="mental"]');
-  await mentalMeter.click({ position: { x: 15, y: 40 } });
-
-  const emotionalMeter = page.locator('.energy-meter[data-energy-type="emotional"]');
-  await emotionalMeter.click({ position: { x: 15, y: 60 } });
+  // Set energy meters by tapping segments (horizontal 20-segment bar)
+  await page.locator('.nrg-seg[data-meter="physical"][data-seg="14"]').dispatchEvent('click');
+  await page.locator('.nrg-seg[data-meter="mental"][data-seg="8"]').dispatchEvent('click');
+  await page.locator('.nrg-seg[data-meter="emotional"][data-seg="12"]').dispatchEvent('click');
 
   // Select mood cell
   await page.locator('.mood-cell[data-mr="2"][data-mc="8"]').click();
 
-  // Fill action and note
-  await page.locator('#fld-action').fill('Take a walk');
+  // Actions: the raw textarea is hidden (chips drive it); set its value directly
+  await page.locator('#fld-action').evaluate((el) => { el.value = 'Take a walk'; });
   await page.locator('#fld-note').fill('Good day overall');
 
   // Click save

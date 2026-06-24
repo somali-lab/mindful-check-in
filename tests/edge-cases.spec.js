@@ -213,7 +213,7 @@ test('T143 import settings with unknown keys, unknown keys ignored', async ({ pa
   await page.waitForTimeout(500);
 
   // App should still work
-  await expect(page.locator('[data-route="settings"]')).toBeVisible();
+  await expect(page.locator('[data-route="settings"]:visible').first()).toBeVisible();
 
   try { fs.unlinkSync(tmpPath); } catch (_) {}
 });
@@ -286,7 +286,8 @@ test('T146 special characters safely escaped in text fields', async ({ page }) =
 
   await page.locator('#fld-thoughts').fill('"quotes" & <tags>');
   await page.locator('.emotion-segment[data-em="joy"]').click();
-  await page.locator('#fld-action').fill('action with "special" & <chars>');
+  // #fld-action is hidden (chips drive it); set its value directly
+  await page.locator('#fld-action').evaluate((el) => { el.value = 'action with "special" & <chars>'; });
   await page.locator('#fld-note').fill('<b>bold</b> & "quote"');
 
   await page.locator('#ci-btn-save').click();
@@ -329,7 +330,7 @@ test('T154 localStorage quota full, save does not crash the app', async ({ page 
   // The page should still be functional (not a blank error page)
   await expect(page.locator('#fld-thoughts')).toBeVisible();
   // The tab navigation should still work
-  await expect(page.locator('[data-route="checkin"]')).toBeVisible();
+  await expect(page.locator('[data-route="checkin"]:visible').first()).toBeVisible();
 
   // Clean up filler data so other tests aren't affected
   await page.evaluate(() => {

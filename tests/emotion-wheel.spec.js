@@ -39,8 +39,8 @@ test('T012 [US2] reset clears emotion selection and display', async ({ page }) =
 test('T013 [US2] switch from Ekman (6) to Extended (12) redraws wheel', async ({ page }) => {
   await page.goto('/#checkin');
 
-  // Switch to Ekman
-  await page.locator('#sel-wheel').selectOption('ekman');
+  // Switch to Ekman via the pill tabs (#sel-wheel is hidden; pills drive the variant)
+  await page.locator('#wheel-tabs .wheel-pill[data-wheel="ekman"]').click();
   await expect(page.locator('.emotion-segment')).toHaveCount(6);
 
   // Select an emotion on Ekman
@@ -48,7 +48,7 @@ test('T013 [US2] switch from Ekman (6) to Extended (12) redraws wheel', async ({
   await expect(page.locator('.emotion-segment[data-em="joy"]')).toHaveClass(/is-selected/);
 
   // Switch to Extended
-  await page.locator('#sel-wheel').selectOption('extended');
+  await page.locator('#wheel-tabs .wheel-pill[data-wheel="extended"]').click();
   await expect(page.locator('.emotion-segment')).toHaveCount(12);
 
   // Selection should not carry over (the wheel redraws)
@@ -92,7 +92,7 @@ const wheelVariants = [
 for (const variant of wheelVariants) {
   test(`T015 [US2] ${variant.type} wheel — renders ${variant.count} segments and each selects correctly`, async ({ page }) => {
     await page.goto('/#checkin');
-    await page.locator('#sel-wheel').selectOption(variant.type);
+    await page.locator(`#wheel-tabs .wheel-pill[data-wheel="${variant.type}"]`).click();
     await expect(page.locator('.emotion-segment')).toHaveCount(variant.count);
 
     // Click each segment and verify selection

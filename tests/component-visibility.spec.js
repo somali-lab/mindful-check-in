@@ -25,9 +25,9 @@ const componentToggles = [
   { id: 'moodMatrix', selector: '[data-component="moodMatrix"]' },
   { id: 'actions', selector: '[data-component="actions"]' },
   { id: 'note', selector: '[data-component="note"]' },
-  { id: 'energyPhysical', selector: '.energy-meter[data-energy-type="physical"]' },
-  { id: 'energyMental', selector: '.energy-meter[data-energy-type="mental"]' },
-  { id: 'energyEmotional', selector: '.energy-meter[data-energy-type="emotional"]' },
+  { id: 'energyPhysical', selector: '.nrg-row[data-energy-type="physical"]' },
+  { id: 'energyMental', selector: '.nrg-row[data-energy-type="mental"]' },
+  { id: 'energyEmotional', selector: '.nrg-row[data-energy-type="emotional"]' },
 ];
 
 for (const toggle of componentToggles) {
@@ -79,9 +79,9 @@ test('T039 [US7] disable all 3 energy types, individual energy meters hidden', a
   await injectSettings(page, settings);
   await page.goto('/#checkin');
 
-  await expect(page.locator('.energy-meter[data-energy-type="physical"]')).toBeHidden();
-  await expect(page.locator('.energy-meter[data-energy-type="mental"]')).toBeHidden();
-  await expect(page.locator('.energy-meter[data-energy-type="emotional"]')).toBeHidden();
+  await expect(page.locator('.nrg-row[data-energy-type="physical"]')).toBeHidden();
+  await expect(page.locator('.nrg-row[data-energy-type="mental"]')).toBeHidden();
+  await expect(page.locator('.nrg-row[data-energy-type="emotional"]')).toBeHidden();
 });
 
 // T040: Disable core feeling, verify history mode button absent
@@ -140,7 +140,8 @@ test('T042 [US8] all-on preset — all fields fillable and saved', async ({ page
   await page.locator('.emotion-segment[data-em="joy"]').click();
   await page.locator('.body-part[data-zone="chest"]').dispatchEvent('click');
   await page.locator('.mood-cell[data-mr="5"][data-mc="5"]').click();
-  await page.locator('#fld-action').fill('Walk');
+  // #fld-action is hidden (chips drive it); set its value directly
+  await page.locator('#fld-action').evaluate((el) => { el.value = 'Walk'; });
   await page.locator('#fld-note').fill('A note');
 
   await page.locator('#ci-btn-save').click();
@@ -201,9 +202,9 @@ test('T045 [US8] energy-only preset — only 3 energy meters visible', async ({ 
   await injectSettings(page, settings);
   await page.goto('/#checkin');
 
-  await expect(page.locator('.energy-meter[data-energy-type="physical"]')).toBeVisible();
-  await expect(page.locator('.energy-meter[data-energy-type="mental"]')).toBeVisible();
-  await expect(page.locator('.energy-meter[data-energy-type="emotional"]')).toBeVisible();
+  await expect(page.locator('.nrg-row[data-energy-type="physical"]')).toBeVisible();
+  await expect(page.locator('.nrg-row[data-energy-type="mental"]')).toBeVisible();
+  await expect(page.locator('.nrg-row[data-energy-type="emotional"]')).toBeVisible();
   await expect(page.locator('[data-component="coreFeeling"]')).toBeHidden();
   await expect(page.locator('[data-component="bodySignals"]')).toBeHidden();
   await expect(page.locator('[data-component="moodMatrix"]')).toBeHidden();
@@ -215,9 +216,9 @@ test('T046 [US8] single-energy preset — only mental meter visible', async ({ p
   await injectSettings(page, settings);
   await page.goto('/#checkin');
 
-  await expect(page.locator('.energy-meter[data-energy-type="mental"]')).toBeVisible();
-  await expect(page.locator('.energy-meter[data-energy-type="physical"]')).toBeHidden();
-  await expect(page.locator('.energy-meter[data-energy-type="emotional"]')).toBeHidden();
+  await expect(page.locator('.nrg-row[data-energy-type="mental"]')).toBeVisible();
+  await expect(page.locator('.nrg-row[data-energy-type="physical"]')).toBeHidden();
+  await expect(page.locator('.nrg-row[data-energy-type="emotional"]')).toBeHidden();
 });
 
 // T047: Text-only preset — no interactive visualizations

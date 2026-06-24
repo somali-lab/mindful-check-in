@@ -8,7 +8,7 @@ test('T084 [US18] click NL button, verify Dutch text appears', async ({ page }) 
   await page.locator('.language-button[data-lang-pick="nl"]').click();
 
   // Verify key UI elements switched to Dutch (use data-t elements, nav buttons are icon-only)
-  await expect(page.locator('[data-t="homeGreeting"]')).toContainText('Hoe gaat het met je vandaag?');
+  await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('Hoe voel je je nu?');
 });
 
 // ─── T085: Switch NL → EN, verify English restores ───
@@ -16,10 +16,10 @@ test('T084 [US18] click NL button, verify Dutch text appears', async ({ page }) 
 test('T085 [US18] switch NL then back to EN restores English', async ({ page }) => {
   await page.goto('/');
   await page.locator('.language-button[data-lang-pick="nl"]').click();
-  await expect(page.locator('[data-t="homeGreeting"]')).toContainText('Hoe gaat het met je vandaag?');
+  await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('Hoe voel je je nu?');
 
   await page.locator('.language-button[data-lang-pick="en"]').click();
-  await expect(page.locator('[data-t="homeGreeting"]')).toContainText('How are you today?');
+  await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('How are you feeling now?');
 });
 
 // ─── T086: NL language persists across reload ───
@@ -27,10 +27,10 @@ test('T085 [US18] switch NL then back to EN restores English', async ({ page }) 
 test('T086 [US18] NL language persists across reload', async ({ page }) => {
   await page.goto('/');
   await page.locator('.language-button[data-lang-pick="nl"]').click();
-  await expect(page.locator('[data-t="homeGreeting"]')).toContainText('Hoe gaat het met je vandaag?');
+  await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('Hoe voel je je nu?');
 
   await page.reload();
-  await expect(page.locator('[data-t="homeGreeting"]')).toContainText('Hoe gaat het met je vandaag?');
+  await expect(page.locator('[data-t="ciHowFeel"]')).toContainText('Hoe voel je je nu?');
 });
 
 // ─── T087: NL active, mood matrix shows Dutch labels ───

@@ -25,18 +25,20 @@ test('T016 [US3] click chest zone highlights and shows in display', async ({ pag
   await expect(display).toContainText(/chest/i);
 });
 
-// ─── T017: Toggle off body part ───
+// ─── T017: Cycling a zone's intensity returns it to off ───
 
-test('T017 [US3] click chest to select, click again to deselect', async ({ page }) => {
+test('T017 [US3] tapping a body zone cycles intensity and clears after a full cycle', async ({ page }) => {
   await page.goto('/#checkin');
   const chest = page.locator('.body-part[data-zone="chest"]');
 
-  // Select
+  // First tap selects (level 1)
   await clickBodyPart(page, 'chest');
   await expect(chest).toHaveClass(/is-on/);
 
-  // Deselect
-  await clickBodyPart(page, 'chest');
+  // Zones cycle 0→1→2→3→0; three more taps return it to off
+  await clickBodyPart(page, 'chest'); // level 2
+  await clickBodyPart(page, 'chest'); // level 3
+  await clickBodyPart(page, 'chest'); // level 0 (off)
   await expect(chest).not.toHaveClass(/is-on/);
   await expect(page.locator('#body-display')).toHaveClass(/is-empty/);
 });
@@ -114,7 +116,9 @@ test('T020 [US3] all body part zones toggle on/off independently', async ({ page
     await el.dispatchEvent('click');
     await expect(el).toHaveClass(/is-on/);
 
-    // Toggle off
+    // Complete the 0→1→2→3→0 cycle back to off (three more taps)
+    await el.dispatchEvent('click');
+    await el.dispatchEvent('click');
     await el.dispatchEvent('click');
     await expect(el).not.toHaveClass(/is-on/);
   }

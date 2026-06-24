@@ -71,7 +71,7 @@ test('T114 [US19] weather API failure, app does not crash', async ({ page }) => 
   await page.waitForTimeout(1000);
 
   // App should still function
-  await expect(page.locator('[data-route="checkin"]')).toBeVisible();
+  await expect(page.locator('[data-route="checkin"]:visible').first()).toBeVisible();
   // No critical JS errors
   expect(errors.filter(e => !e.includes('fetch'))).toHaveLength(0);
 });
@@ -144,5 +144,5 @@ test('T118 [US20] geocoding empty results for nonsense city', async ({ page }) =
   // Should show some status/warning message
   // Geocoding happens in weather module, not during settings save in v4
   // App should not crash at minimum
-  await expect(page.locator('[data-route="settings"]')).toBeVisible();
+  await expect(page.locator('[data-route="settings"]:visible').first()).toBeVisible();
 });

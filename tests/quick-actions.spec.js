@@ -11,7 +11,7 @@ const {
 
 test('T107 [US16] default quick actions render chips on check-in', async ({ page }) => {
   await page.goto('/#checkin');
-  const chips = page.locator('#ci-chips .quick-action-chip');
+  const chips = page.locator('#ci-chips .ci-act-pill');
   await expect(chips.first()).toBeVisible();
 });
 
@@ -19,7 +19,7 @@ test('T107 [US16] default quick actions render chips on check-in', async ({ page
 
 test('T108 [US16] click chip appends text to action textarea', async ({ page }) => {
   await page.goto('/#checkin');
-  const firstChip = page.locator('#ci-chips .quick-action-chip').first();
+  const firstChip = page.locator('#ci-chips .ci-act-pill').first();
   const chipText = await firstChip.textContent();
   await firstChip.click();
 
