@@ -2,7 +2,7 @@
 
 **Created**: 2026-04-12
 **Status**: Active
-**Related**: [specs/000-specs-mindful-checkin/spec.md](specs/000-specs-mindful-checkin/spec.md) (layout-agnostic functional specification)
+**Related**: [specs/000-specs-mindful-checkin/spec.md](../specs/000-specs-mindful-checkin/spec.md) (layout-agnostic functional specification)
 
 This document captures the technology choices and constraints of the **current implementation**. The functional specification is deliberately layout-agnostic; this file records how the application is built today. A different implementation could satisfy the same spec with different technology choices.
 

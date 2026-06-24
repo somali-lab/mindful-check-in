@@ -213,7 +213,7 @@ css/
 
 The app follows a modular ES5 IIFE pattern with a single global namespace (`MCI`). Modules communicate via an event bus — no module calls another directly.
 
-See [architecture.md](architecture.md) for the full specification: module contract, event bus API, standard events, data layer, and communication rules.
+See [architecture.md](docs/architecture.md) for the full specification: module contract, event bus API, standard events, data layer, and communication rules.
 
 ---
 
