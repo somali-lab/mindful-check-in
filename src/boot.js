@@ -11,6 +11,8 @@
     MCI.Energy.init();    /* energy meters */
     MCI.Mood.init();      /* mood matrix grid */
     MCI.Weather.init();   /* weather widget */
+    MCI.CheckinChips.init(); /* check-in chip editors — before Checkin to catch its entry:load */
+    MCI.CheckinMeta.init();  /* check-in date / greeting / save-state pill — before Checkin */
     MCI.Checkin.init();   /* save/load/new orchestration */
     MCI.Overview.init();  /* overview table */
     MCI.Settings.init();  /* settings form */

@@ -1,10 +1,13 @@
-/* Mindful Check-in v4 – Checkin Orchestrator */
+/* Mindful Check-in v4 – Checkin Orchestrator.
+   Collects form state, saves/loads entries, toggles component visibility.
+   The chip editors live in checkin-chips.js; the date/greeting/pill in
+   checkin-meta.js — both react to the entry:load / entry:new / entry:saved bus
+   events this module emits. */
 (function () {
   "use strict";
   var MCI = window.MCI;
 
   var _currentKey = null;  /* null = new, string = editing existing */
-  var _dateDirty = false;  /* true once the user edits the date-override field */
 
   /* ── cached module state (updated via bus events) ── */
   var _state = {
@@ -76,10 +79,9 @@
     return entry;
   }
 
-  /* ── load entry into form ── */
+  /* ── load entry into form (chips + meta rebuild via the entry:load event) ── */
   function loadIntoForm(dateKey, entry) {
     _currentKey = dateKey;
-    _dateDirty = false;
 
     /* c8 ignore start -- form fields always present */
     var th = document.getElementById("fld-thoughts");
@@ -123,15 +125,11 @@
     var nf = document.getElementById("fld-note");
     if (nf) nf.value = entry.note || "";
 
-    buildChips();
-    buildFeelChips();
-    updatePill();
     MCI.emit("entry:load", { key: dateKey, entry: entry });
   }
 
   function clearForm() {
     _currentKey = null;
-    _dateDirty = false;
 
     var fields = ["fld-thoughts", "fld-custom", "fld-body-note", "fld-energy-note", "fld-action", "fld-note"];
     for (var i = 0; i < fields.length; i++) {
@@ -155,9 +153,6 @@
     _state.energy = { physical: null, mental: null, emotional: null };
     _state.mood = null;
 
-    buildChips();
-    buildFeelChips();
-    updatePill();
     MCI.emit("entry:new");
   }
 
@@ -171,250 +166,15 @@
       return;
     }
 
-    /* new entries get a millisecond-unique key so rapid "New check-in" saves
-       in the same minute don't collide; the minute-precision date override is
-       only honoured when the user actually edits the date field */
-    var dateKey = _currentKey || (_dateDirty ? getDateOverrideKey() : null) || MCI.timestampKey();
+    /* new entries get a millisecond-unique key (timestampKey) so rapid "New
+       check-in" saves in the same minute don't collide; the minute-precision
+       date override is only honoured when the user edited the date field */
+    var dateKey = _currentKey || MCI.CheckinMeta.getOverrideKey() || MCI.timestampKey();
     entry = MCI.normalize(entry);
     MCI.saveEntry(dateKey, entry);
     _currentKey = dateKey;
 
-    updatePill();
     MCI.banner(MCI.t("saveDone") || /* c8 ignore next */ "Check-in saved!", "success");
-  }
-
-  /* ── date override from datetime-local input ── */
-  function getDateOverrideKey() {
-    var input = document.getElementById("ci-date-override");
-    if (!input || !input.value) return null;
-    var d = new Date(input.value);
-    if (isNaN(d.getTime())) return null;
-    return MCI.formatDate(d) + "_" +
-      ("0" + d.getHours()).slice(-2) +
-      ("0" + d.getMinutes()).slice(-2) +
-      ("0" + d.getSeconds()).slice(-2) +
-      "000";
-  }
-
-  function syncDateInput() {
-    var input = document.getElementById("ci-date-override");
-    if (!input) return;
-    if (_currentKey) {
-      var d = MCI.dateFromKey(_currentKey);
-      if (d) {
-        var iso = d.getFullYear() + "-" +
-          ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
-          ("0" + d.getDate()).slice(-2) + "T" +
-          ("0" + d.getHours()).slice(-2) + ":" +
-          ("0" + d.getMinutes()).slice(-2);
-        input.value = iso;
-      }
-    } else {
-      /* new check-in: default to now so the subline always shows a date (design) */
-      var now = new Date();
-      input.value = now.getFullYear() + "-" +
-        ("0" + (now.getMonth() + 1)).slice(-2) + "-" +
-        ("0" + now.getDate()).slice(-2) + "T" +
-        ("0" + now.getHours()).slice(-2) + ":" +
-        ("0" + now.getMinutes()).slice(-2);
-    }
-    updateDateDisplay();
-  }
-
-  /* ── nicely formatted date in the subline (design: "Mon 22 Jun · 08:30") ── */
-  function currentLang() {
-    /* c8 ignore next -- language key always set */
-    return MCI.get(MCI.KEYS.language, "en") || "en";
-  }
-  function fmtNiceDate(value) {
-    if (!value) return "";
-    var d = new Date(value);
-    /* c8 ignore next -- guard invalid */
-    if (isNaN(d.getTime())) return "";
-    var nl = currentLang() === "nl";
-    var dn = nl ? ["zo", "ma", "di", "wo", "do", "vr", "za"]
-                : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    var mn = nl ? ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"]
-                : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var hh = ("0" + d.getHours()).slice(-2), mm = ("0" + d.getMinutes()).slice(-2);
-    return dn[d.getDay()] + " " + d.getDate() + " " + mn[d.getMonth()] + " · " + hh + ":" + mm;
-  }
-  function updateDateDisplay() {
-    var disp = document.getElementById("ci-date-display");
-    var inp = document.getElementById("ci-date-override");
-    /* c8 ignore next -- elements present in check-in */
-    if (!disp || !inp) return;
-    disp.textContent = fmtNiceDate(inp.value);
-  }
-
-  /* ── editorial greeting (time-of-day) ── */
-  function updateGreeting() {
-    var el = document.getElementById("ci-greeting");
-    /* c8 ignore next -- greeting element always present */
-    if (!el) return;
-    var h = new Date().getHours();
-    var key = h < 12 ? "ciGreetMorning" : (h < 18 ? "ciGreetAfternoon" : "ciGreetEvening");
-    el.textContent = MCI.t(key);
-  }
-
-  /* ── context pill ── */
-  function updatePill() {
-    var pill = document.getElementById("ci-pill");
-    /* c8 ignore next -- pill element always present */
-    if (!pill) return;
-    if (_currentKey) {
-      /* c8 ignore start -- dateFromKey always returns valid Date for valid keys */
-      var d = MCI.dateFromKey(_currentKey);
-      if (d) {
-        pill.textContent = MCI.formatDate(d) + " \u00b7 " + MCI.formatTime(d);
-      } else {
-        pill.textContent = _currentKey;
-      }
-      /* c8 ignore stop */
-      pill.classList.remove("is-new");
-      pill.classList.add("is-saved");
-    } else {
-      pill.textContent = MCI.t("pillNew") || /* c8 ignore next */ "New \u00b7 not saved yet";
-      pill.classList.add("is-new");
-      pill.classList.remove("is-saved");
-    }
-    syncDateInput();
-  }
-
-  /* ── action pills (toggle + inline custom-add, design style) ── */
-  function selectedActions() {
-    var fld = document.getElementById("fld-action");
-    /* c8 ignore next -- action field always present */
-    if (!fld || !fld.value.trim()) return [];
-    return fld.value.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
-  }
-  function setSelectedActions(arr) {
-    var fld = document.getElementById("fld-action");
-    /* c8 ignore next -- action field always present */
-    if (fld) fld.value = arr.join(", ");
-  }
-
-  function buildChips() {
-    var slot = document.getElementById("ci-chips");
-    /* c8 ignore next -- chips slot always present */
-    if (!slot) return;
-    var settings = MCI.loadSettings();
-    /* c8 ignore next -- quickActions always initialized */
-    var base = settings.quickActions || [];
-    var sel = selectedActions();
-    var all = base.slice();
-    for (var s = 0; s < sel.length; s++) {
-      if (all.indexOf(sel[s]) === -1) all.push(sel[s]);
-    }
-    var html = "";
-    for (var i = 0; i < all.length; i++) {
-      var on = sel.indexOf(all[i]) !== -1;
-      html += '<button type="button" class="ci-act-pill' + (on ? " is-on" : "")
-        + '" data-act="' + MCI.esc(all[i]) + '">' + MCI.esc(all[i]) + '</button>';
-    }
-    html += '<button type="button" class="ci-act-add" data-add="1">+ '
-      + MCI.esc(MCI.t("ciAddAction") || /* c8 ignore next */ "Add your own") + '</button>';
-    slot.innerHTML = html;
-  }
-
-  function startAddAction(addBtn) {
-    var wrap = document.createElement("span");
-    wrap.className = "ci-act-add ci-act-add--editing";
-    var input = document.createElement("input");
-    input.type = "text";
-    input.className = "ci-act-input";
-    input.placeholder = MCI.t("ciAddAction") || /* c8 ignore next */ "Add your own";
-    wrap.appendChild(input);
-    addBtn.replaceWith(wrap);
-    input.focus();
-    var done = false;
-    function commit() {
-      if (done) return; done = true;
-      var v = input.value.trim();
-      if (v) {
-        var sel = selectedActions();
-        if (sel.indexOf(v) === -1) sel.push(v);
-        setSelectedActions(sel);
-      }
-      buildChips();
-    }
-    input.addEventListener("keydown", function (ev) {
-      if (ev.key === "Enter") { ev.preventDefault(); commit(); }
-      else if (ev.key === "Escape") { done = true; buildChips(); }
-    });
-    input.addEventListener("blur", commit);
-  }
-
-  function handleChipClick(e) {
-    var add = e.target.closest("[data-add]");
-    if (add) { startAddAction(add); return; }
-    var chip = e.target.closest("[data-act]");
-    /* c8 ignore next -- clicks always target chip buttons in tests */
-    if (!chip) return;
-    var act = chip.getAttribute("data-act");
-    var sel = selectedActions();
-    var idx = sel.indexOf(act);
-    if (idx === -1) sel.push(act); else sel.splice(idx, 1);
-    setSelectedActions(sel);
-    buildChips();
-  }
-
-  /* ── custom-feeling pills ("+ Own feeling") ── */
-  function feelList() {
-    var f = document.getElementById("fld-custom");
-    /* c8 ignore next -- field always present */
-    if (!f || !f.value.trim()) return [];
-    return f.value.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
-  }
-  function setFeelList(arr) {
-    var f = document.getElementById("fld-custom");
-    /* c8 ignore next -- field always present */
-    if (f) f.value = arr.join(", ");
-  }
-  function buildFeelChips() {
-    var slot = document.getElementById("ci-feel-chips");
-    /* c8 ignore next -- slot present in check-in */
-    if (!slot) return;
-    var list = feelList();
-    var html = "";
-    for (var i = 0; i < list.length; i++) {
-      html += '<span class="ci-chip" data-feel="' + i + '">' + MCI.esc(list[i])
-        + '<button type="button" class="ci-chip-x" data-felrm="' + i + '" aria-label="remove">×</button></span>';
-    }
-    html += '<button type="button" class="ci-act-add" data-feladd="1">+ '
-      + MCI.esc(MCI.t("ciAddFeeling") || /* c8 ignore next */ "Own feeling") + '</button>';
-    slot.innerHTML = html;
-  }
-  function startAddFeeling(addBtn) {
-    var wrap = document.createElement("span");
-    wrap.className = "ci-act-add ci-act-add--editing";
-    var input = document.createElement("input");
-    input.type = "text"; input.className = "ci-act-input";
-    input.placeholder = MCI.t("ciAddFeeling") || /* c8 ignore next */ "Own feeling";
-    wrap.appendChild(input);
-    addBtn.replaceWith(wrap);
-    input.focus();
-    var done = false;
-    function commit() {
-      if (done) return; done = true;
-      var v = input.value.trim();
-      if (v) { var l = feelList(); l.push(v); setFeelList(l); }
-      buildFeelChips();
-    }
-    input.addEventListener("keydown", function (ev) {
-      if (ev.key === "Enter") { ev.preventDefault(); commit(); }
-      else if (ev.key === "Escape") { done = true; buildFeelChips(); }
-    });
-    input.addEventListener("blur", commit);
-  }
-  function handleFeelClick(e) {
-    var add = e.target.closest("[data-feladd]");
-    if (add) { startAddFeeling(add); return; }
-    var rm = e.target.closest("[data-felrm]");
-    if (rm) {
-      var idx = parseInt(rm.getAttribute("data-felrm"), 10);
-      var l = feelList(); l.splice(idx, 1); setFeelList(l); buildFeelChips();
-    }
   }
 
   /* ── component visibility ── */
@@ -441,25 +201,6 @@
       var newBtn = document.getElementById("ci-btn-new");
       if (newBtn) newBtn.addEventListener("click", clearForm);
 
-      var chipsSlot = document.getElementById("ci-chips");
-      if (chipsSlot) chipsSlot.addEventListener("click", handleChipClick);
-
-      var feelSlot = document.getElementById("ci-feel-chips");
-      if (feelSlot) feelSlot.addEventListener("click", handleFeelClick);
-
-      /* formatted date control: click opens native picker, change updates the label */
-      var dateInp = document.getElementById("ci-date-override");
-      var dateCtrl = document.getElementById("ci-date-control");
-      if (dateInp) dateInp.addEventListener("change", function () { _dateDirty = true; updateDateDisplay(); });
-      if (dateCtrl && dateInp) {
-        dateCtrl.addEventListener("click", function (e) {
-          if (e.target === dateInp) return;
-          /* c8 ignore next 3 -- showPicker is a user-gesture browser API */
-          if (dateInp.showPicker) { try { dateInp.showPicker(); } catch (_) { dateInp.focus(); } }
-          else dateInp.focus();
-        });
-      }
-
       /* in-card tabs (Check-in / Summary) — present in both the check-in card
          and the summary header; route via Nav and keep all in sync */
       function syncCiTabs(route) {
@@ -481,7 +222,7 @@
       syncCiTabs((MCI.Nav && MCI.Nav.activeRoute) ? MCI.Nav.activeRoute() : "checkin");
       /* c8 ignore stop */
 
-      /* load today if exists */
+      /* load today if exists (emits entry:load → chips/meta sub-modules render) */
       var entries = MCI.loadEntries();
       var todayKey = MCI.todayKey();
       var keys = Object.keys(entries).sort();
@@ -497,10 +238,7 @@
         loadIntoForm(todayEKey, todayEntry);
       }
 
-      buildChips();
-      buildFeelChips();
       applyVisibility();
-      updateGreeting();
 
       /* subscribe to module state events */
       MCI.on("wheel:selected", function (picked) {
@@ -529,13 +267,7 @@
       });
 
       MCI.on("settings:changed", function () {
-        buildChips();
         applyVisibility();
-      });
-      MCI.on("language:changed", function () {
-        updatePill();
-        buildChips();
-        updateGreeting();
       });
       MCI.on("entry:request-load", function (data) {
         if (data && data.key && data.entry) {
