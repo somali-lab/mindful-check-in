@@ -16,6 +16,16 @@
   height: 320px;
 }
 
+/* check-in view sizing (overrides the base above, inside the core/body column) */
+.ci-col-body .body-figure {
+  max-width: 100%;
+  min-height: 330px;
+}
+#view-checkin .body-figure-svg {
+  width: 200px;
+  height: 352px;
+}
+
 .body-figure .body-part {
   fill: var(--body-part-fill);
   stroke: var(--body-part-stroke);

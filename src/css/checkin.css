@@ -197,16 +197,6 @@
   width: 270px;
 }
 
-.ci-col-body .body-figure {
-  max-width: 100%;
-  min-height: 330px;
-}
-
-#view-checkin .body-figure-svg {
-  width: 200px;
-  height: 352px;
-}
-
 .ci-col-body .selection-display {
   text-align: center;
 }
