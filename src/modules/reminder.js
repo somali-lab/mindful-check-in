@@ -1,4 +1,4 @@
-/* Mindful Check-in v4 – Pauze-herinnering via Web Notifications API */
+/* Mindful Check-in v4 – Break reminders via the Web Notifications API */
 (function () {
   "use strict";
   var MCI = window.MCI;
@@ -6,7 +6,7 @@
   var _timer       = null;
   var _enabled     = false;
   var _intervalMs  = 120 * 60 * 1000;
-  var _days        = [1, 2, 3, 4, 5]; /* 0=zo 1=ma … 6=za */
+  var _days        = [1, 2, 3, 4, 5]; /* 0=Sun 1=Mon … 6=Sat */
   var _startHour   = 8;
   var _endHour     = 18;
   var _customTitle = "";
@@ -18,7 +18,7 @@
 
   function _withinWindow() {
     var now = new Date();
-    var day = now.getDay();   /* 0=zo … 6=za */
+    var day = now.getDay();   /* 0=Sun … 6=Sat */
     var h   = now.getHours();
     var dayOk = false;
     for (var i = 0; i < _days.length; i++) {
@@ -32,10 +32,10 @@
     if (Notification.permission !== "granted") return;
     var title = (_customTitle && _customTitle.trim())
       ? _customTitle
-      : (MCI.t("reminderNotifTitle") || "Tijd voor een pauze");
+      : (MCI.t("reminderNotifTitle") || "Time for a break");
     var body  = (_customBody && _customBody.trim())
       ? _customBody
-      : (MCI.t("reminderNotifBody") || "Je hebt al een tijdje gewerkt. Neem even een moment voor jezelf.");
+      : (MCI.t("reminderNotifBody") || "You've been working for a while. Take a moment for yourself.");
     try {
       /* Unique tag for tests so Windows never silently suppresses it as a duplicate */
       var tag = isTest ? ("mci-reminder-test-" + Date.now()) : "mci-reminder";
@@ -64,7 +64,7 @@
 
   function _requestAndStart() {
     if (Notification.permission === "denied") {
-      MCI.banner(MCI.t("reminderNotifDenied") || "Notificaties zijn geblokkeerd in de browser.", "warning");
+      MCI.banner(MCI.t("reminderNotifDenied") || "Notifications are blocked in the browser.", "warning");
       return;
     }
     if (Notification.permission === "default") {
@@ -72,7 +72,7 @@
         if (perm === "granted") {
           _timer = setInterval(_notify, _intervalMs);
         } else {
-          MCI.banner(MCI.t("reminderNotifDenied") || "Notificaties zijn geblokkeerd in de browser.", "warning");
+          MCI.banner(MCI.t("reminderNotifDenied") || "Notifications are blocked in the browser.", "warning");
         }
       });
       return;
@@ -121,7 +121,7 @@
         _applySettings(s2);
       });
 
-      /* test-knop */
+      /* test button */
       var testBtn = document.getElementById("cfg-reminder-test");
       if (testBtn) {
         testBtn.addEventListener("click", function () {
@@ -133,7 +133,7 @@
               if (perm === "granted") {
                 _doNotify(true);
               } else {
-                MCI.banner(MCI.t("reminderNotifDenied") || "Notificaties geblokkeerd.", "warning");
+                MCI.banner(MCI.t("reminderNotifDenied") || "Notifications blocked.", "warning");
               }
             });
           }
