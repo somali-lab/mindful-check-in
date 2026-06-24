@@ -30,8 +30,6 @@
     showDisplay();
   }
 
-  var HEAT = { 1: "#e7c08a", 2: "#d99458", 3: "#bf6438" };
-
   function showDisplay() {
     if (!_display) return;
     var list = getList();
@@ -49,8 +47,8 @@
       var lvl = _activeZones[id] || 2;
       var key = MCI.Data.zoneKeys[id];
       var name = key ? MCI.t(key) : id;
-      html += '<span class="body-sig"><span class="body-sig-dot" style="background:'
-        + HEAT[lvl] + '"></span>' + MCI.esc(name) + '</span>';
+      html += '<span class="body-sig"><span class="body-sig-dot lvl-' + lvl + '"></span>'
+        + MCI.esc(name) + '</span>';
     }
     _display.innerHTML = html;
   }

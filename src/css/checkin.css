@@ -328,10 +328,8 @@ html[data-theme="dark"] body[data-logo="wolf"] .ci-brand-mark {
 
 /* filled segments take the channel colour (copper / sage / blue) */
 .nrg-row[data-energy-type="physical"]  .nrg-seg.is-on { background: var(--accent); }
-.nrg-row[data-energy-type="mental"]    .nrg-seg.is-on { background: #7e8f56; }
-.nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { background: #7e93a8; }
-html[data-theme="dark"] .nrg-row[data-energy-type="mental"]    .nrg-seg.is-on { background: #9fb06a; }
-html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { background: #8ba3bd; }
+.nrg-row[data-energy-type="mental"]    .nrg-seg.is-on { background: var(--energy-mental); }
+.nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { background: var(--energy-emotional); }
 
 /* affordance: hovering the empty track darkens it slightly */
 .nrg-track:hover .nrg-seg:not(.is-on) {
@@ -691,9 +689,9 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 }
 
 /* 3-level intensity (theme-stable warm tones) */
-.body-figure .body-part.lvl-1 { fill: #e7c08a; stroke: #cf9a6b; }
-.body-figure .body-part.lvl-2 { fill: #d99458; stroke: #bf7b46; }
-.body-figure .body-part.lvl-3 { fill: #bf6438; stroke: #9d4f2a; }
+.body-figure .body-part.lvl-1 { fill: var(--body-lvl-1); stroke: var(--body-lvl-1-stroke); }
+.body-figure .body-part.lvl-2 { fill: var(--body-lvl-2); stroke: var(--body-lvl-2-stroke); }
+.body-figure .body-part.lvl-3 { fill: var(--body-lvl-3); stroke: var(--body-lvl-3-stroke); }
 
 /* Body intensity legend + hint */
 .body-hint {
@@ -726,9 +724,9 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   flex: none;
 }
 
-.body-legend-swatch.lvl-1 { background: #e7c08a; }
-.body-legend-swatch.lvl-2 { background: #d99458; }
-.body-legend-swatch.lvl-3 { background: #bf6438; }
+.body-legend-swatch.lvl-1 { background: var(--body-lvl-1); }
+.body-legend-swatch.lvl-2 { background: var(--body-lvl-2); }
+.body-legend-swatch.lvl-3 { background: var(--body-lvl-3); }
 
 /* compact "Selected" readout: intensity dot + name, wrapped (design) */
 .body-selected-label {
@@ -773,6 +771,9 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   border-radius: 50%;
   flex: none;
 }
+.body-sig-dot.lvl-1 { background: var(--body-lvl-1); }
+.body-sig-dot.lvl-2 { background: var(--body-lvl-2); }
+.body-sig-dot.lvl-3 { background: var(--body-lvl-3); }
 
 .body-figure .back-zone {
   fill: var(--back-zone-fill);

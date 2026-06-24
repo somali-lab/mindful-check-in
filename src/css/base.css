@@ -82,6 +82,15 @@ html {
   --score-mid: #d6a85c;
   --score-low: #cf8568;
 
+  /* Energy channel colors (physical uses --accent) */
+  --energy-mental: #7e8f56;
+  --energy-emotional: #7e93a8;
+
+  /* Body intensity (theme-stable warm tones) */
+  --body-lvl-1: #e7c08a;  --body-lvl-1-stroke: #cf9a6b;
+  --body-lvl-2: #d99458;  --body-lvl-2-stroke: #bf7b46;
+  --body-lvl-3: #bf6438;  --body-lvl-3-stroke: #9d4f2a;
+
   /* Summary done state */
   --summary-done-bg: #eef0e0;
   --summary-done-border: #cfd8af;
@@ -162,6 +171,10 @@ html[data-theme="dark"] {
 
   --info-ok: #9fb06a;
   --info-warn: #d99458;
+
+  /* Energy channel colors (dark) */
+  --energy-mental: #9fb06a;
+  --energy-emotional: #8ba3bd;
 }
 
 /* ── Body & Typography ── */
