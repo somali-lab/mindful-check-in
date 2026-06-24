@@ -1,7 +1,7 @@
 # Mindful Check-in — Improvement Plan
 
 **Created**: 2026-06-24
-**Status**: Active — Workstream 2 (docs) largely done; Workstreams 1, 3, 4 pending
+**Status**: Active — Workstreams 1 (tests) & 2 (docs) done + CI added (2026-06-24); Workstream 4 (code refactors) and test polish pending
 **Scope**: Architectural consistency, SOLID/DRY/SoC, test relevance, documentation & agent files.
 
 This plan is the output of a full review of `src/` (~4,575 LoC JS, ~4,058 LoC CSS), the Playwright suite (~6,475 LoC across 30 specs), the docs, and the `.claude` / `.github` config.
@@ -21,9 +21,9 @@ The **runtime architecture is sound** for a no-build vanilla-JS app. The debt is
 
 ---
 
-## 🔴 Critical finding — the test suite does not pass on `main`
+## ✅ Resolved (2026-06-24) — the test suite is green again
 
-Running `npx playwright test --project=chromium` on a clean `main`: **343 passed, ~44 failed**. The failures are **stale selectors / stale expected strings**, not app bugs — the app works; the tests rotted:
+**Now: `346 passed` (chromium + mobile-chrome) with CI guarding push/PR to `main`.** This was originally the critical finding: a clean `main` ran **343 passed, ~44 failed** — **stale selectors / stale expected strings**, not app bugs (the app worked; the tests rotted):
 
 | Failing spec | Stale reference | Current reality |
 |---|---|---|
@@ -41,24 +41,24 @@ Running `npx playwright test --project=chromium` on a clean `main`: **343 passed
 
 The suite is 6,475 LoC for ~4,575 LoC of source. The four `branch-coverage*.spec.js` files (**2,963 LoC, ~225 tests — ~46% of the suite**) are white-box unit tests run through a full browser: `page.goto('/')` then `page.evaluate()` to poke internals (`MCI.off/emit`, override `localStorage.setItem` to throw, call `MCI.normalize`/`computeMoodScore` directly). Their headers say it: *"Target: remaining uncovered branches to reach 85%."* There is **no coverage gate** and **no CI** — so this machinery produces a vanity number with nothing behind it.
 
-### 1a. Repair the rotted behavioral specs (do first — restores a green baseline)
+### 1a. Repair the rotted behavioral specs (do first — restores a green baseline) — ✅ done
 - Map every stale selector/string in the ~44 failing tests to the current DOM and fix them. Establish **one selector convention** (prefer the readable behavioral set, e.g. `data-*` attributes that actually exist).
 - The energy meters need a genuine **rewrite** (vertical → horizontal segmented bar), not a find-replace.
 - Remove the `if (count > 0) { assert }` guard pattern — several "tests" assert nothing when a selector misses, so they pass even when the feature is broken.
 
-### 1b. Delete / consolidate the coverage-chasing layer
+### 1b. Delete / consolidate the coverage-chasing layer — ✅ done (4 files deleted; pure-function checks re-homed in `core-units.spec.js`)
 - **Delete the 4 `branch-coverage*.spec.js` files** (2,963 LoC). Their behavioral half duplicates the named specs (overview sorting is re-tested in 3 files; `hasLightBackground` in 4); their unit half belongs in Node.
 - **Re-home pure-function tests in Node** (jsdom or expose `compute`/`core` for `require`): `normalize`, `computeMoodScore`, `computeStats`, `hasLightBackground`, `formatDate`, `dateFromKey`, `uid`, `debounce`, `esc`, `t`. ~150–250 LoC replaces ~1,800 LoC of browser unit tests; also removes the `COVERAGE=1` ternary from every spec header.
 - **Strip orphaned `Txxx [USyy]` names** — they trace to the deleted spec-kit (`9006271 feat(spec-kit): removed`); no reader can resolve "US27".
 - **Drop the `c8 ignore` arms race** (~200 comments) — once 1b lands, most are moot; let coverage reflect reality.
 
-### 1c. Add genuinely missing coverage
+### 1c. Add genuinely missing coverage — ⏳ pending
 - Reminders settings panel + Web Notifications (untested feature).
 - The documented-but-unfixed `renderHistory` crash when all history modes are disabled (`component-visibility.spec.js:65` works around it instead of fixing — violates the repo's own "reproduce → failing test → fix" rule).
 
 **Target shape:** ~23 behavioral E2E specs (green, one selector convention) + 1 Node unit spec ≈ **~3,200 LoC vs 6,475 today**, with better real-behavior coverage and no vanity machinery.
 
-### 1d. (Decision) Add CI
+### 1d. Add CI — ✅ done (`.github/workflows/test.yml`, push + PR to `main`)
 There is no GitHub Actions workflow (`.github/workflows/` is empty), yet the README implies a comprehensive suite. Either add an action that runs Playwright + the ES5 grep on PR, or stop implying automation in the docs. Pick one.
 
 ---
