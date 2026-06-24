@@ -180,33 +180,6 @@ html[data-theme="dark"] .info-hero-mark {
   line-height: 1.5;
 }
 
-/* Accordion for emotion scores */
-.info-accordion {
-  margin: 6px 0 10px;
-  border: 1px solid var(--border-card);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.info-accordion summary {
-  padding: 8px 12px;
-  font-size: 0.84rem;
-  font-weight: 600;
-  color: var(--text-strong);
-  cursor: pointer;
-  background: var(--bg-surface);
-  list-style: none;
-}
-.info-accordion summary::-webkit-details-marker { display: none; }
-.info-accordion summary::before {
-  content: "\25B6";
-  display: inline-block;
-  margin-right: 8px;
-  font-size: 0.7rem;
-  transition: transform 0.2s;
-}
-.info-accordion[open] summary::before {
-  transform: rotate(90deg);
-}
 .info-accordion-body {
   padding: 8px 12px 12px;
   display: flex;
@@ -236,13 +209,6 @@ html[data-theme="dark"] .info-hero-mark {
   display: inline-block;
   position: relative;
   top: 1px;
-}
-
-.info-score-dot {
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
 }
 
 .score-high  { background: var(--score-high); }

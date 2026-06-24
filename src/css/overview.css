@@ -91,10 +91,6 @@
   color: var(--accent);
 }
 
-.ov-th-sortable.is-active {
-  color: var(--accent-dark);
-}
-
 /* ── Row Styles ── */
 .ov-row {
   cursor: pointer;

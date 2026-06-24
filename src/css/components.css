@@ -58,11 +58,6 @@ select {
   cursor: pointer;
 }
 
-.save-button.is-selected {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-}
-
 .save-button--secondary {
   background: var(--bg-surface-alt);
   border-color: var(--border-accent);

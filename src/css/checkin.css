@@ -793,8 +793,6 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 }
 
 /* ── Mood Grid ── */
-[data-component="moodMatrix"] .subheading { margin: 0; }
-
 .mood-grid-wrapper {
   position: relative;
   margin-top: 16px;
