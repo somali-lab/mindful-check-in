@@ -28,7 +28,6 @@ html {
   --bg-accent: #f3e7d5;
   --bg-energy-meter: #e7ddca;
 
-  --text-primary: #2c261f;
   --text-body: #3a3228;
   --text-strong: #241f18;
   --text-muted: #8c7e6b;
@@ -49,10 +48,6 @@ html {
 
   --text-on-accent: #ffffff;
 
-  --energy-physical: linear-gradient(to top, #e7c08a 0%, #d99458 52%, #bf6438 100%);
-  --energy-mental: linear-gradient(to top, #d6dcb4 0%, #9fb06a 52%, #6f7d44 100%);
-  --energy-emotional: linear-gradient(to top, #cdbfd6 0%, #9c8fb0 52%, #6f6286 100%);
-
   --delete-color: #c2603f;
   --delete-hover: #a64f31;
   --delete-bg-hover: rgba(194, 96, 63, 0.10);
@@ -70,16 +65,11 @@ html {
   --segment-selected-stroke: #2c261f;
 
   /* Text on data-driven colored backgrounds (theme-stable) */
-  --text-on-color: #faf6ee;
   --text-on-color-inv: #2c261f;
 
   /* Mood grid */
-  --mood-cell-text-shadow: 0 1px 2px rgba(44, 33, 20, 0.45);
   --mood-cell-outline: rgba(44, 38, 31, 0.8);
   --mood-cell-shadow: rgba(44, 33, 20, 0.18);
-  --mood-cell-selected-shadow: 0 4px 10px rgba(44, 33, 20, 0.25);
-  --mood-cell-selected-inset: var(--text-primary);
-  --mood-cell-selected-outline: #bf7b46;
 
   /* Status colors */
   --status-high: #7e8f56;
@@ -120,7 +110,6 @@ html[data-theme="dark"] {
   --bg-accent: #3a2c1d;
   --bg-energy-meter: #3a3026;
 
-  --text-primary: #ece3d4;
   --text-body: #ddd2c0;
   --text-strong: #f5eee0;
   --text-muted: #9b8b76;
@@ -141,10 +130,6 @@ html[data-theme="dark"] {
 
   --text-on-accent: #241b12;
 
-  --energy-physical: linear-gradient(to top, #e7c08a 0%, #d99458 52%, #bf6438 100%);
-  --energy-mental: linear-gradient(to top, #cdd6a6 0%, #9fb06a 52%, #717f48 100%);
-  --energy-emotional: linear-gradient(to top, #cbbdd8 0%, #b39ec4 52%, #7d6e96 100%);
-
   --delete-color: #d98a6f;
   --delete-hover: #e6a48c;
   --delete-bg-hover: rgba(217, 138, 111, 0.14);
@@ -159,15 +144,10 @@ html[data-theme="dark"] {
 
   --segment-selected-stroke: #ece3d4;
 
-  --text-on-color: #faf6ee;
   --text-on-color-inv: #2c261f;
 
-  --mood-cell-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   --mood-cell-outline: rgba(236, 227, 212, 0.85);
   --mood-cell-shadow: rgba(0, 0, 0, 0.35);
-  --mood-cell-selected-shadow: 0 0 0 4px #e0a064, 0 0 18px 4px rgba(217, 148, 88, 0.5);
-  --mood-cell-selected-inset: #241b12;
-  --mood-cell-selected-outline: #e0a064;
 
   --summary-done-bg: rgba(159, 176, 106, 0.14);
   --summary-done-border: rgba(159, 176, 106, 0.32);
@@ -224,21 +204,4 @@ html[data-theme="dark"] svg:not(.body-figure-svg):not(.emotion-wheel) {
   font-size: 0.9rem;
   line-height: 1.6;
   margin-bottom: 16px;
-}
-
-.app-version {
-  text-align: center;
-  color: var(--text-faint);
-  font-size: 0.78rem;
-  margin-top: 24px;
-}
-
-.energy-value {
-  display: block;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 1.1rem;
-  color: var(--text-strong);
-  margin-top: 4px;
 }

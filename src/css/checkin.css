@@ -7,16 +7,6 @@
   background: var(--bg-surface-alt);
 }
 
-/* In-card app header */
-.ci-appbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 15px 24px;
-  border-bottom: 1px solid var(--border-light);
-}
-
 .ci-brand {
   display: flex;
   align-items: center;
@@ -64,12 +54,6 @@ html[data-theme="dark"] body[data-logo="wolf"] .ci-brand-mark {
   background-image: url(../assets/logos/wolf-dark.png);
 }
 
-.ci-appbar-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .ci-tabs {
   display: flex;
   gap: 4px;
@@ -94,23 +78,6 @@ html[data-theme="dark"] body[data-logo="wolf"] .ci-brand-mark {
   color: var(--text-on-accent);
   font-weight: 600;
 }
-
-.ci-weather-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-light);
-  border-radius: 999px;
-  padding: 6px 12px;
-  color: var(--text-muted);
-  font: 500 0.78rem var(--font-sans);
-  white-space: nowrap;
-}
-
-.ci-weather-pill .weather-icon { font-size: 0.95rem; line-height: 1; }
-.ci-weather-pill .weather-temp { color: var(--text-body); font-weight: 600; }
-.ci-weather-pill .weather-sep { opacity: 0.5; }
 
 /* Card body padding (header & footer stay full-bleed) */
 .ci-body {
@@ -387,15 +354,6 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   color: var(--text-faint);
 }
 
-/* ── Footer save row (full-bleed, like the design) ── */
-.ci-footer {
-  display: flex;
-  gap: 12px;
-  padding: 18px 32px;
-  border-top: 1px solid var(--border-light);
-  background: var(--bg-body);
-}
-
 .ci-save-primary {
   padding: 7px 16px;
   border: none;
@@ -542,54 +500,6 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 
 .ci-chip-x:hover { opacity: 1; }
 
-/* ── Checkin Block (legacy) ── */
-.checkin-block {
-  background: var(--bg-surface-alt);
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 14px 14px 12px;
-}
-
-.checkin-block-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.checkin-block-header > .field-label {
-  margin-bottom: 0;
-}
-
-.checkin-block-header > .section-actions {
-  margin-bottom: 0;
-  flex-shrink: 0;
-}
-
-.checkin-block-note-label {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-light);
-}
-
-.feeling-panel {
-  display: flex;
-  flex-direction: column;
-}
-
-.feeling-panel .section-actions {
-  justify-content: flex-start;
-  gap: 8px;
-}
-
-.body-panel,
-.energy-panel {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
 /* ── Emotion Wheel ── */
 .emotion-wheel {
   width: 100%;
@@ -626,20 +536,6 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
 
 #wheel-svg.has-selection .emotion-segment:not(.is-selected) {
   opacity: 0.62;
-}
-
-.emotion-segment-label {
-  font-size: 13px;
-  font-weight: 700;
-  text-anchor: middle;
-  dominant-baseline: middle;
-  pointer-events: none;
-  user-select: none;
-  fill: var(--text-on-color);
-}
-
-.segment-label--light {
-  fill: var(--text-on-color-inv);
 }
 
 /* ══ Donut wheel (Herontwerp) ══ */
@@ -896,33 +792,8 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
   margin-top: 16px;
 }
 
-/* ── Three-column layout adjustments ── */
-.three-column .emotion-wheel { max-width: 100%; }
-
-.three-column .energy-triple { gap: 2px; flex: 1; }
-.three-column .body-figure-svg { width: auto; height: 310px; }
-
-.three-column .selection-display {
-  width: 100%;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  font-size: 0.85rem;
-  margin-top: auto;
-  padding-top: 12px;
-}
-
 /* ── Mood Grid ── */
 [data-component="moodMatrix"] .subheading { margin: 0; }
-
-.mood-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.mood-header .section-actions { margin: 0; }
 
 .mood-grid-wrapper {
   position: relative;
@@ -1040,19 +911,6 @@ html[data-theme="dark"] .nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { 
     font-size: 0.82rem;
     text-align: center;
     line-height: 1.4;
-  }
-
-  .feeling-panel,
-  .body-panel,
-  .energy-panel {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .three-column .selection-display {
-    height: auto;
-    min-height: 48px;
-    align-items: flex-start;
   }
 
   .body-figure-svg {

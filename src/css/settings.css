@@ -204,24 +204,6 @@
   gap: 8px;
 }
 
-.settings-weather-last-fetched {
-  margin: 4px 0 0;
-  font-size: 0.78rem;
-  color: var(--text-faint);
-  line-height: 1.4;
-}
-
-.settings-weather-last-fetched.is-error {
-  color: var(--info-warn);
-}
-
-.form-help {
-  margin: 0 0 8px;
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
 /* ── Settings Responsive ── */
 @media (max-width: 620px) {
   .settings-general-grid,

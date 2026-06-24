@@ -96,15 +96,6 @@ select {
   box-shadow: 0 4px 12px var(--accent-shadow);
 }
 
-.settings-actions {
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 14px;
-  margin-bottom: 0;
-}
-
-.settings-actions .save-button,
-.settings-actions .reset-button,
 .overview-pagination .reset-button,
 .quick-actions-input-row .reset-button {
   padding: 8px 13px;
@@ -189,50 +180,6 @@ select {
   }
 }
 
-/* ── History Banner ── */
-.history-banner {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0;
-  padding: 7px 12px;
-  border-radius: 8px;
-  background: var(--bg-surface-alt);
-  border: 1px solid var(--border-light);
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  line-height: 1.25;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.history-banner::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: currentColor;
-  opacity: 0.72;
-  flex-shrink: 0;
-}
-
-.history-banner.is-success {
-  background: var(--bg-accent);
-  border-color: var(--border-accent);
-  color: var(--accent-dark);
-}
-
-.history-banner.is-warning {
-  background: var(--warning-bg);
-  border-color: var(--warning-border);
-  color: var(--warning-text);
-}
-
-.history-banner.is-hidden {
-  display: none;
-}
-
 /* ── Context Pill ── */
 .checkin-context-pill {
   display: inline-flex;
@@ -249,15 +196,8 @@ select {
 }
 
 .checkin-context-pill--new   { color: var(--text-faint); }
-.checkin-context-pill--today { color: var(--text-muted); }
-.checkin-context-pill--history { color: var(--text-strong); }
 
 /* ── Date Override Picker ── */
-.ci-date-picker {
-  display: inline-flex;
-  align-items: center;
-}
-
 .ci-date-input {
   font-size: 0.82rem;
   font-family: inherit;

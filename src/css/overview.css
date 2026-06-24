@@ -95,33 +95,6 @@
   color: var(--accent-dark);
 }
 
-/* ── Energy Columns ── */
-.overview-col-energyPhysical,
-.overview-col-energyMental,
-.overview-col-energyEmotional {
-  width: 86px;
-  max-width: 86px;
-  text-align: center !important;
-}
-
-.overview-col-energyPhysical .overview-cell-main,
-.overview-col-energyMental .overview-cell-main,
-.overview-col-energyEmotional .overview-cell-main,
-.overview-col-energyPhysical .overview-cell-sub,
-.overview-col-energyMental .overview-cell-sub,
-.overview-col-energyEmotional .overview-cell-sub {
-  text-align: center;
-}
-
-/* ── Action Columns ── */
-.overview-col-delete,
-.overview-col-exportEntry {
-  width: 28px;
-  max-width: 28px;
-  text-align: center !important;
-  vertical-align: middle !important;
-}
-
 /* ── Row Styles ── */
 .ov-row {
   cursor: pointer;
@@ -138,39 +111,6 @@
 .ov-row:hover td,
 .ov-row:focus-visible td {
   background: var(--bg-accent);
-}
-
-.overview-row-note td {
-  padding-top: 1px;
-  padding-bottom: 4px;
-}
-
-.overview-note-cell,
-.overview-energy-note-cell {
-  border-top: 0;
-  background: inherit;
-}
-
-.overview-energy-note-cell .overview-cell-sub {
-  margin-top: 0;
-  text-align: left;
-}
-
-/* ── Cell Values ── */
-.overview-cell-main {
-  color: var(--text-strong);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.overview-cell-sub {
-  margin-top: 1px;
-  font-size: 0.74rem;
-  color: var(--text-faint);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* ── Pagination ── */
