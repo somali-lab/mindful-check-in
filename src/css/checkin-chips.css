@@ -51,23 +51,10 @@
   margin-top: 6px;
 }
 
-/* extends .tag (components.css) — pill-shaped feeling chip */
+/* extends .tag (components.css) — pill-shaped feeling chip; delete × uses .tag-x */
 .ci-chip {
   gap: 3px;
   padding: 6px 7px 6px 13px;
   border-radius: 999px;
   font: 500 0.78rem var(--font-sans);
 }
-
-.ci-chip-x {
-  border: none;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
-  opacity: 0.75;
-  padding: 0 1px;
-}
-
-.ci-chip-x:hover { opacity: 1; }

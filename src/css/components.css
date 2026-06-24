@@ -339,20 +339,20 @@ select {
   white-space: nowrap;
 }
 
-.quick-action-tag .qa-del {
+/* Tag delete affordance (×) — used by .ci-chip (check-in) and .quick-action-tag (settings) */
+.tag-x {
+  flex-shrink: 0;
+  border: 0;
+  background: none;
+  color: inherit;
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
-  opacity: 0.7;
-  transition: opacity 120ms ease;
-  flex-shrink: 0;
-  background: none;
-  border: 0;
-  color: inherit;
   padding: 0;
+  opacity: 0.72;
+  transition: opacity 120ms ease;
 }
-
-.quick-action-tag .qa-del:hover {
+.tag-x:hover {
   opacity: 1;
 }
 

@@ -91,7 +91,7 @@
     var html = "";
     for (var i = 0; i < list.length; i++) {
       html += '<span class="tag ci-chip" data-feel="' + i + '">' + MCI.esc(list[i])
-        + '<button type="button" class="ci-chip-x" data-felrm="' + i + '" aria-label="remove">×</button></span>';
+        + '<button type="button" class="tag-x" data-felrm="' + i + '" aria-label="remove">×</button></span>';
     }
     html += '<button type="button" class="ci-act-add" data-feladd="1">+ '
       + MCI.esc(MCI.t("ciAddFeeling") || "Own feeling") + '</button>';

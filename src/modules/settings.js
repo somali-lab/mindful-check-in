@@ -103,7 +103,7 @@
     for (var i = 0; i < actions.length; i++) {
       html += '<span class="tag quick-action-tag">'
         + MCI.esc(actions[i])
-        + '<button type="button" class="qa-del" data-qi="' + i + '">\u2715</button>'
+        + '<button type="button" class="tag-x qa-del" data-qi="' + i + '">\u2715</button>'
         + '</span>';
     }
     ct.innerHTML = html;
