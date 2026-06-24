@@ -1,7 +1,7 @@
 # Mindful Check-in — Improvement Plan
 
 **Created**: 2026-06-24
-**Status**: Active — Workstreams 1 (tests) & 2 (docs) done + CI added (2026-06-24); Workstream 4 (code refactors) and test polish pending
+**Status**: Active — Workstreams 1 (tests) & 2 (docs) done + CI added; Workstream 4 partially done (week-strip dedup, mood/reminder i18n, energy guard, T138 key fix); remaining W4: `checkin.js` god-module split + smaller items (2026-06-24)
 **Scope**: Architectural consistency, SOLID/DRY/SoC, test relevance, documentation & agent files.
 
 This plan is the output of a full review of `src/` (~4,575 LoC JS, ~4,058 LoC CSS), the Playwright suite (~6,475 LoC across 30 specs), the docs, and the `.claude` / `.github` config.
@@ -54,7 +54,7 @@ The suite is 6,475 LoC for ~4,575 LoC of source. The four `branch-coverage*.spec
 
 ### 1c. Add genuinely missing coverage — ⏳ pending
 - Reminders settings panel + Web Notifications (untested feature).
-- The documented-but-unfixed `renderHistory` crash when all history modes are disabled (`component-visibility.spec.js:65` works around it instead of fixing — violates the repo's own "reproduce → failing test → fix" rule).
+- ✅ The documented `renderHistory` crash (all history modes disabled) no longer reproduces — the shared-helper refactor + event-bus try/catch handle it. T038 now asserts the success toast instead of working around it.
 
 **Target shape:** ~23 behavioral E2E specs (green, one selector convention) + 1 Node unit spec ≈ **~3,200 LoC vs 6,475 today**, with better real-behavior coverage and no vanity machinery.
 
@@ -95,12 +95,12 @@ Architecture is fine; debt is localized. Highest value first:
 | Severity | Item | Location |
 |---|---|---|
 | High | **`checkin.js` god module (546 LoC)** — orchestration + action chips + feeling chips + date formatting + greeting + pill + visibility. `startAddAction`/`startAddFeeling`, `buildChips`/`buildFeelChips`, `selectedActions`/`setSelectedActions` vs `feelList`/`setFeelList` are near-identical pairs. Extract a generic comma-list chip editor; split chips/date into own files. | `checkin.js:279–412` |
-| High | **Duplicated 7-day week heatmap** — identical loop, locale, score→class map, markup. Extract `MCI.renderWeekStrip(entries)`. | `home.js:123–143` & `dashboard.js:42–60` |
+| ✅ done | **Duplicated 7-day week heatmap** — extracted into shared `MCI.weekStripHtml(entries)`; home + dashboard both call it. | `compute.js`, `home.js`, `dashboard.js` |
 | Med | **`energy.js:72` unguarded `settings.components`** — `updateDisplay()` didn't guard while `buildMeters()` did. ✅ Fixed in this pass (defensive `var comps = settings.components || {}`). Path is unreachable in practice (loadSettings always merges components), so no test added. | `energy.js` |
 | Med | **ISO/date-key string-building duplicated** — `timestampKey` (core), `getDateOverrideKey` + `syncDateInput` (checkin) hand-roll the same zero-padded format. Add a `pad2`/key-builder helper. | core + checkin |
 | Med | **Domain thresholds in the render layer** — mood/energy cell classification (`>=67/>=34`, `moodCol>=6/>=4`) lives in `dashboard.js` instead of next to `computeMoodScore` in `compute.js`. | `dashboard.js:138–178` |
-| Med | **Hardcoded UI string** — mood readout `" (E …/10, V …/10)"` bypasses i18n. | `mood.js:61` |
-| Med | **`reminder.js` Dutch fallbacks** (`"Tijd voor een pauze"`, …) break the English-fallback convention used everywhere else. | `reminder.js:35,38,67,136` |
+| ✅ done | **Hardcoded UI string** — mood readout now uses the `moodReadout` i18n key (EN + NL). | `mood.js`, `translations.js` |
+| ✅ done | **`reminder.js` Dutch fallbacks** — fallbacks and comments switched to English to match convention. | `reminder.js` |
 | Low | **Doc'd Checkin exception too narrow** — `checkin.js` also calls `MCI.Nav.switchTo/activeRoute` and `MCI.Weather.getCurrent()`. Widen the documented exception or route via the bus. | `checkin.js:470,475,520` |
 
 ---
