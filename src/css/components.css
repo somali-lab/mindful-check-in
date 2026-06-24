@@ -19,20 +19,16 @@ textarea {
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+select {
   border: 1px solid var(--border-input);
   border-radius: 8px;
   background: var(--bg-surface);
+  color: var(--text-body);
   padding: 6px 10px;
   font: inherit;
 }
-input[type="text"]   { color: var(--text-body); }
 input[type="number"] { width: 100%; max-width: 140px; color: var(--text-strong); }
-
-select {
-  background: var(--bg-surface);
-  color: var(--text-body);
-}
 
 /* ── Select / Dropdown ── */
 .wheel-select {

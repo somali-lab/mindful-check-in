@@ -151,14 +151,9 @@
   font-size: 0.92rem;
 }
 
+/* box from the input/select base (components.css) */
 .settings-general-item select {
-  font: inherit;
   font-size: 0.92rem;
-  padding: 6px 10px;
-  border: 1px solid var(--border-input);
-  border-radius: 8px;
-  background: var(--bg-surface);
-  color: var(--text-body);
 }
 
 .settings-grid {
