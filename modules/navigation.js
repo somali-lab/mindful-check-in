@@ -180,8 +180,8 @@
 
     var icons = {
       mindful: { href: "favicon.svg", type: "image/svg+xml" },
-      wolf: { href: "assets/logos/wolf-light.png", type: "image/png" },
-      logo3: { href: "assets/logos/logo3-light.png", type: "image/png" }
+      cat: { href: "assets/logos/cat-light.png", type: "image/png" },
+      wolf: { href: "assets/logos/wolf-light.png", type: "image/png" }
     };
     var ic = icons[choice] || icons.mindful;
     var link = document.querySelector('link[rel="icon"]');

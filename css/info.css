@@ -19,12 +19,23 @@
   flex: none;
 }
 
-/* image logos (wolf / keep-the-wolves-away) show the full emblem incl. its
-   rim text — use contain so nothing is cropped at this larger size */
-body[data-logo="wolf"] .info-hero-mark,
-body[data-logo="logo3"] .info-hero-mark {
+/* image logos (Somali cat / Keep The Wolves Away emblem) show the full
+   artwork incl. its rim text — use contain so nothing is cropped here */
+body[data-logo="cat"] .info-hero-mark,
+body[data-logo="wolf"] .info-hero-mark {
   background-size: contain;
   background-color: transparent;
+}
+
+/* Personal note about the "Keep the Wolves Away" name */
+.info-kwa {
+  margin-top: 12px;
+  padding-left: 13px;
+  border-left: 2px solid var(--border-accent);
+  font-size: 0.86rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text-muted);
 }
 
 .info-hero-text {

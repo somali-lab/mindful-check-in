@@ -42,8 +42,19 @@
 }
 
 /* ── Logo variants — swap the brand mark (header) and About hero mark.
-   "mindful" = the default copper "M"; "wolf"/"logo3" use image assets
-   with light/dark variants. */
+   "mindful" = the default copper "M"; "cat" (Somali) and "wolf" (Keep The
+   Wolves Away emblem) use image assets with light/dark variants. */
+body[data-logo="cat"] .ci-brand-mark,
+body[data-logo="cat"] .info-hero-mark {
+  background: center / cover no-repeat url(../assets/logos/cat-light.png);
+  color: transparent;
+}
+
+html[data-theme="dark"] body[data-logo="cat"] .ci-brand-mark,
+html[data-theme="dark"] body[data-logo="cat"] .info-hero-mark {
+  background-image: url(../assets/logos/cat-dark.png);
+}
+
 body[data-logo="wolf"] .ci-brand-mark,
 body[data-logo="wolf"] .info-hero-mark {
   background: center / cover no-repeat url(../assets/logos/wolf-light.png);
@@ -53,17 +64,6 @@ body[data-logo="wolf"] .info-hero-mark {
 html[data-theme="dark"] body[data-logo="wolf"] .ci-brand-mark,
 html[data-theme="dark"] body[data-logo="wolf"] .info-hero-mark {
   background-image: url(../assets/logos/wolf-dark.png);
-}
-
-body[data-logo="logo3"] .ci-brand-mark,
-body[data-logo="logo3"] .info-hero-mark {
-  background: center / cover no-repeat url(../assets/logos/logo3-light.png);
-  color: transparent;
-}
-
-html[data-theme="dark"] body[data-logo="logo3"] .ci-brand-mark,
-html[data-theme="dark"] body[data-logo="logo3"] .info-hero-mark {
-  background-image: url(../assets/logos/logo3-dark.png);
 }
 
 .ci-appbar-right {
