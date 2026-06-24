@@ -68,14 +68,15 @@
     /* c8 ignore next -- display always present */
     if (!_display) return;
     var settings = MCI.loadSettings();
+    var comps = settings.components || {};
     var parts = [];
-    if (settings.components.energyPhysical !== false && typeof _values.physical === "number") {
+    if (comps.energyPhysical !== false && typeof _values.physical === "number") {
       parts.push(MCI.t("energyPhysical") + ": " + _values.physical + "%");
     }
-    if (settings.components.energyMental !== false && typeof _values.mental === "number") {
+    if (comps.energyMental !== false && typeof _values.mental === "number") {
       parts.push(MCI.t("energyMental") + ": " + _values.mental + "%");
     }
-    if (settings.components.energyEmotional !== false && typeof _values.emotional === "number") {
+    if (comps.energyEmotional !== false && typeof _values.emotional === "number") {
       var emotLabel = MCI.t(getEmotionalLabel(settings));
       parts.push(emotLabel + ": " + _values.emotional + "%");
     }
