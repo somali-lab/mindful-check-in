@@ -22,21 +22,18 @@
     var elMood = document.getElementById("home-mood");
     var elStatus = document.getElementById("home-status");
 
-    /* c8 ignore start -- DOM elements always exist in full page */
     if (elStreak) elStreak.textContent = streak;
     if (elTotal) elTotal.textContent = total;
     if (elAvg) elAvg.textContent = avgScore;
     if (elMood) elMood.textContent = topEmotion;
     if (elStatus) {
       elStatus.textContent = hasTodayEntry
-        ? (MCI.t("summaryDone") || /* c8 ignore next */ "Today\u2019s check-in done")
-        : (MCI.t("summaryPending") || /* c8 ignore next */ "No check-in yet today");
+        ? (MCI.t("summaryDone") || "Today\u2019s check-in done")
+        : (MCI.t("summaryPending") || "No check-in yet today");
     }
-    /* c8 ignore stop */
 
     /* ── 28-day heatmap ── */
     var heatEl = document.getElementById("home-heatmap");
-    /* c8 ignore next -- heatmap element always present */
     if (!heatEl) return;
 
     var heatData = MCI.buildHeatmapData(entries);
@@ -89,7 +86,7 @@
     var target = 7, R = 30, C = 2 * Math.PI * R;
     var ratio = Math.max(0, Math.min(1, target > 0 ? streak / target : 0));
     var off = C * (1 - ratio);
-    var label = (MCI.t("homeDays") || /* c8 ignore next */ "days").toUpperCase();
+    var label = (MCI.t("homeDays") || "days").toUpperCase();
     return '<svg viewBox="0 0 80 80" width="78" height="78" aria-hidden="true">'
       + '<circle class="home-ring-track" cx="40" cy="40" r="30" fill="none" stroke-width="7"/>'
       + '<circle class="home-ring-arc" cx="40" cy="40" r="30" fill="none" stroke-width="7" stroke-linecap="round"'
@@ -118,7 +115,6 @@
   /* Render the 7-day "this week" heat strip (shared markup with Dashboard). */
   function renderWeek(entries) {
     var el = document.getElementById("home-week");
-    /* c8 ignore next -- week element always present */
     if (!el) return;
     el.innerHTML = MCI.weekStripHtml(entries);
   }
@@ -133,7 +129,6 @@
 
       /* CTA button → navigate to checkin */
       var ctaBtn = document.getElementById("home-btn-checkin");
-      /* c8 ignore next -- CTA button always present */
       if (ctaBtn) {
         ctaBtn.addEventListener("click", function () {
           MCI.emit("navigate:route", "checkin");

@@ -1,7 +1,6 @@
 /* Mindful Check-in v4 – Static data: wheels, mood grid, weather codes, body zones */
 (function () {
   "use strict";
-  /* c8 ignore next -- MCI always exists after core.js */
   var MCI = window.MCI = window.MCI || {};
   MCI.Data = {};
 

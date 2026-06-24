@@ -6,13 +6,11 @@
   /* ── shared comma-list field helpers ── */
   function fieldList(id) {
     var f = document.getElementById(id);
-    /* c8 ignore next -- field always present */
     if (!f || !f.value.trim()) return [];
     return f.value.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
   }
   function setFieldList(id, arr) {
     var f = document.getElementById(id);
-    /* c8 ignore next -- field always present */
     if (f) f.value = arr.join(", ");
   }
 
@@ -46,10 +44,8 @@
   /* ── action pills: base = quick actions + selected; toggle on/off ── */
   function buildActionChips() {
     var slot = document.getElementById("ci-chips");
-    /* c8 ignore next -- chips slot always present */
     if (!slot) return;
     var settings = MCI.loadSettings();
-    /* c8 ignore next -- quickActions always initialized */
     var base = settings.quickActions || [];
     var sel = fieldList("fld-action");
     var all = base.slice();
@@ -63,14 +59,14 @@
         + '" data-act="' + MCI.esc(all[i]) + '">' + MCI.esc(all[i]) + '</button>';
     }
     html += '<button type="button" class="ci-act-add" data-add="1">+ '
-      + MCI.esc(MCI.t("ciAddAction") || /* c8 ignore next */ "Add your own") + '</button>';
+      + MCI.esc(MCI.t("ciAddAction") || "Add your own") + '</button>';
     slot.innerHTML = html;
   }
 
   function handleActionClick(e) {
     var add = e.target.closest("[data-add]");
     if (add) {
-      startInlineAdd(add, MCI.t("ciAddAction") || /* c8 ignore next */ "Add your own", function (v) {
+      startInlineAdd(add, MCI.t("ciAddAction") || "Add your own", function (v) {
         var sel = fieldList("fld-action");
         if (sel.indexOf(v) === -1) sel.push(v);
         setFieldList("fld-action", sel);
@@ -78,7 +74,6 @@
       return;
     }
     var chip = e.target.closest("[data-act]");
-    /* c8 ignore next -- clicks always target chip buttons in tests */
     if (!chip) return;
     var act = chip.getAttribute("data-act");
     var sel = fieldList("fld-action");
@@ -91,7 +86,6 @@
   /* ── custom-feeling tags: list = the field; each tag removable ── */
   function buildFeelChips() {
     var slot = document.getElementById("ci-feel-chips");
-    /* c8 ignore next -- slot present in check-in */
     if (!slot) return;
     var list = fieldList("fld-custom");
     var html = "";
@@ -100,14 +94,14 @@
         + '<button type="button" class="ci-chip-x" data-felrm="' + i + '" aria-label="remove">×</button></span>';
     }
     html += '<button type="button" class="ci-act-add" data-feladd="1">+ '
-      + MCI.esc(MCI.t("ciAddFeeling") || /* c8 ignore next */ "Own feeling") + '</button>';
+      + MCI.esc(MCI.t("ciAddFeeling") || "Own feeling") + '</button>';
     slot.innerHTML = html;
   }
 
   function handleFeelClick(e) {
     var add = e.target.closest("[data-feladd]");
     if (add) {
-      startInlineAdd(add, MCI.t("ciAddFeeling") || /* c8 ignore next */ "Own feeling", function (v) {
+      startInlineAdd(add, MCI.t("ciAddFeeling") || "Own feeling", function (v) {
         var l = fieldList("fld-custom"); l.push(v); setFieldList("fld-custom", l);
       }, buildFeelChips);
       return;
@@ -127,10 +121,8 @@
   MCI.CheckinChips = {
     init: function () {
       var actionSlot = document.getElementById("ci-chips");
-      /* c8 ignore next -- slot always present */
       if (actionSlot) actionSlot.addEventListener("click", handleActionClick);
       var feelSlot = document.getElementById("ci-feel-chips");
-      /* c8 ignore next -- slot always present */
       if (feelSlot) feelSlot.addEventListener("click", handleFeelClick);
 
       /* Checkin fills the backing fields then emits load/new; rebuild on those.

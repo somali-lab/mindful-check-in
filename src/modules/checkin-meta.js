@@ -19,11 +19,9 @@
 
   function syncDateInput() {
     var input = document.getElementById("ci-date-override");
-    /* c8 ignore next -- date input always present */
     if (!input) return;
     /* existing entry: its datetime; new: now (the subline always shows a date) */
     var d = _key ? MCI.dateFromKey(_key) : new Date();
-    /* c8 ignore next -- dateFromKey valid for valid keys */
     if (!d) d = new Date();
     input.value = d.getFullYear() + "-" + MCI.pad2(d.getMonth() + 1) + "-" + MCI.pad2(d.getDate())
       + "T" + MCI.pad2(d.getHours()) + ":" + MCI.pad2(d.getMinutes());
@@ -34,7 +32,6 @@
   function fmtNiceDate(value) {
     if (!value) return "";
     var d = new Date(value);
-    /* c8 ignore next -- guard invalid */
     if (isNaN(d.getTime())) return "";
     var nl = (MCI.get(MCI.KEYS.language, "en") || "en") === "nl";
     var dn = nl ? ["zo", "ma", "di", "wo", "do", "vr", "za"]
@@ -46,14 +43,12 @@
   function updateDateDisplay() {
     var disp = document.getElementById("ci-date-display");
     var inp = document.getElementById("ci-date-override");
-    /* c8 ignore next -- elements present in check-in */
     if (!disp || !inp) return;
     disp.textContent = fmtNiceDate(inp.value);
   }
 
   function updateGreeting() {
     var el = document.getElementById("ci-greeting");
-    /* c8 ignore next -- greeting element always present */
     if (!el) return;
     var h = new Date().getHours();
     var key = h < 12 ? "ciGreetMorning" : (h < 18 ? "ciGreetAfternoon" : "ciGreetEvening");
@@ -62,17 +57,14 @@
 
   function updatePill() {
     var pill = document.getElementById("ci-pill");
-    /* c8 ignore next -- pill element always present */
     if (!pill) return;
     if (_key) {
-      /* c8 ignore start -- dateFromKey always returns a valid Date for valid keys */
       var d = MCI.dateFromKey(_key);
       pill.textContent = d ? (MCI.formatDate(d) + " · " + MCI.formatTime(d)) : _key;
-      /* c8 ignore stop */
       pill.classList.remove("is-new");
       pill.classList.add("is-saved");
     } else {
-      pill.textContent = MCI.t("pillNew") || /* c8 ignore next */ "New · not saved yet";
+      pill.textContent = MCI.t("pillNew") || "New · not saved yet";
       pill.classList.add("is-new");
       pill.classList.remove("is-saved");
     }
@@ -84,9 +76,7 @@
     init: function () {
       var dateInp = document.getElementById("ci-date-override");
       var dateCtrl = document.getElementById("ci-date-control");
-      /* c8 ignore next -- date input always present */
       if (dateInp) dateInp.addEventListener("change", function () { _dirty = true; updateDateDisplay(); });
-      /* c8 ignore start -- showPicker is a user-gesture browser API */
       if (dateCtrl && dateInp) {
         dateCtrl.addEventListener("click", function (e) {
           if (e.target === dateInp) return;
@@ -94,7 +84,6 @@
           else dateInp.focus();
         });
       }
-      /* c8 ignore stop */
 
       MCI.on("entry:load", function (d) { _key = (d && d.key) || null; _dirty = false; render(); });
       MCI.on("entry:saved", function (d) { _key = (d && d.key) || _key; _dirty = false; render(); });

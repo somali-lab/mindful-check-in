@@ -17,7 +17,6 @@
   }
 
   function repaint() {
-    /* c8 ignore next -- SVG always present */
     if (!_svg) return;
     var all = _svg.querySelectorAll(".bz");
     for (var i = 0; i < all.length; i++) {
@@ -34,12 +33,11 @@
   var HEAT = { 1: "#e7c08a", 2: "#d99458", 3: "#bf6438" };
 
   function showDisplay() {
-    /* c8 ignore next -- display element always present */
     if (!_display) return;
     var list = getList();
     if (list.length === 0) {
       _display.innerHTML = "";
-      _display.textContent = MCI.t("bodyNone") || /* c8 ignore next */ "No body signals selected";
+      _display.textContent = MCI.t("bodyNone") || "No body signals selected";
       _display.classList.add("is-empty");
       return;
     }
@@ -69,7 +67,6 @@
     init: function () {
       _svg = document.getElementById("body-svg");
       _display = document.getElementById("body-display");
-      /* c8 ignore next -- SVG element always present */
       if (!_svg) return;
 
       _svg.addEventListener("click", function (e) {
@@ -77,13 +74,11 @@
         if (bz) toggle(bz.getAttribute("data-zone"));
       });
 
-      /* c8 ignore next 2 -- reset button always present */
       var resetBtn = document.getElementById("bdy-btn-reset");
       if (resetBtn) {
         resetBtn.addEventListener("click", function () {
           _activeZones = {};
           repaint();
-          /* c8 ignore next 2 -- note field always present */
           var noteEl = document.getElementById("fld-body-note");
           if (noteEl) noteEl.value = "";
           MCI.emit("body:toggled", []);
@@ -104,7 +99,6 @@
       repaint();
     },
 
-    /* c8 ignore next -- getter used by checkin collect */
     getZones: function () { return getList(); }
   };
 })();

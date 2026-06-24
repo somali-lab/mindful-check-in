@@ -15,7 +15,6 @@
     var checkDate = new Date();
     for (var s = 0; s < keys.length; s++) {
       var kDate = MCI.dateFromKey(keys[s]);
-      /* c8 ignore next -- date keys always valid */
       if (!kDate) continue;
       var kDay = MCI.formatDate(kDate);
       var cDay = MCI.formatDate(checkDate);
@@ -41,7 +40,6 @@
     /* emotion score */
     if (entry.coreFeeling) {
       var s = MCI.Data.moodScores[entry.coreFeeling];
-      /* c8 ignore next -- score always exists for known emotions */
       if (s != null) { total += s; count++; }
     }
 

@@ -19,7 +19,6 @@
 
   function loadState() {
     var s = MCI.get(MCI.KEYS.overviewUI, null);
-    /* c8 ignore start -- saved state always has all fields */
     if (s) {
       _page = s.page || 1;
       _sort = s.sort || "date";
@@ -27,7 +26,6 @@
       _filter = s.filter || "all";
       _search = s.search || "";
     }
-    /* c8 ignore stop */
   }
 
   function saveState() {
@@ -57,7 +55,6 @@
         var d = MCI.dateFromKey(k);
         if (!d || d < cutoff) continue;
       }
-      /* c8 ignore next -- search fields might be empty or undefined */
       if (_search) {
         var hay = (e.thoughts || "") + " " + (e.coreFeeling || "") + " " + (e.moodLabel || "") + " " + (e.actions || "") + " " + (e.note || "");
         if (hay.toLowerCase().indexOf(_search.toLowerCase()) === -1) continue;
@@ -67,7 +64,6 @@
 
     result.sort(function (a, b) {
       var va, vb;
-      /* c8 ignore start -- sort field fallbacks for missing entry data */
       if (_sort === "date") { va = a.key; vb = b.key; }
       else if (_sort === "score") { va = (a.entry.moodScore || 0); vb = (b.entry.moodScore || 0); }
       else if (_sort === "feeling") { va = a.entry.coreFeeling || ""; vb = b.entry.coreFeeling || ""; }
@@ -79,8 +75,6 @@
       }
       else if (_sort === "thoughts") { va = a.entry.thoughts || ""; vb = b.entry.thoughts || ""; }
       else if (_sort === "actions") { va = a.entry.actions || ""; vb = b.entry.actions || ""; }
-      /* c8 ignore stop */
-      /* c8 ignore next -- fallback sort for unknown columns */
       else { va = a.key; vb = b.key; }
 
       if (va < vb) return _sortDir === "asc" ? -1 : 1;
@@ -94,7 +88,6 @@
   /* ── rendering ── */
   function buildHead() {
     var thead = document.getElementById("ov-thead");
-    /* c8 ignore next -- thead always present */
     if (!thead) return;
     var html = "";
     for (var i = 0; i < COLS.length; i++) {
@@ -120,7 +113,6 @@
   function buildBody() {
     var tbody = document.getElementById("ov-tbody");
     var empty = document.getElementById("ov-empty");
-    /* c8 ignore next -- tbody always present */
     if (!tbody) return;
 
     if (_filtered.length === 0) {
@@ -143,14 +135,11 @@
       var item = _filtered[i];
       var e = item.entry;
       var d = MCI.dateFromKey(item.key);
-      /* c8 ignore next -- dateFromKey always returns valid Date for valid keys */
       var dateStr = d ? MCI.formatDate(d) + " " + MCI.formatTime(d) : item.key;
 
       html += '<tr class="ov-row" data-ekey="' + MCI.esc(item.key) + '">';
       html += '<td>' + MCI.esc(dateStr) + '</td>';
-      /* c8 ignore next -- entry fields may be undefined */
       html += '<td>' + MCI.esc(e.coreFeeling ? MCI.emotionLabel(e.coreFeeling) : "\u2014") + '</td>';
-      /* c8 ignore next -- entry fields may be undefined */
       html += '<td>' + MCI.esc(truncate(e.moodLabel, 20) || "\u2014") + '</td>';
       html += '<td>';
       if (e.energy) {
@@ -159,11 +148,9 @@
         if (typeof e.energy.mental === "number") ep.push("M:" + e.energy.mental + "%");
         if (typeof e.energy.emotional === "number") ep.push("E:" + e.energy.emotional + "%");
         html += ep.length > 0 ? ep.join(" ") : "\u2014";
-      } else { /* c8 ignore next */ html += "\u2014"; }
+      } else { html += "\u2014"; }
       html += '</td>';
-      /* c8 ignore next -- entry fields may be undefined */
       html += '<td>' + MCI.esc(truncate(e.thoughts, _maxChars) || "\u2014") + '</td>';
-      /* c8 ignore next -- moodScore defaults to 2 */
       html += '<td class="ov-center">' + scoreLabel(e.moodScore || 2) + '</td>';
       html += '<td class="ov-center"><button type="button" class="ov-del" data-dk="' + MCI.esc(item.key) + '">\u2715</button></td>';
       html += '</tr>';
@@ -181,7 +168,6 @@
       if (tpl && tpl !== "pageInfo") {
         info.textContent = tpl.replace("{current}", _page).replace("{total}", pages || 1);
       } else {
-        /* c8 ignore next -- translation always resolves */
         info.textContent = "Page " + _page + " of " + (pages || 1);
       }
     }
@@ -217,19 +203,16 @@
 
   function startImport(file) {
     MCI.readFile(file, function (err, text) {
-      /* c8 ignore next 2 -- FileReader error untestable in E2E */
       if (err) {
-        MCI.banner(MCI.t("importError") || /* c8 ignore next */ "Invalid JSON file.", "warning");
+        MCI.banner(MCI.t("importError") || "Invalid JSON file.", "warning");
         return;
       }
       try {
-        /* c8 ignore next -- text from FileReader is always a string */
         _pendingImport = typeof text === "string" ? JSON.parse(text) : text;
         var dlg = document.getElementById("dlg-import");
-        /* c8 ignore next -- dialog always present and supports showModal */
         if (dlg && dlg.showModal) dlg.showModal();
       } catch (e) {
-        MCI.banner(MCI.t("importError") || /* c8 ignore next */ "Invalid JSON file.", "warning");
+        MCI.banner(MCI.t("importError") || "Invalid JSON file.", "warning");
       }
     });
   }
@@ -254,7 +237,7 @@
     var dlg = document.getElementById("dlg-import");
     if (dlg && dlg.close) dlg.close();
 
-    MCI.banner((MCI.t("importDone") || /* c8 ignore next */ "Imported {count} entries.").replace("{count}", added), "success");
+    MCI.banner((MCI.t("importDone") || "Imported {count} entries.").replace("{count}", added), "success");
     refresh();
   }
 
@@ -262,7 +245,6 @@
     init: function () {
       loadState();
 
-      /* c8 ignore next 2 -- search input always present */
       var searchEl = document.getElementById("ov-search");
       if (searchEl) {
         searchEl.value = _search;
@@ -274,7 +256,6 @@
         searchEl.addEventListener("input", debouncedSearch);
       }
 
-      /* c8 ignore next 2 -- filter element always present */
       var filterEl = document.getElementById("ov-filter");
       if (filterEl) {
         filterEl.value = _filter;
@@ -285,7 +266,6 @@
         });
       }
 
-      /* c8 ignore next 2 -- thead always present */
       var thead = document.getElementById("ov-thead");
       if (thead) {
         thead.addEventListener("click", function (e) {
@@ -302,7 +282,6 @@
         });
       }
 
-      /* c8 ignore next 2 -- tbody always present */
       var tbody = document.getElementById("ov-tbody");
       if (tbody) {
         tbody.addEventListener("click", function (e) {
@@ -329,7 +308,6 @@
         });
       }
 
-      /* c8 ignore start -- pagination buttons always present */
       var btnFirst = document.getElementById("ov-first");
       var btnPrev  = document.getElementById("ov-prev");
       var btnNext  = document.getElementById("ov-next");
@@ -338,13 +316,10 @@
       if (btnPrev) btnPrev.addEventListener("click", function () { if (_page > 1) { _page--; buildBody(); } });
       if (btnNext) btnNext.addEventListener("click", function () { _page++; buildBody(); });
       if (btnLast) btnLast.addEventListener("click", function () { _page = Math.ceil(_filtered.length / _pageSize); buildBody(); });
-      /* c8 ignore stop */
 
-      /* c8 ignore next 2 -- export button always present */
       var expBtn = document.getElementById("ov-export");
       if (expBtn) expBtn.addEventListener("click", exportEntries);
 
-      /* c8 ignore next 2 -- import input always present */
       var impInput = document.getElementById("ov-import");
       if (impInput) {
         impInput.addEventListener("change", function () {
@@ -353,12 +328,10 @@
         });
       }
 
-      /* c8 ignore start -- dialog buttons always present */
       var btnOw = document.getElementById("dlg-overwrite");
       var btnSk = document.getElementById("dlg-skip");
       if (btnOw) btnOw.addEventListener("click", function () { doImport("overwrite"); });
       if (btnSk) btnSk.addEventListener("click", function () { doImport("skip"); });
-      /* c8 ignore stop */
 
       /* listen for events */
       MCI.onDataChange(function () { refresh(); });
