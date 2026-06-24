@@ -30,7 +30,8 @@
   border-style: solid;
 }
 
-.ci-act-input {
+/* inline add field — opts out of the input base (borderless, transparent) */
+input.ci-act-input {
   border: none;
   outline: none;
   background: transparent;

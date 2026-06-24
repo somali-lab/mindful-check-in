@@ -144,13 +144,14 @@
   height: 38px;
 }
 
+/* text inputs get their box from the input base (components.css) */
 .settings-general-item input {
   width: 100%;
   height: 38px;
+  font-size: 0.92rem;
 }
 
-.settings-general-item select,
-.settings-general-item input {
+.settings-general-item select {
   font: inherit;
   font-size: 0.92rem;
   padding: 6px 10px;

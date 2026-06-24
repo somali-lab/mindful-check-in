@@ -18,16 +18,16 @@ textarea {
   resize: vertical;
 }
 
+input[type="text"],
 input[type="number"] {
-  width: 100%;
-  max-width: 140px;
   border: 1px solid var(--border-input);
   border-radius: 8px;
   background: var(--bg-surface);
-  color: var(--text-strong);
   padding: 6px 10px;
   font: inherit;
 }
+input[type="text"]   { color: var(--text-body); }
+input[type="number"] { width: 100%; max-width: 140px; color: var(--text-strong); }
 
 select {
   background: var(--bg-surface);
@@ -274,14 +274,9 @@ select {
   align-items: center;
 }
 
+/* box from the input base; only the flex sizing is specific here */
 .quick-action-input {
   flex: 1;
-  padding: 6px 10px;
-  border: 1px solid var(--border-input);
-  border-radius: 8px;
-  background: var(--bg-surface);
-  color: var(--text-body);
-  font: inherit;
   min-width: 0;
 }
 
