@@ -27,7 +27,6 @@
     var avgScore = stats.avgScore;
     var topEmotion = stats.topEmotion;
     var hasTodayEntry = stats.hasTodayEntry;
-    var todayKey = MCI.todayKey();
 
     var html = '';
 
@@ -39,25 +38,8 @@
       : (MCI.t("summaryPending") || /* c8 ignore next */ "No check-in yet today")) + '</span>';
     html += '</div>';
 
-    /* 7-day week heatmap */
-    var locale = MCI.lang === "nl" ? "nl-NL" : "en-US";
-    html += '<div class="summary-week">';
-    for (var w = 6; w >= 0; w--) {
-      var wd = new Date();
-      wd.setDate(wd.getDate() - w);
-      var wdk = MCI.formatDate(wd);
-      var wFound = MCI.findEntryForDay(entries, keys, wdk);
-      var wEntry = wFound ? wFound.entry : null;
-      var wScore = wEntry ? (wEntry.moodScore || 2) : 0;
-      var wClass = wScore === 0 ? "heat-empty" : wScore >= 3 ? "heat-high" : wScore >= 2 ? "heat-mid" : "heat-low";
-      var wIsToday = wdk === todayKey;
-      var wLabel = wd.toLocaleDateString(locale, { weekday: "short" });
-      html += '<div class="heat-day' + (wIsToday ? " heat-today" : "") + '">';
-      html += '<div class="heat-dot ' + wClass + '"></div>';
-      html += '<span class="heat-label">' + MCI.esc(wLabel) + '</span>';
-      html += '</div>';
-    }
-    html += '</div>';
+    /* 7-day week heat strip (shared with Home) */
+    html += '<div class="summary-week">' + MCI.weekStripHtml(entries) + '</div>';
 
     /* stats row */
     html += '<div class="summary-stats">';

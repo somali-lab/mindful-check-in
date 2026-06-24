@@ -169,4 +169,29 @@
 
     return { dayNames: MCI.getDayNames(), leadingSpacers: firstDow, days: days };
   };
+
+  /**
+   * Build the 7-day "this week" heat strip markup (shared by Home and Dashboard).
+   * @param {Object} entries - All entries keyed by dateKey
+   * @returns {string} HTML for seven .heat-day cells, today highlighted
+   */
+  MCI.weekStripHtml = function (entries) {
+    var keys = Object.keys(entries);
+    var todayKey = MCI.todayKey();
+    var locale = MCI.lang === "nl" ? "nl-NL" : "en-US";
+    var html = "";
+    for (var w = 6; w >= 0; w--) {
+      var wd = new Date();
+      wd.setDate(wd.getDate() - w);
+      var wdk = MCI.formatDate(wd);
+      var found = MCI.findEntryForDay(entries, keys, wdk);
+      var score = found ? (found.entry.moodScore || 2) : 0;
+      var cls = score === 0 ? "heat-empty" : score >= 3 ? "heat-high" : score >= 2 ? "heat-mid" : "heat-low";
+      var label = wd.toLocaleDateString(locale, { weekday: "short" });
+      html += '<div class="heat-day' + (wdk === todayKey ? " heat-today" : "") + '">'
+        + '<div class="heat-dot ' + cls + '"></div>'
+        + '<span class="heat-label">' + MCI.esc(label) + '</span></div>';
+    }
+    return html;
+  };
 })();

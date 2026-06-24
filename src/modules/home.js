@@ -119,27 +119,12 @@
     return null;
   }
 
-  /* Render the 7-day "this week" heatmap row. */
+  /* Render the 7-day "this week" heat strip (shared markup with Dashboard). */
   function renderWeek(entries) {
     var el = document.getElementById("home-week");
     /* c8 ignore next -- week element always present */
     if (!el) return;
-    var keys = Object.keys(entries), tk = MCI.todayKey();
-    var locale = MCI.lang === "nl" ? "nl-NL" : "en-US";
-    var html = "";
-    for (var w = 6; w >= 0; w--) {
-      var wd = new Date();
-      wd.setDate(wd.getDate() - w);
-      var wdk = MCI.formatDate(wd);
-      var found = MCI.findEntryForDay(entries, keys, wdk);
-      var sc = found ? (found.entry.moodScore || 2) : 0;
-      var cls = sc === 0 ? "heat-empty" : sc >= 3 ? "heat-high" : sc >= 2 ? "heat-mid" : "heat-low";
-      var lbl = wd.toLocaleDateString(locale, { weekday: "short" });
-      html += '<div class="heat-day' + (wdk === tk ? " heat-today" : "") + '">'
-        + '<div class="heat-dot ' + cls + '"></div>'
-        + '<span class="heat-label">' + MCI.esc(lbl) + '</span></div>';
-    }
-    el.innerHTML = html;
+    el.innerHTML = MCI.weekStripHtml(entries);
   }
 
 
