@@ -297,17 +297,16 @@
     });
   };
 
+  MCI.pad2 = function (n) { return ("0" + n).slice(-2); };
+
   MCI.formatDate = function (d) {
     if (!(d instanceof Date)) d = new Date(d);
-    var y = d.getFullYear();
-    var m = ("0" + (d.getMonth() + 1)).slice(-2);
-    var day = ("0" + d.getDate()).slice(-2);
-    return y + "-" + m + "-" + day;
+    return d.getFullYear() + "-" + MCI.pad2(d.getMonth() + 1) + "-" + MCI.pad2(d.getDate());
   };
 
   MCI.formatTime = function (d) {
     if (!(d instanceof Date)) d = new Date(d);
-    return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    return MCI.pad2(d.getHours()) + ":" + MCI.pad2(d.getMinutes());
   };
 
   MCI.todayKey = function () {
@@ -317,9 +316,7 @@
   MCI.timestampKey = function () {
     var n = new Date();
     return MCI.formatDate(n) + "_" +
-      ("0" + n.getHours()).slice(-2) +
-      ("0" + n.getMinutes()).slice(-2) +
-      ("0" + n.getSeconds()).slice(-2) +
+      MCI.pad2(n.getHours()) + MCI.pad2(n.getMinutes()) + MCI.pad2(n.getSeconds()) +
       ("00" + n.getMilliseconds()).slice(-3);
   };
 
