@@ -177,19 +177,8 @@
   function applyLogo(choice) {
     choice = choice || "mindful";
     document.body.setAttribute("data-logo", choice);
-
-    var icons = {
-      mindful: { href: "favicon.svg", type: "image/svg+xml" },
-      cat: { href: "assets/logos/cat-light.png", type: "image/png" },
-      wolf: { href: "assets/logos/wolf-light.png", type: "image/png" }
-    };
-    var ic = icons[choice] || icons.mindful;
-    var link = document.querySelector('link[rel="icon"]');
-    /* c8 ignore next */
-    if (link) {
-      link.setAttribute("type", ic.type);
-      link.setAttribute("href", ic.href);
-    }
+    /* the favicon always stays the neutral "M" (favicon.svg), regardless
+       of the selected in-app logo */
   }
 
   /* ════════════════════════════════════════════

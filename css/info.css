@@ -6,25 +6,20 @@
   margin-bottom: 18px;
 }
 
+/* The About hero always shows the Keep The Wolves Away emblem, regardless
+   of the logo chosen in Settings. contain keeps the full artwork (incl.
+   its rim text) visible; font-size 0 hides the literal "M" in the span. */
 .info-hero-mark {
   width: 104px;
   height: 104px;
   border-radius: 18px;
-  background: linear-gradient(135deg, #cf8c54, #9d5f33);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font: 600 54px var(--font-serif);
+  background: center / contain no-repeat url(../assets/logos/wolf-light.png);
+  font-size: 0;
   flex: none;
 }
 
-/* image logos (Somali cat / Keep The Wolves Away emblem) show the full
-   artwork incl. its rim text — use contain so nothing is cropped here */
-body[data-logo="cat"] .info-hero-mark,
-body[data-logo="wolf"] .info-hero-mark {
-  background-size: contain;
-  background-color: transparent;
+html[data-theme="dark"] .info-hero-mark {
+  background-image: url(../assets/logos/wolf-dark.png);
 }
 
 /* Personal note about the "Keep the Wolves Away" name */
