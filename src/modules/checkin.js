@@ -4,6 +4,7 @@
   var MCI = window.MCI;
 
   var _currentKey = null;  /* null = new, string = editing existing */
+  var _dateDirty = false;  /* true once the user edits the date-override field */
 
   /* ── cached module state (updated via bus events) ── */
   var _state = {
@@ -78,6 +79,7 @@
   /* ── load entry into form ── */
   function loadIntoForm(dateKey, entry) {
     _currentKey = dateKey;
+    _dateDirty = false;
 
     /* c8 ignore start -- form fields always present */
     var th = document.getElementById("fld-thoughts");
@@ -129,6 +131,7 @@
 
   function clearForm() {
     _currentKey = null;
+    _dateDirty = false;
 
     var fields = ["fld-thoughts", "fld-custom", "fld-body-note", "fld-energy-note", "fld-action", "fld-note"];
     for (var i = 0; i < fields.length; i++) {
@@ -168,7 +171,10 @@
       return;
     }
 
-    var dateKey = _currentKey || getDateOverrideKey() || MCI.timestampKey();
+    /* new entries get a millisecond-unique key so rapid "New check-in" saves
+       in the same minute don't collide; the minute-precision date override is
+       only honoured when the user actually edits the date field */
+    var dateKey = _currentKey || (_dateDirty ? getDateOverrideKey() : null) || MCI.timestampKey();
     entry = MCI.normalize(entry);
     MCI.saveEntry(dateKey, entry);
     _currentKey = dateKey;
@@ -444,7 +450,7 @@
       /* formatted date control: click opens native picker, change updates the label */
       var dateInp = document.getElementById("ci-date-override");
       var dateCtrl = document.getElementById("ci-date-control");
-      if (dateInp) dateInp.addEventListener("change", updateDateDisplay);
+      if (dateInp) dateInp.addEventListener("change", function () { _dateDirty = true; updateDateDisplay(); });
       if (dateCtrl && dateInp) {
         dateCtrl.addEventListener("click", function (e) {
           if (e.target === dateInp) return;
