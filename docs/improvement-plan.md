@@ -1,7 +1,7 @@
 # Mindful Check-in — Improvement Plan
 
 **Created**: 2026-06-24
-**Status**: Active — Workstreams 1 (tests) & 2 (docs) done + CI added; Workstream 4 partially done (week-strip dedup, mood/reminder i18n, energy guard, T138 key fix); remaining W4: `checkin.js` god-module split + smaller items (2026-06-24)
+**Status**: Active — Workstreams 1 (tests + reminders coverage) & 2 (docs) done + CI added; Workstream 4 mostly done (week-strip + tier-threshold dedup, mood/reminder i18n, energy guard, T138 key fix); remaining W4: `checkin.js` god-module split + date-key helper + Checkin-exception doc (2026-06-24)
 **Scope**: Architectural consistency, SOLID/DRY/SoC, test relevance, documentation & agent files.
 
 This plan is the output of a full review of `src/` (~4,575 LoC JS, ~4,058 LoC CSS), the Playwright suite (~6,475 LoC across 30 specs), the docs, and the `.claude` / `.github` config.
@@ -52,8 +52,8 @@ The suite is 6,475 LoC for ~4,575 LoC of source. The four `branch-coverage*.spec
 - **Strip orphaned `Txxx [USyy]` names** — they trace to the deleted spec-kit (`9006271 feat(spec-kit): removed`); no reader can resolve "US27".
 - **Drop the `c8 ignore` arms race** (~200 comments) — once 1b lands, most are moot; let coverage reflect reality.
 
-### 1c. Add genuinely missing coverage — ⏳ pending
-- Reminders settings panel + Web Notifications (untested feature).
+### 1c. Add genuinely missing coverage — ✅ done
+- ✅ Reminders settings panel — `reminders.spec.js` covers form persistence + hydration (the Notification firing itself stays out of E2E scope).
 - ✅ The documented `renderHistory` crash (all history modes disabled) no longer reproduces — the shared-helper refactor + event-bus try/catch handle it. T038 now asserts the success toast instead of working around it.
 
 **Target shape:** ~23 behavioral E2E specs (green, one selector convention) + 1 Node unit spec ≈ **~3,200 LoC vs 6,475 today**, with better real-behavior coverage and no vanity machinery.
@@ -98,7 +98,7 @@ Architecture is fine; debt is localized. Highest value first:
 | ✅ done | **Duplicated 7-day week heatmap** — extracted into shared `MCI.weekStripHtml(entries)`; home + dashboard both call it. | `compute.js`, `home.js`, `dashboard.js` |
 | Med | **`energy.js:72` unguarded `settings.components`** — `updateDisplay()` didn't guard while `buildMeters()` did. ✅ Fixed in this pass (defensive `var comps = settings.components || {}`). Path is unreachable in practice (loadSettings always merges components), so no test added. | `energy.js` |
 | Med | **ISO/date-key string-building duplicated** — `timestampKey` (core), `getDateOverrideKey` + `syncDateInput` (checkin) hand-roll the same zero-padded format. Add a `pad2`/key-builder helper. | core + checkin |
-| Med | **Domain thresholds in the render layer** — mood/energy cell classification (`>=67/>=34`, `moodCol>=6/>=4`) lives in `dashboard.js` instead of next to `computeMoodScore` in `compute.js`. | `dashboard.js:138–178` |
+| ✅ done | **Domain thresholds in the render layer** — extracted to `MCI.scoreTier/energyTier/valenceTier` in `compute.js`; home/dashboard/week-strip prefix the tier. | `compute.js`, `home.js`, `dashboard.js` |
 | ✅ done | **Hardcoded UI string** — mood readout now uses the `moodReadout` i18n key (EN + NL). | `mood.js`, `translations.js` |
 | ✅ done | **`reminder.js` Dutch fallbacks** — fallbacks and comments switched to English to match convention. | `reminder.js` |
 | Low | **Doc'd Checkin exception too narrow** — `checkin.js` also calls `MCI.Nav.switchTo/activeRoute` and `MCI.Weather.getCurrent()`. Widen the documented exception or route via the bus. | `checkin.js:470,475,520` |
