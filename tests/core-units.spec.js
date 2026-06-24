@@ -93,4 +93,15 @@ test.describe('compute + core units', () => {
     expect(r.unknown).toBe('___no_such_key___');
     expect(r.withParam).toContain('7');
   });
+
+  test('scoreTier / energyTier / valenceTier map values to coarse tiers', async ({ page }) => {
+    const r = await page.evaluate(() => ({
+      score: [MCI.scoreTier(3), MCI.scoreTier(2), MCI.scoreTier(1)],
+      energy: [MCI.energyTier(67), MCI.energyTier(34), MCI.energyTier(33)],
+      valence: [MCI.valenceTier(6), MCI.valenceTier(4), MCI.valenceTier(3)],
+    }));
+    expect(r.score).toEqual(['high', 'mid', 'low']);
+    expect(r.energy).toEqual(['high', 'mid', 'low']);
+    expect(r.valence).toEqual(['high', 'mid', 'low']);
+  });
 });

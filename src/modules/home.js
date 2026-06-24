@@ -56,11 +56,7 @@
       var day = heatData.days[i];
       var cls = "home-heat-cell ";
       if (day.entry) {
-        cls += "has-entry ";
-        var score = day.entry.moodScore || 2;
-        if (score >= 3) cls += "home-heat-high";
-        else if (score >= 2) cls += "home-heat-mid";
-        else cls += "home-heat-low";
+        cls += "has-entry home-heat-" + MCI.scoreTier(day.entry.moodScore || 2);
       } else {
         cls += "home-heat-empty";
       }

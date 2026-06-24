@@ -72,6 +72,24 @@
   };
 
   /**
+   * Map a 1-3 mood score to a coarse tier ("high" | "mid" | "low").
+   * Shared by the home/dashboard heat cells so the thresholds live in one place.
+   */
+  MCI.scoreTier = function (score) {
+    return score >= 3 ? "high" : score >= 2 ? "mid" : "low";
+  };
+
+  /** Map a 0-100 energy value to a tier ("high" | "mid" | "low"). */
+  MCI.energyTier = function (value) {
+    return value >= 67 ? "high" : value >= 34 ? "mid" : "low";
+  };
+
+  /** Map a mood-grid column (0-9 valence) to a tier ("high" | "mid" | "low"). */
+  MCI.valenceTier = function (moodCol) {
+    return moodCol >= 6 ? "high" : moodCol >= 4 ? "mid" : "low";
+  };
+
+  /**
    * Compute summary statistics from entries.
    * @param {Object} entries - All entries keyed by dateKey
    * @returns {Object} { total, streak, avgScore, topEmotion, hasTodayEntry }
@@ -186,7 +204,7 @@
       var wdk = MCI.formatDate(wd);
       var found = MCI.findEntryForDay(entries, keys, wdk);
       var score = found ? (found.entry.moodScore || 2) : 0;
-      var cls = score === 0 ? "heat-empty" : score >= 3 ? "heat-high" : score >= 2 ? "heat-mid" : "heat-low";
+      var cls = score === 0 ? "heat-empty" : "heat-" + MCI.scoreTier(score);
       var label = wd.toLocaleDateString(locale, { weekday: "short" });
       html += '<div class="heat-day' + (wdk === todayKey ? " heat-today" : "") + '">'
         + '<div class="heat-dot ' + cls + '"></div>'

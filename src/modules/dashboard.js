@@ -119,19 +119,10 @@
 
   function getCellClass(entry) {
     if (_historyMode === "core") {
-      var s = entry.moodScore || 2;
-      if (s >= 3) return "cal-high";
-      if (s >= 2) return "cal-mid";
-      return "cal-low";
+      return "cal-" + MCI.scoreTier(entry.moodScore || 2);
     }
     if (_historyMode === "mood") {
-      if (entry.moodCol >= 0) {
-        var v = entry.moodCol;
-        if (v >= 6) return "cal-high";
-        if (v >= 4) return "cal-mid";
-        return "cal-low";
-      }
-      return "cal-empty";
+      return entry.moodCol >= 0 ? "cal-" + MCI.valenceTier(entry.moodCol) : "cal-empty";
     }
     if (_historyMode === "physical") return energyCellClass(entry, "physical");
     if (_historyMode === "mental") return energyCellClass(entry, "mental");
@@ -141,10 +132,7 @@
 
   function energyCellClass(entry, key) {
     if (!entry.energy || typeof entry.energy[key] !== "number") return "cal-empty";
-    var v = entry.energy[key];
-    if (v >= 67) return "cal-high";
-    if (v >= 34) return "cal-mid";
-    return "cal-low";
+    return "cal-" + MCI.energyTier(entry.energy[key]);
   }
 
   function getCellLabel(entry) {
