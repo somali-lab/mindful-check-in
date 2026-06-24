@@ -55,7 +55,7 @@ module.exports = defineConfig({
   },
   projects: collectCoverage ? coverageProjects : defaultProjects,
   webServer: {
-    command: 'npx serve .. -p 3000 -s --no-clipboard',
+    command: 'npx serve ../src -p 3000 -s --no-clipboard',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 30000,

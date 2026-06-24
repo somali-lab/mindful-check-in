@@ -44,12 +44,14 @@ All frontend JavaScript MUST follow this architecture. This section defines the 
 
 ### File Structure
 
+All app sources live under `src/`.
+
 ```
-lib/core.js          — Event bus, Store, i18n engine, helpers, entry normalization
-data/static.js       — Pure data: wheel variants, mood grid labels, weather codes, body zones
-data/translations.js — All translation strings (flat object per language)
-modules/<name>.js    — One module per feature (checkin, overview, settings, dashboard, etc.)
-boot.js              — DOMContentLoaded: only calls <Module>.init() in dependency order
+src/lib/core.js          — Event bus, Store, i18n engine, helpers, entry normalization
+src/data/static.js       — Pure data: wheel variants, mood grid labels, weather codes, body zones
+src/data/translations.js — All translation strings (flat object per language)
+src/modules/<name>.js    — One module per feature (checkin, overview, settings, dashboard, etc.)
+src/boot.js              — DOMContentLoaded: only calls <Module>.init() in dependency order
 ```
 
 ### Core (`lib/core.js`) provides

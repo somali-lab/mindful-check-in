@@ -1,14 +1,34 @@
 {
-    "chat.promptFilesRecommendations": {
-        "speckit.constitution": true,
-        "speckit.specify": true,
-        "speckit.plan": true,
-        "speckit.tasks": true,
-        "speckit.implement": true
-    },
-    "chat.tools.terminal.autoApprove": {
-        ".specify/scripts/bash/": true,
-        ".specify/scripts/powershell/": true
+  "chat.useAgentsMdFile": true,
+  "chat.useAgentSkills": true,
+  "chat.includeApplyingInstructions": true,
+  "chat.agent.thinking.collapsedTools": "off",
+  "chat.instructionsFilesLocations": {
+    ".github/instructions": true
+  },
+  "chat.promptFilesLocations": {
+    ".github/prompts": true
+  },
+  "chat.agentFilesLocations": {
+    ".github/agents": true
+  },
+  "chat.agentSkillsLocations": {
+    ".github/skills": true
+  },
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "github.copilot.chat.reviewSelection.instructions": [
+    {
+      "text": "Focus on architecture compliance, behavioral regressions, missing tests, and concrete risks. Use .github/copilot-instructions.md and AGENTS.md as the repo baseline."
     }
+  ],
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Use conventional commit message format (feat:, fix:, chore:, etc.) and keep it concise."
+    }
+  ],
+  "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
+    {
+      "text": "Keep PR titles and descriptions concise. Summarize user-facing impact, key technical changes, testing performed, and any notable risks or follow-up work."
+    }
+  ]
 }
-

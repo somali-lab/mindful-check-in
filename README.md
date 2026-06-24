@@ -90,17 +90,21 @@ Five models to choose from (switch per check-in or set a default):
 
 No installation or build step required.
 
+All app sources live under `src/`.
+
 ```text
-# Clone or download the repo, then open index.html in any modern browser:
-open index.html
+# Clone or download the repo, then open src/index.html in any modern browser:
+open src/index.html
 ```
 
 Or serve it locally for development:
 
 ```bash
-npx serve .
+npm run dev          # = npx serve src -p 3004
 # or
-python -m http.server
+npx serve src
+# or
+python -m http.server -d src
 ```
 
 ---
@@ -109,16 +113,16 @@ python -m http.server
 
 The app can send browser notifications at set intervals as a reminder to check in. Enable this via **Settings → Reminders**.
 
-> **Note:** browser notifications do not work when `index.html` is opened directly as a file (`file://` protocol). You need to run the app through a local web server.
+> **Note:** browser notifications do not work when `src/index.html` is opened directly as a file (`file://` protocol). You need to run the app through a local web server.
 
 Start a local web server in the project directory:
 
 ```bash
 # Node.js (recommended)
-npx serve .
+npx serve src
 
 # Python
-python -m http.server 8080
+python -m http.server -d src 8080
 
 # PHP
 php -S localhost:8080

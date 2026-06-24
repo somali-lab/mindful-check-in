@@ -54,15 +54,17 @@ All entries use: `YYYY-MM-DD_HHMMSSmmm` (e.g., `2026-04-12_143052123`)
 
 ## File Structure
 
+All app sources live under `src/`:
+
 ```
-index.html               — HTML shell, inline SVG body figure
-boot.js                  — DOMContentLoaded: calls Module.init() in dependency order
-lib/core.js              — Event bus, Store, i18n engine, helpers, entry normalization
-lib/compute.js           — Derived calculations (mood scoring, streaks)
-data/static.js           — Pure data: wheel variants, mood grid labels, weather codes, body zones
-data/translations.js     — All translation strings (flat object per language)
-modules/<name>.js        — One module per feature
-css/<name>.css           — One stylesheet per concern
+src/index.html               — HTML shell, inline SVG body figure
+src/boot.js                  — DOMContentLoaded: calls Module.init() in dependency order
+src/lib/core.js              — Event bus, Store, i18n engine, helpers, entry normalization
+src/lib/compute.js           — Derived calculations (mood scoring, streaks)
+src/data/static.js           — Pure data: wheel variants, mood grid labels, weather codes, body zones
+src/data/translations.js     — All translation strings (flat object per language)
+src/modules/<name>.js        — One module per feature
+src/css/<name>.css           — One stylesheet per concern
 ```
 
 ---

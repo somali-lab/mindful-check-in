@@ -4,6 +4,6 @@
   "private": true,
   "description": "Mindful Check-in v4: Nav Rail (v3) + Handwritten CSS (original) + MCI Module Architecture (v2)",
   "scripts": {
-    "dev": "npx serve . -p 3004"
+    "dev": "npx serve src -p 3004"
   }
 }
