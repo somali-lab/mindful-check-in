@@ -58,7 +58,7 @@
     /* c8 ignore next -- both languages exist */
     var labels = Data.moodLabels[lang] || Data.moodLabels.en;
     var label = labels[_pickedRow][_pickedCol];
-    _display.textContent = label + " (E " + (10 - _pickedRow) + "/10, V " + (_pickedCol + 1) + "/10)";
+    _display.textContent = MCI.t("moodReadout", { label: label, energy: 10 - _pickedRow, valence: _pickedCol + 1 });
   }
 
   function pick(row, col) {
