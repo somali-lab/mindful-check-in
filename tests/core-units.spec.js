@@ -115,17 +115,20 @@ test.describe('compute + core units', () => {
         const k = MCI.formatDate(d);
         stable[k] = MCI.normalize({ coreFeeling: 'joy' });
         swingy[k] = MCI.normalize({ coreFeeling: ids[i % 2] });
-        matrix[k] = MCI.normalize({ moodRow: 5, moodCol: i % 2 === 0 ? 0 : 9 });
+        // both matrix axes swing between extremes
+        matrix[k] = MCI.normalize({ moodRow: i % 2 === 0 ? 9 : 0, moodCol: i % 2 === 0 ? 0 : 9 });
       }
       return {
         stable: MCI.computeSwing(stable, 'wheel', 28).score,
         swingy: MCI.computeSwing(swingy, 'wheel', 28).score,
-        matrix: MCI.computeSwing(matrix, 'matrix', 28).score,
+        valence: MCI.computeSwing(matrix, 'valence', 28).score,
+        arousal: MCI.computeSwing(matrix, 'arousal', 28).score,
       };
     });
     expect(r.stable).toBe(0);
     expect(r.swingy).toBe(100);
-    expect(r.matrix).toBe(100);
+    expect(r.valence).toBe(100);
+    expect(r.arousal).toBe(100);
   });
 
   test('computeSwing is null below two data points and respects the window', async ({ page }) => {
@@ -141,7 +144,7 @@ test.describe('compute + core units', () => {
 
       return {
         one: MCI.computeSwing(one, 'wheel', 28),
-        windowCount: MCI.computeSwing(windowed, 'matrix', 7).count,
+        windowCount: MCI.computeSwing(windowed, 'valence', 7).count,
       };
     });
     expect(r.one.score).toBeNull();

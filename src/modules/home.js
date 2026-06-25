@@ -87,7 +87,9 @@
      for both the emotion wheel and the mood matrix, over the chosen window. */
   function renderSwings(entries) {
     renderSwingCard(entries, "wheel", "home-swing-wheel-score", "home-swing-wheel-spark", "home-swing-wheel-sub");
-    renderSwingCard(entries, "matrix", "home-swing-matrix-score", "home-swing-matrix-spark", "home-swing-matrix-sub");
+    /* matrix has two axes; the shared count sub hangs off the valence row */
+    renderSwingCard(entries, "valence", "home-swing-valence-score", "home-swing-valence-spark", "home-swing-matrix-sub");
+    renderSwingCard(entries, "arousal", "home-swing-arousal-score", "home-swing-arousal-spark", null);
   }
 
   function renderSwingCard(entries, source, scoreId, sparkId, subId) {

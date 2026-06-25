@@ -665,6 +665,43 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   display: block;
 }
 
+/* Per-axis swing rows (the mood matrix shows valence + energy) */
+.swing-axis {
+  margin-top: 12px;
+}
+
+.swing-axis-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.swing-axis-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+.swing-axis-score {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.swing-axis .home-spark {
+  margin-top: 6px;
+  min-height: 32px;
+}
+
+.swing-axis .home-spark svg {
+  height: 32px;
+}
+
 @media (max-width: 600px) {
   .home-body {
     flex-direction: column;

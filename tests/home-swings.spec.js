@@ -11,7 +11,7 @@ test('home shows wheel and matrix swing cards, not the old Top Feeling card', as
   for (let i = 0; i < 6; i++) {
     entries[getDateKey(i)] = createTestEntry({
       coreFeeling: ids[i % ids.length],
-      moodRow: 5,
+      moodRow: i % 3,
       moodCol: i % 2 === 0 ? 1 : 8,
     });
   }
@@ -19,11 +19,13 @@ test('home shows wheel and matrix swing cards, not the old Top Feeling card', as
   await page.goto('/');
   await expect(page.locator('#view-home')).toHaveClass(/is-active/);
 
-  // Both swing cards show a numeric score and a rendered sparkline
+  // Wheel card plus both matrix axes (valence + energy) show a score and sparkline
   await expect(page.locator('#home-swing-wheel-score')).not.toHaveText('—');
-  await expect(page.locator('#home-swing-matrix-score')).not.toHaveText('—');
+  await expect(page.locator('#home-swing-valence-score')).not.toHaveText('—');
+  await expect(page.locator('#home-swing-arousal-score')).not.toHaveText('—');
   await expect(page.locator('#home-swing-wheel-spark svg')).toBeVisible();
-  await expect(page.locator('#home-swing-matrix-spark svg')).toBeVisible();
+  await expect(page.locator('#home-swing-valence-spark svg')).toBeVisible();
+  await expect(page.locator('#home-swing-arousal-spark svg')).toBeVisible();
 
   // The removed Top Feeling card is gone
   await expect(page.locator('#home-mood')).toHaveCount(0);
@@ -52,9 +54,9 @@ test('changing the period re-computes the swing score', async ({ page }) => {
   await injectEntries(page, entries);
   await page.goto('/');
 
-  const matrixScore = page.locator('#home-swing-matrix-score');
-  await expect(matrixScore).toHaveText('0'); // default 28-day window: stable
+  const valenceScore = page.locator('#home-swing-valence-score');
+  await expect(valenceScore).toHaveText('0'); // default 28-day window: stable
 
   await page.locator('#home-swing-period').selectOption('365');
-  await expect(matrixScore).not.toHaveText('0'); // year window picks up the old swings
+  await expect(valenceScore).not.toHaveText('0'); // year window picks up the old swings
 });

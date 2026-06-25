@@ -133,7 +133,8 @@
    * The score is the population standard deviation of the per-check-in mood
    * value, normalised against its theoretical maximum for the scale.
    * @param {Object} entries - All entries keyed by dateKey
-   * @param {string} source - "wheel" (coreFeeling valence 1-3) or "matrix" (moodCol 0-9)
+   * @param {string} source - "wheel" (coreFeeling valence 1-3), "valence" (moodCol 0-9)
+   *                          or "arousal" (energy = 9 - moodRow, 0-9)
    * @param {number} days - window length in days (e.g. 7, 28, 90, 180, 365)
    * @returns {Object} { score (0-100 or null), count, series, min, max }
    */
@@ -156,7 +157,10 @@
         if (!e.coreFeeling) continue;
         val = MCI.Data.moodScores[e.coreFeeling];
         if (val == null) continue;
-      } else {
+      } else if (source === "arousal") {
+        if (typeof e.moodRow !== "number" || e.moodRow < 0) continue;
+        val = 9 - e.moodRow; /* row 0 = high energy → high value */
+      } else { /* valence */
         if (typeof e.moodCol !== "number" || e.moodCol < 0) continue;
         val = e.moodCol;
       }
