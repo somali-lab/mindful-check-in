@@ -111,13 +111,9 @@
     if (scoreEl) scoreEl.textContent = data.score == null ? "—" : data.score;
     if (sparkEl) sparkEl.innerHTML = sparkSvg(data.series, data.min, data.max);
     if (tierEl) {
-      if (data.score == null) {
-        tierEl.textContent = "";
-      } else {
-        var tier = MCI.swingTier(data.score);
-        var key = "swingTier" + tier.charAt(0).toUpperCase() + tier.slice(1);
-        tierEl.textContent = MCI.t(key) || "";
-      }
+      tierEl.textContent = data.score == null
+        ? ""
+        : (MCI.t("swingTier" + MCI.swingTier(data.score)) || "");
     }
     if (subEl) {
       subEl.textContent = data.score == null

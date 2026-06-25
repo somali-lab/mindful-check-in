@@ -87,9 +87,14 @@
     return moodCol >= 6 ? "high" : moodCol >= 4 ? "mid" : "low";
   };
 
-  /** Map a 0-100 swing score to a coarse tier ("low" | "mid" | "high"). */
+  /** Map a 0-100 swing score to a 1-6 tier (1 = very stable … 6 = extremely variable). */
   MCI.swingTier = function (score) {
-    return score >= 67 ? "high" : score >= 34 ? "mid" : "low";
+    if (score >= 84) return 6;
+    if (score >= 67) return 5;
+    if (score >= 51) return 4;
+    if (score >= 34) return 3;
+    if (score >= 17) return 2;
+    return 1;
   };
 
   /**
