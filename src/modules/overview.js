@@ -7,6 +7,12 @@
   var _pageSize = 7, _maxChars = 120;
   var _filtered = [];
 
+  /* Mood label in the active language (re-derived from row/col), falling back to
+     the entry's stored label for entries without grid coordinates. */
+  function moodLabelOf(e) {
+    return MCI.moodLabel(e.moodRow, e.moodCol) || e.moodLabel || "";
+  }
+
   var COLS = [
     { key: "date",     tKey: "colDate" },
     { key: "feeling",  tKey: "colFeeling" },
@@ -56,7 +62,7 @@
         if (!d || d < cutoff) continue;
       }
       if (_search) {
-        var hay = (e.thoughts || "") + " " + (e.coreFeeling || "") + " " + (e.moodLabel || "") + " " + (e.actions || "") + " " + (e.note || "");
+        var hay = (e.thoughts || "") + " " + (e.coreFeeling || "") + " " + moodLabelOf(e) + " " + (e.actions || "") + " " + (e.note || "");
         if (hay.toLowerCase().indexOf(_search.toLowerCase()) === -1) continue;
       }
       result.push({ key: k, entry: e });
@@ -67,7 +73,7 @@
       if (_sort === "date") { va = a.key; vb = b.key; }
       else if (_sort === "score") { va = (a.entry.moodScore || 0); vb = (b.entry.moodScore || 0); }
       else if (_sort === "feeling") { va = a.entry.coreFeeling || ""; vb = b.entry.coreFeeling || ""; }
-      else if (_sort === "mood") { va = a.entry.moodLabel || ""; vb = b.entry.moodLabel || ""; }
+      else if (_sort === "mood") { va = moodLabelOf(a.entry); vb = moodLabelOf(b.entry); }
       else if (_sort === "energy") {
         var ea = a.entry.energy, eb = b.entry.energy;
         va = ea ? ((ea.physical || 0) + (ea.mental || 0) + (ea.emotional || 0)) : 0;
@@ -140,7 +146,7 @@
       html += '<tr class="ov-row" data-ekey="' + MCI.esc(item.key) + '">';
       html += '<td>' + MCI.esc(dateStr) + '</td>';
       html += '<td>' + MCI.esc(e.coreFeeling ? MCI.emotionLabel(e.coreFeeling) : "\u2014") + '</td>';
-      html += '<td>' + MCI.esc(truncate(e.moodLabel, 20) || "\u2014") + '</td>';
+      html += '<td>' + MCI.esc(truncate(moodLabelOf(e), 20) || "\u2014") + '</td>';
       html += '<td>';
       if (e.energy) {
         var ep = [];

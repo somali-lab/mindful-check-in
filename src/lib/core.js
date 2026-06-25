@@ -287,6 +287,18 @@
     return MCI.t(tKey) || id;
   };
 
+  /* Resolve a mood-grid cell to its label in the active language. The label is
+     re-derived from row/col rather than read from the entry's frozen moodLabel,
+     so it follows language changes. Returns "" for unset (-1) coordinates. */
+  MCI.moodLabel = function (row, col) {
+    if (row == null || col == null || row < 0 || col < 0) return "";
+    var data = MCI.Data && MCI.Data.moodLabels;
+    if (!data) return "";
+    var grid = data[MCI.lang] || data.en;
+    if (!grid || !grid[row]) return "";
+    return grid[row][col] || "";
+  };
+
   MCI.uid = function () {
     if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
       return crypto.randomUUID();

@@ -25,7 +25,8 @@ async function injectSettings(page, settings) {
 
 async function injectLanguage(page, lang) {
   await page.addInitScript((l) => {
-    localStorage.setItem('local-mood-tracker-language', l);
+    // App reads via JSON.parse, so the value must be JSON-encoded (e.g. "nl").
+    localStorage.setItem('local-mood-tracker-language', JSON.stringify(l));
   }, lang);
 }
 

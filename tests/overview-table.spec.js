@@ -3,6 +3,8 @@ const { test, expect } = require('./fixtures/base');
 const {
   injectEntries,
   injectSettings,
+  injectLanguage,
+  createTestEntry,
   createTestSettings,
   generateEntries,
   navigateToTab,
@@ -107,3 +109,35 @@ for (const sortKey of sortableColumns) {
     }
   });
 }
+
+// ─── Mood column reflects the active language, not the saved-time language ───
+
+// Mood cell row 3 / col 7 — EN "Happy" / NL "Blij". moodLabel is frozen at save
+// time (English here); the column must re-derive the label from row/col for the
+// active language instead of echoing the stale stored string.
+test('mood column shows the translated label for the active language', async ({ page }) => {
+  await injectEntries(page, {
+    '2026-06-20': createTestEntry({ moodRow: 3, moodCol: 7, moodLabel: 'Happy' }),
+  });
+  await injectLanguage(page, 'nl');
+  await page.goto('/');
+  await navigateToTab(page, 'overview');
+
+  const moodCell = page.locator('#ov-tbody tr').first().locator('td').nth(2);
+  await expect(moodCell).toHaveText('Blij');
+});
+
+// Switching language live must relabel the mood column too.
+test('mood column relabels when switching language EN -> NL', async ({ page }) => {
+  await injectEntries(page, {
+    '2026-06-20': createTestEntry({ moodRow: 3, moodCol: 7, moodLabel: 'Happy' }),
+  });
+  await page.goto('/');
+  await navigateToTab(page, 'overview');
+
+  const moodCell = page.locator('#ov-tbody tr').first().locator('td').nth(2);
+  await expect(moodCell).toHaveText('Happy');
+
+  await page.locator('[data-lang-pick="nl"]:visible').first().click();
+  await expect(moodCell).toHaveText('Blij');
+});
