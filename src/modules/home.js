@@ -86,20 +86,30 @@
   /* Spread-based mood swings: a 0-100 score plus a sparkline of the trajectory,
      for both the emotion wheel and the mood matrix, over the chosen window. */
   function renderSwings(entries) {
-    renderSwingCard(entries, "wheel", "home-swing-wheel-score", "home-swing-wheel-spark", "home-swing-wheel-sub");
+    renderSwingCard(entries, "wheel", "home-swing-wheel-score", "home-swing-wheel-spark", "home-swing-wheel-sub", "home-swing-wheel-tier");
     /* matrix has two axes; the shared count sub hangs off the valence row */
-    renderSwingCard(entries, "valence", "home-swing-valence-score", "home-swing-valence-spark", "home-swing-matrix-sub");
-    renderSwingCard(entries, "arousal", "home-swing-arousal-score", "home-swing-arousal-spark", null);
+    renderSwingCard(entries, "valence", "home-swing-valence-score", "home-swing-valence-spark", "home-swing-matrix-sub", "home-swing-valence-tier");
+    renderSwingCard(entries, "arousal", "home-swing-arousal-score", "home-swing-arousal-spark", null, "home-swing-arousal-tier");
   }
 
-  function renderSwingCard(entries, source, scoreId, sparkId, subId) {
+  function renderSwingCard(entries, source, scoreId, sparkId, subId, tierId) {
     var data = MCI.computeSwing(entries, source, _swingDays);
     var scoreEl = document.getElementById(scoreId);
     var sparkEl = document.getElementById(sparkId);
     var subEl = document.getElementById(subId);
+    var tierEl = document.getElementById(tierId);
 
     if (scoreEl) scoreEl.textContent = data.score == null ? "—" : data.score;
     if (sparkEl) sparkEl.innerHTML = sparkSvg(data.series, data.min, data.max);
+    if (tierEl) {
+      if (data.score == null) {
+        tierEl.textContent = "";
+      } else {
+        var tier = MCI.swingTier(data.score);
+        var key = "swingTier" + tier.charAt(0).toUpperCase() + tier.slice(1);
+        tierEl.textContent = MCI.t(key) || "";
+      }
+    }
     if (subEl) {
       subEl.textContent = data.score == null
         ? (MCI.t("swingNoData") || "Not enough data yet")

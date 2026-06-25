@@ -87,6 +87,11 @@
     return moodCol >= 6 ? "high" : moodCol >= 4 ? "mid" : "low";
   };
 
+  /** Map a 0-100 swing score to a coarse tier ("low" | "mid" | "high"). */
+  MCI.swingTier = function (score) {
+    return score >= 67 ? "high" : score >= 34 ? "mid" : "low";
+  };
+
   /**
    * Compute summary statistics from entries.
    * @param {Object} entries - All entries keyed by dateKey

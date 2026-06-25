@@ -27,8 +27,25 @@ test('home shows wheel and matrix swing cards, not the old Top Feeling card', as
   await expect(page.locator('#home-swing-valence-spark svg')).toBeVisible();
   await expect(page.locator('#home-swing-arousal-spark svg')).toBeVisible();
 
+  // Each score carries a plain-word tier label
+  await expect(page.locator('#home-swing-wheel-tier')).not.toHaveText('');
+  await expect(page.locator('#home-swing-valence-tier')).not.toHaveText('');
+
+  // The "Mood swings" header has an explanatory tooltip
+  await expect(page.locator('.swing-info')).toHaveAttribute('title', /0 =/);
+
   // The removed Top Feeling card is gone
   await expect(page.locator('#home-mood')).toHaveCount(0);
+});
+
+test('the About guide explains the mood-swing score', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('[data-route="info"]:visible').first().click();
+  await page.locator('#view-info [data-settings-tab="guide"]').click();
+
+  const desc = page.locator('[data-t="infoSwingsDesc"]');
+  await expect(desc).toBeVisible();
+  await expect(desc).toContainText('standard deviation');
 });
 
 test('swing cards show the empty state with too little data', async ({ page }) => {

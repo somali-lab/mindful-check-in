@@ -648,6 +648,37 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   margin-bottom: 0;
 }
 
+.home-swings-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swing-info {
+  cursor: help;
+  color: var(--text-faint);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.swing-info:hover,
+.swing-info:focus-visible {
+  color: var(--accent);
+}
+
+/* Word label for the swing score (Stable / Variable / Highly variable) */
+.swing-tier {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.swing-tier:empty {
+  display: none;
+}
+
 .home-swings-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

@@ -176,7 +176,10 @@
         <!-- Mood swings: spread of feeling over a chosen window -->
         <div class="home-swings">
           <div class="home-swings-head">
-            <span class="bento-label" data-t="homeSwingsTitle">Mood swings</span>
+            <span class="home-swings-title">
+              <span class="bento-label" data-t="homeSwingsTitle">Mood swings</span>
+              <span class="swing-info" data-t-title="homeSwingsHelp" data-t-aria="homeSwingsHelp" tabindex="0" role="img">&#9432;</span>
+            </span>
             <select id="home-swing-period" class="wheel-select" data-t-aria="homeSwingsPeriodAria">
               <option value="7" data-t="swingPeriod7">Past week</option>
               <option value="28" data-t="swingPeriod28" selected>28 days</option>
@@ -189,6 +192,7 @@
             <div class="bento-card">
               <span class="bento-label" data-t="swingWheel">Emotion wheel</span>
               <span class="bento-value" id="home-swing-wheel-score">&mdash;</span>
+              <span class="swing-tier" id="home-swing-wheel-tier"></span>
               <div class="home-spark" id="home-swing-wheel-spark"></div>
               <span class="bento-sub" id="home-swing-wheel-sub"></span>
             </div>
@@ -199,6 +203,7 @@
                   <span class="swing-axis-label" data-t="swingValence">Valence</span>
                   <span class="swing-axis-score" id="home-swing-valence-score">&mdash;</span>
                 </div>
+                <span class="swing-tier" id="home-swing-valence-tier"></span>
                 <div class="home-spark" id="home-swing-valence-spark"></div>
               </div>
               <div class="swing-axis">
@@ -206,6 +211,7 @@
                   <span class="swing-axis-label" data-t="moodAxisEnergy">Energy</span>
                   <span class="swing-axis-score" id="home-swing-arousal-score">&mdash;</span>
                 </div>
+                <span class="swing-tier" id="home-swing-arousal-tier"></span>
                 <div class="home-spark" id="home-swing-arousal-spark"></div>
               </div>
               <span class="bento-sub" id="home-swing-matrix-sub"></span>
@@ -729,6 +735,11 @@
                 <div><strong data-t="infoTipOverviewLabel">Overview</strong><p data-t="infoTipOverviewDesc">Browse, search, sort and filter all your saved check-ins. Click a row to open it in the Check-in tab. Export or import entries as JSON.</p></div>
               </div>
             </div>
+          </div>
+
+          <div class="section-group">
+            <h3 class="subheading" data-t="infoSwingsTitle">Mood swings</h3>
+            <p class="info-score-intro" data-t="infoSwingsDesc">On the home page each “swing” score (0–100) shows how much that signal varied over the chosen period — its spread (standard deviation), scaled against the largest spread that is possible. 0 means every check-in was the same (a flat line); 100 means you swung fully between the two extremes each time. The emotion wheel has one axis; the mood matrix shows two — valence and energy. It says nothing about whether you felt good or bad, only how much it moved.</p>
           </div>
 
           <div class="section-group">

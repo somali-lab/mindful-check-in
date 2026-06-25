@@ -99,10 +99,12 @@ test.describe('compute + core units', () => {
       score: [MCI.scoreTier(3), MCI.scoreTier(2), MCI.scoreTier(1)],
       energy: [MCI.energyTier(67), MCI.energyTier(34), MCI.energyTier(33)],
       valence: [MCI.valenceTier(6), MCI.valenceTier(4), MCI.valenceTier(3)],
+      swing: [MCI.swingTier(80), MCI.swingTier(50), MCI.swingTier(10)],
     }));
     expect(r.score).toEqual(['high', 'mid', 'low']);
     expect(r.energy).toEqual(['high', 'mid', 'low']);
     expect(r.valence).toEqual(['high', 'mid', 'low']);
+    expect(r.swing).toEqual(['high', 'mid', 'low']);
   });
 
   test('computeSwing is 0 for a perfectly stable mood and 100 at the extremes', async ({ page }) => {

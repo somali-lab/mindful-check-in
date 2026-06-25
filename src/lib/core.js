@@ -269,6 +269,11 @@
       var ak = arias[a].getAttribute("data-t-aria");
       if (ak) arias[a].setAttribute("aria-label", MCI.t(ak));
     }
+    var titles = document.querySelectorAll("[data-t-title]");
+    for (var ti = 0; ti < titles.length; ti++) {
+      var tk = titles[ti].getAttribute("data-t-title");
+      if (tk) titles[ti].setAttribute("title", MCI.t(tk));
+    }
     MCI.emit("language:changed", lang);
   };
 
