@@ -8,6 +8,8 @@ const {
   getLocalStorageEntries,
   getLocalStorageSettings,
   navigateToTab,
+  openInfoTab,
+  openSettingsTab,
   generateEntries,
   getDateKey,
   getTodayKey,
@@ -169,7 +171,7 @@ test('clear search after date filter, filter remains active', async ({ page }) =
 
 test('import entries with unknown fields, only known fields kept', async ({ page }) => {
   await page.goto('/');
-  await navigateToTab(page, 'overview');
+  await openInfoTab(page, 'data');
 
   // v4 import expects an object keyed by entry key, not an array
   const dateKey = getDateKey(0);
@@ -201,7 +203,7 @@ test('import entries with unknown fields, only known fields kept', async ({ page
 
 test('import settings with unknown keys, unknown keys ignored', async ({ page }) => {
   await page.goto('/');
-  await navigateToTab(page, 'settings');
+  await openSettingsTab(page, 'portability');
 
   const settingsToImport = createTestSettings({ theme: 'dark' });
   settingsToImport.unknownSetting = 'should not break';

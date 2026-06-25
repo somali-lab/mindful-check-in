@@ -118,19 +118,27 @@ test('dismiss clear data confirm, nothing deleted', async ({ page }) => {
 
 // ─── Data tools live in the About > Data sub-tab as cards, not the footer ───
 
-test('About > Data tab presents demo and clear as cards with text', async ({ page }) => {
+test('About > Data tab presents the data actions as cards with text', async ({ page }) => {
   await page.goto('/');
   await openInfoTab(page, 'data');
 
-  const demoCard = page.locator('.info-data-card', { has: page.locator('#demo-btn-generate') });
-  const clearCard = page.locator('.info-data-card', { has: page.locator('#demo-btn-clear') });
-  await expect(demoCard).toBeVisible();
-  await expect(clearCard).toBeVisible();
+  // Export & import entries (moved from the Overview footer) plus demo & clear
+  const cardFor = (sel) => page.locator('.data-card', { has: page.locator(sel) });
+  const cards = {
+    export: cardFor('#ov-export'),
+    import: cardFor('#ov-import'),
+    demo: cardFor('#demo-btn-generate'),
+    clear: cardFor('#demo-btn-clear'),
+  };
+  for (const card of Object.values(cards)) {
+    await expect(card).toBeVisible();
+    await expect(card.locator('p')).not.toHaveText(''); // each carries explanatory text
+  }
 
-  // Each card carries an explanatory paragraph alongside its button
-  await expect(demoCard.locator('p')).not.toHaveText('');
-  await expect(clearCard.locator('p')).not.toHaveText('');
+  // The clear action is flagged as destructive
+  await expect(cards.clear).toHaveClass(/data-card--danger/);
 
-  // The buttons no longer live in the app-shell footer
+  // The overview no longer renders its own footer (export/import moved away)
+  await expect(page.locator('.app-shell-footer-bar[data-footer="overview"]')).toHaveCount(0);
   await expect(page.locator('.app-shell-footer-bar[data-footer="info"]')).toHaveCount(0);
 });

@@ -477,6 +477,11 @@ test('Mindful Check-in — volledige app demo', async ({ page }) => {
   // ┌─────────────────────────────────────────┐
   // │ 10. EXPORT — download entries            │
   // └─────────────────────────────────────────┘
+  // Export/import entries now live under About > Data
+  await page.locator('[data-route="info"]').click();
+  await wait(page, PAUSE);
+  await page.locator('#view-info [data-settings-tab="data"]').click();
+  await wait(page, PAUSE);
   const [download] = await Promise.all([
     page.waitForEvent('download'),
     page.locator('#ov-export').click(),

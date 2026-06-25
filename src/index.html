@@ -446,6 +446,7 @@
             <button type="button" class="settings-tab" data-settings-tab="components" data-t="settingComponents">Visible components</button>
             <button type="button" class="settings-tab" data-settings-tab="actions" data-t="quickActionsTitle">Quick actions</button>
             <button type="button" class="settings-tab" data-settings-tab="reminders" data-t="settingReminderSection">Break reminders</button>
+            <button type="button" class="settings-tab" data-settings-tab="portability" data-t="settingTabPortability">Import/Export</button>
           </nav>
 
           <div class="settings-panels">
@@ -606,6 +607,32 @@
             </div>
           </div>
 
+          <div class="section-group settings-panel" data-settings-panel="portability">
+            <h3 class="subheading" data-t="settingPortabilityTitle">Import &amp; export settings</h3>
+            <p class="info-score-intro" data-t="settingPortabilityIntro">Save your preferences to a file or load them from one. This only covers settings, not your check-ins.</p>
+
+            <div class="data-card">
+              <span class="data-card-icon" aria-hidden="true">📤</span>
+              <div class="data-card-body">
+                <strong data-t="settingExportTitle">Back up your settings</strong>
+                <p data-t="settingExportDesc">Download your current settings as a JSON file.</p>
+                <button type="button" class="btn btn--ghost" id="cfg-btn-export" data-t="settingExport">Export settings</button>
+              </div>
+            </div>
+
+            <div class="data-card">
+              <span class="data-card-icon" aria-hidden="true">📥</span>
+              <div class="data-card-body">
+                <strong data-t="settingImportTitle">Restore your settings</strong>
+                <p data-t="settingImportDesc">Load settings from a JSON file. This replaces your current preferences.</p>
+                <label class="btn btn--ghost" style="cursor:pointer">
+                  <span data-t="settingImport">Import settings</span>
+                  <input type="file" accept=".json" id="cfg-inp-import" class="is-hidden"/>
+                </label>
+              </div>
+            </div>
+          </div>
+
           </div><!-- /settings-panels -->
         </section>
       </div>
@@ -758,20 +785,41 @@
 
           <div class="section-group">
             <h3 class="subheading" data-t="infoDataTitle">Manage your data</h3>
-            <p class="info-score-intro" data-t="infoDataIntro">Try the app with sample entries, or permanently remove everything stored on this device.</p>
+            <p class="info-score-intro" data-t="infoDataIntro">Back up or restore your check-ins, try the app with sample data, or permanently remove everything stored on this device.</p>
 
-            <div class="info-data-card">
-              <span class="info-data-icon" aria-hidden="true">🧪</span>
-              <div class="info-data-body">
+            <div class="data-card">
+              <span class="data-card-icon" aria-hidden="true">📤</span>
+              <div class="data-card-body">
+                <strong data-t="infoDataExportTitle">Back up your entries</strong>
+                <p data-t="infoDataExportDesc">Download all your check-ins as a JSON file to keep as a backup or move to another browser.</p>
+                <button type="button" class="btn btn--ghost" id="ov-export" data-t="btnExport">Export entries</button>
+              </div>
+            </div>
+
+            <div class="data-card">
+              <span class="data-card-icon" aria-hidden="true">📥</span>
+              <div class="data-card-body">
+                <strong data-t="infoDataImportTitle">Restore from a backup</strong>
+                <p data-t="infoDataImportDesc">Load check-ins from a JSON backup. You choose whether to overwrite or skip entries that already exist.</p>
+                <label class="btn btn--ghost" style="cursor:pointer">
+                  <span data-t="btnImport">Import entries</span>
+                  <input type="file" accept=".json" id="ov-import" class="is-hidden"/>
+                </label>
+              </div>
+            </div>
+
+            <div class="data-card">
+              <span class="data-card-icon" aria-hidden="true">🧪</span>
+              <div class="data-card-body">
                 <strong data-t="infoDataDemoTitle">Demo data</strong>
                 <p data-t="infoDataDemoDesc">Adds 30 days of randomly generated check-ins alongside your own entries.</p>
                 <button type="button" class="btn btn--ghost" id="demo-btn-generate" data-t="btnDemo">Generate demo data</button>
               </div>
             </div>
 
-            <div class="info-data-card info-data-card--danger">
-              <span class="info-data-icon" aria-hidden="true">🗑️</span>
-              <div class="info-data-body">
+            <div class="data-card data-card--danger">
+              <span class="data-card-icon" aria-hidden="true">🗑️</span>
+              <div class="data-card-body">
                 <strong data-t="infoDataClearTitle">Clear all data</strong>
                 <p data-t="infoDataClearDesc">Permanently deletes every check-in, all settings and cached weather from this browser. This cannot be undone.</p>
                 <button type="button" class="btn btn--ghost info-btn-danger" id="demo-btn-clear" data-t="btnClearAll">Clear all data</button>
@@ -797,20 +845,8 @@
       <div class="app-shell-bar app-shell-footer-bar" data-footer="home">
         <button type="button" class="btn btn--primary" id="home-btn-checkin" data-t="homeStartCheckin">Start today's check-in</button>
       </div>
-      <div class="app-shell-bar app-shell-footer-bar" data-footer="overview">
-        <button type="button" class="btn btn--ghost" id="ov-export" data-t="btnExport">Export entries</button>
-        <label class="btn btn--ghost" style="cursor:pointer">
-          <span data-t="btnImport">Import entries</span>
-          <input type="file" accept=".json" id="ov-import" class="is-hidden"/>
-        </label>
-      </div>
       <div class="app-shell-bar app-shell-footer-bar" data-footer="settings">
         <button type="button" class="btn btn--ghost" id="cfg-btn-reset" data-t="settingReset">Reset to defaults</button>
-        <button type="button" class="btn btn--ghost" id="cfg-btn-export" data-t="settingExport">Export settings</button>
-        <label class="btn btn--ghost" style="cursor:pointer">
-          <span data-t="settingImport">Import settings</span>
-          <input type="file" accept=".json" id="cfg-inp-import" class="is-hidden"/>
-        </label>
         <button type="button" class="btn btn--primary" id="cfg-btn-save" data-t="settingSave">Save settings</button>
       </div>
     </footer>

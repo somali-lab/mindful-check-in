@@ -6,6 +6,7 @@ const {
   generateEntries,
   getLocalStorageEntries,
   navigateToTab,
+  openInfoTab,
   getDateKey,
 } = require('./fixtures/helpers');
 
@@ -14,7 +15,7 @@ const {
 test('export entries triggers download with correct JSON', async ({ page }) => {
   await injectEntries(page, generateEntries(10));
   await page.goto('/');
-  await navigateToTab(page, 'overview');
+  await openInfoTab(page, 'data');
 
   const [download] = await Promise.all([
     page.waitForEvent('download'),
@@ -36,7 +37,7 @@ test('export entries triggers download with correct JSON', async ({ page }) => {
 
 test('import valid JSON into empty app adds entries', async ({ page }) => {
   await page.goto('/');
-  await navigateToTab(page, 'overview');
+  await openInfoTab(page, 'data');
 
   // Create a temp file to import (v4 expects object keyed by entry key)
   const entries = {};
@@ -73,7 +74,7 @@ test('import overlapping entries, overwrite updates them', async ({ page }) => {
   const existing = { [dateKey]: createTestEntry({ thoughts: 'Original', id: testId }) };
   await injectEntries(page, existing);
   await page.goto('/');
-  await navigateToTab(page, 'overview');
+  await openInfoTab(page, 'data');
 
   // v4 import expects object keyed by entry key
   const imported = {};
@@ -103,7 +104,7 @@ test('import overlapping entries, skip preserves originals', async ({ page }) =>
   const existing = { [dateKey]: createTestEntry({ thoughts: 'Original', id: testId }) };
   await injectEntries(page, existing);
   await page.goto('/');
-  await navigateToTab(page, 'overview');
+  await openInfoTab(page, 'data');
 
   // v4 import expects object keyed by entry key
   const imported = {};
@@ -130,7 +131,7 @@ test('import overlapping entries, skip preserves originals', async ({ page }) =>
 test('import invalid JSON shows error, no data changes', async ({ page }) => {
   await injectEntries(page, generateEntries(3));
   await page.goto('/');
-  await navigateToTab(page, 'overview');
+  await openInfoTab(page, 'data');
 
   const fs = require('fs');
   const tmpPath = require('path').join(__dirname, 'tmp-invalid.json');
