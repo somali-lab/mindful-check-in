@@ -533,6 +533,10 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   margin-top: 4px;
 }
 
+.bento-sub:empty {
+  display: none;
+}
+
 /* ── Mini heatmap ── */
 .home-heatmap {
   display: grid;

@@ -38,6 +38,21 @@ test('home shows wheel and matrix swing cards, not the old Top Feeling card', as
   await expect(page.locator('#home-mood')).toHaveCount(0);
 });
 
+test('Total card shows the day span between first and last check-in', async ({ page }) => {
+  await injectEntries(page, {
+    [getDateKey(0)]: createTestEntry({ coreFeeling: 'joy' }),
+    [getDateKey(9)]: createTestEntry({ coreFeeling: 'joy' }),
+  });
+  await page.goto('/');
+  await expect(page.locator('#home-span')).toHaveText('across 9 days');
+});
+
+test('Total card hides the span with a single entry', async ({ page }) => {
+  await injectEntries(page, { [getDateKey(0)]: createTestEntry({ coreFeeling: 'joy' }) });
+  await page.goto('/');
+  await expect(page.locator('#home-span')).toHaveText('');
+});
+
 test('the About guide explains the mood-swing score', async ({ page }) => {
   await page.goto('/');
   await page.locator('[data-route="info"]:visible').first().click();

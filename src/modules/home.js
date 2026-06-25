@@ -25,6 +25,15 @@
     if (elStreak) elStreak.textContent = streak;
     if (elTotal) elTotal.textContent = total;
     if (elAvg) elAvg.textContent = avgScore;
+
+    /* span in days between the first and last check-in */
+    var elSpan = document.getElementById("home-span");
+    if (elSpan) {
+      var span = entrySpanDays(entries);
+      elSpan.textContent = span == null
+        ? ""
+        : (MCI.t("homeSpanDays") || "across {days} days").replace("{days}", span);
+    }
     if (elStatus) {
       elStatus.textContent = hasTodayEntry
         ? (MCI.t("summaryDone") || "Today\u2019s check-in done")
@@ -157,6 +166,23 @@
       + '<text class="home-ring-num" x="40" y="46" text-anchor="middle" font-size="22">' + streak + '</text>'
       + '<text class="home-ring-label" x="40" y="58" text-anchor="middle" font-size="8.5" letter-spacing="1">' + MCI.esc(label) + '</text>'
       + '</svg>';
+  }
+
+  /* Whole days between the earliest and latest check-in, or null when there
+     are fewer than two entries. */
+  function entrySpanDays(entries) {
+    var keys = Object.keys(entries);
+    if (keys.length < 2) return null;
+    var min = null, max = null;
+    for (var i = 0; i < keys.length; i++) {
+      var d = MCI.dateFromKey(keys[i]);
+      if (!d) continue;
+      var t = d.getTime();
+      if (min === null || t < min) min = t;
+      if (max === null || t > max) max = t;
+    }
+    if (min === null || max === null) return null;
+    return Math.round((max - min) / 86400000);
   }
 
   /* Average energy (%) of today's entry, or null when not set. */
