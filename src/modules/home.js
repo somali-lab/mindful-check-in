@@ -3,6 +3,8 @@
   "use strict";
   var MCI = window.MCI;
 
+  var _swingDays = 28; /* selected mood-swings window */
+
   function render() {
     var entries = MCI.loadEntries();
     var keys = Object.keys(entries);
@@ -13,19 +15,16 @@
     var streak = stats.streak;
     var hasTodayEntry = stats.hasTodayEntry;
     var avgScore = stats.avgScore;
-    var topEmotion = stats.topEmotion;
 
     /* ── populate stats ── */
     var elStreak = document.getElementById("home-streak");
     var elTotal = document.getElementById("home-total");
     var elAvg = document.getElementById("home-avg");
-    var elMood = document.getElementById("home-mood");
     var elStatus = document.getElementById("home-status");
 
     if (elStreak) elStreak.textContent = streak;
     if (elTotal) elTotal.textContent = total;
     if (elAvg) elAvg.textContent = avgScore;
-    if (elMood) elMood.textContent = topEmotion;
     if (elStatus) {
       elStatus.textContent = hasTodayEntry
         ? (MCI.t("summaryDone") || "Today\u2019s check-in done")
@@ -79,6 +78,58 @@
 
     /* ── this-week heatmap ── */
     renderWeek(entries);
+
+    /* ── mood swings ── */
+    renderSwings(entries);
+  }
+
+  /* Spread-based mood swings: a 0-100 score plus a sparkline of the trajectory,
+     for both the emotion wheel and the mood matrix, over the chosen window. */
+  function renderSwings(entries) {
+    renderSwingCard(entries, "wheel", "home-swing-wheel-score", "home-swing-wheel-spark", "home-swing-wheel-sub");
+    renderSwingCard(entries, "matrix", "home-swing-matrix-score", "home-swing-matrix-spark", "home-swing-matrix-sub");
+  }
+
+  function renderSwingCard(entries, source, scoreId, sparkId, subId) {
+    var data = MCI.computeSwing(entries, source, _swingDays);
+    var scoreEl = document.getElementById(scoreId);
+    var sparkEl = document.getElementById(sparkId);
+    var subEl = document.getElementById(subId);
+
+    if (scoreEl) scoreEl.textContent = data.score == null ? "—" : data.score;
+    if (sparkEl) sparkEl.innerHTML = sparkSvg(data.series, data.min, data.max);
+    if (subEl) {
+      subEl.textContent = data.score == null
+        ? (MCI.t("swingNoData") || "Not enough data yet")
+        : (MCI.t("swingBasis") || "{count} check-ins").replace("{count}", data.count);
+    }
+  }
+
+  /* Tiny inline sparkline (stretches to card width). Long windows are
+     down-sampled into buckets so the line stays legible. */
+  function sparkSvg(series, min, max) {
+    if (!series || series.length < 2) return "";
+    var pts = series, MAX = 48;
+    if (pts.length > MAX) {
+      var bucketed = [], size = pts.length / MAX;
+      for (var b = 0; b < MAX; b++) {
+        var s = Math.floor(b * size), en = Math.floor((b + 1) * size), sum = 0, n = 0;
+        for (var j = s; j < en; j++) { sum += pts[j]; n++; }
+        bucketed.push(n ? sum / n : pts[s]);
+      }
+      pts = bucketed;
+    }
+    var W = 100, H = 32, pad = 2, range = (max - min) || 1;
+    var step = pts.length > 1 ? (W - 2 * pad) / (pts.length - 1) : 0;
+    var d = "";
+    for (var i = 0; i < pts.length; i++) {
+      var x = pad + i * step;
+      var y = pad + (1 - (pts[i] - min) / range) * (H - 2 * pad);
+      d += (i ? " L" : "M") + x.toFixed(1) + " " + y.toFixed(1);
+    }
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">'
+      + '<path d="' + d + '" fill="none" stroke="var(--accent)" stroke-width="1.5" '
+      + 'stroke-linejoin="round" stroke-linecap="round"/></svg>';
   }
 
   /* Build the circular streak progress ring (SVG markup). */
@@ -132,6 +183,16 @@
       if (ctaBtn) {
         ctaBtn.addEventListener("click", function () {
           MCI.emit("navigate:route", "checkin");
+        });
+      }
+
+      /* mood-swings window selector */
+      var periodSel = document.getElementById("home-swing-period");
+      if (periodSel) {
+        periodSel.addEventListener("change", function () {
+          var v = parseInt(periodSel.value, 10);
+          _swingDays = isNaN(v) ? 28 : v;
+          renderSwings(MCI.loadEntries());
         });
       }
 

@@ -527,14 +527,6 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   color: var(--accent);
 }
 
-.bento-mood {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-strong);
-  margin-top: 4px;
-}
-
 .bento-sub {
   font-size: 0.72rem;
   color: var(--text-faint);
@@ -639,6 +631,40 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   margin-top: 10px;
 }
 
+/* ── Mood swings band ── */
+.home-swings {
+  margin-bottom: 20px;
+}
+
+.home-swings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.home-swings-head .bento-label {
+  margin-bottom: 0;
+}
+
+.home-swings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.home-spark {
+  margin-top: 10px;
+  min-height: 40px;
+}
+
+.home-spark svg {
+  width: 100%;
+  height: 40px;
+  display: block;
+}
+
 @media (max-width: 600px) {
   .home-body {
     flex-direction: column;
@@ -651,5 +677,9 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
 
   .home-stats .bento-card {
     flex: 1;
+  }
+
+  .home-swings-grid {
+    grid-template-columns: 1fr;
   }
 }

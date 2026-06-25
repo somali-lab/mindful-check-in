@@ -170,10 +170,33 @@
               <span class="bento-value" id="home-energy">&mdash;</span>
               <span class="bento-sub" data-t="homeEnergySub">average</span>
             </div>
+          </div>
+        </div>
+
+        <!-- Mood swings: spread of feeling over a chosen window -->
+        <div class="home-swings">
+          <div class="home-swings-head">
+            <span class="bento-label" data-t="homeSwingsTitle">Mood swings</span>
+            <select id="home-swing-period" class="wheel-select" data-t-aria="homeSwingsPeriodAria">
+              <option value="7" data-t="swingPeriod7">Past week</option>
+              <option value="28" data-t="swingPeriod28" selected>28 days</option>
+              <option value="90" data-t="swingPeriod90">3 months</option>
+              <option value="180" data-t="swingPeriod180">6 months</option>
+              <option value="365" data-t="swingPeriod365">1 year</option>
+            </select>
+          </div>
+          <div class="home-swings-grid">
             <div class="bento-card">
-              <span class="bento-label" data-t="statTopFeeling">Top Feeling</span>
-              <span class="bento-mood" id="home-mood">&mdash;</span>
-              <span class="bento-sub" data-t="homeLastMood">Last mood</span>
+              <span class="bento-label" data-t="swingWheel">Emotion wheel</span>
+              <span class="bento-value" id="home-swing-wheel-score">&mdash;</span>
+              <div class="home-spark" id="home-swing-wheel-spark"></div>
+              <span class="bento-sub" id="home-swing-wheel-sub"></span>
+            </div>
+            <div class="bento-card">
+              <span class="bento-label" data-t="swingMatrix">Mood matrix</span>
+              <span class="bento-value" id="home-swing-matrix-score">&mdash;</span>
+              <div class="home-spark" id="home-swing-matrix-spark"></div>
+              <span class="bento-sub" id="home-swing-matrix-sub"></span>
             </div>
           </div>
         </div>

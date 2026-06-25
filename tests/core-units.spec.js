@@ -104,4 +104,48 @@ test.describe('compute + core units', () => {
     expect(r.energy).toEqual(['high', 'mid', 'low']);
     expect(r.valence).toEqual(['high', 'mid', 'low']);
   });
+
+  test('computeSwing is 0 for a perfectly stable mood and 100 at the extremes', async ({ page }) => {
+    const r = await page.evaluate(() => {
+      const today = new Date();
+      const stable = {}, swingy = {}, matrix = {};
+      const ids = ['joy', 'sadness']; // wheel valence 3 and 1
+      for (let i = 0; i < 6; i++) {
+        const d = new Date(today); d.setDate(d.getDate() - i);
+        const k = MCI.formatDate(d);
+        stable[k] = MCI.normalize({ coreFeeling: 'joy' });
+        swingy[k] = MCI.normalize({ coreFeeling: ids[i % 2] });
+        matrix[k] = MCI.normalize({ moodRow: 5, moodCol: i % 2 === 0 ? 0 : 9 });
+      }
+      return {
+        stable: MCI.computeSwing(stable, 'wheel', 28).score,
+        swingy: MCI.computeSwing(swingy, 'wheel', 28).score,
+        matrix: MCI.computeSwing(matrix, 'matrix', 28).score,
+      };
+    });
+    expect(r.stable).toBe(0);
+    expect(r.swingy).toBe(100);
+    expect(r.matrix).toBe(100);
+  });
+
+  test('computeSwing is null below two data points and respects the window', async ({ page }) => {
+    const r = await page.evaluate(() => {
+      const today = new Date();
+      const one = {};
+      one[MCI.formatDate(today)] = MCI.normalize({ coreFeeling: 'joy' });
+
+      const windowed = {};
+      for (let i = 0; i < 2; i++) { const d = new Date(today); d.setDate(d.getDate() - i); windowed[MCI.formatDate(d)] = MCI.normalize({ moodRow: 5, moodCol: 5 }); }
+      const old = new Date(today); old.setDate(old.getDate() - 60);
+      windowed[MCI.formatDate(old)] = MCI.normalize({ moodRow: 5, moodCol: 9 });
+
+      return {
+        one: MCI.computeSwing(one, 'wheel', 28),
+        windowCount: MCI.computeSwing(windowed, 'matrix', 7).count,
+      };
+    });
+    expect(r.one.score).toBeNull();
+    expect(r.one.count).toBe(1);
+    expect(r.windowCount).toBe(2); // the 60-day-old entry is outside the 7-day window
+  });
 });

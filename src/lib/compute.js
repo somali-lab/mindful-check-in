@@ -129,6 +129,57 @@
   };
 
   /**
+   * Mood variability ("swings") over a recent window, as a 0-100 spread score.
+   * The score is the population standard deviation of the per-check-in mood
+   * value, normalised against its theoretical maximum for the scale.
+   * @param {Object} entries - All entries keyed by dateKey
+   * @param {string} source - "wheel" (coreFeeling valence 1-3) or "matrix" (moodCol 0-9)
+   * @param {number} days - window length in days (e.g. 7, 28, 90, 180, 365)
+   * @returns {Object} { score (0-100 or null), count, series, min, max }
+   */
+  MCI.computeSwing = function (entries, source, days) {
+    var min = source === "wheel" ? 1 : 0;
+    var max = source === "wheel" ? 3 : 9;
+
+    var cutoff = new Date();
+    cutoff.setHours(0, 0, 0, 0);
+    cutoff.setDate(cutoff.getDate() - (days - 1));
+
+    var keys = Object.keys(entries).sort(); /* date-first keys sort chronologically */
+    var series = [];
+    for (var i = 0; i < keys.length; i++) {
+      var d = MCI.dateFromKey(keys[i]);
+      if (!d || d < cutoff) continue;
+      var e = entries[keys[i]];
+      var val;
+      if (source === "wheel") {
+        if (!e.coreFeeling) continue;
+        val = MCI.Data.moodScores[e.coreFeeling];
+        if (val == null) continue;
+      } else {
+        if (typeof e.moodCol !== "number" || e.moodCol < 0) continue;
+        val = e.moodCol;
+      }
+      series.push(val);
+    }
+
+    if (series.length < 2) {
+      return { score: null, count: series.length, series: series, min: min, max: max };
+    }
+
+    var sum = 0, j;
+    for (j = 0; j < series.length; j++) sum += series[j];
+    var mean = sum / series.length;
+    var sq = 0;
+    for (j = 0; j < series.length; j++) { var delta = series[j] - mean; sq += delta * delta; }
+    var sd = Math.sqrt(sq / series.length);
+    var maxSd = (max - min) / 2; /* spread is largest when values split between extremes */
+    var score = Math.round(Math.min(1, sd / maxSd) * 100);
+
+    return { score: score, count: series.length, series: series, min: min, max: max };
+  };
+
+  /**
    * Get localized day-of-week header names.
    * @returns {string[]} array of 7 short day names (Mon-Sun)
    */
