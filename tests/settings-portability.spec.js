@@ -6,6 +6,7 @@ const {
   getLocalStorageSettings,
   navigateToTab,
   openSettingsTab,
+  acceptConfirm,
 } = require('./fixtures/helpers');
 
 // ─── Export settings downloads JSON ───
@@ -79,9 +80,8 @@ test('reset settings restores defaults', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'settings');
 
-  page.on('dialog', async (dialog) => await dialog.accept());
-
   await page.locator('#cfg-btn-reset').click();
+  await acceptConfirm(page);
   await page.waitForTimeout(300);
 
   // Settings should be reset to defaults

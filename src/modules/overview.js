@@ -295,9 +295,11 @@
           var delBtn = e.target.closest(".ov-del");
           if (delBtn) {
             var dk = delBtn.getAttribute("data-dk");
-            if (dk && confirm(MCI.t("deleteConfirm") || "Delete this entry?")) {
-              MCI.deleteEntry(dk);
-              refresh();
+            if (dk) {
+              MCI.confirm({ body: MCI.t("deleteConfirm") || "Delete this entry?", danger: true }, function () {
+                MCI.deleteEntry(dk);
+                refresh();
+              });
             }
             return;
           }

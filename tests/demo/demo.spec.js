@@ -438,9 +438,10 @@ test('Mindful Check-in — volledige app demo', async ({ page }) => {
   await page.locator('#view-info [data-settings-tab="data"]').click();
   await wait(page, PAUSE);
 
-  // Accept confirm dialog
-  page.once('dialog', async (dialog) => await dialog.accept());
+  // Accept the in-app confirm modal
   await page.locator('#demo-btn-generate').click();
+  await wait(page, SHORT);
+  await page.locator('#dlg-confirm-ok').click();
   await wait(page, LONG);
 
   // Bekijk het resultaat in overview

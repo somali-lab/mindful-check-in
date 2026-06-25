@@ -180,11 +180,16 @@
       var resetBtn = document.getElementById("cfg-btn-reset");
       if (resetBtn) {
         resetBtn.addEventListener("click", function () {
-          if (!confirm(MCI.t("settingsResetConfirm") || "Reset all settings to defaults?")) return;
-          var def = MCI.defaultSettings();
-          MCI.saveSettings(def, "settings");
-          loadForm();
-          MCI.banner(MCI.t("settingsReset") || "Settings reset to defaults.", "success");
+          MCI.confirm({
+            title: MCI.t("settingReset"),
+            body: MCI.t("settingsResetConfirm") || "Reset all settings to defaults?",
+            danger: true
+          }, function () {
+            var def = MCI.defaultSettings();
+            MCI.saveSettings(def, "settings");
+            loadForm();
+            MCI.banner(MCI.t("settingsReset") || "Settings reset to defaults.", "success");
+          });
         });
       }
 

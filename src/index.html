@@ -866,6 +866,16 @@
   </div>
 </dialog>
 
+<!-- Confirm dialog (in-app replacement for window.confirm) -->
+<dialog id="dlg-confirm" class="card" style="max-width:360px">
+  <h3 id="dlg-confirm-title" class="dlg-title"></h3>
+  <p id="dlg-confirm-body" class="dlg-body"></p>
+  <div class="section-actions" style="gap:8px;margin-top:16px">
+    <button type="button" class="btn btn--ghost" id="dlg-confirm-cancel" data-t="dlgCancel">Cancel</button>
+    <button type="button" class="btn btn--primary" id="dlg-confirm-ok" data-t="dlgConfirm">Confirm</button>
+  </div>
+</dialog>
+
 <!-- Scripts (v2 architecture: data → core → modules → boot) -->
 <script src="data/translations.js"></script>
 <script src="data/static.js"></script>

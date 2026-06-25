@@ -82,44 +82,56 @@
   }
 
   function generateDemo() {
-    if (!confirm(MCI.t("demoConfirm") || "Generate 30 days of demo data? This will add to existing entries.")) return;
+    MCI.confirm({
+      title: MCI.t("btnDemo"),
+      body: MCI.t("demoConfirm") || "Generate 30 days of demo data? This will add to existing entries."
+    }, function () {
+      var entries = MCI.loadEntries();
+      var today = new Date();
+      var count = 0;
 
-    var entries = MCI.loadEntries();
-    var today = new Date();
-    var count = 0;
-
-    for (var d = 29; d >= 0; d--) {
-      var date = new Date(today);
-      date.setDate(date.getDate() - d);
-      var perDay = randomInt(1, 2);
-      for (var p = 0; p < perDay; p++) {
-        var h = randomInt(7, 22);
-        var m = randomInt(0, 59);
-        date.setHours(h, m, 0, 0);
-        var key = MCI.formatDate(date) + "_"
-          + ("0" + h).slice(-2)
-          + ("0" + m).slice(-2)
-          + "00000";
-        entries[key] = generateEntry();
-        count++;
+      for (var d = 29; d >= 0; d--) {
+        var date = new Date(today);
+        date.setDate(date.getDate() - d);
+        var perDay = randomInt(1, 2);
+        for (var p = 0; p < perDay; p++) {
+          var h = randomInt(7, 22);
+          var m = randomInt(0, 59);
+          date.setHours(h, m, 0, 0);
+          var key = MCI.formatDate(date) + "_"
+            + ("0" + h).slice(-2)
+            + ("0" + m).slice(-2)
+            + "00000";
+          entries[key] = generateEntry();
+          count++;
+        }
       }
-    }
 
-    MCI.saveAllEntries(entries);
-    MCI.banner((MCI.t("demoGenerated") || "Generated {count} demo entries.").replace("{count}", count), "success");
+      MCI.saveAllEntries(entries);
+      MCI.banner((MCI.t("demoGenerated") || "Generated {count} demo entries.").replace("{count}", count), "success");
+    });
   }
 
   function clearAll() {
-    if (!confirm(MCI.t("clearConfirm") || "Clear ALL data? This cannot be undone.")) return;
-    if (!confirm(MCI.t("clearConfirmDouble") || "Are you really sure? All check-ins will be permanently deleted.")) return;
+    MCI.confirm({
+      title: MCI.t("btnClearAll"),
+      body: MCI.t("clearConfirm") || "Clear ALL data? This cannot be undone.",
+      danger: true
+    }, function () {
+      MCI.confirm({
+        title: MCI.t("btnClearAll"),
+        body: MCI.t("clearConfirmDouble") || "Are you really sure? All check-ins will be permanently deleted.",
+        danger: true
+      }, function () {
+        var k;
+        for (k in MCI.KEYS) {
+          if (MCI.KEYS.hasOwnProperty(k)) MCI.del(MCI.KEYS[k]);
+        }
 
-    var k;
-    for (k in MCI.KEYS) {
-      if (MCI.KEYS.hasOwnProperty(k)) MCI.del(MCI.KEYS[k]);
-    }
-
-    MCI.banner(MCI.t("clearDone") || "All data cleared. Reloading\u2026", "success");
-    setTimeout(function () { location.reload(); }, 1500);
+        MCI.banner(MCI.t("clearDone") || "All data cleared. Reloading\u2026", "success");
+        setTimeout(function () { location.reload(); }, 1500);
+      });
+    });
   }
 
   MCI.Demo = {

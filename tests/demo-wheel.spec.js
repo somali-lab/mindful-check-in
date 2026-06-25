@@ -1,6 +1,6 @@
 // @ts-check
 const { test, expect } = require('./fixtures/base');
-const { openInfoTab } = require('./fixtures/helpers');
+const { openInfoTab, acceptConfirm } = require('./fixtures/helpers');
 
 // ── Wheel → allowed emotions lookup (mirrors MCI.Data.wheels in static.js) ──
 const WHEEL_EMOTIONS = {
@@ -16,11 +16,10 @@ const VALID_WHEEL_TYPES = Object.keys(WHEEL_EMOTIONS);
 
 async function generateDemoAndGetEntries(page) {
   await page.goto('/');
-  // Auto-accept the confirm() dialog that generateDemo() fires
-  page.on('dialog', async (dialog) => await dialog.accept());
 
   await openInfoTab(page, 'data');
   await page.locator('#demo-btn-generate').click();
+  await acceptConfirm(page); // accept the in-app confirm modal
 
   // Wait for the success banner to appear (signals demo generation is done)
   await page.locator('.toast--success').waitFor({ state: 'visible', timeout: 5000 });

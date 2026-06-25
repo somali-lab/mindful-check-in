@@ -383,6 +383,17 @@ input[type="number"] { width: 100%; max-width: 140px; color: var(--text-strong);
   display: none;
 }
 
+/* ── Confirm dialog ── */
+.dlg-title {
+  margin: 0 0 8px;
+}
+
+.dlg-body {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-body);
+}
+
 /* ── Data / tool cards (About > Data, Settings > Import/Export) ──
    A bordered surface pairing an icon and a short label/description with the
    action button it performs. */

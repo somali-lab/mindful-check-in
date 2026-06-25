@@ -5,6 +5,8 @@ const {
   createTestEntry,
   getLocalStorageEntries,
   navigateToTab,
+  acceptConfirm,
+  dismissConfirm,
   getDateKey,
   getTodayKey,
 } = require('./fixtures/helpers');
@@ -20,13 +22,9 @@ test('delete entry, accept confirm, removed from table and localStorage', async 
   await page.goto('/');
   await navigateToTab(page, 'overview');
 
-  // Accept the confirm dialog
-  page.on('dialog', async (dialog) => {
-    await dialog.accept();
-  });
-
   const deleteBtn = page.locator('.ov-del').first();
   await deleteBtn.click();
+  await acceptConfirm(page); // accept the in-app confirm modal
   await page.waitForTimeout(300);
 
   // One fewer entry
@@ -45,13 +43,9 @@ test('delete entry, dismiss confirm, nothing changes', async ({ page }) => {
   await page.goto('/');
   await navigateToTab(page, 'overview');
 
-  // Dismiss the confirm dialog
-  page.on('dialog', async (dialog) => {
-    await dialog.dismiss();
-  });
-
   const deleteBtn = page.locator('.ov-del').first();
   await deleteBtn.click();
+  await dismissConfirm(page); // cancel the in-app confirm modal
   await page.waitForTimeout(300);
 
   // Same number of entries
@@ -76,13 +70,10 @@ test('delete today entry from overview, form resets', async ({ page }) => {
   // Navigate to overview and delete today's entry
   await navigateToTab(page, 'overview');
 
-  page.on('dialog', async (dialog) => {
-    await dialog.accept();
-  });
-
   // Find the row for today and delete it
   const deleteBtn = page.locator('.ov-del').first();
   await deleteBtn.click();
+  await acceptConfirm(page);
   await page.waitForTimeout(300);
 
   // Verify entry was removed from storage

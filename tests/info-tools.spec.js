@@ -7,6 +7,8 @@ const {
   getLocalStorageSettings,
   navigateToTab,
   openInfoTab,
+  acceptConfirm,
+  dismissConfirm,
   getDateKey,
   getTodayKey,
 } = require('./fixtures/helpers');
@@ -17,10 +19,8 @@ test('generate demo data creates entries in localStorage', async ({ page }) => {
   await page.goto('/');
   await openInfoTab(page, 'data');
 
-  // generateDemo() calls confirm() — accept it
-  page.on('dialog', async (dialog) => await dialog.accept());
-
   await page.locator('#demo-btn-generate').click();
+  await acceptConfirm(page); // in-app confirm modal
   await page.waitForTimeout(500);
 
   const entries = await getLocalStorageEntries(page);
@@ -33,8 +33,8 @@ test('demo data entries appear in overview', async ({ page }) => {
   await page.goto('/');
   await openInfoTab(page, 'data');
 
-  page.on('dialog', async (dialog) => await dialog.accept());
   await page.locator('#demo-btn-generate').click();
+  await acceptConfirm(page);
   await page.waitForTimeout(500);
 
   await navigateToTab(page, 'overview');
@@ -54,8 +54,8 @@ test('demo data adds alongside existing entries', async ({ page }) => {
   await page.goto('/');
   await openInfoTab(page, 'data');
 
-  page.on('dialog', async (dialog) => await dialog.accept());
   await page.locator('#demo-btn-generate').click();
+  await acceptConfirm(page);
   await page.waitForTimeout(500);
 
   const entries = await getLocalStorageEntries(page);
@@ -81,10 +81,10 @@ test('clear all local data removes all localStorage keys', async ({ page }) => {
   await page.reload();
   await openInfoTab(page, 'data');
 
-  // clearAll() calls confirm() TWICE — accept both
-  page.on('dialog', async (dialog) => await dialog.accept());
-
+  // clearAll() shows the confirm modal TWICE — accept both
   await page.locator('#demo-btn-clear').click();
+  await acceptConfirm(page);
+  await acceptConfirm(page);
 
   // clearAll() reloads after 1500ms — wait for it
   await page.waitForTimeout(2000);
@@ -106,10 +106,9 @@ test('dismiss clear data confirm, nothing deleted', async ({ page }) => {
   await page.goto('/');
   await openInfoTab(page, 'data');
 
-  // Dismiss first confirm dialog — clearAll returns early
-  page.on('dialog', async (dialog) => await dialog.dismiss());
-
+  // Dismiss the first confirm modal — clearAll returns early
   await page.locator('#demo-btn-clear').click();
+  await dismissConfirm(page);
   await page.waitForTimeout(300);
 
   const stored = await getLocalStorageEntries(page);

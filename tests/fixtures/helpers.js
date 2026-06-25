@@ -241,6 +241,14 @@ async function openInfoTab(page, key) {
   await page.locator(`#view-info [data-settings-panel="${key}"]`).waitFor({ state: 'visible' });
 }
 
+// In-app confirm modal (MCI.confirm) — the replacement for window.confirm.
+async function acceptConfirm(page) {
+  await page.locator('#dlg-confirm-ok').click();
+}
+async function dismissConfirm(page) {
+  await page.locator('#dlg-confirm-cancel').click();
+}
+
 // ─── Date helpers ───
 
 function getTodayKey() {
@@ -313,6 +321,8 @@ module.exports = {
   navigateToTab,
   openSettingsTab,
   openInfoTab,
+  acceptConfirm,
+  dismissConfirm,
   getTodayKey,
   getDateKey,
   generateEntries,

@@ -415,6 +415,54 @@
     }, duration);
   };
 
+  /* ── In-app confirm modal (replaces window.confirm) ──
+     MCI.confirm({ title, body, confirmLabel, cancelLabel, danger }, onConfirm)
+     Runs onConfirm() only when the user accepts; Cancel / Esc / backdrop do nothing.
+     Falls back to the native confirm() if <dialog> is unsupported. */
+  var _confirmCb = null;
+
+  MCI.confirm = function (opts, onConfirm) {
+    opts = opts || {};
+    var dlg = document.getElementById("dlg-confirm");
+    if (!dlg || !dlg.showModal) {
+      if (window.confirm(opts.body || opts.title || "")) { if (onConfirm) onConfirm(); }
+      return;
+    }
+    if (!dlg._wired) {
+      dlg._wired = true;
+      var okEl = document.getElementById("dlg-confirm-ok");
+      var cancelEl = document.getElementById("dlg-confirm-cancel");
+      if (okEl) okEl.addEventListener("click", function () {
+        var cb = _confirmCb; _confirmCb = null;
+        if (dlg.close) dlg.close();
+        /* Defer so the dialog fully closes before a chained confirm reopens it */
+        if (cb) setTimeout(cb, 0);
+      });
+      if (cancelEl) cancelEl.addEventListener("click", function () {
+        _confirmCb = null;
+        if (dlg.close) dlg.close();
+      });
+      /* Esc / backdrop dismissal counts as cancel */
+      dlg.addEventListener("close", function () { _confirmCb = null; });
+    }
+    var titleEl = document.getElementById("dlg-confirm-title");
+    var bodyEl = document.getElementById("dlg-confirm-body");
+    var okBtn = document.getElementById("dlg-confirm-ok");
+    var cancelBtn = document.getElementById("dlg-confirm-cancel");
+    if (titleEl) {
+      titleEl.textContent = opts.title || "";
+      titleEl.style.display = opts.title ? "" : "none";
+    }
+    if (bodyEl) bodyEl.textContent = opts.body || "";
+    if (okBtn) {
+      okBtn.textContent = opts.confirmLabel || MCI.t("dlgConfirm") || "Confirm";
+      okBtn.className = "btn " + (opts.danger ? "btn--ghost info-btn-danger" : "btn--primary");
+    }
+    if (cancelBtn) cancelBtn.textContent = opts.cancelLabel || MCI.t("dlgCancel") || "Cancel";
+    _confirmCb = onConfirm || null;
+    dlg.showModal();
+  };
+
   /* ── DRY helper: subscribe to all data-change events at once ── */
   MCI.onDataChange = function (fn) {
     var events = ["entry:saved", "entry:deleted", "entries:changed", "language:changed", "settings:changed"];
