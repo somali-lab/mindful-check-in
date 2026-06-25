@@ -220,6 +220,16 @@
         });
       }
 
+      /* mood-swings help toggle */
+      var infoBtn = document.getElementById("home-swing-info");
+      var helpEl = document.getElementById("home-swing-help");
+      if (infoBtn && helpEl) {
+        infoBtn.addEventListener("click", function () {
+          var hidden = helpEl.classList.toggle("is-hidden");
+          infoBtn.setAttribute("aria-expanded", hidden ? "false" : "true");
+        });
+      }
+
       /* mood-swings window selector */
       var periodSel = document.getElementById("home-swing-period");
       if (periodSel) {

@@ -63,6 +63,23 @@ test('the About guide explains the mood-swing score', async ({ page }) => {
   await expect(desc).toContainText('standard deviation');
 });
 
+test('the Mood swings info button toggles an inline explanation', async ({ page }) => {
+  await page.goto('/');
+  const help = page.locator('#home-swing-help');
+  const btn = page.locator('#home-swing-info');
+
+  await expect(help).toBeHidden();
+  await expect(btn).toHaveAttribute('aria-expanded', 'false');
+
+  await btn.click();
+  await expect(help).toBeVisible();
+  await expect(help).toContainText('0 =');
+  await expect(btn).toHaveAttribute('aria-expanded', 'true');
+
+  await btn.click();
+  await expect(help).toBeHidden();
+});
+
 test('swing cards show the empty state with too little data', async ({ page }) => {
   await injectEntries(page, { [getDateKey(0)]: createTestEntry({ coreFeeling: 'joy', moodRow: 5, moodCol: 5 }) });
   await page.goto('/');

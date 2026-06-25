@@ -179,7 +179,7 @@
           <div class="home-swings-head">
             <span class="home-swings-title">
               <span class="bento-label" data-t="homeSwingsTitle">Mood swings</span>
-              <span class="swing-info" data-t-title="homeSwingsHelp" data-t-aria="homeSwingsHelp" tabindex="0" role="img">&#9432;</span>
+              <button type="button" class="swing-info" id="home-swing-info" data-t-aria="homeSwingsHelp" data-t-title="homeSwingsHelp" aria-expanded="false">&#9432;</button>
             </span>
             <select id="home-swing-period" class="wheel-select" data-t-aria="homeSwingsPeriodAria">
               <option value="7" data-t="swingPeriod7">Past week</option>
@@ -189,6 +189,7 @@
               <option value="365" data-t="swingPeriod365">1 year</option>
             </select>
           </div>
+          <p class="swing-help is-hidden" id="home-swing-help" data-t="homeSwingsHelp"></p>
           <div class="home-swings-grid">
             <div class="bento-card">
               <span class="bento-label" data-t="swingWheel">Emotion wheel</span>
@@ -201,7 +202,7 @@
               <span class="bento-label" data-t="swingMatrix">Mood matrix</span>
               <div class="swing-axis">
                 <div class="swing-axis-head">
-                  <span class="swing-axis-label" data-t="swingValence">Valence</span>
+                  <span class="swing-axis-label" data-t="swingValence">Positivity</span>
                   <span class="swing-axis-score" id="home-swing-valence-score">&mdash;</span>
                 </div>
                 <span class="swing-tier" id="home-swing-valence-tier"></span>
@@ -740,7 +741,7 @@
 
           <div class="section-group">
             <h3 class="subheading" data-t="infoSwingsTitle">Mood swings</h3>
-            <p class="info-score-intro" data-t="infoSwingsDesc">On the home page each “swing” score (0–100) shows how much that signal varied over the chosen period — its spread (standard deviation), scaled against the largest spread that is possible. 0 means every check-in was the same (a flat line); 100 means you swung fully between the two extremes each time. The emotion wheel has one axis; the mood matrix shows two — valence and energy. It says nothing about whether you felt good or bad, only how much it moved.</p>
+            <p class="info-score-intro" data-t="infoSwingsDesc">On the home page each “swing” score (0–100) shows how much that signal varied over the chosen period — its spread (standard deviation), scaled against the largest spread that is possible. 0 means every check-in was the same (a flat line); 100 means you swung fully between the two extremes each time. The emotion wheel has one axis; the mood matrix shows two — positivity and energy. It says nothing about whether you felt good or bad, only how much it moved.</p>
           </div>
 
           <div class="section-group">
@@ -751,7 +752,7 @@
               <div class="info-feature-item"><span class="info-feature-icon">🎡</span><span data-t="infoFeatureWheel">Core feeling via emotion wheel</span></div>
               <div class="info-feature-item"><span class="info-feature-icon">🧍</span><span data-t="infoFeatureBody">Body signals on a body figure</span></div>
               <div class="info-feature-item"><span class="info-feature-icon">⚡</span><span data-t="infoFeatureEnergy">Physical, mental &amp; emotional energy levels</span></div>
-              <div class="info-feature-item"><span class="info-feature-icon">🎨</span><span data-t="infoFeatureMood">Mood via a 10×10 valence/arousal matrix</span></div>
+              <div class="info-feature-item"><span class="info-feature-icon">🎨</span><span data-t="infoFeatureMood">Mood via a 10×10 mood grid</span></div>
               <div class="info-feature-item"><span class="info-feature-icon">✅</span><span data-t="infoFeatureActions">Actions and intentions</span></div>
               <div class="info-feature-item"><span class="info-feature-icon">📝</span><span data-t="infoFeatureNote">An optional free-text note</span></div>
             </div>
@@ -797,7 +798,7 @@
             <p class="info-score-intro" data-t="infoScoreIntro">The 28-day history and the 7-day summary both use three colours: green (good), orange (mixed) and red (low). The calculation differs per tab.</p>
 
             <h4 class="info-score-sub" data-t="infoScoreSummaryTitle">Summary (7-day dots)</h4>
-            <p data-t="infoScoreSummaryDesc">Each dot shows the combined mood score (1–3) of that day. The score is the average of all available components: emotion wheel score, mood grid valence (column 0–9 → 1–3) and energy average (0–100 → 1–3). Score 3 = green, 2 = orange, 1 = red.</p>
+            <p data-t="infoScoreSummaryDesc">Each dot shows the combined mood score (1–3) of that day. The score is the average of all available components: emotion wheel score, mood grid position negative↔positive (column 0–9 → 1–3) and energy average (0–100 → 1–3). Score 3 = green, 2 = orange, 1 = red.</p>
 
             <h4 class="info-score-sub" data-t="infoScoreCoreTitle">Core feeling tab</h4>
             <p data-t="infoScoreCoreDesc">Uses the combined mood score (same as summary). Score ≥ 3 = green, 2 = orange, 1 = red.</p>
@@ -820,7 +821,7 @@
             </div>
 
             <h4 class="info-score-sub" data-t="infoScoreMoodTitle">Mood tab</h4>
-            <p data-t="infoScoreMoodDesc">Based on the valence column (horizontal axis) of the 10×10 mood grid. Column 6–9 = green, 4–5 = orange, 0–3 = red.</p>
+            <p data-t="infoScoreMoodDesc">Based on the horizontal position (negative ← → positive) in the 10×10 mood grid. Column 6–9 = green, 4–5 = orange, 0–3 = red.</p>
 
             <h4 class="info-score-sub" data-t="infoScoreEnergyTitle">Physical / Mental / Emotional tabs</h4>
             <p data-t="infoScoreEnergyDesc">Based on the slider value (0–100%) of that energy type. 67–100% = green, 34–66% = orange, 0–33% = red.</p>

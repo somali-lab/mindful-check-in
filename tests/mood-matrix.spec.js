@@ -15,7 +15,7 @@ test('click cell (energy=8, valence=9) shows positive mood label', async ({ page
   await page.locator('.mood-cell[data-mr="2"][data-mc="8"]').click();
   const display = page.locator('#mood-display');
   await expect(display).not.toHaveClass(/is-empty/);
-  await expect(display).toContainText('E 8/10, V 9/10');
+  await expect(display).toContainText('E 8/10, P 9/10');
 });
 
 // ─── Select mood cell, reset, verify cleared ───
@@ -50,7 +50,7 @@ test('save entry with mood grid selection, reload, verify re-highlights', async 
 
   // Verify the same cell is selected
   await expect(page.locator('.mood-cell[data-mr="5"][data-mc="5"]')).toHaveClass(/is-selected/);
-  await expect(page.locator('#mood-display')).toContainText('E 5/10, V 6/10');
+  await expect(page.locator('#mood-display')).toContainText('E 5/10, P 6/10');
 });
 
 // ─── Multiple clicks — only last selection active ───
@@ -74,17 +74,17 @@ test('corner cells render correct boundary labels', async ({ page }) => {
 
   // (1,1) = row=9, col=0 — Low energy, Negative
   await page.locator('.mood-cell[data-mr="9"][data-mc="0"]').click();
-  await expect(page.locator('#mood-display')).toContainText('E 1/10, V 1/10');
+  await expect(page.locator('#mood-display')).toContainText('E 1/10, P 1/10');
 
   // (1,10) = row=9, col=9 — Low energy, Positive
   await page.locator('.mood-cell[data-mr="9"][data-mc="9"]').click();
-  await expect(page.locator('#mood-display')).toContainText('E 1/10, V 10/10');
+  await expect(page.locator('#mood-display')).toContainText('E 1/10, P 10/10');
 
   // (10,1) = row=0, col=0 — High energy, Negative
   await page.locator('.mood-cell[data-mr="0"][data-mc="0"]').click();
-  await expect(page.locator('#mood-display')).toContainText('E 10/10, V 1/10');
+  await expect(page.locator('#mood-display')).toContainText('E 10/10, P 1/10');
 
   // (10,10) = row=0, col=9 — High energy, Positive
   await page.locator('.mood-cell[data-mr="0"][data-mc="9"]').click();
-  await expect(page.locator('#mood-display')).toContainText('E 10/10, V 10/10');
+  await expect(page.locator('#mood-display')).toContainText('E 10/10, P 10/10');
 });
