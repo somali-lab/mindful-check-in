@@ -1,6 +1,6 @@
 // @ts-check
 const { test, expect } = require('./fixtures/base');
-const { navigateToTab } = require('./fixtures/helpers');
+const { openInfoTab } = require('./fixtures/helpers');
 
 // ── Wheel → allowed emotions lookup (mirrors MCI.Data.wheels in static.js) ──
 const WHEEL_EMOTIONS = {
@@ -19,7 +19,7 @@ async function generateDemoAndGetEntries(page) {
   // Auto-accept the confirm() dialog that generateDemo() fires
   page.on('dialog', async (dialog) => await dialog.accept());
 
-  await navigateToTab(page, 'info');
+  await openInfoTab(page, 'data');
   await page.locator('#demo-btn-generate').click();
 
   // Wait for the success banner to appear (signals demo generation is done)

@@ -157,8 +157,7 @@
 body[data-active-route="checkin"] .app-shell-footer,
 body[data-active-route="home"] .app-shell-footer,
 body[data-active-route="overview"] .app-shell-footer,
-body[data-active-route="settings"] .app-shell-footer,
-body[data-active-route="info"] .app-shell-footer {
+body[data-active-route="settings"] .app-shell-footer {
   display: block;
 }
 
@@ -171,8 +170,7 @@ body[data-active-route="info"] .app-shell-footer {
 body[data-active-route="checkin"] .app-shell-footer-bar[data-footer="checkin"],
 body[data-active-route="home"] .app-shell-footer-bar[data-footer="home"],
 body[data-active-route="overview"] .app-shell-footer-bar[data-footer="overview"],
-body[data-active-route="settings"] .app-shell-footer-bar[data-footer="settings"],
-body[data-active-route="info"] .app-shell-footer-bar[data-footer="info"] {
+body[data-active-route="settings"] .app-shell-footer-bar[data-footer="settings"] {
   display: flex;
 }
 

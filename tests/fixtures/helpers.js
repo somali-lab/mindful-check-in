@@ -234,6 +234,13 @@ async function openSettingsTab(page, key) {
   await page.locator(`[data-settings-panel="${key}"]`).waitFor({ state: 'visible' });
 }
 
+// About/Info has vertical sub-tabs (about / guide / privacy / heatmap / data).
+async function openInfoTab(page, key) {
+  await navigateToTab(page, 'info');
+  await page.locator(`#view-info [data-settings-tab="${key}"]`).click();
+  await page.locator(`#view-info [data-settings-panel="${key}"]`).waitFor({ state: 'visible' });
+}
+
 // ─── Date helpers ───
 
 function getTodayKey() {
@@ -305,6 +312,7 @@ module.exports = {
   VISIBILITY_PRESETS,
   navigateToTab,
   openSettingsTab,
+  openInfoTab,
   getTodayKey,
   getDateKey,
   generateEntries,

@@ -624,6 +624,7 @@
             <button type="button" class="settings-tab" data-settings-tab="guide" data-t="infoTabGuide">Guide</button>
             <button type="button" class="settings-tab" data-settings-tab="privacy" data-t="infoTabPrivacy">Privacy</button>
             <button type="button" class="settings-tab" data-settings-tab="heatmap" data-t="infoTabHeatmap">Heatmap</button>
+            <button type="button" class="settings-tab" data-settings-tab="data" data-t="infoTabData">Data</button>
           </nav>
 
           <div class="settings-panels">
@@ -753,6 +754,33 @@
 
           </div><!-- /panel heatmap -->
 
+          <div class="settings-panel" data-settings-panel="data">
+
+          <div class="section-group">
+            <h3 class="subheading" data-t="infoDataTitle">Manage your data</h3>
+            <p class="info-score-intro" data-t="infoDataIntro">Try the app with sample entries, or permanently remove everything stored on this device.</p>
+
+            <div class="info-data-card">
+              <span class="info-data-icon" aria-hidden="true">🧪</span>
+              <div class="info-data-body">
+                <strong data-t="infoDataDemoTitle">Demo data</strong>
+                <p data-t="infoDataDemoDesc">Adds 30 days of randomly generated check-ins alongside your own entries.</p>
+                <button type="button" class="btn btn--ghost" id="demo-btn-generate" data-t="btnDemo">Generate demo data</button>
+              </div>
+            </div>
+
+            <div class="info-data-card info-data-card--danger">
+              <span class="info-data-icon" aria-hidden="true">🗑️</span>
+              <div class="info-data-body">
+                <strong data-t="infoDataClearTitle">Clear all data</strong>
+                <p data-t="infoDataClearDesc">Permanently deletes every check-in, all settings and cached weather from this browser. This cannot be undone.</p>
+                <button type="button" class="btn btn--ghost info-btn-danger" id="demo-btn-clear" data-t="btnClearAll">Clear all data</button>
+              </div>
+            </div>
+          </div>
+
+          </div><!-- /panel data -->
+
           </div><!-- /settings-panels -->
         </section>
       </div>
@@ -784,10 +812,6 @@
           <input type="file" accept=".json" id="cfg-inp-import" class="is-hidden"/>
         </label>
         <button type="button" class="btn btn--primary" id="cfg-btn-save" data-t="settingSave">Save settings</button>
-      </div>
-      <div class="app-shell-bar app-shell-footer-bar" data-footer="info">
-        <button type="button" class="btn btn--ghost" id="demo-btn-generate" data-t="btnDemo">Generate demo data</button>
-        <button type="button" class="btn btn--ghost info-btn-danger" id="demo-btn-clear" data-t="btnClearAll">Clear all data</button>
       </div>
     </footer>
 

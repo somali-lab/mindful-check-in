@@ -434,6 +434,10 @@ test('Mindful Check-in — volledige app demo', async ({ page }) => {
   await expect(page.locator('#view-info')).toHaveClass(/is-active/);
   await wait(page, PAUSE);
 
+  // Demo & clear buttons live under the About > Data sub-tab
+  await page.locator('#view-info [data-settings-tab="data"]').click();
+  await wait(page, PAUSE);
+
   // Accept confirm dialog
   page.once('dialog', async (dialog) => await dialog.accept());
   await page.locator('#demo-btn-generate').click();
