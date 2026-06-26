@@ -138,7 +138,7 @@ export class ChipsComponent {
       x.type = 'button';
       x.className = 'tag-x';
       x.setAttribute('data-felrm', String(i));
-      x.setAttribute('aria-label', 'remove');
+      x.setAttribute('aria-label', t('ariaRemove') || 'Remove');
       x.textContent = '×';
       tag.appendChild(x);
       slot.appendChild(tag);

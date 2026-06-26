@@ -1,5 +1,5 @@
 // Emotion wheel — muted SVG donut with external labels and pill tabs.
-// Self-contained component; reports the picked emotion via an onChange callback.
+// Self-contained component; the orchestrator reads the picked emotion via the `picked` getter.
 import type { WheelType } from '../../core/types';
 import { type Wheel, wheels } from '../../data/static';
 import { lang, t } from '../../i18n';
@@ -41,15 +41,13 @@ export class WheelComponent {
   readonly #display: HTMLElement | null;
   readonly #select: HTMLSelectElement | null;
   readonly #tabs: HTMLElement | null;
-  readonly #onChange: (picked: string) => void;
   #picked = '';
 
-  constructor(store: Store, onChange: (picked: string) => void) {
+  constructor(store: Store) {
     this.#svg = document.getElementById('wheel-svg') as SVGElement | null;
     this.#display = document.getElementById('wheel-display');
     this.#select = document.getElementById('sel-wheel') as HTMLSelectElement | null;
     this.#tabs = document.getElementById('wheel-tabs');
-    this.#onChange = onChange;
     if (!this.#svg) return;
 
     this.#svg.addEventListener('click', (e) => {
@@ -64,7 +62,6 @@ export class WheelComponent {
       this.#picked = '';
       this.#buildTabs();
       this.#draw();
-      this.#onChange('');
     });
 
     document.getElementById('whl-btn-reset')?.addEventListener('click', () => {
@@ -72,7 +69,6 @@ export class WheelComponent {
       this.#draw();
       const custom = document.getElementById('fld-custom') as HTMLTextAreaElement | null;
       if (custom) custom.value = '';
-      this.#onChange('');
     });
 
     lang.subscribe(() => {
@@ -118,7 +114,6 @@ export class WheelComponent {
   #select_(emId: string): void {
     this.#picked = this.#picked === emId ? '' : emId;
     this.#draw();
-    this.#onChange(this.#picked);
   }
 
   #buildTabs(): void {

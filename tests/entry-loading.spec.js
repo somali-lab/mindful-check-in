@@ -35,6 +35,23 @@ test('click overview row loads entry and switches to checkin', async ({ page }) 
   expect(thoughts).toBeTruthy();
 });
 
+// ─── Click home heatmap cell loads entry into form (regression: D1) ───
+
+test('click home heatmap cell loads entry and switches to checkin', async ({ page }) => {
+  const today = getTodayKey();
+  const entries = {
+    [`${today}_120000000`]: createTestEntry({ thoughts: 'From the heatmap', coreFeeling: 'joy' }),
+  };
+  await injectEntries(page, entries);
+  await page.goto('/');
+  await expect(page.locator('#view-home')).toHaveClass(/is-active/);
+
+  await page.locator('#home-heatmap [data-entry-key]').first().click();
+
+  await expect(page.locator('#view-checkin')).toBeVisible();
+  await expect(page.locator('#fld-thoughts')).toHaveValue('From the heatmap');
+});
+
 // ─── Context pill shows entry date after loading ───
 
 test('load historical entry, context pill shows date', async ({ page }) => {

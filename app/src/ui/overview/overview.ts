@@ -137,7 +137,7 @@ export class OverviewController {
 
   async #confirmDelete(key: string): Promise<void> {
     const ok = await confirmDialog({
-      title: t('deleteConfirm') || 'Delete this entry?',
+      title: t('deleteConfirmTitle') || 'Delete check-in',
       body: t('deleteConfirm') || 'Delete this entry?',
       danger: true,
     });

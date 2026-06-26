@@ -14,6 +14,12 @@ describe('dateFromKey', () => {
   it('returns null for an empty key', () => {
     expect(dateFromKey('')).toBeNull();
   });
+
+  it('returns null for malformed keys instead of an Invalid Date (D5)', () => {
+    for (const bad of ['garbage', '2026-13', 'xxxx-xx-xx', '2026-ab-12']) {
+      expect(dateFromKey(bad)).toBeNull();
+    }
+  });
 });
 
 describe('formatDate', () => {

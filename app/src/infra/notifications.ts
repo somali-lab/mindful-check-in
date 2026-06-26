@@ -18,7 +18,7 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
 export function showNotification(title: string, body: string, tag = 'mci-reminder'): void {
   if (!notificationsSupported() || Notification.permission !== 'granted') return;
   try {
-    const notification = new Notification(title, { body, icon: 'favicon.ico', tag });
+    const notification = new Notification(title, { body, icon: 'favicon.svg', tag });
     setTimeout(() => {
       try {
         notification.close();

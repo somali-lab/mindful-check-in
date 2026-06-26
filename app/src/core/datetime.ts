@@ -23,7 +23,13 @@ export function timestampKey(): string {
 export function dateFromKey(key: string): Date | null {
   if (!key) return null;
   const parts = key.substring(0, 10).split('-');
-  const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+  if (parts.length !== 3) return null;
+  const y = Number(parts[0]);
+  const m = Number(parts[1]);
+  const day = Number(parts[2]);
+  if (!Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(day)) return null;
+  const d = new Date(y, m - 1, day);
+  if (Number.isNaN(d.getTime())) return null;
   if (key.length > 10) {
     const rest = key.substring(11);
     d.setHours(

@@ -11,6 +11,9 @@ export class Store {
   readonly #repo: Repository;
   readonly #entries = signal<EntryMap>({});
   readonly #settings = signal<Settings>(defaultSettings());
+  // Pulses true when a persist write fails (e.g. localStorage quota); the shell
+  // subscribes to surface a warning so a save isn't silently lost on reload.
+  readonly #persistError = signal<boolean>(false);
 
   constructor(repo: Repository) {
     this.#repo = repo;
@@ -26,6 +29,18 @@ export class Store {
     return this.#settings;
   }
 
+  get persistError(): ReadonlySignal<boolean> {
+    return this.#persistError;
+  }
+
+  #flagWrite(ok: boolean): void {
+    // Edge-trigger: reset then set, so identical consecutive failures still notify.
+    if (!ok) {
+      this.#persistError.set(false);
+      this.#persistError.set(true);
+    }
+  }
+
   #readEntries(): EntryMap {
     const raw = this.#repo.read<unknown>(STORAGE_KEYS.entries, {});
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
@@ -37,7 +52,7 @@ export class Store {
   }
 
   #persistEntries(map: EntryMap): void {
-    this.#repo.write(STORAGE_KEYS.entries, map);
+    this.#flagWrite(this.#repo.write(STORAGE_KEYS.entries, map));
     this.#entries.set(map);
   }
 
@@ -58,7 +73,7 @@ export class Store {
   }
 
   saveSettings(next: Settings): void {
-    this.#repo.write(STORAGE_KEYS.settings, next);
+    this.#flagWrite(this.#repo.write(STORAGE_KEYS.settings, next));
     this.#settings.set(next);
   }
 }

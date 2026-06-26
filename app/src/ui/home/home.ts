@@ -5,6 +5,7 @@ import { computeSwing, scoreTier, swingTier } from '../../core/scoring';
 import { buildHeatmapData, computeStats, entrySpanDays, weekStripDays } from '../../core/stats';
 import type { EntryMap, SwingSource } from '../../core/types';
 import { lang, t } from '../../i18n';
+import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
 
 const SWING_CARDS: {
@@ -56,6 +57,12 @@ export class HomeController {
 
     document.getElementById('home-btn-checkin')?.addEventListener('click', () => {
       location.hash = 'checkin';
+    });
+
+    document.getElementById('home-heatmap')?.addEventListener('click', (e) => {
+      const cell = (e.target as Element).closest('[data-entry-key]');
+      const key = cell?.getAttribute('data-entry-key');
+      if (key) requestEntryLoad(key);
     });
 
     const info = document.getElementById('home-swing-info');

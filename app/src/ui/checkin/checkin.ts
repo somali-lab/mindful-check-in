@@ -37,7 +37,7 @@ export class CheckinController {
     this.#store = store;
     this.#weather = weatherService;
     // The picked emotion is read back from the wheel at save time.
-    this.#wheel = new WheelComponent(store, () => {});
+    this.#wheel = new WheelComponent(store);
     this.#body = new BodyComponent();
     this.#energy = new EnergyComponent(store);
     this.#mood = new MoodComponent();

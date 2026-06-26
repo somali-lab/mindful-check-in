@@ -1,4 +1,5 @@
 import './styles.css';
+import { t } from './i18n';
 import { LocalStorageRepository } from './infra/storage';
 import { WeatherService } from './infra/weather';
 import { Store } from './state/store';
@@ -12,12 +13,20 @@ import { ReminderController } from './ui/reminders';
 import { initRouter } from './ui/router';
 import { SettingsController } from './ui/settings/settings';
 import { initTheme } from './ui/theme';
+import { setToastDuration, showToast } from './ui/toast';
 import { WeatherComponent } from './ui/weather';
 
 // Composition root: build the repository + store, then wire the shell.
 const repo = new LocalStorageRepository();
 const store = new Store(repo);
 const weatherService = new WeatherService(repo);
+
+// Toast lifetime follows the user's setting; a failed persist surfaces a warning.
+setToastDuration(store.settings.get().toastDuration);
+store.settings.subscribe((s) => setToastDuration(s.toastDuration));
+store.persistError.subscribe((failed) => {
+  if (failed) showToast(t('storageWriteError'), 'warning');
+});
 
 initLanguage(repo);
 initTheme(store);
