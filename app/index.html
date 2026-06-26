@@ -79,7 +79,182 @@
             <div class="view-content"><h1 data-t="homeGreeting">How are you today?</h1></div>
           </div>
           <div class="view" id="view-checkin">
-            <div class="view-content"><h1 data-t="ciHowFeel">How are you feeling now?</h1></div>
+
+            <nav class="section-rail is-hidden" id="section-rail" aria-label="Sections" data-t-aria="sectionNavLabel">
+              <button type="button" class="section-rail-arrow" data-dir="prev" aria-label="Previous section" data-t-aria="sectionNavPrev">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+              </button>
+              <div class="section-rail-dots" id="section-rail-dots"></div>
+              <button type="button" class="section-rail-arrow" data-dir="next" aria-label="Next section" data-t-aria="sectionNavNext">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+            </nav>
+
+            <div class="view-content">
+
+              <section class="card checkin-card">
+                <div class="ci-body">
+                  <div class="ci-intro-row">
+                    <header class="ci-greeting">
+                      <h2 class="ci-hello" id="ci-greeting">Good morning</h2>
+                      <div class="ci-subline">
+                        <span data-t="ciHowFeel">How are you feeling now?</span>
+                        <span class="ci-dot" aria-hidden="true">·</span>
+                        <span class="checkin-context-pill checkin-context-pill--new" id="ci-pill" data-t="pillNew">New · not saved yet</span>
+                        <span class="ci-date-control" id="ci-date-control">
+                          <svg class="ci-date-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                          <span id="ci-date-display" class="ci-date-display"></span>
+                          <input type="datetime-local" id="ci-date-override" class="ci-date-input" aria-label="Check-in date and time" data-t-aria="ariaDateOverride">
+                        </span>
+                      </div>
+                    </header>
+                    <div class="ci-section ci-intro-thoughts" data-component="thoughts">
+                      <label class="ci-eyebrow" for="fld-thoughts" data-t="labelThoughts">Thoughts</label>
+                      <textarea id="fld-thoughts" class="ci-prose" rows="3" data-t-placeholder="placeholderThoughts" placeholder="What's on your mind?"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card checkin-card ci-collapsible">
+                <div class="ci-body">
+                  <div class="ci-core-row">
+                    <div class="ci-col ci-col-core" data-component="coreFeeling">
+                      <div class="ci-section-head">
+                        <label class="ci-eyebrow" data-t="labelCoreFeeling">Core Feeling</label>
+                        <button type="button" class="reset-button" id="whl-btn-reset" data-t="btnReset">Reset</button>
+                      </div>
+                      <div class="wheel-tabs" id="wheel-tabs"></div>
+                      <select id="sel-wheel" class="wheel-select is-hidden" aria-hidden="true" tabindex="-1">
+                        <option value="act">ACT (8)</option>
+                        <option value="plutchik">Plutchik (8)</option>
+                        <option value="ekman">Ekman (6)</option>
+                        <option value="junto">Junto (6)</option>
+                        <option value="extended">Extended (12)</option>
+                      </select>
+                      <svg class="emotion-wheel" id="wheel-svg" viewBox="0 34 360 292" role="group" data-t-aria="labelCoreFeeling"></svg>
+                      <div class="wheel-hint" data-t="pickWheel">Tap a segment</div>
+                      <div class="selection-display is-empty" id="wheel-display" data-t="emotionNone">No feeling selected</div>
+                      <label class="ci-eyebrow ci-eyebrow--sub" data-t="labelCustomFeelings">Additional feelings</label>
+                      <textarea id="fld-custom" rows="2" data-t-placeholder="placeholderCustom" placeholder="Other feelings…"></textarea>
+                      <div class="ci-chip-row" id="ci-feel-chips"></div>
+                    </div>
+
+                    <div class="ci-divider" aria-hidden="true"></div>
+
+                    <div class="ci-col ci-col-body" data-component="bodySignals">
+                      <div class="ci-section-head">
+                        <label class="ci-eyebrow" data-t="labelBodySignals">Body Signals</label>
+                        <button type="button" class="reset-button" id="bdy-btn-reset" data-t="btnReset">Reset</button>
+                      </div>
+                      <div class="body-figure" id="body-svg" role="group" data-t-aria="labelBodySignals">
+                        <svg class="body-figure-svg" viewBox="0 0 120 240" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                          <ellipse cx="60" cy="25" rx="15" ry="18" class="body-part bz" data-zone="head" fill="#f8fafc"/>
+                          <rect x="55" y="43" width="10" height="8" class="body-part bz" data-zone="neck" fill="#f8fafc"/>
+                          <ellipse cx="42" cy="58" rx="8" ry="6" class="body-part bz" data-zone="left-shoulder" fill="#f8fafc"/>
+                          <ellipse cx="78" cy="58" rx="8" ry="6" class="body-part bz" data-zone="right-shoulder" fill="#f8fafc"/>
+                          <ellipse cx="60" cy="77" rx="18" ry="20" class="body-part bz" data-zone="chest" fill="#f8fafc"/>
+                          <ellipse cx="60" cy="106" rx="16" ry="18" class="body-part bz" data-zone="abdomen" fill="#f8fafc"/>
+                          <ellipse cx="35" cy="76" rx="6" ry="15" class="body-part bz" data-zone="left-upper-arm" fill="#f8fafc"/>
+                          <ellipse cx="85" cy="76" rx="6" ry="15" class="body-part bz" data-zone="right-upper-arm" fill="#f8fafc"/>
+                          <circle cx="32" cy="93" r="4.5" class="body-part bz" data-zone="left-elbow" fill="#f8fafc"/>
+                          <circle cx="88" cy="93" r="4.5" class="body-part bz" data-zone="right-elbow" fill="#f8fafc"/>
+                          <ellipse cx="28" cy="110" rx="5.5" ry="12" class="body-part bz" data-zone="left-forearm" fill="#f8fafc"/>
+                          <ellipse cx="92" cy="110" rx="5.5" ry="12" class="body-part bz" data-zone="right-forearm" fill="#f8fafc"/>
+                          <ellipse cx="26" cy="126" rx="4.5" ry="6.5" class="body-part bz" data-zone="left-hand" fill="#f8fafc"/>
+                          <ellipse cx="94" cy="126" rx="4.5" ry="6.5" class="body-part bz" data-zone="right-hand" fill="#f8fafc"/>
+                          <ellipse cx="53" cy="136" rx="10" ry="11" class="body-part bz" data-zone="left-hip" fill="#f8fafc"/>
+                          <ellipse cx="67" cy="136" rx="10" ry="11" class="body-part bz" data-zone="right-hip" fill="#f8fafc"/>
+                          <ellipse cx="50" cy="171" rx="9" ry="27" class="body-part bz" data-zone="left-upper-leg" fill="#f8fafc"/>
+                          <ellipse cx="70" cy="171" rx="9" ry="27" class="body-part bz" data-zone="right-upper-leg" fill="#f8fafc"/>
+                          <circle cx="50" cy="198" r="6" class="body-part bz" data-zone="left-knee" fill="#f8fafc"/>
+                          <circle cx="70" cy="198" r="6" class="body-part bz" data-zone="right-knee" fill="#f8fafc"/>
+                          <ellipse cx="48" cy="216" rx="6.5" ry="14" class="body-part bz" data-zone="left-lower-leg" fill="#f8fafc"/>
+                          <ellipse cx="72" cy="216" rx="6.5" ry="14" class="body-part bz" data-zone="right-lower-leg" fill="#f8fafc"/>
+                          <ellipse cx="46" cy="232" rx="6" ry="7" class="body-part bz" data-zone="left-foot" fill="#f8fafc"/>
+                          <ellipse cx="74" cy="232" rx="6" ry="7" class="body-part bz" data-zone="right-foot" fill="#f8fafc"/>
+                          <rect x="55" y="51" width="10" height="36" rx="3" class="body-part bz back-zone" data-zone="upper-back"/>
+                          <rect x="55" y="90" width="10" height="34" rx="3" class="body-part bz back-zone" data-zone="lower-back"/>
+                        </svg>
+                      </div>
+                      <div class="body-hint" data-t="bodyStronger">Tap to make it stronger</div>
+                      <div class="body-legend">
+                        <span class="body-legend-item"><span class="body-legend-swatch lvl-1"></span><span data-t="bodyLight">Light</span></span>
+                        <span class="body-legend-item"><span class="body-legend-swatch lvl-2"></span><span data-t="bodyMedium">Medium</span></span>
+                        <span class="body-legend-item"><span class="body-legend-swatch lvl-3"></span><span data-t="bodyStrong">Strong</span></span>
+                      </div>
+                      <div class="body-selected-label" data-t="ciSelected">Selected</div>
+                      <div class="selection-display is-empty" id="body-display" data-t="bodyNone">No body signals selected</div>
+                      <label class="ci-eyebrow ci-eyebrow--sub" for="fld-body-note" data-t="labelBodyNote">Body note</label>
+                      <textarea id="fld-body-note" rows="2" data-t-placeholder="placeholderBodyNote" placeholder="Note about your body…"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card checkin-card ci-collapsible">
+                <div class="ci-body">
+                  <div class="ci-section ci-energy-section" data-component="energyPanel">
+                    <div class="ci-section-head">
+                      <label class="ci-eyebrow" data-t="labelEnergy">Energy Levels</label>
+                      <button type="button" class="reset-button" id="nrg-btn-reset" data-t="btnReset">Reset</button>
+                    </div>
+                    <div class="energy-triple" id="energy-slot"></div>
+                    <div class="selection-display is-empty" id="energy-display"></div>
+                    <label class="ci-eyebrow ci-eyebrow--sub" for="fld-energy-note" data-t="labelEnergyNote">Energy note</label>
+                    <textarea id="fld-energy-note" rows="2" data-t-placeholder="placeholderEnergyNote" placeholder="Note about your energy…"></textarea>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card checkin-card ci-collapsible">
+                <div class="ci-body">
+                  <div class="ci-section" data-component="moodMatrix">
+                    <div class="ci-section-head">
+                      <label class="ci-eyebrow" data-t="labelMoodMatrix">Mood Matrix</label>
+                      <button type="button" class="reset-button" id="mood-btn-reset" data-t="btnReset">Reset</button>
+                    </div>
+                    <div class="mood-grid-wrapper">
+                      <div class="axis-label axis-energy-high" data-t="axisEnergyHigh">HIGH ENERGY</div>
+                      <div class="axis-label axis-energy-low" data-t="axisEnergyLow">LOW ENERGY</div>
+                      <div class="axis-label axis-mood-negative" data-t="axisValenceNeg">NEGATIVE</div>
+                      <div class="axis-label axis-mood-positive" data-t="axisValencePos">POSITIVE</div>
+                      <div class="mood-grid" id="mood-slot"></div>
+                    </div>
+                    <div class="selection-display is-empty" id="mood-display" data-t="moodNone">No mood selected</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="card checkin-card ci-collapsible ci-card-actions">
+                <div class="ci-body">
+                  <div class="ci-section" data-component="actions">
+                    <label class="ci-eyebrow" for="fld-action" data-t="labelActions">Actions</label>
+                    <textarea id="fld-action" rows="3" data-t-placeholder="placeholderActions" placeholder="What did you do or plan to do?"></textarea>
+                    <div class="quick-actions-chips" id="ci-chips"></div>
+                  </div>
+                  <div class="ci-section" data-component="note">
+                    <label class="ci-eyebrow" for="fld-note" data-t="labelNote">Note</label>
+                    <textarea id="fld-note" class="ci-prose" rows="3" data-t-placeholder="placeholderNote" placeholder="Anything else…"></textarea>
+                  </div>
+                </div>
+              </section>
+
+              <section class="grid">
+                <article class="card" aria-labelledby="summary-heading">
+                  <h2 id="summary-heading" data-t="summaryTitle">Summary</h2>
+                  <div id="summary-slot" class="summary-content" aria-live="polite">
+                    <p class="empty-state" data-t="summaryEmpty">No entries yet.</p>
+                  </div>
+                </article>
+                <article class="card" aria-labelledby="history-heading">
+                  <h2 id="history-heading" data-t="historyTitle">28-Day History</h2>
+                  <div id="history-modes" class="cal-mode-row"></div>
+                  <div id="history-grid" class="cal-grid" aria-live="polite"></div>
+                </article>
+              </section>
+
+            </div>
           </div>
           <div class="view" id="view-overview">
             <div class="view-content"><h1 data-t="overviewTitle">Overview</h1></div>
@@ -91,8 +266,44 @@
             <div class="view-content"><h1 data-t="infoTitle">About</h1></div>
           </div>
         </div>
+
+        <footer class="app-shell-footer">
+          <div class="app-shell-bar app-shell-footer-bar" data-footer="checkin">
+            <button type="button" class="btn btn--ghost" id="ci-btn-new" data-t="btnNewCheckin">New check-in</button>
+            <button type="button" class="btn btn--primary" id="ci-btn-save" data-t="btnSave">Save check-in</button>
+          </div>
+          <div class="app-shell-bar app-shell-footer-bar" data-footer="home">
+            <button type="button" class="btn btn--primary" id="home-btn-checkin" data-t="homeStartCheckin">Start today's check-in</button>
+          </div>
+          <div class="app-shell-bar app-shell-footer-bar" data-footer="settings">
+            <button type="button" class="btn btn--ghost" id="cfg-btn-reset" data-t="settingReset">Reset to defaults</button>
+            <button type="button" class="btn btn--primary" id="cfg-btn-save" data-t="settingSave">Save settings</button>
+          </div>
+        </footer>
       </div>
     </div>
+
+    <!-- Toast container -->
+    <div id="toast-container" aria-live="polite"></div>
+
+    <!-- Import dialog -->
+    <dialog id="dlg-import" class="card" style="max-width:360px">
+      <h3 data-t="importDialogTitle">Import mode</h3>
+      <div class="section-actions" style="gap:8px;margin-top:12px">
+        <button type="button" class="btn btn--primary" id="dlg-overwrite" data-t="importOverwrite">Overwrite matching</button>
+        <button type="button" class="btn btn--ghost" id="dlg-skip" data-t="importSkip">Skip matching</button>
+      </div>
+    </dialog>
+
+    <!-- Confirm dialog (in-app replacement for window.confirm) -->
+    <dialog id="dlg-confirm" class="card" style="max-width:360px">
+      <h3 id="dlg-confirm-title" class="dlg-title"></h3>
+      <p id="dlg-confirm-body" class="dlg-body"></p>
+      <div class="section-actions" style="gap:8px;margin-top:16px">
+        <button type="button" class="btn btn--ghost" id="dlg-confirm-cancel" data-t="dlgCancel">Cancel</button>
+        <button type="button" class="btn btn--primary" id="dlg-confirm-ok" data-t="dlgConfirm">Confirm</button>
+      </div>
+    </dialog>
 
     <script type="module" src="/src/main.ts"></script>
   </body>

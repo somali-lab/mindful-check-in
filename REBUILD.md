@@ -23,6 +23,14 @@ bar) and the `file://` smoke test do we swap `app/` → `src/`.
 - **Domains:** unchanged from the existing app (good decomposition).
 - **Storage:** localStorage behind a Repository interface (same 6 keys / schema).
 - **`window.MCI` bridge:** exposed for the existing `core-units.spec.js` unit specs.
+- **Check-in form = cleanly factored** (decided): each sub-feature (wheel, body, energy,
+  mood-matrix, chips, summary, weather) is its OWN light-DOM component subscribing to the
+  store; a thin check-in **orchestrator** composes them and handles save/validation.
+  Components talk to the store, never to each other — the clean boundaries the old code
+  (global bus + direct `Checkin→sub` reach-through) lacked.
+- **UI layout/DOM contract preserved** (decided): same screen structure as the existing app
+  (summary panel inside the check-in view, weather widget inside the form). Reuse the CSS;
+  the existing Playwright selectors stay the acceptance bar. No layout re-architecture.
 
 ## Known limitation (unchanged)
 
@@ -109,6 +117,18 @@ Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
   - **Green: `theme.spec.js` + `tab-navigation.spec.js` = 16/16** (chromium + mobile).
     Also verified from **file://**: boots, `window.MCI` present, theme toggle works, 0 errors.
 
+- **Phase 5 — check-in scaffold + emotion wheel DONE.** Full check-in view DOM added to
+  `app/index.html` (all `data-component` sections, body SVG, mood/energy slots, summary +
+  history slots, section-rail) + app-shell footer (per-route action bars) + import/confirm
+  dialogs + toast container. `ui/checkin/wheel.ts` (SVG donut component) + `ui/checkin/checkin.ts`
+  (orchestrator: loads today's entry, applies component visibility). Router toggles footer
+  bars per route. **`emotion-wheel.spec.js` = 18/18 green** (chromium + mobile).
+  Next components (build against the now-present scaffold, then run their spec):
+  body-signals → energy-meters → mood-matrix → quick-actions/chips → checkin save+validation
+  (`#ci-btn-save`/`#ci-btn-new`, collect→normalize→computeMoodScore→store.saveEntry, validation
+  needs coreFeeling OR thoughts) → checkin-meta (date/greeting/pill) → section-nav → summary
+  panel (`#summary-slot`: streak/total/7-day heat) → entry-loading (overview row → load form).
+
 ## Where to resume (for a fresh context)
 
 Phases 1–4 are complete and green. Foundation + app shell work via dev server AND from
@@ -118,9 +138,23 @@ To run E2E against the new app: start `cd app && npx vite --port 3000 --strictPo
 
 **Next: Phase 5** — port each remaining domain to a light-DOM custom element (or controller
 module) inside its `.view`, wiring it to `Store`/`i18n`, and get that domain's existing
-Playwright spec(s) green, one domain at a time. Suggested order (small → large):
-weather → summary/home → overview (table/pagination/search/filter) → settings (general/
-components/actions/reminders/portability) → check-in form (wheel, body, energy, mood,
-chips, meta, orchestration, save-validation) → info/heatmap → export/import → demo →
-confirm-modal → entry load/delete → edge-cases. Then run the FULL suite (384) + add the
-file:// smoke test, swap `app/` → `src/`, write `architecture.md`, update `CLAUDE.md`.
+Playwright spec(s) green, one domain at a time.
+
+**Dependency insight (revised order):** the domains are interdependent. `weather.spec`
+already needs the check-in form (`.emotion-segment`, `#ci-btn-save`, save→toast) AND
+settings (`#cfg-location`, `#cfg-btn-save`) — so weather is NOT a clean first slice. The
+genuinely independent (entries-only, read) domains come first; the **check-in form is the
+lynchpin** most specs depend on. Revised order:
+1. **home / summary** (read-only dashboard: streak, total, 7-day heat strip, swings) —
+   needs the deferred `computeStats` / `buildHeatmapData` / `weekStripHtml` / swings.
+   NOTE: `summary.spec` reads `#summary-slot` **inside the check-in view** (`/#checkin`);
+   4/5 tests need only injected entries, but 1 needs the form (save). So the check-in
+   view scaffold + summary panel come together; the full form follows.
+2. **overview** (read-only table: render, pagination, search, filter).
+3. **check-in form** (the big one): wheel, body, energy, mood, chips, meta, save +
+   validation, weather widget (lives in the form). Unblocks weather + save-validation specs.
+4. **settings** (general/components/actions/reminders/portability) — unblocks weather geocoding.
+5. info/heatmap, export/import, demo, confirm-modal, entry load/delete, edge-cases.
+
+Then run the FULL suite (384) + add the file:// smoke test, swap `app/` → `src/`, write
+`architecture.md`, update `CLAUDE.md`.

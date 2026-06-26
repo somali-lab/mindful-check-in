@@ -18,6 +18,9 @@ export function initRouter(repo: Repository): void {
     for (const view of document.querySelectorAll<HTMLElement>('.view')) {
       view.classList.toggle('is-active', view.id === `view-${route}`);
     }
+    for (const bar of document.querySelectorAll<HTMLElement>('.app-shell-footer-bar')) {
+      bar.style.display = bar.getAttribute('data-footer') === route ? '' : 'none';
+    }
     repo.write(STORAGE_KEYS.activeTab, route);
   };
 

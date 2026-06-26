@@ -7,7 +7,11 @@
     "enabled": true,
     "rules": {
       "preset": "recommended",
-      "a11y": { "useSemanticElements": "off" }
+      "a11y": {
+        "useSemanticElements": "off",
+        "noLabelWithoutControl": "off",
+        "useHeadingContent": "off"
+      }
     }
   },
   "formatter": {
