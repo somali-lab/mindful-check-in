@@ -129,6 +129,17 @@ Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
   needs coreFeeling OR thoughts) → checkin-meta (date/greeting/pill) → section-nav → summary
   panel (`#summary-slot`: streak/total/7-day heat) → entry-loading (overview row → load form).
 
+- **Phase 5 — body signals + minimal save DONE.** `ui/checkin/body.ts` (intensity-cycling
+  body figure: tap 0→1→2→3→0, `getZones`/`setZones`, display + reset) wired into the
+  orchestrator. The body-signals spec's persistence test forced the save path early, so the
+  orchestrator now owns a minimal **collect→validate→normalize→saveEntry** (wheel + body +
+  thoughts fields; energy/mood/etc. fill via `normalize`/`computeMoodScore` as those land) plus
+  `#ci-btn-new` clear. Added `ui/toast.ts` (`.toast--success`/`--warning`, mirrors old
+  `MCI.banner`). **Router bug fixed:** footer action bars are CSS-driven via
+  `body[data-active-route]` — the router now sets that attribute instead of inline-styling the
+  bars (the inline `display:''` fell back to the CSS `display:none`, hiding `#ci-btn-save`).
+  **`body-signals.spec.js` = 10/10 green**; theme/tab-nav/emotion-wheel still 34/34.
+
 ## Where to resume (for a fresh context)
 
 Phases 1–4 are complete and green. Foundation + app shell work via dev server AND from
