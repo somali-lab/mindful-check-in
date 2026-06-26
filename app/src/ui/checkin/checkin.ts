@@ -14,6 +14,7 @@ import { showToast } from '../toast';
 import { BodyComponent } from './body';
 import { ChipsComponent } from './chips';
 import { EnergyComponent } from './energy';
+import { HistoryComponent } from './history';
 import { MetaComponent } from './meta';
 import { MoodComponent } from './mood';
 import { SummaryComponent } from './summary';
@@ -42,6 +43,7 @@ export class CheckinController {
     this.#weather = new WeatherComponent(store, weatherService);
     this.#meta = new MetaComponent();
     new SummaryComponent(store);
+    new HistoryComponent(store);
 
     document.getElementById('ci-btn-save')?.addEventListener('click', () => this.#save());
     document.getElementById('ci-btn-new')?.addEventListener('click', () => this.#clear());

@@ -5,6 +5,7 @@ import { Store } from './state/store';
 import { exposeBridge } from './ui/bridge';
 import { CheckinController } from './ui/checkin/checkin';
 import { HomeController } from './ui/home/home';
+import { InfoController } from './ui/info/info';
 import { initLanguage } from './ui/language';
 import { OverviewController } from './ui/overview/overview';
 import { initRouter } from './ui/router';
@@ -33,6 +34,10 @@ if (document.getElementById('view-overview')) {
 
 if (document.getElementById('view-settings')) {
   new SettingsController(store);
+}
+
+if (document.getElementById('view-info')) {
+  new InfoController(store, repo);
 }
 
 exposeBridge(store);

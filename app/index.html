@@ -580,7 +580,97 @@
             </div>
           </div>
           <div class="view" id="view-info">
-            <div class="view-content"><h1 data-t="infoTitle">About</h1></div>
+            <div class="view-content">
+              <section class="card settings-card" data-t-aria="infoTitle" aria-label="About">
+
+                <nav class="settings-nav" aria-label="About sections">
+                  <button type="button" class="settings-tab is-active" data-settings-tab="about" data-t="infoTabAbout">About</button>
+                  <button type="button" class="settings-tab" data-settings-tab="guide" data-t="infoTabGuide">Guide</button>
+                  <button type="button" class="settings-tab" data-settings-tab="privacy" data-t="infoTabPrivacy">Privacy</button>
+                  <button type="button" class="settings-tab" data-settings-tab="heatmap" data-t="infoTabHeatmap">Heatmap</button>
+                  <button type="button" class="settings-tab" data-settings-tab="data" data-t="infoTabData">Data</button>
+                </nav>
+
+                <div class="settings-panels">
+
+                <div class="settings-panel is-active" data-settings-panel="about">
+                  <p class="intro" data-t="infoDesc">A small private web app for a regular check-in with yourself. Runs entirely in your browser — no server, no account, no tracking.</p>
+                  <p class="info-kwa" data-t="infoKwa">The name “Keep the Wolves Away” comes from the song by Uncle Lucius.</p>
+                </div>
+
+                <div class="settings-panel" data-settings-panel="guide">
+                  <div class="section-group">
+                    <h3 class="subheading" data-t="infoSwingsTitle">Mood swings</h3>
+                    <p class="info-score-intro" data-t="infoSwingsDesc">On the home page each “swing” score (0–100) shows how much that signal varied over the chosen period — its spread (standard deviation), scaled against the largest spread that is possible.</p>
+                  </div>
+                </div>
+
+                <div class="settings-panel" data-settings-panel="privacy">
+                  <div class="section-group">
+                    <h3 class="subheading" data-t="infoPrivacyTitle">Privacy</h3>
+                    <div class="info-privacy-block">
+                      <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-ok">✓</span><span data-t="infoPrivacyNoServer">No server. Everything runs locally in your browser.</span></div>
+                      <div class="info-privacy-item"><span class="info-privacy-icon info-privacy-ok">✓</span><span data-t="infoPrivacyNoTracking">No analytics, no cookies, no tracking.</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-panel" data-settings-panel="heatmap">
+                  <div class="section-group">
+                    <h3 class="subheading" data-t="infoScoreTitle">How are the heatmap colours calculated?</h3>
+                    <p class="info-score-intro" data-t="infoScoreIntro">The 28-day history and the 7-day summary both use three colours: green (good), orange (mixed) and red (low).</p>
+                  </div>
+                </div>
+
+                <div class="settings-panel" data-settings-panel="data">
+                  <div class="section-group">
+                    <h3 class="subheading" data-t="infoDataTitle">Manage your data</h3>
+                    <p class="info-score-intro" data-t="infoDataIntro">Back up or restore your check-ins, try the app with sample data, or permanently remove everything stored on this device.</p>
+
+                    <div class="data-card">
+                      <span class="data-card-icon" aria-hidden="true">📤</span>
+                      <div class="data-card-body">
+                        <strong data-t="infoDataExportTitle">Back up your entries</strong>
+                        <p data-t="infoDataExportDesc">Download all your check-ins as a JSON file to keep as a backup or move to another browser.</p>
+                        <button type="button" class="btn btn--ghost" id="ov-export" data-t="btnExport">Export entries</button>
+                      </div>
+                    </div>
+
+                    <div class="data-card">
+                      <span class="data-card-icon" aria-hidden="true">📥</span>
+                      <div class="data-card-body">
+                        <strong data-t="infoDataImportTitle">Restore from a backup</strong>
+                        <p data-t="infoDataImportDesc">Load check-ins from a JSON backup. You choose whether to overwrite or skip entries that already exist.</p>
+                        <label class="btn btn--ghost" style="cursor:pointer">
+                          <span data-t="btnImport">Import entries</span>
+                          <input type="file" accept=".json" id="ov-import" class="is-hidden"/>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="data-card">
+                      <span class="data-card-icon" aria-hidden="true">🧪</span>
+                      <div class="data-card-body">
+                        <strong data-t="infoDataDemoTitle">Demo data</strong>
+                        <p data-t="infoDataDemoDesc">Adds 30 days of randomly generated check-ins alongside your own entries.</p>
+                        <button type="button" class="btn btn--ghost" id="demo-btn-generate" data-t="btnDemo">Generate demo data</button>
+                      </div>
+                    </div>
+
+                    <div class="data-card data-card--danger">
+                      <span class="data-card-icon" aria-hidden="true">🗑️</span>
+                      <div class="data-card-body">
+                        <strong data-t="infoDataClearTitle">Clear all data</strong>
+                        <p data-t="infoDataClearDesc">Permanently deletes every check-in, all settings and cached weather from this browser. This cannot be undone.</p>
+                        <button type="button" class="btn btn--ghost info-btn-danger" id="demo-btn-clear" data-t="btnClearAll">Clear all data</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                </div><!-- /settings-panels -->
+              </section>
+            </div>
           </div>
         </div>
 
