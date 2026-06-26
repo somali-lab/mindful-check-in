@@ -146,6 +146,12 @@ Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
   orchestrator's collect/load/clear; `computeMoodScore` now factors energy. **`energy-meters.spec.js`
   = 10/10 green**; body/wheel still green. `dist/` rebuilt for file:// testing.
 
+- **Phase 5 — mood matrix DONE.** `ui/checkin/mood.ts` (10×10 energy×valence grid; localized
+  cell labels + fixed colours via `moodColors`/`hasLightBackground`; single-select with
+  click-to-clear; `getSelection`/`setSelection`, display `moodReadout`, reset). Wired into the
+  orchestrator's collect (moodRow/Col/Label/Color)/load/clear; `computeMoodScore` already used
+  moodCol. **`mood-matrix.spec.js` = 10/10 green**; energy/body/wheel still green. `dist/` rebuilt.
+
 ## Where to resume (for a fresh context)
 
 Phases 1–4 are complete and green. Foundation + app shell work via dev server AND from

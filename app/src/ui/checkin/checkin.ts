@@ -12,6 +12,7 @@ import type { Store } from '../../state/store';
 import { showToast } from '../toast';
 import { BodyComponent } from './body';
 import { EnergyComponent } from './energy';
+import { MoodComponent } from './mood';
 import { WheelComponent } from './wheel';
 
 export class CheckinController {
@@ -19,6 +20,7 @@ export class CheckinController {
   readonly #wheel: WheelComponent;
   readonly #body: BodyComponent;
   readonly #energy: EnergyComponent;
+  readonly #mood: MoodComponent;
   #currentKey: string | null = null;
 
   constructor(store: Store) {
@@ -27,6 +29,7 @@ export class CheckinController {
     this.#wheel = new WheelComponent(store, () => {});
     this.#body = new BodyComponent();
     this.#energy = new EnergyComponent(store);
+    this.#mood = new MoodComponent();
 
     document.getElementById('ci-btn-save')?.addEventListener('click', () => this.#save());
     document.getElementById('ci-btn-new')?.addEventListener('click', () => this.#clear());
@@ -51,6 +54,7 @@ export class CheckinController {
     this.#wheel.setPicked(entry.coreFeeling || '');
     this.#body.setZones(entry.bodySignals || []);
     this.#energy.setValues(entry.energy || null);
+    this.#mood.setSelection(entry.moodRow, entry.moodCol);
     this.#setField('fld-thoughts', entry.thoughts);
     this.#setField('fld-custom', entry.customFeelings);
     this.#setField('fld-body-note', entry.bodyNote);
@@ -68,6 +72,11 @@ export class CheckinController {
       energy: this.#energy.getValues(),
       energyNote: this.#fieldValue('fld-energy-note'),
     };
+    const mood = this.#mood.getSelection();
+    partial.moodRow = mood ? mood.row : -1;
+    partial.moodCol = mood ? mood.col : -1;
+    partial.moodLabel = mood ? mood.label : '';
+    partial.moodColor = mood ? mood.color : '';
     partial.moodScore = computeMoodScore(partial);
     return normalize(partial);
   }
@@ -91,6 +100,7 @@ export class CheckinController {
     this.#wheel.setPicked('');
     this.#body.setZones([]);
     this.#energy.setValues(null);
+    this.#mood.setSelection(-1, -1);
     for (const id of ['fld-thoughts', 'fld-custom', 'fld-body-note', 'fld-energy-note'])
       this.#setField(id, '');
   }
