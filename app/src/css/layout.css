@@ -380,17 +380,6 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   margin-bottom: 8px;
 }
 
-.info-version-badge {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--text-faint);
-  background: var(--bg-surface-alt);
-  border: 1px solid var(--border-light);
-  border-radius: 6px;
-  padding: 2px 8px;
-  white-space: nowrap;
-}
-
 .info-btn-danger {
   border-color: var(--delete-color) !important;
   color: var(--delete-color) !important;

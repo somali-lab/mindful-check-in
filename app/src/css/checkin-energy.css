@@ -67,25 +67,3 @@
 .nrg-val.is-empty {
   color: var(--text-faint);
 }
-
-/* ── Energy Meters ── */
-.energy-triple {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  margin-top: 12px;
-}
-
-#energy-display {
-  white-space: nowrap;
-  margin-top: 16px;
-}
-
-@media (max-width: 620px) {
-  #energy-display {
-    white-space: normal;
-    font-size: 0.82rem;
-    text-align: center;
-    line-height: 1.4;
-  }
-}

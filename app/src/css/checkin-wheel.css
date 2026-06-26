@@ -6,6 +6,7 @@
   height: auto;
   display: block;
   margin: 0 auto;
+  overflow: visible;
 }
 
 .emotion-segment {
@@ -38,12 +39,6 @@
 
 #wheel-svg.has-selection .emotion-segment:not(.is-selected) {
   opacity: 0.62;
-}
-
-/* ══ Donut wheel (Herontwerp) ══ */
-.emotion-wheel {
-  overflow: visible;
-  max-width: 414px;
 }
 
 /* Donut segments: gap-stroke in the surface colour for the segmented ring look */
