@@ -260,7 +260,204 @@
             <div class="view-content"><h1 data-t="overviewTitle">Overview</h1></div>
           </div>
           <div class="view" id="view-settings">
-            <div class="view-content"><h1 data-t="settingsTitle">Settings</h1></div>
+            <div class="view-content">
+              <section class="card settings-card" data-t-aria="settingsTitle" aria-label="Settings">
+
+                <nav class="settings-nav" aria-label="Settings sections">
+                  <button type="button" class="settings-tab is-active" data-settings-tab="general" data-t="settingsTabGeneral">General</button>
+                  <button type="button" class="settings-tab" data-settings-tab="components" data-t="settingComponents">Visible components</button>
+                  <button type="button" class="settings-tab" data-settings-tab="actions" data-t="quickActionsTitle">Quick actions</button>
+                  <button type="button" class="settings-tab" data-settings-tab="reminders" data-t="settingReminderSection">Break reminders</button>
+                  <button type="button" class="settings-tab" data-settings-tab="portability" data-t="settingTabPortability">Import/Export</button>
+                </nav>
+
+                <div class="settings-panels">
+
+                <div class="section-group settings-panel is-active" data-settings-panel="general">
+                  <div class="settings-general-grid">
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-lang" data-t="settingLanguage">Language</label>
+                      <select id="cfg-lang" class="wheel-select">
+                        <option value="en">English</option>
+                        <option value="nl">Nederlands</option>
+                      </select>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-theme" data-t="settingTheme">Theme</label>
+                      <select id="cfg-theme" class="wheel-select">
+                        <option value="system" data-t="themeSystem">System</option>
+                        <option value="light" data-t="themeLight">Light</option>
+                        <option value="dark" data-t="themeDark">Dark</option>
+                      </select>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-logo" data-t="settingLogo">Logo</label>
+                      <select id="cfg-logo" class="wheel-select">
+                        <option value="mindful" data-t="logoMindful">Mindful (M)</option>
+                        <option value="cat" data-t="logoCat">Cat (Somali)</option>
+                        <option value="wolf" data-t="logoWolf">Wolf (Keep The Wolves Away)</option>
+                      </select>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-wheel" data-t="settingWheel">Default wheel</label>
+                      <select id="cfg-wheel" class="wheel-select">
+                        <option value="act">ACT (8)</option>
+                        <option value="plutchik">Plutchik (8)</option>
+                        <option value="ekman">Ekman (6)</option>
+                        <option value="junto">Junto (6)</option>
+                        <option value="extended">Extended (12)</option>
+                      </select>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-energy-label" data-t="settingEnergyLabel">Third energy label</label>
+                      <select id="cfg-energy-label" class="wheel-select">
+                        <option value="emotionalSocial">Emotional / Social</option>
+                        <option value="emotional">Emotional</option>
+                        <option value="social">Social</option>
+                      </select>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-location" data-t="settingWeatherLocation">Weather location</label>
+                      <input id="cfg-location" type="text" maxlength="100" placeholder="e.g. Amsterdam"/>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-rows" data-t="settingRowsPerPage">Rows per page</label>
+                      <input id="cfg-rows" type="number" min="5" max="100" step="1"/>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-maxchars" data-t="settingMaxChars">Max characters in overview</label>
+                      <input id="cfg-maxchars" type="number" min="20" max="500" step="5"/>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-toast" data-t="settingToastDuration">Toast duration (sec)</label>
+                      <input id="cfg-toast" type="number" min="2" max="15" step="1"/>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="section-group settings-panel" data-settings-panel="components">
+                  <div class="settings-grid">
+                    <div class="settings-column">
+                      <label class="settings-item"><input type="checkbox" data-comp="weather" checked> <span data-t="compWeather">Weather</span></label>
+                      <label class="settings-item"><input type="checkbox" data-comp="thoughts" checked> <span data-t="compThoughts">Thoughts</span></label>
+                      <label class="settings-item"><input type="checkbox" data-comp="coreFeeling" checked> <span data-t="compCoreFeeling">Core feeling</span></label>
+                      <label class="settings-item"><input type="checkbox" data-comp="bodySignals" checked> <span data-t="compBodySignals">Body signals</span></label>
+                    </div>
+                    <div class="settings-column">
+                      <label class="settings-item"><input type="checkbox" data-comp="moodMatrix" checked> <span data-t="compMoodMatrix">Mood matrix</span></label>
+                      <label class="settings-item"><input type="checkbox" data-comp="actions" checked> <span data-t="compActions">Actions</span></label>
+                      <label class="settings-item"><input type="checkbox" data-comp="note" checked> <span data-t="compNote">Note</span></label>
+                    </div>
+                    <div class="settings-column settings-energy-group">
+                      <span class="settings-group-label" data-t="labelEnergy">Energy level</span>
+                      <label class="settings-item settings-item-sub"><input type="checkbox" data-comp="energyPhysical" checked> <span data-t="compEnergyPhysical">Physical</span></label>
+                      <label class="settings-item settings-item-sub"><input type="checkbox" data-comp="energyMental" checked> <span data-t="compEnergyMental">Mental</span></label>
+                      <label class="settings-item settings-item-sub"><input type="checkbox" data-comp="energyEmotional" checked> <span data-t="compEnergyEmotional">Emotional</span></label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="section-group settings-panel" data-settings-panel="actions">
+                  <div class="quick-actions-editor">
+                    <div class="quick-actions-input-row">
+                      <input type="text" id="qa-input" class="quick-action-input" data-t-placeholder="quickActionsPlaceholder" placeholder="New action…" maxlength="100"/>
+                      <button type="button" class="reset-button" id="cfg-btn-add-qa" data-t="quickActionsAdd">Add</button>
+                    </div>
+                    <div class="quick-actions-list" id="qa-list"></div>
+                  </div>
+                </div>
+
+                <div class="section-group settings-panel" id="reminder-section" data-settings-panel="reminders">
+                  <div class="settings-note">
+                    <span class="settings-note-icon" aria-hidden="true">&#9432;</span>
+                    <span>
+                      <span data-t="settingReminderServerNote">Break reminders use Web Notifications, which only work when the app runs on a web server — not when you open the file directly. Start it with</span>
+                      <code class="settings-note-code">npm run dev</code>
+                      <span data-t="settingReminderServerNoteUrl">and open</span>
+                      <code class="settings-note-code">http://localhost:3004</code>
+                    </span>
+                  </div>
+                  <div class="settings-general-grid">
+
+                    <div class="settings-general-item">
+                      <label class="settings-item" for="cfg-reminder-enabled">
+                        <input type="checkbox" id="cfg-reminder-enabled"/>
+                        <span data-t="settingReminderEnabled">Enable break reminders</span>
+                      </label>
+                    </div>
+
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-reminder-interval" data-t="settingReminderInterval">Interval (minutes)</label>
+                      <input id="cfg-reminder-interval" type="number" min="15" max="480" step="15"/>
+                    </div>
+
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-reminder-start" data-t="settingReminderFrom">From</label>
+                      <input id="cfg-reminder-start" type="number" min="0" max="23" step="1"/>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-reminder-end" data-t="settingReminderUntil">Until</label>
+                      <input id="cfg-reminder-end" type="number" min="1" max="24" step="1"/>
+                    </div>
+
+                    <div class="settings-general-item" style="grid-column: 1 / -1;">
+                      <span class="field-label" data-t="settingReminderDays">Active days</span>
+                      <div class="reminder-days-row">
+                        <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="1"/><span data-t="reminderDayMon">Ma</span></label>
+                        <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="2"/><span data-t="reminderDayTue">Di</span></label>
+                        <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="3"/><span data-t="reminderDayWed">Wo</span></label>
+                        <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="4"/><span data-t="reminderDayThu">Do</span></label>
+                        <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="5"/><span data-t="reminderDayFri">Vr</span></label>
+                        <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="6"/><span data-t="reminderDaySat">Za</span></label>
+                        <label class="reminder-day-btn"><input type="checkbox" data-reminder-day="0"/><span data-t="reminderDaySun">Zo</span></label>
+                      </div>
+                    </div>
+
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-reminder-title" data-t="settingReminderCustomTitle">Notification title (optional)</label>
+                      <input id="cfg-reminder-title" type="text" maxlength="100"/>
+                    </div>
+                    <div class="settings-general-item">
+                      <label class="field-label" for="cfg-reminder-body" data-t="settingReminderCustomBody">Notification text (optional)</label>
+                      <input id="cfg-reminder-body" type="text" maxlength="200"/>
+                    </div>
+
+                    <div class="settings-general-item" style="grid-column: 1 / -1;">
+                      <button type="button" class="reset-button" id="cfg-reminder-test" data-t="settingReminderTest">Send test notification</button>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="section-group settings-panel" data-settings-panel="portability">
+                  <h3 class="subheading" data-t="settingPortabilityTitle">Import &amp; export settings</h3>
+                  <p class="info-score-intro" data-t="settingPortabilityIntro">Save your preferences to a file or load them from one. This only covers settings, not your check-ins.</p>
+
+                  <div class="data-card">
+                    <span class="data-card-icon" aria-hidden="true">📤</span>
+                    <div class="data-card-body">
+                      <strong data-t="settingExportTitle">Back up your settings</strong>
+                      <p data-t="settingExportDesc">Download your current settings as a JSON file.</p>
+                      <button type="button" class="btn btn--ghost" id="cfg-btn-export" data-t="settingExport">Export settings</button>
+                    </div>
+                  </div>
+
+                  <div class="data-card">
+                    <span class="data-card-icon" aria-hidden="true">📥</span>
+                    <div class="data-card-body">
+                      <strong data-t="settingImportTitle">Restore your settings</strong>
+                      <p data-t="settingImportDesc">Load settings from a JSON file. This replaces your current preferences.</p>
+                      <label class="btn btn--ghost" style="cursor:pointer">
+                        <span data-t="settingImport">Import settings</span>
+                        <input type="file" accept=".json" id="cfg-inp-import" class="is-hidden"/>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                </div><!-- /settings-panels -->
+              </section>
+            </div>
           </div>
           <div class="view" id="view-info">
             <div class="view-content"><h1 data-t="infoTitle">About</h1></div>

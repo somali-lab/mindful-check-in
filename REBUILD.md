@@ -162,6 +162,17 @@ Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
   a stub). They go green when settings lands. Regressions (mood/energy/body/wheel) still green;
   `dist/` rebuilt.
 
+- **Phase 5 — settings view DONE (2 specs partly blocked on overview).** Ported the full settings
+  DOM into `app/index.html` (5 sub-tab panels: general / components / actions / reminders /
+  portability, replacing the stub). `ui/settings/settings.ts` (SettingsController): sub-tab nav,
+  form load/gather against the store, save (persist whole Settings → subscribers react; applies
+  language), reset-to-defaults via new `ui/confirm.ts` (`dlg-confirm` helper), quick-action
+  add/remove editor, and settings export/import (Blob download + FileReader → `mergeSettings`).
+  Wired in `main.ts`. **`quick-actions.spec.js` now 40/40 (fully green)**; **`settings.spec.js`
+  = 8/12** — the only failures are the 2 tests (×2) asserting on `#ov-tbody` (rows-per-page,
+  max-chars), which need the **overview domain** (not built yet). All check-in specs + Vitest
+  still green. `dist/` rebuilt.
+
 ## Where to resume (for a fresh context)
 
 Phases 1–4 are complete and green. Foundation + app shell work via dev server AND from

@@ -5,6 +5,7 @@ import { exposeBridge } from './ui/bridge';
 import { CheckinController } from './ui/checkin/checkin';
 import { initLanguage } from './ui/language';
 import { initRouter } from './ui/router';
+import { SettingsController } from './ui/settings/settings';
 import { initTheme } from './ui/theme';
 
 // Composition root: build the repository + store, then wire the shell.
@@ -17,6 +18,10 @@ initRouter(repo);
 
 if (document.getElementById('view-checkin')) {
   new CheckinController(store);
+}
+
+if (document.getElementById('view-settings')) {
+  new SettingsController(store);
 }
 
 exposeBridge(store);
