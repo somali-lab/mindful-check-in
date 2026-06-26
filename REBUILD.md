@@ -53,7 +53,7 @@ bar) and the `file://` smoke test do we swap `app/` → `src/`.
 | 3 | Infra + state + i18n + data | ✅ done | `vitest` green |
 | 4 | App shell (nav, theme, language) + `window.MCI` bridge | ✅ done | app boots, shell selectors present |
 | 5 | Domain UI components | ✅ done | **384 Playwright green** |
-| 6 | Full suite green, swap, docs, commit | 🔶 in progress | **384 Playwright + 44 Vitest + `file://` smoke all green; swap + docs remain** |
+| 6 | Full suite green, swap, docs, commit | ✅ **done** | **cutover complete — see below** |
 
 Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
 
@@ -236,3 +236,13 @@ The acceptance bar is met. What's left is the deliberate cutover + docs:
 2. **Write `architecture.md`** (referenced by `CLAUDE.md`, still missing).
 3. **Update `CLAUDE.md`** — the ES5/no-build constraints describe the *old* app; the rebuilt app
    is TypeScript + Vite. Rewrite the architecture/commands/constraints sections accordingly.
+
+- **Phase 6 DONE — cutover complete.** The ES5 app moved to `legacy-src/` (unmaintained
+  reference/rollback); the TypeScript+Vite rebuild was promoted from `app/` to the repo root
+  (`src/`, `index.html`, `public/`, `package.json`, `tsconfig.json`, `vite.config.ts`, `biome.json`).
+  Tooling rewired: root `npm run dev`/`build`/`test` = Vite/Vitest; `vite.config` scopes Vitest to
+  `src/**/*.test.ts`; the Playwright `webServer` now starts Vite on `:3000` from root (so a plain
+  `npx playwright test` tests the new app). Docs rewritten for the new architecture (`CLAUDE.md`,
+  `docs/architecture.md`, `README.md`). **Final gate (fresh from root): tsc strict clean, Biome
+  clean, 59 Vitest, 386/386 Playwright, `vite build`, and `dist/` boots clean from `file://`.**
+  The rebuild is now *the* app. 🎉
