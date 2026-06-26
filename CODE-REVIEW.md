@@ -186,10 +186,15 @@ Unit suites lean happy-path; the two riskiest behaviours are untested:
   pass first); component-contract standardization (§4.2 — `wheel` variant in DOM, `chips` list in textarea are real but
   the textarea is the persisted form value, so moving it needs care).
 
-**P3 — polish**
-- Name magic numbers; typed `ids.ts`; keyboard a11y for SVG/grid controls; gate the `window.MCI` store handle;
-  the test gaps in §5; derive `bodyZones` from `zoneKeys` (or vice-versa); reconcile the `version` drift
-  (`package.json 2.0.0` vs UI `v1.0.0`).
+**P3 — polish — 🔶 PARTIAL**
+- ✅ Keyboard a11y for the SVG/grid controls (Enter/Space → select on wheel segments + mood cells; verified).
+- ✅ Named the scoring magic numbers (`VALENCE_MAX`, `ENERGY_HIGH/MID`, `VALENCE_HIGH/MID`, `SWING_BANDS`).
+- ✅ Closed the riskiest test gaps from §5: signal unsubscribe-during-emit + re-entrant `set`, and the store
+  write-failure (`persistError`) path.
+- ⏭️ Remaining (lower priority, mostly cosmetic or larger): typed `ids.ts` registry; gate the `window.MCI` store
+  handle behind `import.meta.env.DEV`; derive `bodyZones` from `zoneKeys`; reconcile the `version` drift; the
+  remaining §5 test gaps (`LocalStorageRepository`, weather `res.ok===false`, i18n EN-fallback); and the §4.4 lifecycle
+  note + §4.8 `core/demo` purity.
 
 ---
 

@@ -33,4 +33,30 @@ describe('signal', () => {
     s.set(0);
     expect(fn).not.toHaveBeenCalled();
   });
+
+  it('is safe when a subscriber unsubscribes another mid-emit', () => {
+    const s = signal('a');
+    const calls: string[] = [];
+    let offB = (): void => {};
+    s.subscribe(() => {
+      calls.push('A');
+      offB(); // remove B while A is being notified
+    });
+    offB = s.subscribe(() => calls.push('B'));
+    const c = vi.fn();
+    s.subscribe(() => c());
+    s.set('b');
+    // The notify loop isn't corrupted: A fires and the later C still fires.
+    expect(calls).toContain('A');
+    expect(c).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the final value when a subscriber re-enters set()', () => {
+    const s = signal(0);
+    s.subscribe((v) => {
+      if (v === 1) s.set(2); // re-entrant set during notification
+    });
+    s.set(1);
+    expect(s.get()).toBe(2);
+  });
 });

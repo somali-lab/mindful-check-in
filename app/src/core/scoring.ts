@@ -2,6 +2,14 @@ import { moodScores } from '../data/static';
 import { dateFromKey, formatDate } from './datetime';
 import type { EntryMap, ScoreInput, SwingResult, SwingSource, SwingTier, Tier } from './types';
 
+// Mood model thresholds (kept here so the scoring model is changeable in one place).
+const VALENCE_MAX = 9; // mood-grid column range is 0–9
+const ENERGY_HIGH = 67; // 0–100 energy → high tier at/above this
+const ENERGY_MID = 34; // …mid tier at/above this, else low
+const VALENCE_HIGH = 6; // 0–9 valence → high tier at/above this
+const VALENCE_MID = 4; // …mid tier at/above this, else low
+const SWING_BANDS = [84, 67, 51, 34, 17]; // 0–100 swing → tier 1 (most stable) … 6
+
 /** Consecutive days with an entry, counting back from today (0 if none today). */
 export function calculateStreak(entries: EntryMap): number {
   const keys = Object.keys(entries).sort().reverse();
@@ -39,7 +47,7 @@ export function computeMoodScore(entry: ScoreInput): number {
   }
 
   if (entry.moodCol != null && entry.moodCol >= 0) {
-    total += Math.round((entry.moodCol / 9) * 2 + 1);
+    total += Math.round((entry.moodCol / VALENCE_MAX) * 2 + 1);
     count++;
   }
 
@@ -49,7 +57,7 @@ export function computeMoodScore(entry: ScoreInput): number {
     );
     if (values.length > 0) {
       const avg = values.reduce((a, b) => a + b, 0) / values.length;
-      total += avg >= 67 ? 3 : avg >= 34 ? 2 : 1;
+      total += avg >= ENERGY_HIGH ? 3 : avg >= ENERGY_MID ? 2 : 1;
       count++;
     }
   }
@@ -64,19 +72,18 @@ export const scoreTier = (score: number): Tier =>
 
 /** A 0–100 energy value → coarse tier. */
 export const energyTier = (value: number): Tier =>
-  value >= 67 ? 'high' : value >= 34 ? 'mid' : 'low';
+  value >= ENERGY_HIGH ? 'high' : value >= ENERGY_MID ? 'mid' : 'low';
 
 /** A mood-grid column (0–9 valence) → coarse tier. */
 export const valenceTier = (moodCol: number): Tier =>
-  moodCol >= 6 ? 'high' : moodCol >= 4 ? 'mid' : 'low';
+  moodCol >= VALENCE_HIGH ? 'high' : moodCol >= VALENCE_MID ? 'mid' : 'low';
 
 /** A 0–100 swing score → 1 (very stable) … 6 (extremely variable), six even bands. */
 export function swingTier(score: number): SwingTier {
-  if (score >= 84) return 6;
-  if (score >= 67) return 5;
-  if (score >= 51) return 4;
-  if (score >= 34) return 3;
-  if (score >= 17) return 2;
+  // SWING_BANDS is descending; the first band the score clears sets the tier (6→2), else 1.
+  for (let i = 0; i < SWING_BANDS.length; i++) {
+    if (score >= (SWING_BANDS[i] ?? 0)) return (6 - i) as SwingTier;
+  }
   return 1;
 }
 

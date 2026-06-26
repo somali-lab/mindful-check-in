@@ -52,6 +52,16 @@ export class WheelComponent {
       if (seg) this.#select_(seg.getAttribute('data-em') ?? '');
     });
 
+    // Segments carry role="button"/tabindex=0 — make them keyboard-operable.
+    this.#svg.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const seg = (e.target as Element).closest('[data-em]');
+      if (seg) {
+        e.preventDefault();
+        this.#select_(seg.getAttribute('data-em') ?? '');
+      }
+    });
+
     this.#tabs?.addEventListener('click', (e) => {
       const pill = (e.target as Element).closest('[data-wheel]');
       if (!pill) return;

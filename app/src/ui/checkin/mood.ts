@@ -30,6 +30,16 @@ export class MoodComponent {
       if (cell) this.#pick(this.#attr(cell, 'data-mr'), this.#attr(cell, 'data-mc'));
     });
 
+    // Cells carry role="button"/tabindex=0 — make them keyboard-operable.
+    this.#slot.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const cell = (e.target as Element).closest('.mood-cell');
+      if (cell) {
+        e.preventDefault();
+        this.#pick(this.#attr(cell, 'data-mr'), this.#attr(cell, 'data-mc'));
+      }
+    });
+
     document.getElementById('mood-btn-reset')?.addEventListener('click', () => {
       this.#row = -1;
       this.#col = -1;

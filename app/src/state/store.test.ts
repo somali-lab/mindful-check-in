@@ -50,4 +50,21 @@ describe('Store', () => {
       repo.read<{ rowsPerPage: number }>(STORAGE_KEYS.settings, { rowsPerPage: 0 }).rowsPerPage,
     ).toBe(5);
   });
+
+  it('pulses persistError when a write fails (D4)', () => {
+    // A repository whose writes always fail (e.g. localStorage quota exhausted).
+    const failing = new MemoryRepository();
+    failing.write = () => false;
+    const store = new Store(failing);
+
+    let errored = false;
+    store.persistError.subscribe((failedFlag) => {
+      if (failedFlag) errored = true;
+    });
+
+    store.saveEntry('2026-03-03', normalize({ coreFeeling: 'joy' }));
+    expect(errored).toBe(true);
+    // The in-memory signal still updates so the UI stays responsive.
+    expect(store.entries.get()['2026-03-03']?.coreFeeling).toBe('joy');
+  });
 });
