@@ -65,7 +65,7 @@ describe('computeSwing', () => {
     for (let i = 0; i < 6; i++) {
       const k = keyDaysAgo(i);
       stable[k] = normalize({ coreFeeling: 'joy' });
-      swingy[k] = normalize({ coreFeeling: ids[i % 2] });
+      swingy[k] = normalize({ coreFeeling: ids[i % 2] ?? 'sadness' });
       matrix[k] = normalize({ moodRow: i % 2 === 0 ? 9 : 0, moodCol: i % 2 === 0 ? 0 : 9 });
     }
     expect(computeSwing(stable, 'wheel', 28).score).toBe(0);

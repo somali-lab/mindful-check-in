@@ -39,6 +39,7 @@ export class WheelComponent {
   readonly #select: HTMLSelectElement | null;
   readonly #tabs: HTMLElement | null;
   #picked = '';
+  #variant: WheelType = 'act';
 
   constructor(store: Store) {
     this.#svg = document.getElementById('wheel-svg') as SVGElement | null;
@@ -83,13 +84,12 @@ export class WheelComponent {
       this.#draw();
     });
     store.settings.subscribe((s) => {
-      if (this.#select && s.defaultWheelType && this.#select.value !== s.defaultWheelType) {
+      if (s.defaultWheelType && this.#variant !== s.defaultWheelType) {
         this.setVariant(s.defaultWheelType);
       }
     });
 
-    const initial = store.settings.get().defaultWheelType;
-    if (this.#select && initial) this.#select.value = initial;
+    this.#setVariantValue(store.settings.get().defaultWheelType);
     this.#buildTabs();
     this.#draw();
   }
@@ -99,8 +99,7 @@ export class WheelComponent {
   }
 
   get variant(): WheelType {
-    const v = this.#select?.value ?? 'act';
-    return isWheelType(v) ? v : 'act';
+    return this.#variant;
   }
 
   setPicked(id: string): void {
@@ -114,8 +113,10 @@ export class WheelComponent {
     this.#draw();
   }
 
+  /** Set the variant (internal source of truth) and reflect it to the hidden select. */
   #setVariantValue(variant: string): void {
-    if (this.#select) this.#select.value = isWheelType(variant) ? variant : 'act';
+    this.#variant = isWheelType(variant) ? variant : 'act';
+    if (this.#select) this.#select.value = this.#variant;
   }
 
   #select_(emId: string): void {

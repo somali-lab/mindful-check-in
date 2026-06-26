@@ -9,9 +9,11 @@ export interface Energy {
 }
 
 export interface EntryWeather {
-  temperature?: number;
-  weathercode?: number;
-  windspeed?: number;
+  // Explicit `| undefined` so normalize() can write a coerced-or-undefined value
+  // under exactOptionalPropertyTypes.
+  temperature?: number | undefined;
+  weathercode?: number | undefined;
+  windspeed?: number | undefined;
   description: string;
   location: string;
 }

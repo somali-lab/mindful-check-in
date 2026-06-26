@@ -182,19 +182,34 @@ Unit suites lean happy-path; the two riskiest behaviours are untested:
 - ✅ `Entry.wheelType` typed as `WheelType`.
 - ❌ `t(key: StringKey)` — **rejected**: the code builds dynamic keys (`t('em'+Id)`, `t('swingTier'+n)`), which a
   literal-union signature would break.
-- ⏭️ Deferred: `exactOptionalPropertyTypes` (cascades through the `?`-vs-`|null` types — needs a nullability-convention
-  pass first); component-contract standardization (§4.2 — `wheel` variant in DOM, `chips` list in textarea are real but
-  the textarea is the persisted form value, so moving it needs care).
+- ✅ `exactOptionalPropertyTypes` + `noImplicitOverride` **enabled** — blast radius was only 3 errors (fixed:
+  `EntryWeather` numerics now explicit `| undefined`, one test array access).
+- ✅ Component contract: `wheel` `variant` moved to an internal field (reflected to the `<select>`). **`chips` list kept
+  field-canonical** — the entry's `actions`/`customFeelings` *are* comma-strings, so moving to component state wouldn't
+  fix the comma model and would just add a cache that still writes back to the field (net-negative).
 
 **P3 — polish — 🔶 PARTIAL**
 - ✅ Keyboard a11y for the SVG/grid controls (Enter/Space → select on wheel segments + mood cells; verified).
 - ✅ Named the scoring magic numbers (`VALENCE_MAX`, `ENERGY_HIGH/MID`, `VALENCE_HIGH/MID`, `SWING_BANDS`).
 - ✅ Closed the riskiest test gaps from §5: signal unsubscribe-during-emit + re-entrant `set`, and the store
   write-failure (`persistError`) path.
-- ⏭️ Remaining (lower priority, mostly cosmetic or larger): typed `ids.ts` registry; gate the `window.MCI` store
-  handle behind `import.meta.env.DEV`; derive `bodyZones` from `zoneKeys`; reconcile the `version` drift; the
-  remaining §5 test gaps (`LocalStorageRepository`, weather `res.ok===false`, i18n EN-fallback); and the §4.4 lifecycle
-  note + §4.8 `core/demo` purity.
+- ✅ `window.MCI` bridge: dropped the mutable `store` handle entirely (no spec used it) + typed `declare global` (no
+  more double-`unknown` cast) — pure functions + data only.
+- ✅ Derived `bodyZones` from `zoneKeys`; aligned `package.json` version to the app's `1.0.0`.
+- ✅ Closed the §5 test gaps: `LocalStorageRepository` (round-trip / fallback / quota `write→false`), weather
+  `res.ok===false` (geocode + fetchCurrent), and a **real** i18n NL→EN fallback (temporarily drops a NL key).
+- ✅ §4.8 `core/demo`: takes `lang` as a parameter (no global read); demo keys include the per-day index (no collision).
+  `Math.random` kept — inherent to "random demo data".
+- ❌ Typed `ids.ts` registry — **skipped (reasoned)**: the ~80 ids are already pinned by the Playwright suite (a rename
+  breaks tests immediately, so the silent-drift risk is near-zero), and the flagged `home-swing-matrix-sub` "drift" is
+  intentional (the matrix's two axes share one sub-label). Net indirection without proportional benefit.
+- ⏭️ §4.4 lifecycle: documented here as a deliberate **singleton** assumption (components are created once at boot;
+  views are CSS-toggled, never unmounted, so discarded unsubscribers don't leak). Revisit only if dynamic mounting is
+  introduced.
+
+**Outcome:** every review item is now either done or carries an explicit, reasoned decision. Final state: **386/386
+Playwright + 59 Vitest green; `tsc` strict (incl. `exactOptionalPropertyTypes`, `noImplicitOverride`,
+`noUncheckedIndexedAccess`) + Biome clean; `file://` boot clean.**
 
 ---
 
