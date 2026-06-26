@@ -4,7 +4,7 @@
 import { generateDemoEntries } from '../../core/demo';
 import { normalize } from '../../core/entry';
 import type { Entry, EntryMap } from '../../core/types';
-import { t } from '../../i18n';
+import { lang, t } from '../../i18n';
 import { type Repository, STORAGE_KEYS } from '../../infra/storage';
 import type { Store } from '../../state/store';
 import { confirmDialog } from '../confirm';
@@ -84,7 +84,7 @@ export class InfoController {
       body: t('demoConfirm') || 'Generate 30 days of demo data?',
     });
     if (!ok) return;
-    const demo = generateDemoEntries();
+    const demo = generateDemoEntries(lang.get());
     const merged = { ...this.#store.entries.get(), ...demo };
     this.#store.replaceAllEntries(merged);
     showToast(

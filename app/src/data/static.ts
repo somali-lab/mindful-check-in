@@ -141,35 +141,6 @@ export const moodScores: Record<string, number> = {
   guilt: 1,
 };
 
-export const bodyZones: string[] = [
-  'head',
-  'neck',
-  'chest',
-  'abdomen',
-  'left-shoulder',
-  'right-shoulder',
-  'left-upper-arm',
-  'right-upper-arm',
-  'left-elbow',
-  'right-elbow',
-  'left-forearm',
-  'right-forearm',
-  'left-hand',
-  'right-hand',
-  'left-hip',
-  'right-hip',
-  'left-upper-leg',
-  'right-upper-leg',
-  'left-knee',
-  'right-knee',
-  'left-lower-leg',
-  'right-lower-leg',
-  'left-foot',
-  'right-foot',
-  'upper-back',
-  'lower-back',
-];
-
 export const zoneKeys: Record<string, string> = {
   head: 'zoneHead',
   neck: 'zoneNeck',
@@ -198,6 +169,9 @@ export const zoneKeys: Record<string, string> = {
   'upper-back': 'zoneUpperBack',
   'lower-back': 'zoneLowerBack',
 };
+
+/** Body-signal zone ids, in display order — derived from {@link zoneKeys} (single source). */
+export const bodyZones: string[] = Object.keys(zoneKeys);
 
 export interface MoodLabels {
   en: string[][];

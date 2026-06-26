@@ -1,7 +1,7 @@
 // Demo data generator: 30 days of random but valid check-ins (each coreFeeling
 // belongs to its wheelType). Returns a fresh EntryMap the caller merges in.
 import { bodyZones, moodColors, moodLabels, wheels } from '../data/static';
-import { lang } from '../i18n';
+import type { Lang } from '../i18n';
 import { formatDate, pad2 } from './datetime';
 import { normalize } from './entry';
 import { computeMoodScore } from './scoring';
@@ -50,12 +50,11 @@ function subset<T>(arr: T[], min: number, max: number): T[] {
   return out;
 }
 
-function generateEntry(): Entry {
+function generateEntry(labels: string[][]): Entry {
   const wheelType = pick(WHEEL_KEYS);
   const coreFeeling = pick(WHEEL_EMOTION_IDS[wheelType] ?? ['joy']);
   const moodRow = randInt(0, 9);
   const moodCol = randInt(0, 9);
-  const labels = moodLabels[lang.get()] || moodLabels.en;
   const partial: Partial<Entry> = {
     thoughts: pick(THOUGHTS),
     wheelType,
@@ -73,7 +72,8 @@ function generateEntry(): Entry {
 }
 
 /** 30 days of demo entries (1–2 per day), keyed by timestamped date key. */
-export function generateDemoEntries(): EntryMap {
+export function generateDemoEntries(lang: Lang): EntryMap {
+  const labels = moodLabels[lang] || moodLabels.en;
   const out: EntryMap = {};
   const today = new Date();
   for (let d = 29; d >= 0; d--) {
@@ -84,8 +84,9 @@ export function generateDemoEntries(): EntryMap {
       const h = randInt(7, 22);
       const m = randInt(0, 59);
       date.setHours(h, m, 0, 0);
-      const key = `${formatDate(date)}_${pad2(h)}${pad2(m)}00000`;
-      out[key] = generateEntry();
+      // `p` in the seconds slot keeps the two same-day entries from colliding.
+      const key = `${formatDate(date)}_${pad2(h)}${pad2(m)}${pad2(p)}000`;
+      out[key] = generateEntry(labels);
     }
   }
   return out;

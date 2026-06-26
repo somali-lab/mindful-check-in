@@ -3,6 +3,7 @@ import { MemoryRepository, STORAGE_KEYS } from './storage';
 import { WeatherService } from './weather';
 
 const okJson = (body: unknown): Response => ({ ok: true, json: async () => body }) as Response;
+const httpError = (): Response => ({ ok: false, status: 500, json: async () => ({}) }) as Response;
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -81,5 +82,25 @@ describe('WeatherService.getCached (P2 hardening)', () => {
     const repo = new MemoryRepository();
     repo.write(STORAGE_KEYS.weatherCache, { ts: 'soon', data: 42 });
     expect(new WeatherService(repo).getCached()).toBeNull();
+  });
+});
+
+describe('WeatherService HTTP errors (P3 coverage)', () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('geocode returns null on a non-ok response', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => httpError()),
+    );
+    expect(await new WeatherService(new MemoryRepository()).geocode('Amsterdam')).toBeNull();
+  });
+
+  it('fetchCurrent returns null on a non-ok response', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => httpError()),
+    );
+    expect(await new WeatherService(new MemoryRepository()).fetchCurrent(52, 5)).toBeNull();
   });
 });

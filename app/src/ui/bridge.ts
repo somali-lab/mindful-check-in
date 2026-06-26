@@ -1,5 +1,7 @@
 // Debug/test bridge: exposes the pure core + static data on window.MCI so the
 // existing Playwright unit specs (core-units.spec.js) can call them in-page.
+// Deliberately exposes only pure functions + read-only data — no store handle,
+// so there is no global mutation surface.
 import { hasLightBackground } from '../core/color';
 import { dateFromKey, formatDate } from '../core/datetime';
 import { normalize } from '../core/entry';
@@ -22,10 +24,15 @@ import {
   zoneKeys,
 } from '../data/static';
 import { t } from '../i18n';
-import type { Store } from '../state/store';
 
-export function exposeBridge(store: Store): void {
-  const bridge = {
+declare global {
+  interface Window {
+    MCI?: unknown;
+  }
+}
+
+export function exposeBridge(): void {
+  window.MCI = {
     normalize,
     computeMoodScore,
     calculateStreak,
@@ -39,7 +46,5 @@ export function exposeBridge(store: Store): void {
     swingTier,
     computeSwing,
     Data: { wheels, moodScores, moodLabels, weatherCodes, bodyZones, zoneKeys, moodColors },
-    store,
   };
-  (window as unknown as { MCI: typeof bridge }).MCI = bridge;
 }

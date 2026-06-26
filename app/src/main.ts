@@ -58,4 +58,4 @@ if (document.getElementById('view-info')) {
   new InfoController(store, repo);
 }
 
-exposeBridge(store);
+exposeBridge();

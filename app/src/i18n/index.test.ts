@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { defaultQuickActions, lang, setLang, t } from './index';
+import { defaultQuickActions, lang, setLang, strings, t } from './index';
 
 afterEach(() => setLang('en'));
 
@@ -15,11 +15,18 @@ describe('t', () => {
     expect(t('tabOverview')).toBe('Overzicht');
   });
 
-  it('falls back to English when a key is only defined there', () => {
-    setLang('nl');
-    // every key exists in both blocks, so this exercises the happy path;
-    // an unknown key still yields the key itself.
-    expect(t('definitely_missing')).toBe('definitely_missing');
+  it('falls back to English when a key is missing in the active language', () => {
+    // Translations ship at full parity, so temporarily drop a NL key to exercise
+    // the NL→EN fallback branch, then restore it.
+    const nl = strings.nl as Record<string, unknown>;
+    const saved = nl.tabOverview;
+    delete nl.tabOverview;
+    try {
+      setLang('nl');
+      expect(t('tabOverview')).toBe('Overview'); // English fallback, not the raw key
+    } finally {
+      nl.tabOverview = saved;
+    }
   });
 });
 
