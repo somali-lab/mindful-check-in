@@ -2,7 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Mindful Check-in is a private, offline-first mood/check-in web app. Vanilla JavaScript, **no build step, no dependencies, no framework**. All app sources live under **`src/`** — a single `src/index.html` plus plain JS/CSS files (`src/boot.js`, `src/lib/`, `src/modules/`, `src/data/`, `src/css/`, `src/assets/`, `src/favicon.svg`). Tests, docs and config stay at the repo root.
+Mindful Check-in is a private, offline-first mood/check-in web app. **TypeScript (strict) + Vite**, light-DOM components, no UI framework. It builds to a single classic IIFE bundle that is **double-clickable from `file://`**. All app sources live under **`src/`** (`src/index.html` is at the repo root; TS under `src/core/`, `src/infra/`, `src/state/`, `src/ui/`, `src/i18n/`, `src/data/`; CSS under `src/css/`; fonts/logos in `src/assets/` and `public/`). Tests, docs and config stay at the repo root.
+
+> The previous vanilla-ES5 implementation is preserved, unmaintained, in **`legacy-src/`** — do not edit it; it's a reference/rollback only.
 
 ## Working style
 
@@ -16,43 +18,51 @@ Mindful Check-in is a private, offline-first mood/check-in web app. Vanilla Java
 
 ## Commands
 
-- Run locally: `npm run dev` (= `npx serve src -p 3004`). The app must be served over HTTP, not opened as `file://` (Web Notifications + fetch).
-- Tests: `cd tests && npx playwright test` (Playwright auto-serves the app on `http://localhost:3000`; runs desktop chromium + Pixel-7 mobile). Filter with `--project=chromium`, `-g "<name>"`, `--headed --workers=1`.
-- Visual demo walkthrough: `cd tests/demo && npx playwright test` (headed, ~1.5 min).
+- Run locally: `npm run dev` (Vite dev server, native ESM over HTTP). Serve over HTTP, not `file://`, during development (Web Notifications + fetch need a server/secure context).
+- Build: `npm run build` (`tsc --noEmit && vite build` → `dist/`). The output is one classic `app.js` + `assets/style.css` + relative paths, so `dist/index.html` is double-clickable from `file://`.
+- Unit tests: `npm test` (Vitest, `src/**/*.test.ts`). `npm run test:watch` to watch.
+- E2E tests: `cd tests && npx playwright test` (Playwright auto-starts Vite on `http://localhost:3000`; runs desktop chromium + Pixel-7 mobile). Filter with `--project=chromium`, `-g "<name>"`, `--headed --workers=1`.
+- Lint/format: `npm run lint` / `npm run format` (Biome). Visual demo walkthrough: `cd tests/demo && npx playwright test`.
 
-## Hard constraint: ES5 only
+## Hard constraints
 
-All JS in `src/lib/`, `src/modules/`, `src/data/`, and `src/boot.js` must be **ES5-compatible**. Do NOT use `const`/`let`, arrow functions, `class`, template literals (backticks), `import`/`export`, or destructuring. Use `var`, `function`, string concatenation, and IIFEs. (Test files under `tests/` are modern JS and exempt.)
+1. **`file://`-safe build.** The build must stay a single classic (non-module) script with relative paths so `dist/index.html` runs by double-click — ES modules are CORS-blocked on `file://`. The Vite `classic-script` plugin (build-only) handles this; don't reintroduce `type="module"` into the built HTML.
+2. **Strict TypeScript stays clean.** `tsc --noEmit` must pass with the existing strict flags (`strict`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `noImplicitOverride`, …). Avoid `any`/unsafe casts/non-null assertions; coerce untrusted data at the boundary instead.
+3. **Biome clean.** `npm run lint` must pass (CSS under `src/css/` is excluded from Biome — it's hand-written).
 
-## Architecture
+## Architecture — functional core / imperative shell
 
-- Every source file is an IIFE attaching its public API to the single global `window.MCI` (e.g. `MCI.Wheel = { init, ... }`). `src/boot.js` calls each module's `init()` in dependency order on `DOMContentLoaded`.
-- Modules communicate **only** via the event bus (`MCI.on` / `MCI.off` / `MCI.emit`) — no direct module-to-module calls. Exception: `Checkin` orchestrates its form sub-modules directly — getters/setters on `Wheel`, `Body`, `Energy`, `Mood`, `CheckinMeta` (and reads `Weather`/`Nav` getters); the `CheckinChips`/`CheckinMeta` helpers otherwise react to bus events. Each module owns its own rendering.
-- `src/lib/core.js` = event bus, localStorage Store (`MCI.get/put/del`), i18n, helpers, entry normalization. `src/lib/compute.js` = mood scoring / streaks. `src/data/static.js` = wheel/mood/weather/body data. `src/data/translations.js` = all UI strings.
-- Persistence is `localStorage` only (6 JSON keys). Full module contract, event list, storage keys, and entry schema: @architecture.md
+- **`core/`** — pure domain logic, no DOM/storage (datetime, entry `normalize`, scoring/streaks/swings, stats, color, reminders window, demo generator, types). 100% Vitest-able.
+- **`infra/`** — side effects behind interfaces: `Repository` (localStorage now, swappable) for the 6 storage keys; `WeatherService` (Open-Meteo + cache); Web Notifications wrapper.
+- **`state/`** — one reactive primitive (`signal`) + a single `Store` (the single source of truth; replaces the old event bus). UI subscribes to `store.entries` / `store.settings`; mutations go through `Store` methods which persist then notify.
+- **`ui/`** — plain-class light-DOM components per domain, each subscribing to the store and owning its own rendering. **Components talk to the store, never to each other.** The check-in **orchestrator** (`ui/checkin/checkin.ts`) composes the form sub-components and owns collect/save/validation. Cross-view "load this entry into the form" goes through the `entryLoadRequest` signal (`state/load-request.ts`), not direct reach-in. Shared UI helpers live in `ui/dom.ts`.
+- **`main.ts`** — composition root: build repo + store + services, then wire the views.
+- **`ui/bridge.ts`** exposes pure core fns + static data on `window.MCI` for the existing `core-units.spec.js` unit specs (no store handle — no global mutation surface).
+- Persistence is `localStorage` only (6 JSON keys). Full layer contract, storage keys, and entry schema: @docs/architecture.md
 
 ## i18n — never hardcode UI text
 
-The app is bilingual (EN + NL). All user-facing strings live in `src/data/translations.js` and are applied via `data-t` / `data-t-placeholder` / `data-t-aria` attributes (or `MCI.t(key)` in JS). Any new UI string must be added to **both** the `en` and `nl` blocks; never hardcode display text in HTML/JS.
+The app is bilingual (EN + NL). All user-facing strings live in `src/i18n/translations.ts` and are applied via `data-t` / `data-t-placeholder` / `data-t-aria` / `data-t-title` attributes (or `t(key, params)` in TS; `emotionLabel(id)` for emotions). Dynamic keys are fine (`t('em' + Id)`, `t('swingTier' + n)`). Any new UI string must be added to **both** the `en` and `nl` blocks; never hardcode display text in HTML/TS.
 
 ## Styling
 
-Hand-written CSS with custom properties; design tokens (light + dark palettes) live in `src/css/base.css`, one stylesheet per concern. **No Tailwind / preprocessor.** Fonts are self-hosted in `src/assets/fonts/` (loaded via `src/css/fonts.css`) to keep the app fully offline with no external requests.
+Hand-written CSS with custom properties; design tokens (light + dark palettes) live in `src/css/base.css`, one stylesheet per concern, all `@import`ed via `src/styles.css` (which `main.ts` imports). **No Tailwind / preprocessor.** Fonts are self-hosted in `src/assets/fonts/` (loaded via `src/css/fonts.css`) to keep the app fully offline with no external requests.
 
 ## Before a change is "done"
 
-1. Source stays ES5 (see above).
-2. Run the Playwright tests (`cd tests && npx playwright test`) and ensure they pass.
-3. Visually verify in the browser — serve and screenshot the affected view (see `/screenshot`).
-4. Any new UI text added to both EN and NL in `src/data/translations.js`.
-5. Share work in small increments. After verification, stage **only** the files relevant to the task and make **one** Conventional Commit directly to `main` — unless the user says not to commit or to leave changes unstaged. Use a scoped message: `feat(area): summary` (prefixes `feat`/`fix`/`refactor`/`style`/`docs`/`chore`/`test`; area = the affected module or view, e.g. `nav`, `settings`, `wheel`).
+1. `npx tsc --noEmit` clean and `npm run lint` clean (see Hard constraints).
+2. `npm test` (Vitest) green, and `cd tests && npx playwright test` green.
+3. Visually verify in the browser — CSS/layout changes aren't caught by the suite; serve and screenshot the affected view (see `/screenshot`), or drive the dev server.
+4. Any new UI text added to both EN and NL in `src/i18n/translations.ts`.
+5. Share work in small increments. After verification, stage **only** the files relevant to the task and make **one** Conventional Commit directly to `main` — unless the user says not to commit or to leave changes unstaged. Use a scoped message: `feat(area): summary` (prefixes `feat`/`fix`/`refactor`/`style`/`docs`/`chore`/`test`; area = the affected module/view, e.g. `checkin`, `settings`, `wheel`).
 
 ## Testing notes
 
 - Cover both the happy path and the sad path (error/edge conditions), not just the success case.
 - Any check you run by hand while working that isn't already in the suite should be added to it.
-- Tests import `test` from `tests/fixtures/base.js`; the base fixture mocks the Open-Meteo weather/geocoding APIs (no real network). Helpers: `injectEntries`, `injectSettings`, `createTestEntry`.
+- Playwright specs import `test` from `tests/fixtures/base.js`; the base fixture mocks the Open-Meteo weather/geocoding APIs (no real network). Helpers: `injectEntries`, `injectSettings`, `createTestEntry`.
 - Clicking SVG elements (emotion wheel, body figure) in tests requires `dispatchEvent('click')` to bypass overlap.
+- Pure logic gets a colocated Vitest (`src/**/*.test.ts`); DOM behaviour gets a Playwright spec.
 
 ## Bugs and scope
 

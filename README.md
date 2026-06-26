@@ -79,7 +79,7 @@ Five models to choose from (switch per check-in or set a default):
 
 ## Privacy
 
-- **No server.** The app runs entirely in your browser — no backend, no account, no build step.
+- **No server.** The app runs entirely in your browser — no backend, no account. The built bundle is a set of static files you can open directly.
 - **No network requests** except for the optional weather widget (Open-Meteo, no personal data sent).
 - **No cookies, no tracking, no analytics.**
 - Data is stored as plain JSON in `localStorage`. It is not encrypted by the app.
@@ -88,26 +88,24 @@ Five models to choose from (switch per check-in or set a default):
 
 ## Usage
 
-No installation or build step required.
-
-All app sources live under `src/`.
-
-```text
-# Clone or download the repo, then open src/index.html in any modern browser:
-open src/index.html
-```
-
-Opening the file directly works for the core app. The **weather widget and reminders** need the app served over HTTP (see below) — `fetch` and Web Notifications are blocked on the `file://` protocol.
-
-Or serve it locally for development:
+The app is built with TypeScript + Vite. The source lives under `src/`; the build output is a single classic bundle that runs straight from disk.
 
 ```bash
-npm run dev          # = npx serve src -p 3004
-# or
-npx serve src
-# or
-python -m http.server -d src
+npm install          # first time only
+npm run build        # → dist/  (one classic app.js + assets, relative paths)
+# then double-click dist/index.html, or:
+open dist/index.html
 ```
+
+Opening the built `dist/index.html` directly works for the core app. The **weather widget and reminders** need the app served over HTTP — `fetch` and Web Notifications are blocked on the `file://` protocol.
+
+For development (native ESM + hot reload):
+
+```bash
+npm run dev          # Vite dev server
+```
+
+> The previous vanilla-ES5 implementation is preserved, unmaintained, in `legacy-src/`.
 
 ---
 
@@ -115,22 +113,15 @@ python -m http.server -d src
 
 The app can send browser notifications at set intervals as a reminder to check in. Enable this via **Settings → Reminders**.
 
-> **Note:** browser notifications do not work when `src/index.html` is opened directly as a file (`file://` protocol). You need to run the app through a local web server.
-
-Start a local web server in the project directory:
+> **Note:** browser notifications do not work when the app is opened directly as a file (`file://` protocol). You need to run the app through a local web server.
 
 ```bash
-# Node.js (recommended)
-npx serve src
-
-# Python
-python -m http.server -d src 8080
-
-# PHP
-php -S localhost:8080
+npm run dev                 # Vite dev server (recommended)
+# or serve the built output:
+npm run build && npx serve dist
 ```
 
-Then open the app at `http://localhost:8080` (or whichever port you chose) and enable reminders in settings.
+Then open the app at the printed URL and enable reminders in settings.
 
 ---
 
@@ -179,50 +170,27 @@ Other `localStorage` keys used by the app:
 ## File structure
 
 ```text
-index.html            — App shell, all HTML markup
-boot.js               — DOMContentLoaded: calls Module.init() in dependency order
-lib/
-  core.js             — Event bus, Store, i18n engine, helpers, entry normalization
-  compute.js          — Mood score computation
-data/
-  static.js           — Pure data: wheel variants, mood grid labels, weather codes, body zones
-  translations.js     — All translation strings (flat object per language)
-modules/
-  navigation.js       — Tab routing, theme, language switching
-  home.js             — Home dashboard: stats, heatmap, streak
-  checkin.js          — Check-in form orchestration, save/load, visibility
-  checkin-chips.js    — Quick-action pills and custom-feeling tags
-  checkin-meta.js     — Check-in date control, greeting, save-state pill
-  section-nav.js      — Check-in left-rail section navigator (scroll-spy)
-  wheel.js            — Emotion wheel SVG rendering and selection
-  body.js             — Body signals SVG interaction
-  energy.js           — Energy meters rendering and click handling
-  mood.js             — 10×10 mood matrix grid
-  weather.js          — Weather widget: Open-Meteo fetch, geocoding, caching
-  overview.js         — Overview table: sort, filter, search, pagination, export/import
-  settings.js         — Settings form, component toggles, quick actions editor
-  dashboard.js        — Summary card and 28-day history calendar
-  demo.js             — Demo data generator (30 random entries)
-  reminder.js         — Break reminders via Web Notifications
-css/
-  base.css            — CSS custom properties, reset, dark theme, shared utilities
-  layout.css          — App shell, nav rail, grid layouts, responsive
-  components.css      — Buttons, form inputs, banners, chips, toasts
-  checkin.css         — Emotion wheel, body figure, energy meters, mood grid
-  overview.css        — Table, sorting, pagination, row styles
-  settings.css        — Settings grid, sub-items
-  summary.css         — Summary cards, heatmap, history calendar
-  weather.css         — Weather widget
-  info.css            — Info page, score legend
+index.html            — DOM shell (views, dialogs, toast container)
+src/
+  main.ts             — composition root: build store + services, wire the views
+  core/               — pure domain logic (datetime, entry, scoring, stats, demo, settings, types)
+  infra/              — side effects behind interfaces (storage Repository, weather, notifications)
+  state/              — reactive signal + Store (single source of truth)
+  ui/                 — light-DOM components per view (checkin/ home/ overview/ settings/ info/) + shell
+  i18n/               — translations (EN+NL) + t()/emotionLabel
+  data/               — static data (wheels, mood grid, body zones, weather codes)
+  css/                — one stylesheet per concern (@import-ed via styles.css)
+  assets/             — self-hosted fonts + logos
+public/               — favicon + logos served at the web root
 ```
 
 ---
 
 ## Architecture
 
-The app follows a modular ES5 IIFE pattern with a single global namespace (`MCI`). Modules communicate via an event bus — no module calls another directly.
+TypeScript + Vite, **functional core / imperative shell**: a pure `core/`, side effects behind interfaces in `infra/`, a single reactive `Store` as the source of truth (`state/`), and plain light-DOM components (`ui/`) that subscribe to the store and never call each other. Builds to a classic IIFE that runs from `file://`.
 
-See [architecture.md](docs/architecture.md) for the full specification: module contract, event bus API, standard events, data layer, and communication rules.
+See [architecture.md](docs/architecture.md) for the full specification: layer contract, storage keys, entry/settings schema, and conventions.
 
 ---
 
