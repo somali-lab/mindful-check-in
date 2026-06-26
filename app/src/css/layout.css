@@ -1,0 +1,774 @@
+/* ── App Layout: Sidebar + Main ── */
+.app-layout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+/* ── Navigation Rail ── */
+.nav-rail {
+  position: sticky;
+  top: 0;
+  width: 72px;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  background: var(--bg-surface-alt);
+  border-right: 1px solid var(--border-light);
+  flex-shrink: 0;
+  z-index: 50;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Desktop navigates via the header chips — hide the icon rail there
+   (mobile keeps it as the bottom bar via the max-width query below) */
+@media (min-width: 768px) {
+  .nav-rail {
+    display: none;
+  }
+}
+
+.nav-rail-logo {
+  line-height: 1;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  user-select: none;
+}
+
+.nav-rail-logo svg {
+  display: block;
+}
+
+.nav-rail-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.nav-rail-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* shared base for ghost icon buttons (sidebar nav + header switches) */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
+}
+
+.nav-rail-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.nav-rail-btn:hover {
+  color: var(--text-muted);
+  background: var(--bg-accent);
+}
+
+.nav-rail-btn.is-active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  box-shadow: 0 1px 4px var(--accent-shadow);
+}
+
+/* ── Main Content Area — app shell: fixed header, scrolling body, fixed footer ── */
+.main-content {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Scrollable body — inset a few px from the header/footer divider lines */
+.app-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 8px 0;
+}
+
+/* Custom scrollbar */
+.app-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.app-scroll::-webkit-scrollbar-thumb {
+  background: var(--text-faintest);
+  border-radius: 999px;
+}
+
+.app-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+}
+
+/* ── App-shell header & footer (fixed, with divider lines) ── */
+.app-shell-header {
+  flex: none;
+  background: var(--bg-body);
+  border-bottom: 1px solid var(--border-light);
+  z-index: 40;
+}
+
+.app-shell-footer {
+  flex: none;
+  background: var(--bg-body);
+  border-top: 1px solid var(--border-light);
+  z-index: 40;
+  display: none;
+}
+
+/* Footer appears only for screens whose action(s) it hosts */
+body[data-active-route="checkin"] .app-shell-footer,
+body[data-active-route="home"] .app-shell-footer,
+body[data-active-route="settings"] .app-shell-footer {
+  display: block;
+}
+
+/* Show only the button group matching the active screen
+   (more specific than .app-shell-bar's display:flex) */
+.app-shell-footer .app-shell-footer-bar {
+  display: none;
+}
+
+body[data-active-route="checkin"] .app-shell-footer-bar[data-footer="checkin"],
+body[data-active-route="home"] .app-shell-footer-bar[data-footer="home"],
+body[data-active-route="settings"] .app-shell-footer-bar[data-footer="settings"] {
+  display: flex;
+}
+
+.app-shell-bar {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* section chips sit between the brand and the right-hand controls */
+.app-shell-header .nav-tabs {
+  flex-wrap: wrap;
+}
+
+.app-shell-header .app-shell-bar {
+  justify-content: space-between;
+}
+
+.app-shell-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* ── App-shell brand mark, logo variants & section tabs (moved from checkin.css) ── */
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  cursor: pointer;
+}
+
+.app-brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #cf8c54, #9d5f33);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font: 600 16px var(--font-serif);
+  flex: none;
+}
+
+.app-brand-name {
+  font: 600 1.05rem var(--font-serif);
+  color: var(--text-strong);
+}
+
+/* ── Logo variants — swap the header brand mark only.
+   "mindful" = the default copper "M"; "cat" (Somali) and "wolf" (Keep The
+   Wolves Away emblem) use image assets with light/dark variants.
+   (The About hero always shows the wolf emblem — see info.css.) */
+body[data-logo="cat"] .app-brand-mark {
+  background: center / cover no-repeat url(../assets/logos/cat-light.png);
+  color: transparent;
+}
+
+html[data-theme="dark"] body[data-logo="cat"] .app-brand-mark {
+  background-image: url(../assets/logos/cat-dark.png);
+}
+
+body[data-logo="wolf"] .app-brand-mark {
+  background: center / cover no-repeat url(../assets/logos/wolf-light.png);
+  color: transparent;
+}
+
+html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
+  background-image: url(../assets/logos/wolf-dark.png);
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-energy-meter);
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.nav-tab {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font: 500 0.78rem var(--font-sans);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.nav-tab.is-active {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+/* Footer: compact, right-aligned buttons (not full-width) */
+.app-shell-footer .app-shell-bar {
+  justify-content: flex-end;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.app-shell-footer-bar {
+  gap: 10px;
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+.app-shell-footer-bar .btn {
+  flex: 0 0 auto;
+}
+
+/* the Home "Start check-in" CTA spans the full width */
+.app-shell-footer-bar[data-footer="home"] .btn--primary {
+  flex: 1 1 auto;
+}
+
+/* ── Theme & Language Switches ── */
+.theme-switch,
+.language-switch {
+  display: inline-flex;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: transparent;
+  gap: 2px;
+}
+
+.theme-button,
+.language-button {
+  padding: 6px 9px;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 6px;
+}
+
+.theme-button:hover,
+.language-button:hover {
+  color: var(--text-muted);
+}
+
+.theme-button.is-selected,
+.language-button.is-selected {
+  background: var(--bg-surface);
+  color: var(--text-strong);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Views ── */
+.view {
+  display: none;
+}
+
+.view.is-active {
+  display: block;
+}
+
+.view-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 24px 4px;
+}
+
+/* ── Card ── */
+.card {
+  padding: 20px;
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  background: var(--bg-surface);
+  box-shadow: 0 8px 30px rgba(60, 45, 30, 0.08);
+}
+
+/* ── Grid Layouts ── */
+.grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.section-group {
+  margin-top: 18px;
+}
+
+.section-group:first-child {
+  margin-top: 0;
+}
+
+.subheading {
+  margin-bottom: 8px;
+}
+
+.section-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.info-version-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-faint);
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.info-btn-danger {
+  border-color: var(--delete-color) !important;
+  color: var(--delete-color) !important;
+}
+
+/* ── Responsive: Desktop ── */
+@media (min-width: 800px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ── Responsive: Mobile — nav rail becomes bottom bar ── */
+@media (max-width: 767px) {
+  .app-layout {
+    flex-direction: column-reverse;
+  }
+
+  .nav-rail {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: auto;
+    width: 100%;
+    height: 56px;
+    flex-direction: row;
+    padding: 0 8px;
+    gap: 4px;
+    border-right: 0;
+    border-top: 1px solid var(--border-light);
+    z-index: 50;
+    overflow: visible;
+    justify-content: center;
+  }
+
+  .nav-rail-logo {
+    display: none;
+  }
+
+  .nav-rail-main {
+    flex-direction: row;
+    gap: 4px;
+  }
+
+  .nav-rail-footer {
+    flex-direction: row;
+    gap: 4px;
+    margin-top: 0;
+    padding-top: 0;
+    margin-left: auto;
+  }
+
+  .nav-rail-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* leave room for the fixed bottom nav rail (56px) below the app shell */
+  .main-content {
+    padding-bottom: 56px;
+  }
+
+  .app-shell-bar {
+    padding: 10px 16px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .app-shell-header-right {
+    gap: 8px;
+  }
+
+  /* the bottom nav rail already covers Check-in / Summary on mobile */
+  .app-shell-header .nav-tabs {
+    display: none;
+  }
+
+  /* keep footer buttons compact on mobile too */
+  .app-shell-footer-bar .btn {
+    white-space: nowrap;
+  }
+
+  .view-content {
+    padding: 12px 16px 4px;
+  }
+}
+
+/* ════════════════════════════════════════════
+   HOME / DASHBOARD
+   ════════════════════════════════════════════ */
+
+/* ── Home Body: stats left + heatmap center + stats right ── */
+.bento-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: 20px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 6px rgba(60, 45, 30, 0.05);
+}
+
+.home-body {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+
+.home-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 140px;
+  flex: 0 0 auto;
+}
+
+.home-heatmap-card {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.bento-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+
+.bento-value {
+  font-family: var(--font-mono);
+  font-size: 2.1rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.bento-sub {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  margin-top: 4px;
+}
+
+.bento-sub:empty {
+  display: none;
+}
+
+/* ── Mini heatmap ── */
+.home-heatmap {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.home-heat-cell {
+  height: 64px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.62rem;
+  font-weight: 600;
+  cursor: default;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+.home-heat-header {
+  font-size: 0.56rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  text-align: center;
+  padding-bottom: 1px;
+}
+
+.home-heat-spacer {
+  visibility: hidden;
+}
+
+.home-heat-cell.has-entry {
+  cursor: pointer;
+}
+
+.home-heat-cell:hover.has-entry {
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.home-heat-empty {
+  background: var(--bg-surface-alt);
+  color: var(--text-faint);
+}
+
+.home-heat-low,
+.home-heat-mid,
+.home-heat-high {
+  color: var(--text-on-accent);
+}
+
+.home-heat-today {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* ── Streak ring ── */
+.bento-card--ring {
+  justify-content: space-between;
+}
+
+.home-ring {
+  align-self: center;
+  margin-top: 8px;
+}
+
+.home-ring svg {
+  display: block;
+}
+
+.home-ring-track {
+  stroke: var(--bg-energy-meter);
+}
+
+.home-ring-arc {
+  stroke: var(--accent);
+}
+
+.home-ring-num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  fill: var(--text-strong);
+}
+
+.home-ring-label {
+  fill: var(--text-faint);
+}
+
+/* ── This-week + recent cards spacing ── */
+.home-week-card {
+  margin-bottom: 16px;
+}
+
+.home-week-card .summary-week {
+  margin-top: 10px;
+}
+
+/* ── Mood swings band ── */
+.home-swings {
+  margin-bottom: 20px;
+}
+
+.home-swings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.home-swings-head .bento-label {
+  margin-bottom: 0;
+}
+
+.home-swings-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swing-info {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-faint);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.swing-info:hover,
+.swing-info:focus-visible {
+  color: var(--accent);
+}
+
+.swing-help {
+  margin: -2px 0 14px;
+  max-width: 640px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Word label for the swing score (Stable / Variable / Highly variable) */
+.swing-tier {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.swing-tier:empty {
+  display: none;
+}
+
+.home-swings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.home-spark {
+  margin-top: 10px;
+  min-height: 40px;
+}
+
+.home-spark svg {
+  width: 100%;
+  height: 40px;
+  display: block;
+}
+
+/* Per-axis swing rows (the mood matrix shows valence + energy) */
+.swing-axis {
+  margin-top: 12px;
+}
+
+.swing-axis-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.swing-axis-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+.swing-axis-score {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.swing-axis .home-spark {
+  margin-top: 6px;
+  min-height: 32px;
+}
+
+.swing-axis .home-spark svg {
+  height: 32px;
+}
+
+@media (max-width: 600px) {
+  .home-body {
+    flex-direction: column;
+  }
+
+  .home-stats {
+    flex-direction: row;
+    min-width: 0;
+  }
+
+  .home-stats .bento-card {
+    flex: 1;
+  }
+
+  .home-swings-grid {
+    grid-template-columns: 1fr;
+  }
+}

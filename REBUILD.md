@@ -1,0 +1,126 @@
+# Rebuild plan & progress
+
+Clean greenfield rebuild of Mindful Check-in. **The existing app in `src/` stays
+fully intact and runnable throughout** — the new app is built independently in
+`app/`. Only when the new app passes the full Playwright suite (the acceptance
+bar) and the `file://` smoke test do we swap `app/` → `src/`.
+
+## Locked decisions
+
+- **Language:** TypeScript (strict). Compiles away at build — no effect on `file://`.
+- **Tooling:** Vite (dev server + build), Vitest (unit), Playwright (E2E, existing
+  suite is the bar), Biome (lint + format).
+- **Build output = "option C":** one classic IIFE `app.js` + separate `app.css` +
+  `fonts/`, relative paths → **double-clickable from `file://`**. No ES modules in
+  the output (they are CORS-blocked on `file://`).
+- **Architecture:** functional core / imperative shell.
+  - `core/` — pure domain logic, no DOM/storage (100% Vitest-able)
+  - `infra/` — side effects behind interfaces (Repository pattern for storage:
+    localStorage now, IndexedDB swappable later; weather client; notifications)
+  - `state/` — one reactive store (single source of truth; replaces the old event bus)
+  - `ui/` — **light-DOM custom elements** per domain (no Shadow DOM)
+  - `i18n/`, `data/`
+- **Domains:** unchanged from the existing app (good decomposition).
+- **Storage:** localStorage behind a Repository interface (same 6 keys / schema).
+- **`window.MCI` bridge:** exposed for the existing `core-units.spec.js` unit specs.
+
+## Known limitation (unchanged)
+
+- Break reminders use **Web Notifications**, which require a secure context — they
+  do **not** work from `file://`, only when served (localhost). Accepted as-is.
+
+## Notes / cleanup spotted
+
+- `CLAUDE.md` references `@architecture.md`, but that file does not exist. Create it
+  in Phase 6.
+
+## Phases
+
+| # | Phase | Status | Gate |
+|---|-------|--------|------|
+| 1 | Tooling + `file://` build proof | ✅ done | `npm run build` → `dist/` opens via `file://` |
+| 2 | Pure core domain + Vitest | ✅ done | `vitest` green |
+| 3 | Infra + state + i18n + data | ✅ done | `vitest` green |
+| 4 | App shell (nav, theme, language) + `window.MCI` bridge | ✅ done | app boots, shell selectors present |
+| 5 | Domain UI components | ⬜ todo | per-domain Playwright specs green |
+| 6 | Full suite green, swap, docs, commit | ⬜ todo | 384 Playwright + `file://` smoke green |
+
+Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
+
+## Progress log
+
+- **Phase 1 started.** Created self-contained `app/` project: `package.json`,
+  `tsconfig.json` (strict), `vite.config.ts` (classic IIFE output for `file://`),
+  `biome.json`, `.gitignore`, skeleton `index.html` + `src/main.ts` + `styles.css`.
+  Root `package.json` restored (existing app untouched).
+- **Phase 1 DONE.** Installed newest tooling: Vite 8, TypeScript 6, Vitest 4,
+  Biome 2. Proven:
+  - `npm run build` → `dist/index.html` with a **classic** `<script defer src="./app.js">`
+    (the plugin rewrites `type="module"` → `defer`, keeping post-DOM timing without CORS)
+    + `assets/style.css`, all relative paths.
+  - Headless Chromium loads the built file over the **`file:` protocol**, renders,
+    **zero console errors**.
+  - Vite dev server serves native ESM over http (200; `src/main.ts` transpiled on the fly).
+  - Biome `check` clean with the `recommended` preset; `tsc --noEmit` passes (strict).
+- **Phase 2 DONE.** Pure core domain ported to TypeScript (no DOM / no storage):
+  - `core/types.ts` — `Entry`, `Energy`, `EntryWeather`, `EntryMap`, `Tier`, `SwingSource`, etc.
+  - `core/datetime.ts` — `pad2`, `formatDate`, `formatTime`, `todayKey`, `timestampKey`, `dateFromKey`.
+  - `core/entry.ts` — `uid`, `normalize`.
+  - `core/scoring.ts` — `calculateStreak`, `computeMoodScore`, `scoreTier`/`energyTier`/
+    `valenceTier`/`swingTier`, `computeSwing`.
+  - `core/color.ts` — `hasLightBackground`.
+  - `data/static.ts` — full static data port (wheels, moodScores, bodyZones, zoneKeys,
+    moodLabels, weatherCodes, generated moodColors). Pure, unblocks scoring.
+  - **14 Vitest tests** mirror the existing `core-units.spec.js` assertions, all green.
+    `tsc --noEmit` (strict) + Biome clean.
+  - Deferred to later layers (i18n/view-coupled): `computeStats`, `buildHeatmapData`,
+    `weekStripHtml`, `getDayNames`, `findEntryForDay`, `emotionLabel`.
+- **Phase 3 DONE.** Infra + state + i18n + data, all unit-tested (44 Vitest tests total):
+  - `i18n/translations.ts` — programmatically ported from the original (eval → JSON), so
+    100% faithful. **389 EN + 389 NL keys, full parity (0 missing).**
+  - `i18n/index.ts` — `lang` signal, `t(key, params)` (EN fallback + `{param}` substitution),
+    `setLang`, `defaultQuickActions`.
+  - `core/settings.ts` — `Settings` type, `defaultSettings`, `mergeSettings` (per-flag
+    component merge + `logo3`→`wolf` migration).
+  - `state/signal.ts` — minimal reactive primitive (get/set/subscribe, Object.is dedupe).
+  - `state/store.ts` — `Store` class: reactive entries + settings, persisted via Repository;
+    `saveEntry`/`deleteEntry`/`replaceAllEntries`/`saveSettings`.
+  - `infra/storage.ts` — `Repository` interface + `LocalStorageRepository` +
+    `MemoryRepository` (tests). Stable 6 `STORAGE_KEYS`.
+  - `infra/weather.ts` — `WeatherService` (fetch + 30-min cache, Open-Meteo, current_weather shape).
+  - `infra/notifications.ts` — Web Notifications wrapper (degrades on file://).
+  - `core/reminders.ts` — pure `isWithinReminderWindow`.
+
+- **Target bumped to `ESNext`** (tsconfig `target`+`lib`, Vite `build.target`) — latest
+  syntax, modern-evergreen + file:// only. Re-verified: tsc + 44 tests + file:// boot green.
+
+- **Phase 4 DONE (vertical slice proven).** Built the app shell + first real domains and
+  got their existing Playwright specs green:
+  - Reused the original CSS (`app/src/css/`, imported via `app/src/styles.css`) + fonts
+    (`app/src/assets/fonts`) + logos/favicon (`app/public/`). CSS/public excluded from Biome.
+  - `app/index.html` — shell DOM (nav-rail + header nav-tabs + theme/language switches +
+    5 `.view` containers) reproducing the existing semantic hooks.
+  - `ui/router.ts` (hash routing, `.is-active` on `[data-route]`+`.view`),
+    `ui/theme.ts` (`<html data-theme>`, system via matchMedia, persisted),
+    `ui/language.ts` + `ui/dom-i18n.ts` (data-t application, EN/NL),
+    `ui/bridge.ts` (`window.MCI` for unit specs), `main.ts` composition root.
+  - **Vite gotcha fixed:** the classic-script plugin must be `apply: 'build'` only — in dev
+    it was stripping `type="module"` and breaking native ESM.
+  - **Green: `theme.spec.js` + `tab-navigation.spec.js` = 16/16** (chromium + mobile).
+    Also verified from **file://**: boots, `window.MCI` present, theme toggle works, 0 errors.
+
+## Where to resume (for a fresh context)
+
+Phases 1–4 are complete and green. Foundation + app shell work via dev server AND from
+file://. `cd app && npm run test` (44 Vitest), `npm run build` (→ `dist/`, file://-openable).
+To run E2E against the new app: start `cd app && npx vite --port 3000 --strictPort`, then
+`cd tests && npx playwright test <spec>` (Playwright reuses the server on :3000).
+
+**Next: Phase 5** — port each remaining domain to a light-DOM custom element (or controller
+module) inside its `.view`, wiring it to `Store`/`i18n`, and get that domain's existing
+Playwright spec(s) green, one domain at a time. Suggested order (small → large):
+weather → summary/home → overview (table/pagination/search/filter) → settings (general/
+components/actions/reminders/portability) → check-in form (wheel, body, energy, mood,
+chips, meta, orchestration, save-validation) → info/heatmap → export/import → demo →
+confirm-modal → entry load/delete → edge-cases. Then run the FULL suite (384) + add the
+file:// smoke test, swap `app/` → `src/`, write `architecture.md`, update `CLAUDE.md`.

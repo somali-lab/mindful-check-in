@@ -1,0 +1,149 @@
+/* ── Overview Controls ── */
+.overview-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+#ov-search {
+  min-width: 220px;
+  flex: 1 1 260px;
+  border: 1px solid var(--border-input);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--text-strong);
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+/* ── Overview Table ── */
+.overview-table-wrap {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.overview-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.overview-table th,
+.overview-table td {
+  border-bottom: 0;
+  padding: 4px 8px;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.25;
+  font-size: 0.82rem;
+}
+
+.overview-table th {
+  /* distinct header strip (the even rows also use surface-alt, so use a
+     stronger tan + a separating border to make the header stand out) */
+  background: var(--bg-energy-meter);
+  border-bottom: 1px solid var(--border-input);
+  /* check-in label shape, in a distinct colour from the rows */
+  font-family: var(--font-sans);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-body);
+}
+
+.overview-table td {
+  color: var(--text-faint);
+  max-width: 220px;
+  white-space: normal;
+}
+
+/* Center the Score and Actions columns (header + cells) */
+.overview-table th[data-sortcol="score"],
+.overview-table th[data-sortcol="actions"],
+.overview-table td.ov-center {
+  text-align: center;
+}
+
+/* Score column: coloured dot (same palette as the summary dots) */
+.ov-score-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.ov-score-dot.score-high {
+  background: var(--score-high);
+}
+.ov-score-dot.score-mid {
+  background: var(--score-mid);
+}
+.ov-score-dot.score-low {
+  background: var(--score-low);
+}
+
+/* ── Sorting ── */
+.ov-th-sortable {
+  user-select: none;
+  cursor: pointer;
+}
+
+.ov-th-sortable:hover {
+  color: var(--accent);
+}
+
+/* ── Row Styles ── */
+.ov-row {
+  cursor: pointer;
+}
+
+.ov-row td {
+  background: var(--bg-surface);
+}
+
+.ov-row:nth-child(even) td {
+  background: var(--bg-surface-alt);
+}
+
+.ov-row:hover td,
+.ov-row:focus-visible td {
+  background: var(--bg-accent);
+}
+
+/* ── Pagination ── */
+.overview-pagination {
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.overview-page-info {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+/* ── Delete button ── */
+.ov-del {
+  background: none;
+  border: 0;
+  color: var(--delete-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition:
+    background 120ms,
+    color 120ms;
+}
+
+.ov-del:hover {
+  background: var(--delete-bg-hover);
+  color: var(--delete-hover);
+}

@@ -1,0 +1,230 @@
+/* ══════════════════════════════════════════════════════════════
+   CHECK-IN — "Atelier" editorial layout (Herontwerp)
+   ══════════════════════════════════════════════════════════════ */
+.checkin-card {
+  padding: 0;
+  overflow: hidden;
+  background: var(--bg-surface-alt);
+}
+
+/* Card body padding (header & footer stay full-bleed) */
+.ci-body {
+  padding: 18px 28px;
+}
+
+/* Each section is now its own card, stacked vertically with a gap. */
+#view-checkin .view-content > .checkin-card + .checkin-card,
+#view-checkin .view-content > .checkin-card + .grid {
+  margin-top: 16px;
+}
+
+/* The single (first) section in a card needs no extra top margin —
+   the card padding already spaces it. */
+.ci-body > .ci-section:first-child,
+.ci-body > .ci-core-row:first-child {
+  margin-top: 0;
+}
+
+/* Collapse a section card whose every component is hidden (visibility
+   settings) so no empty bordered card is left behind. */
+.checkin-card.ci-collapsible:not(:has([data-component]:not(.is-hidden))) {
+  display: none;
+}
+
+/* ── Greeting + thoughts side by side (greeting left, input ≥67% right) ── */
+.ci-intro-row {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.ci-intro-row .ci-greeting {
+  flex: 0 0 30%;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.ci-intro-row .ci-intro-thoughts {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-top: 0;
+}
+
+/* greeting already labels this area — drop the eyebrow so the input
+   lines up with "Goedenavond" at the top */
+.ci-intro-thoughts > .ci-eyebrow {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .ci-intro-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .ci-intro-row .ci-greeting {
+    flex: none;
+  }
+}
+
+/* ── Greeting header ── */
+.ci-greeting {
+  margin-bottom: 6px;
+}
+
+.ci-hello {
+  font-family: var(--font-serif);
+  font-size: 1.95rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--text-strong);
+  margin: 0;
+}
+
+.ci-subline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.ci-subline .ci-dot {
+  opacity: 0.5;
+}
+
+/* date sits in the subline as a copper, editable value (design) */
+.ci-subline #ci-pill {
+  display: none;
+}
+
+.ci-date-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+  font: 500 0.9rem var(--font-sans);
+  cursor: pointer;
+}
+
+.ci-date-display {
+  border-bottom: 1px dashed var(--accent);
+  padding-bottom: 1px;
+}
+
+.ci-date-icon {
+  flex: none;
+}
+
+/* native input kept only as the picker source — visually hidden */
+.ci-date-control .ci-date-input {
+  position: absolute;
+  left: 14px;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
+}
+
+/* ── Sections & eyebrow labels ── */
+.ci-section,
+.ci-core-row {
+  margin-top: 30px;
+}
+
+.ci-eyebrow {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 10px;
+}
+
+.ci-eyebrow--sub {
+  margin-top: 16px;
+  color: var(--text-faint);
+}
+
+.ci-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.ci-section-head .ci-eyebrow {
+  margin-bottom: 0;
+}
+
+/* ── Serif prose textareas (thoughts, note) ── */
+.ci-prose {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  padding: 15px 17px;
+  min-height: 84px;
+  border-radius: 12px;
+}
+
+/* ── Core feeling + Body, side by side with editorial divider ── */
+.ci-core-row {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.ci-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.ci-col-core {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.ci-col-body {
+  flex: 0 0 270px;
+  width: 270px;
+}
+
+.ci-col-body .selection-display {
+  text-align: center;
+}
+
+.ci-divider {
+  align-self: stretch;
+  width: 1px;
+  background: var(--border-light);
+  flex: none;
+}
+
+/* footer Save / New buttons use the shared .btn system (components.css) */
+
+/* ── Responsive: stack core/body, smaller padding ── */
+@media (max-width: 760px) {
+  .checkin-card {
+    padding: 22px 18px 20px;
+  }
+  .ci-core-row {
+    flex-direction: column;
+    gap: 28px;
+  }
+  .ci-divider {
+    display: none;
+  }
+  .ci-col-body {
+    flex: none;
+    width: 100%;
+  }
+}

@@ -1,0 +1,36 @@
+/* ── Weather as a Home bento card (moved out of the header) ── */
+.home-weather {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.home-weather .weather-icon {
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.home-weather .weather-temp {
+  font-family: var(--font-mono);
+  font-size: 2.1rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.home-weather .weather-sep {
+  display: none;
+}
+
+.home-weather .weather-desc {
+  flex-basis: 100%;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.home-weather .weather-unavailable {
+  font-size: 0.82rem;
+  color: var(--text-faint);
+}

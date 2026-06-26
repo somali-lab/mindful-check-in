@@ -1,0 +1,86 @@
+/* ──────────────────────────────────────────────────────────────
+   Self-hosted webfonts — "Herontwerp" (earthy redesign)
+
+   Lora      — editorial serif, used for titles & narrative prose
+   Geist     — UI / label sans, the body typeface
+   Fira Code — monospaced numerals (stats, energy %, dates)
+
+   Latin subset only (covers EN + NL). Files live in assets/fonts/.
+   No external requests — fully offline & private.
+   ────────────────────────────────────────────────────────────── */
+
+/* ── Lora (serif) ── */
+@font-face {
+  font-family: "Lora";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/lora-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Lora";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/lora-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Lora";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/lora-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Lora";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/lora-500-italic.woff2") format("woff2");
+}
+
+/* ── Geist (sans) — variable font, all UI weights ── */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/geist-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/geist-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/geist-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/geist-700.woff2") format("woff2");
+}
+
+/* ── Fira Code (mono) — numerals ── */
+@font-face {
+  font-family: "Fira Code";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/firacode-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fira Code";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/firacode-500.woff2") format("woff2");
+}

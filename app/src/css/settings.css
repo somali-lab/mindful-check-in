@@ -1,0 +1,255 @@
+/* ── Settings: vertical tab layout (left nav + panels) ── */
+.settings-card {
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  overflow: hidden;
+}
+
+.settings-nav {
+  flex: 0 0 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 10px;
+  border-right: 1px solid var(--border-light);
+  background: var(--bg-surface-alt);
+}
+
+.settings-tab {
+  text-align: left;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-muted);
+  font: 500 0.78rem var(--font-sans);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+/* Info note (e.g. reminders need a local server) */
+.settings-note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 11px 14px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border-accent);
+  border-radius: 10px;
+  background: var(--accent-bg);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.settings-note-icon {
+  flex: none;
+  color: var(--accent);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.settings-note-code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-input);
+  color: var(--text-body);
+  white-space: nowrap;
+}
+
+/* Settings field labels match the check-in labels (.ci-eyebrow) */
+.settings-panels .field-label,
+.settings-panels .subheading {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.settings-tab:hover {
+  background: var(--bg-surface);
+  color: var(--text-body);
+}
+
+.settings-tab.is-active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.settings-panels {
+  flex: 1;
+  min-width: 0;
+  padding: 22px;
+}
+
+.settings-panel {
+  display: none;
+}
+
+.settings-panel.is-active {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .settings-card {
+    flex-direction: column;
+  }
+  .settings-nav {
+    flex: none;
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-light);
+    padding: 10px;
+  }
+  .settings-tab {
+    white-space: nowrap;
+  }
+  .settings-panels {
+    padding: 16px;
+  }
+}
+
+/* ── Settings Grid ── */
+.settings-general-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 24px;
+  align-items: start;
+}
+
+/* Reminders panel uses two columns; the Enable toggle is centered in its
+   cell so it lines up with the Interval field beside it. */
+#reminder-section .settings-general-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#reminder-section .settings-general-item:has(#cfg-reminder-enabled) {
+  align-self: center;
+}
+
+.settings-general-item select {
+  width: 100%;
+  min-width: 120px;
+  height: 38px;
+}
+
+/* text inputs get their box from the input base (components.css) */
+.settings-general-item input {
+  width: 100%;
+  height: 38px;
+  font-size: 0.92rem;
+}
+
+/* box from the input/select base (components.css) */
+.settings-general-item select {
+  font-size: 0.92rem;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 24px;
+  align-items: start;
+}
+
+.settings-column {
+  display: grid;
+  gap: 8px;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  color: var(--text-strong);
+}
+
+.settings-item.settings-item-sub {
+  padding-left: 12px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.settings-group-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  margin-bottom: 2px;
+}
+
+.settings-energy-group {
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 8px;
+}
+
+/* ── Settings Responsive ── */
+@media (max-width: 620px) {
+  .settings-general-grid,
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Reminder day toggle buttons ── */
+.reminder-days-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.reminder-day-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.reminder-day-btn input[type="checkbox"] {
+  display: none;
+}
+
+.reminder-day-btn span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border-input);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+  user-select: none;
+}
+
+.reminder-day-btn input[type="checkbox"]:checked + span {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-on-accent);
+}

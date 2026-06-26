@@ -1,0 +1,17 @@
+/* Aggregated stylesheets (reused from the original design, one concern per file). */
+@import "./css/fonts.css";
+@import "./css/base.css";
+@import "./css/layout.css";
+@import "./css/components.css";
+@import "./css/checkin.css";
+@import "./css/checkin-wheel.css";
+@import "./css/checkin-body.css";
+@import "./css/checkin-energy.css";
+@import "./css/checkin-mood.css";
+@import "./css/checkin-chips.css";
+@import "./css/overview.css";
+@import "./css/settings.css";
+@import "./css/summary.css";
+@import "./css/weather.css";
+@import "./css/info.css";
+@import "./css/section-nav.css";
