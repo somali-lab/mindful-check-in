@@ -1,6 +1,8 @@
 /* Mindful Check-in v4 – Check-in: action pills & custom-feeling tags (split out of checkin.css) */
 /* ── Action pills (toggle + inline add, design style) ── */
-#view-checkin #fld-action { display: none; }
+#view-checkin #fld-action {
+  display: none;
+}
 
 #view-checkin #ci-chips {
   gap: 8px;
@@ -41,7 +43,9 @@ input.ci-act-input {
 }
 
 /* custom-feeling chips (under the wheel, centred like the design) */
-#view-checkin #fld-custom { display: none; }
+#view-checkin #fld-custom {
+  display: none;
+}
 
 #ci-feel-chips {
   display: flex;

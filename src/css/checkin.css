@@ -7,7 +7,6 @@
   background: var(--bg-surface-alt);
 }
 
-
 /* Card body padding (header & footer stay full-bleed) */
 .ci-body {
   padding: 18px 28px;
@@ -117,7 +116,9 @@
   padding-bottom: 1px;
 }
 
-.ci-date-icon { flex: none; }
+.ci-date-icon {
+  flex: none;
+}
 
 /* native input kept only as the picker source — visually hidden */
 .ci-date-control .ci-date-input {
@@ -207,7 +208,6 @@
   background: var(--border-light);
   flex: none;
 }
-
 
 /* footer Save / New buttons use the shared .btn system (components.css) */
 

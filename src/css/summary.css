@@ -67,10 +67,25 @@
 }
 
 /* Status colors (shared across heat-*, cal-*, home-heat-*) */
-.heat-high, .cal-high, .home-heat-high  { background: var(--status-high); }
-.heat-mid,  .cal-mid,  .home-heat-mid   { background: var(--status-mid); }
-.heat-low,  .cal-low,  .home-heat-low   { background: var(--status-low); }
-.heat-empty, .cal-empty { background: var(--status-empty); }
+.heat-high,
+.cal-high,
+.home-heat-high {
+  background: var(--status-high);
+}
+.heat-mid,
+.cal-mid,
+.home-heat-mid {
+  background: var(--status-mid);
+}
+.heat-low,
+.cal-low,
+.home-heat-low {
+  background: var(--status-low);
+}
+.heat-empty,
+.cal-empty {
+  background: var(--status-empty);
+}
 
 /* ── Summary: Stats Row ── */
 .summary-stats {
@@ -124,7 +139,10 @@
   font: inherit;
   font-size: 0.78rem;
   cursor: pointer;
-  transition: background 120ms, color 120ms, border-color 120ms;
+  transition:
+    background 120ms,
+    color 120ms,
+    border-color 120ms;
   white-space: nowrap;
 }
 
@@ -172,13 +190,15 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: transform 120ms ease, box-shadow 120ms ease;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
 }
 
 .cal-cell:not(.cal-empty):hover {
   transform: scale(1.15);
   z-index: 1;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
 .cal-cell.cal-empty {
@@ -195,8 +215,10 @@
 }
 
 .cal-high .cal-day-num,
-.cal-mid  .cal-day-num,
-.cal-low  .cal-day-num { color: var(--cal-day-filled-color); }
+.cal-mid .cal-day-num,
+.cal-low .cal-day-num {
+  color: var(--cal-day-filled-color);
+}
 
 .cal-today {
   box-shadow: 0 0 0 2px var(--accent);

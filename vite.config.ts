@@ -1,4 +1,5 @@
-import { defineConfig, type Plugin } from 'vite';
+import type { Plugin } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 /**
  * Make the built bundle runnable by double-clicking dist/index.html (file://).
@@ -35,4 +36,9 @@ export default defineConfig({
     },
   },
   plugins: [classicScript()],
+  // Unit tests are the colocated src/**/*.test.ts; the Playwright E2E specs live
+  // under tests/ and must NOT be picked up by Vitest.
+  test: {
+    include: ['src/**/*.test.ts'],
+  },
 });

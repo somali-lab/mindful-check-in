@@ -25,9 +25,7 @@
   color: var(--text-muted);
   font: 500 0.78rem var(--font-sans);
   cursor: pointer;
-  transition:
-    background 0.15s,
-    color 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
 
 /* Info note (e.g. reminders need a local server) */
@@ -241,10 +239,7 @@
   color: var(--text-muted);
   font-size: 0.82rem;
   font-weight: 600;
-  transition:
-    background 0.15s,
-    color 0.15s,
-    border-color 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
   user-select: none;
 }
 

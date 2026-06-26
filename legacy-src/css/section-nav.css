@@ -14,7 +14,7 @@
   background: var(--bg-surface);
   border: 1px solid var(--border-card);
   border-radius: 999px;
-  box-shadow: 0 6px 18px rgba(58, 50, 40, 0.1);
+  box-shadow: 0 6px 18px rgba(58, 50, 40, 0.10);
 }
 
 .section-rail.is-hidden {
@@ -33,9 +33,7 @@
   background: transparent;
   color: var(--text-faint);
   cursor: pointer;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .section-rail-arrow:hover {
@@ -65,9 +63,7 @@
   border-radius: 50%;
   background: var(--text-faintest);
   cursor: pointer;
-  transition:
-    background 0.15s ease,
-    transform 0.15s ease;
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
 .section-rail-dot:hover {

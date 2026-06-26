@@ -76,7 +76,10 @@
   background: transparent;
   color: var(--text-faint);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
 }
 
 .nav-rail-btn {
@@ -199,7 +202,6 @@ body[data-active-route="settings"] .app-shell-footer-bar[data-footer="settings"]
   justify-content: flex-end;
 }
 
-
 /* ── App-shell brand mark, logo variants & section tabs (moved from checkin.css) ── */
 .app-brand {
   display: flex;
@@ -264,7 +266,9 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   color: var(--text-muted);
   font: 500 0.78rem var(--font-sans);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .nav-tab.is-active {
@@ -324,7 +328,7 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
 .language-button.is-selected {
   background: var(--bg-surface);
   color: var(--text-strong);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* ── Views ── */
@@ -374,17 +378,6 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 8px;
-}
-
-.info-version-badge {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--text-faint);
-  background: var(--bg-surface-alt);
-  border: 1px solid var(--border-light);
-  border-radius: 6px;
-  padding: 2px 8px;
-  white-space: nowrap;
 }
 
 .info-btn-danger {
@@ -554,7 +547,9 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
   font-size: 0.62rem;
   font-weight: 600;
   cursor: default;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
 }
 
 .home-heat-header {
@@ -576,7 +571,7 @@ html[data-theme="dark"] body[data-logo="wolf"] .app-brand-mark {
 
 .home-heat-cell:hover.has-entry {
   transform: scale(1.08);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .home-heat-empty {

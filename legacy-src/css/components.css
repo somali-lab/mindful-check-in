@@ -28,11 +28,7 @@ select {
   padding: 6px 10px;
   font: inherit;
 }
-input[type="number"] {
-  width: 100%;
-  max-width: 140px;
-  color: var(--text-strong);
-}
+input[type="number"] { width: 100%; max-width: 140px; color: var(--text-strong); }
 
 /* ── Select / Dropdown ── */
 .wheel-select {
@@ -56,12 +52,7 @@ input[type="number"] {
   border-radius: 9px;
   font: 600 0.82rem var(--font-sans);
   cursor: pointer;
-  transition:
-    background 0.15s,
-    color 0.15s,
-    border-color 0.15s,
-    transform 0.1s,
-    box-shadow 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.15s;
 }
 
 .btn--primary {
@@ -156,12 +147,10 @@ input[type="number"] {
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.4;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   transform: translateY(20px);
   opacity: 0;
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   max-width: 400px;
   text-align: left;
 }
@@ -215,9 +204,7 @@ input[type="number"] {
   display: none;
 }
 
-.checkin-context-pill--new {
-  color: var(--text-faint);
-}
+.checkin-context-pill--new   { color: var(--text-faint); }
 
 /* ── Date Override Picker ── */
 .ci-date-input {
@@ -279,7 +266,7 @@ input[type="number"] {
   top: 50%;
   transform: translateY(-50%);
   transition: left 200ms ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .settings-item input[type="checkbox"]:checked + span::before {
@@ -327,10 +314,7 @@ input[type="number"] {
   color: var(--text-muted);
   font: 500 0.8rem var(--font-sans);
   cursor: pointer;
-  transition:
-    background 0.15s,
-    color 0.15s,
-    border-color 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 /* compact variant — e.g. the wheel-type tab row */
 .pill--sm {

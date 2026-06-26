@@ -42,9 +42,7 @@
   overflow: hidden;
   overflow-wrap: break-word;
   cursor: pointer;
-  transition:
-    transform 110ms ease,
-    box-shadow 110ms ease;
+  transition: transform 110ms ease, box-shadow 110ms ease;
 }
 
 /* (kept for back-compat; all cells already use dark text) */
@@ -64,9 +62,7 @@
 /* Clean copper halo ring with a thin background gap (matches Herontwerp:
    box-shadow 0 0 0 2px bg, 0 0 0 4px copper + scale 1.1). */
 .mood-cell.is-selected {
-  box-shadow:
-    0 0 0 2px var(--bg-surface),
-    0 0 0 4px var(--accent);
+  box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent);
   transform: scale(1.1);
   z-index: 2;
   font-weight: 600;
@@ -110,13 +106,7 @@
 }
 
 @media (max-width: 620px) {
-  .mood-grid {
-    grid-template-rows: repeat(10, 46px);
-  }
-  .mood-grid-wrapper {
-    padding-left: 66px;
-  }
-  .axis-label {
-    font-size: 0.64rem;
-  }
+  .mood-grid { grid-template-rows: repeat(10, 46px); }
+  .mood-grid-wrapper { padding-left: 66px; }
+  .axis-label { font-size: 0.64rem; }
 }

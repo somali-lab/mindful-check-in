@@ -3,8 +3,7 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -45,13 +44,13 @@ html {
   --accent-hover: #a96936;
   --accent-dark: #9d5f33;
   --accent-bg: #f3e7d5;
-  --accent-shadow: rgba(191, 123, 70, 0.2);
+  --accent-shadow: rgba(191, 123, 70, 0.20);
 
   --text-on-accent: #ffffff;
 
   --delete-color: #c2603f;
   --delete-hover: #a64f31;
-  --delete-bg-hover: rgba(194, 96, 63, 0.1);
+  --delete-bg-hover: rgba(194, 96, 63, 0.10);
 
   /* Body figure */
   --body-part-fill: #e3dac8;
@@ -88,12 +87,9 @@ html {
   --energy-emotional: #7e93a8;
 
   /* Body intensity (theme-stable warm tones) */
-  --body-lvl-1: #e7c08a;
-  --body-lvl-1-stroke: #cf9a6b;
-  --body-lvl-2: #d99458;
-  --body-lvl-2-stroke: #bf7b46;
-  --body-lvl-3: #bf6438;
-  --body-lvl-3-stroke: #9d4f2a;
+  --body-lvl-1: #e7c08a;  --body-lvl-1-stroke: #cf9a6b;
+  --body-lvl-2: #d99458;  --body-lvl-2-stroke: #bf7b46;
+  --body-lvl-3: #bf6438;  --body-lvl-3-stroke: #9d4f2a;
 
   /* Summary done state */
   --summary-done-bg: #eef0e0;
@@ -191,9 +187,7 @@ body {
 }
 
 /* Editorial serif for headings */
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   margin-top: 0;
   font-family: var(--font-serif);
   font-weight: 600;

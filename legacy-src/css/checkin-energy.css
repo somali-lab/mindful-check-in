@@ -37,15 +37,9 @@
 }
 
 /* filled segments take the channel colour (copper / sage / blue) */
-.nrg-row[data-energy-type="physical"] .nrg-seg.is-on {
-  background: var(--accent);
-}
-.nrg-row[data-energy-type="mental"] .nrg-seg.is-on {
-  background: var(--energy-mental);
-}
-.nrg-row[data-energy-type="emotional"] .nrg-seg.is-on {
-  background: var(--energy-emotional);
-}
+.nrg-row[data-energy-type="physical"]  .nrg-seg.is-on { background: var(--accent); }
+.nrg-row[data-energy-type="mental"]    .nrg-seg.is-on { background: var(--energy-mental); }
+.nrg-row[data-energy-type="emotional"] .nrg-seg.is-on { background: var(--energy-emotional); }
 
 /* affordance: hovering the empty track darkens it slightly */
 .nrg-track:hover .nrg-seg:not(.is-on) {
@@ -66,4 +60,26 @@
 
 .nrg-val.is-empty {
   color: var(--text-faint);
+}
+
+/* ── Energy Meters ── */
+.energy-triple {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 12px;
+}
+
+#energy-display {
+  white-space: nowrap;
+  margin-top: 16px;
+}
+
+@media (max-width: 620px) {
+  #energy-display {
+    white-space: normal;
+    font-size: 0.82rem;
+    text-align: center;
+    line-height: 1.4;
+  }
 }

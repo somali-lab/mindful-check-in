@@ -1,4 +1,5 @@
 // @ts-check
+const path = require('node:path');
 const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
@@ -21,10 +22,13 @@ module.exports = defineConfig({
     { name: 'chromium', use: { browserName: 'chromium' } },
     { name: 'mobile-chrome', use: { ...devices['Pixel 7'] } },
   ],
+  // Serve the app (Vite dev) from the repo root on the fixed test port. The
+  // double-clickable file:// build is verified separately by the build smoke test.
   webServer: {
-    command: 'npx serve ../src -p 3000 -s --no-clipboard',
+    command: 'npx vite --port 3000 --strictPort',
+    cwd: path.resolve(__dirname, '..'),
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
-    timeout: 30000,
+    timeout: 60000,
   },
 });
