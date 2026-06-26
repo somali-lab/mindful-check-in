@@ -14,7 +14,9 @@ import { showToast } from '../toast';
 import { BodyComponent } from './body';
 import { ChipsComponent } from './chips';
 import { EnergyComponent } from './energy';
+import { MetaComponent } from './meta';
 import { MoodComponent } from './mood';
+import { SummaryComponent } from './summary';
 import { WeatherComponent } from './weather';
 import { WheelComponent } from './wheel';
 
@@ -26,6 +28,7 @@ export class CheckinController {
   readonly #mood: MoodComponent;
   readonly #chips: ChipsComponent;
   readonly #weather: WeatherComponent;
+  readonly #meta: MetaComponent;
   #currentKey: string | null = null;
 
   constructor(store: Store, weatherService: WeatherService) {
@@ -37,6 +40,8 @@ export class CheckinController {
     this.#mood = new MoodComponent();
     this.#chips = new ChipsComponent(store);
     this.#weather = new WeatherComponent(store, weatherService);
+    this.#meta = new MetaComponent();
+    new SummaryComponent(store);
 
     document.getElementById('ci-btn-save')?.addEventListener('click', () => this.#save());
     document.getElementById('ci-btn-new')?.addEventListener('click', () => this.#clear());
@@ -57,6 +62,7 @@ export class CheckinController {
     const entry = entries[key];
     if (!entry) return;
     this.#currentKey = key;
+    this.#meta.setKey(key);
     this.#wheel.setVariant(entry.wheelType || 'act');
     this.#wheel.setPicked(entry.coreFeeling || '');
     this.#body.setZones(entry.bodySignals || []);
@@ -110,14 +116,16 @@ export class CheckinController {
       showToast(t('saveWarnEmpty'), 'warning');
       return;
     }
-    const key = this.#currentKey || timestampKey();
+    const key = this.#currentKey || this.#meta.getOverrideKey() || timestampKey();
     this.#store.saveEntry(key, entry);
     this.#currentKey = key;
+    this.#meta.setKey(key);
     showToast(t('saveDone'), 'success');
   }
 
   #clear(): void {
     this.#currentKey = null;
+    this.#meta.setKey(null);
     this.#wheel.setVariant(this.#store.settings.get().defaultWheelType || 'act');
     this.#wheel.setPicked('');
     this.#body.setZones([]);
