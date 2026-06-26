@@ -62,9 +62,6 @@ html {
   --body-part-selected-stroke: #bf6438;
   --back-zone-fill: #d8ccb6;
 
-  /* Emotion wheel */
-  --segment-selected-stroke: #2c261f;
-
   /* Text on data-driven colored backgrounds (theme-stable) */
   --text-on-color-inv: #2c261f;
 
@@ -154,8 +151,6 @@ html[data-theme="dark"] {
   --body-part-selected-fill: rgba(217, 148, 88, 0.42);
   --body-part-selected-stroke: #e7c08a;
   --back-zone-fill: #2f2820;
-
-  --segment-selected-stroke: #ece3d4;
 
   --text-on-color-inv: #2c261f;
 

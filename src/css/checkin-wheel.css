@@ -27,20 +27,6 @@
   outline: none;
 }
 
-.emotion-segment:hover {
-  stroke-width: 2;
-}
-
-.emotion-segment.is-selected {
-  stroke: var(--segment-selected-stroke);
-  stroke-width: 2.8;
-  filter: brightness(1.06) drop-shadow(0 0 0.35rem rgba(191, 123, 70, 0.4));
-}
-
-#wheel-svg.has-selection .emotion-segment:not(.is-selected) {
-  opacity: 0.62;
-}
-
 /* Donut segments: gap-stroke in the surface colour for the segmented ring look */
 #wheel-svg .emotion-segment {
   stroke: var(--bg-surface);

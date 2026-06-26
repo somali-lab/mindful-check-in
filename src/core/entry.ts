@@ -1,7 +1,7 @@
 import type { Energy, Entry, EntryWeather, WheelType } from './types';
 
-const WHEEL_TYPES: WheelType[] = ['act', 'plutchik', 'ekman', 'junto', 'extended'];
-const isWheelType = (v: unknown): v is WheelType =>
+export const WHEEL_TYPES: WheelType[] = ['act', 'plutchik', 'ekman', 'junto', 'extended'];
+export const isWheelType = (v: unknown): v is WheelType =>
   typeof v === 'string' && (WHEEL_TYPES as string[]).includes(v);
 const finite = (v: unknown): number | undefined =>
   typeof v === 'number' && Number.isFinite(v) ? v : undefined;

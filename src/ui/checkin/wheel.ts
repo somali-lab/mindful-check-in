@@ -1,5 +1,6 @@
 // Emotion wheel — muted SVG donut with external labels and pill tabs.
 // Self-contained component; the orchestrator reads the picked emotion via the `picked` getter.
+import { isWheelType, WHEEL_TYPES } from '../../core/entry';
 import type { WheelType } from '../../core/types';
 import { type Wheel, wheels } from '../../data/static';
 import { emotionLabel, lang, t } from '../../i18n';
@@ -10,7 +11,6 @@ const CENTER = 180;
 const RO = 116;
 const RI = 58;
 const LABEL_R = 130;
-const VARIANTS: WheelType[] = ['act', 'plutchik', 'ekman', 'junto', 'extended'];
 
 function polar(r: number, a: number): { x: number; y: number } {
   return { x: CENTER + r * Math.cos(a), y: CENTER + r * Math.sin(a) };
@@ -30,8 +30,6 @@ function svgEl(name: string, attrs: Record<string, string | number>): SVGElement
   for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, String(v));
   return e;
 }
-
-const isWheelType = (v: string): v is WheelType => (VARIANTS as string[]).includes(v);
 
 export class WheelComponent {
   readonly #svg: SVGElement | null;
@@ -132,7 +130,7 @@ export class WheelComponent {
     if (!this.#tabs) return;
     const cur = this.variant;
     this.#tabs.innerHTML = '';
-    for (const key of VARIANTS) {
+    for (const key of WHEEL_TYPES) {
       const config = wheels[key];
       const btn = document.createElement('button');
       btn.type = 'button';

@@ -1,5 +1,5 @@
 // Small shared UI helpers, extracted to remove the duplication that had spread
-// across the view components (see CODE-REVIEW.md §4.1).
+// across the view components.
 import { scoreTier } from '../core/scoring';
 import type { WeekDay } from '../core/stats';
 
