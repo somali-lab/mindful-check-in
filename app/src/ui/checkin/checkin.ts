@@ -9,6 +9,7 @@ import { computeMoodScore } from '../../core/scoring';
 import type { Entry } from '../../core/types';
 import { t } from '../../i18n';
 import type { WeatherService } from '../../infra/weather';
+import { entryLoadRequest } from '../../state/load-request';
 import type { Store } from '../../state/store';
 import { showToast } from '../toast';
 import { BodyComponent } from './body';
@@ -50,6 +51,15 @@ export class CheckinController {
 
     this.#applyVisibility();
     this.#store.settings.subscribe(() => this.#applyVisibility());
+
+    // Overview/history rows request an entry be loaded into the form.
+    entryLoadRequest.subscribe((key) => {
+      if (!key) return;
+      const entry = this.#store.entries.get()[key];
+      if (entry) this.#loadInto(key, entry);
+      entryLoadRequest.set(null);
+    });
+
     this.#loadToday();
   }
 
@@ -62,7 +72,11 @@ export class CheckinController {
       .find((k) => k.startsWith(prefix));
     if (!key) return;
     const entry = entries[key];
-    if (!entry) return;
+    if (entry) this.#loadInto(key, entry);
+  }
+
+  /** Load a specific entry (by key) into every form component. */
+  #loadInto(key: string, entry: Entry): void {
     this.#currentKey = key;
     this.#meta.setKey(key);
     this.#wheel.setVariant(entry.wheelType || 'act');

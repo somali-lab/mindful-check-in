@@ -9,6 +9,7 @@ import { moodLabels } from '../../data/static';
 import { lang, t } from '../../i18n';
 import type { Repository } from '../../infra/storage';
 import { STORAGE_KEYS } from '../../infra/storage';
+import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
 import { confirmDialog } from '../confirm';
 
@@ -108,10 +109,16 @@ export class OverviewController {
     });
 
     document.getElementById('ov-tbody')?.addEventListener('click', (e) => {
-      const del = (e.target as Element).closest('.ov-del');
-      if (!del) return;
-      const key = del.getAttribute('data-dk');
-      if (key) this.#confirmDelete(key);
+      const target = e.target as Element;
+      const del = target.closest('.ov-del');
+      if (del) {
+        const key = del.getAttribute('data-dk');
+        if (key) this.#confirmDelete(key);
+        return;
+      }
+      const row = target.closest('tr[data-ekey]');
+      const ekey = row?.getAttribute('data-ekey');
+      if (ekey) requestEntryLoad(ekey);
     });
 
     const nav: [string, () => void][] = [

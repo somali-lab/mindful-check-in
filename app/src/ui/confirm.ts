@@ -23,7 +23,7 @@ export function confirmDialog(opts: ConfirmOptions): Promise<boolean> {
   if (bodyEl) bodyEl.textContent = opts.body;
   if (okBtn) {
     if (opts.confirmLabel) okBtn.textContent = opts.confirmLabel;
-    okBtn.classList.toggle('btn--danger', Boolean(opts.danger));
+    okBtn.classList.toggle('info-btn-danger', Boolean(opts.danger));
   }
   if (cancelBtn && opts.cancelLabel) cancelBtn.textContent = opts.cancelLabel;
 

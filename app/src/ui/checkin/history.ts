@@ -6,6 +6,7 @@ import type { ComponentVisibility } from '../../core/settings';
 import { buildHeatmapData } from '../../core/stats';
 import type { Entry } from '../../core/types';
 import { lang, t } from '../../i18n';
+import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
 
 type Mode = 'core' | 'mood' | 'physical' | 'mental' | 'emotional';
@@ -35,6 +36,12 @@ export class HistoryComponent {
       this.#mode = (btn.getAttribute('data-hmode') as Mode) || 'core';
       this.#renderModes();
       this.#renderGrid();
+    });
+
+    document.getElementById('history-grid')?.addEventListener('click', (e) => {
+      const cell = (e.target as Element).closest('.cal-cell[data-entry-key]');
+      const key = cell?.getAttribute('data-entry-key');
+      if (key) requestEntryLoad(key);
     });
 
     store.entries.subscribe(() => this.#renderGrid());
