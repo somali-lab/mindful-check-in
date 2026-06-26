@@ -4,6 +4,7 @@ import { WeatherService } from './infra/weather';
 import { Store } from './state/store';
 import { exposeBridge } from './ui/bridge';
 import { CheckinController } from './ui/checkin/checkin';
+import { HomeController } from './ui/home/home';
 import { initLanguage } from './ui/language';
 import { OverviewController } from './ui/overview/overview';
 import { initRouter } from './ui/router';
@@ -20,6 +21,10 @@ initRouter(repo);
 
 if (document.getElementById('view-checkin')) {
   new CheckinController(store, new WeatherService(repo));
+}
+
+if (document.getElementById('view-home')) {
+  new HomeController(store);
 }
 
 if (document.getElementById('view-overview')) {

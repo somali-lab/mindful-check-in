@@ -76,7 +76,90 @@
         <div class="app-scroll">
           <!-- Views — domain content is filled in by Phase 5 custom elements. -->
           <div class="view is-active" id="view-home">
-            <div class="view-content"><h1 data-t="homeGreeting">How are you today?</h1></div>
+            <div class="view-content">
+
+              <div class="home-body">
+                <div class="home-stats home-stats--left">
+                  <div class="bento-card bento-card--ring">
+                    <span class="bento-label" data-t="statStreak">Streak</span>
+                    <div class="home-ring" id="home-streak-ring"></div>
+                  </div>
+                  <div class="bento-card">
+                    <span class="bento-label" data-t="statTotal">Total</span>
+                    <span class="bento-value" id="home-total">0</span>
+                    <span class="bento-sub" data-t="homeEntries">entries</span>
+                    <span class="bento-sub" id="home-span"></span>
+                  </div>
+                </div>
+                <div class="bento-card home-heatmap-card">
+                  <span class="bento-label" data-t="historyTitle">28-Day History</span>
+                  <div class="home-heatmap" id="home-heatmap"></div>
+                </div>
+                <div class="home-stats home-stats--right">
+                  <div class="bento-card">
+                    <span class="bento-label" data-t="statAvgMood">Avg Mood</span>
+                    <span class="bento-value" id="home-avg">—</span>
+                    <span class="bento-sub" id="home-status"></span>
+                  </div>
+                  <div class="bento-card">
+                    <span class="bento-label" data-t="statEnergyToday">Energy today</span>
+                    <span class="bento-value" id="home-energy">—</span>
+                    <span class="bento-sub" data-t="homeEnergySub">average</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="home-swings">
+                <div class="home-swings-head">
+                  <span class="home-swings-title">
+                    <span class="bento-label" data-t="homeSwingsTitle">Mood swings</span>
+                    <button type="button" class="swing-info" id="home-swing-info" data-t-aria="homeSwingsHelp" data-t-title="homeSwingsHelp" aria-expanded="false">ⓘ</button>
+                  </span>
+                  <select id="home-swing-period" class="wheel-select" data-t-aria="homeSwingsPeriodAria">
+                    <option value="7" data-t="swingPeriod7">Past week</option>
+                    <option value="28" data-t="swingPeriod28" selected>28 days</option>
+                    <option value="90" data-t="swingPeriod90">3 months</option>
+                    <option value="180" data-t="swingPeriod180">6 months</option>
+                    <option value="365" data-t="swingPeriod365">1 year</option>
+                  </select>
+                </div>
+                <p class="swing-help is-hidden" id="home-swing-help" data-t="homeSwingsHelp"></p>
+                <div class="home-swings-grid">
+                  <div class="bento-card">
+                    <span class="bento-label" data-t="swingWheel">Emotion wheel</span>
+                    <span class="bento-value" id="home-swing-wheel-score">—</span>
+                    <span class="swing-tier" id="home-swing-wheel-tier"></span>
+                    <div class="home-spark" id="home-swing-wheel-spark"></div>
+                    <span class="bento-sub" id="home-swing-wheel-sub"></span>
+                  </div>
+                  <div class="bento-card">
+                    <span class="bento-label" data-t="swingMatrix">Mood matrix</span>
+                    <div class="swing-axis">
+                      <div class="swing-axis-head">
+                        <span class="swing-axis-label" data-t="swingValence">Positivity</span>
+                        <span class="swing-axis-score" id="home-swing-valence-score">—</span>
+                      </div>
+                      <span class="swing-tier" id="home-swing-valence-tier"></span>
+                      <div class="home-spark" id="home-swing-valence-spark"></div>
+                    </div>
+                    <div class="swing-axis">
+                      <div class="swing-axis-head">
+                        <span class="swing-axis-label" data-t="moodAxisEnergy">Energy</span>
+                        <span class="swing-axis-score" id="home-swing-arousal-score">—</span>
+                      </div>
+                      <span class="swing-tier" id="home-swing-arousal-tier"></span>
+                      <div class="home-spark" id="home-swing-arousal-spark"></div>
+                    </div>
+                    <span class="bento-sub" id="home-swing-matrix-sub"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bento-card home-week-card">
+                <span class="bento-label" data-t="homeThisWeek">This week</span>
+                <div class="summary-week" id="home-week"></div>
+              </div>
+            </div>
           </div>
           <div class="view" id="view-checkin">
 

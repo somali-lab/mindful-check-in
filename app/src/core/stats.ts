@@ -1,7 +1,7 @@
 // Pure dashboard stats shared by the check-in summary panel and the home view.
-import { formatDate, todayKey } from './datetime';
+import { dateFromKey, formatDate, todayKey } from './datetime';
 import { calculateStreak } from './scoring';
-import type { EntryMap } from './types';
+import type { Entry, EntryMap } from './types';
 
 export interface SummaryStats {
   total: number;
@@ -68,4 +68,59 @@ export function weekStripDays(entries: EntryMap): WeekDay[] {
     days.push({ date, score: entry ? entry.moodScore || 2 : 0, isToday: dayKey === today });
   }
   return days;
+}
+
+export interface HeatDay {
+  dayKey: string;
+  label: string;
+  isToday: boolean;
+  entry: Entry | null;
+  entryKey: string | null;
+}
+
+export interface Heatmap {
+  leadingSpacers: number;
+  days: HeatDay[];
+}
+
+/** 28-day calendar grid (oldest → today) with leading spacers to align Monday-first. */
+export function buildHeatmapData(entries: EntryMap): Heatmap {
+  const keys = Object.keys(entries);
+  const today = todayKey();
+  const first = new Date();
+  first.setDate(first.getDate() - 27);
+  const leadingSpacers = (first.getDay() + 6) % 7; // Mon = 0
+
+  const days: HeatDay[] = [];
+  for (let d = 27; d >= 0; d--) {
+    const date = new Date();
+    date.setDate(date.getDate() - d);
+    const dayKey = formatDate(date);
+    const entryKey = keys.find((k) => k.startsWith(dayKey)) ?? null;
+    days.push({
+      dayKey,
+      label: `0${date.getDate()}`.slice(-2),
+      isToday: dayKey === today,
+      entry: entryKey ? entries[entryKey] ?? null : null,
+      entryKey,
+    });
+  }
+  return { leadingSpacers, days };
+}
+
+/** Whole days between the earliest and latest check-in, or null with < 2 entries. */
+export function entrySpanDays(entries: EntryMap): number | null {
+  const keys = Object.keys(entries);
+  if (keys.length < 2) return null;
+  let min = Number.POSITIVE_INFINITY;
+  let max = Number.NEGATIVE_INFINITY;
+  for (const k of keys) {
+    const d = dateFromKey(k);
+    if (!d) continue;
+    const t = d.getTime();
+    if (t < min) min = t;
+    if (t > max) max = t;
+  }
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return null;
+  return Math.round((max - min) / 86_400_000);
 }
