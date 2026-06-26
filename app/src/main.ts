@@ -1,5 +1,6 @@
 import './styles.css';
 import { LocalStorageRepository } from './infra/storage';
+import { WeatherService } from './infra/weather';
 import { Store } from './state/store';
 import { exposeBridge } from './ui/bridge';
 import { CheckinController } from './ui/checkin/checkin';
@@ -18,7 +19,7 @@ initTheme(store);
 initRouter(repo);
 
 if (document.getElementById('view-checkin')) {
-  new CheckinController(store);
+  new CheckinController(store, new WeatherService(repo));
 }
 
 if (document.getElementById('view-overview')) {

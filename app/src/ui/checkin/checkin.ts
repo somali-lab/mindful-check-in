@@ -8,12 +8,14 @@ import { normalize } from '../../core/entry';
 import { computeMoodScore } from '../../core/scoring';
 import type { Entry } from '../../core/types';
 import { t } from '../../i18n';
+import type { WeatherService } from '../../infra/weather';
 import type { Store } from '../../state/store';
 import { showToast } from '../toast';
 import { BodyComponent } from './body';
 import { ChipsComponent } from './chips';
 import { EnergyComponent } from './energy';
 import { MoodComponent } from './mood';
+import { WeatherComponent } from './weather';
 import { WheelComponent } from './wheel';
 
 export class CheckinController {
@@ -23,9 +25,10 @@ export class CheckinController {
   readonly #energy: EnergyComponent;
   readonly #mood: MoodComponent;
   readonly #chips: ChipsComponent;
+  readonly #weather: WeatherComponent;
   #currentKey: string | null = null;
 
-  constructor(store: Store) {
+  constructor(store: Store, weatherService: WeatherService) {
     this.#store = store;
     // The picked emotion is read back from the wheel at save time.
     this.#wheel = new WheelComponent(store, () => {});
@@ -33,6 +36,7 @@ export class CheckinController {
     this.#energy = new EnergyComponent(store);
     this.#mood = new MoodComponent();
     this.#chips = new ChipsComponent(store);
+    this.#weather = new WeatherComponent(store, weatherService);
 
     document.getElementById('ci-btn-save')?.addEventListener('click', () => this.#save());
     document.getElementById('ci-btn-new')?.addEventListener('click', () => this.#clear());
@@ -80,6 +84,16 @@ export class CheckinController {
       actions: this.#fieldValue('fld-action'),
       note: this.#fieldValue('fld-note'),
     };
+    const w = this.#weather.getCurrent();
+    if (w) {
+      partial.weather = {
+        temperature: w.temperature,
+        weathercode: w.weathercode,
+        windspeed: w.windspeed,
+        description: '',
+        location: '',
+      };
+    }
     const mood = this.#mood.getSelection();
     partial.moodRow = mood ? mood.row : -1;
     partial.moodCol = mood ? mood.col : -1;
@@ -134,6 +148,7 @@ export class CheckinController {
   #applyVisibility(): void {
     const c = this.#store.settings.get().components;
     const visible: Record<string, boolean> = {
+      weather: c.weather,
       thoughts: c.thoughts,
       coreFeeling: c.coreFeeling,
       bodySignals: c.bodySignals,
