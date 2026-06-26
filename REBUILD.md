@@ -173,6 +173,18 @@ Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
   max-chars), which need the **overview domain** (not built yet). All check-in specs + Vitest
   still green. `dist/` rebuilt.
 
+- **Phase 5 — overview view DONE.** Ported the overview DOM into `app/index.html` (search +
+  date-filter, sortable table, pagination) replacing the stub. `ui/overview/overview.ts`
+  (OverviewController): filter (today / last-N-days / all) + debounced search over thoughts/
+  feeling/mood/actions/note, 7 sortable columns (date/feeling/mood/energy/thoughts/score/actions;
+  click toggles dir, default date-desc), pagination (first/prev/next/last + `pageInfo`), per-row
+  score dot, mood column re-derived from row/col in the **active language** (relabels live on
+  switch), and delete (confirm → `store.deleteEntry`). UI state persists to `STORAGE_KEYS.overviewUI`;
+  re-renders on entries/settings/lang change. Wired in `main.ts`. **`overview-table` +
+  `overview-pagination` + `overview-search-filter` all green, and `settings.spec.js` now 12/12**
+  (the 2 overview-blocked tests pass). 144/144 across all completed specs + 44 Vitest. `dist/`
+  rebuilt. (Deferred to the entry-loading step: row-click → load entry into the form.)
+
 ## Where to resume (for a fresh context)
 
 Phases 1–4 are complete and green. Foundation + app shell work via dev server AND from

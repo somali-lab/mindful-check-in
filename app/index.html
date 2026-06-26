@@ -257,7 +257,39 @@
             </div>
           </div>
           <div class="view" id="view-overview">
-            <div class="view-content"><h1 data-t="overviewTitle">Overview</h1></div>
+            <div class="view-content">
+              <section class="card" data-t-aria="overviewTitle" aria-label="Overview">
+
+                <div class="overview-controls">
+                  <input id="ov-search" type="search" data-t-placeholder="searchPlaceholder" placeholder="Search entries…"/>
+                  <select id="ov-filter" class="wheel-select">
+                    <option value="all" data-t="filterAll">All time</option>
+                    <option value="today" data-t="filterToday">Today</option>
+                    <option value="7" data-t="filter7">Last 7 days</option>
+                    <option value="14" data-t="filter14">Last 2 weeks</option>
+                    <option value="30" data-t="filter30">Last month</option>
+                    <option value="90" data-t="filter90">Last 3 months</option>
+                  </select>
+                </div>
+
+                <div class="overview-table-wrap">
+                  <table class="overview-table" id="ov-table">
+                    <thead><tr id="ov-thead"></tr></thead>
+                    <tbody id="ov-tbody"></tbody>
+                  </table>
+                </div>
+
+                <p class="empty-state is-hidden" id="ov-empty" data-t="overviewEmpty">No entries yet.</p>
+
+                <div class="section-actions overview-pagination">
+                  <button type="button" class="reset-button" id="ov-first" data-t="pageFirst">First</button>
+                  <button type="button" class="reset-button" id="ov-prev" data-t="pagePrev">Prev</button>
+                  <span class="overview-page-info" id="ov-page-info">Page 1 of 1</span>
+                  <button type="button" class="reset-button" id="ov-next" data-t="pageNext">Next</button>
+                  <button type="button" class="reset-button" id="ov-last" data-t="pageLast">Last</button>
+                </div>
+              </section>
+            </div>
           </div>
           <div class="view" id="view-settings">
             <div class="view-content">

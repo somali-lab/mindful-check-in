@@ -4,6 +4,7 @@ import { Store } from './state/store';
 import { exposeBridge } from './ui/bridge';
 import { CheckinController } from './ui/checkin/checkin';
 import { initLanguage } from './ui/language';
+import { OverviewController } from './ui/overview/overview';
 import { initRouter } from './ui/router';
 import { SettingsController } from './ui/settings/settings';
 import { initTheme } from './ui/theme';
@@ -18,6 +19,10 @@ initRouter(repo);
 
 if (document.getElementById('view-checkin')) {
   new CheckinController(store);
+}
+
+if (document.getElementById('view-overview')) {
+  new OverviewController(store, repo);
 }
 
 if (document.getElementById('view-settings')) {
