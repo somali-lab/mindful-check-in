@@ -20,10 +20,11 @@ function lookup(dict: Dict, key: string): string | undefined {
  */
 export function t(key: string, params?: Record<string, string | number>): string {
   const active = lang.get();
-  let str = lookup(strings[active] as Dict, key) ?? key;
-  if (!str) str = key;
+  // `|| key` so a missing OR empty-string translation falls through to the key,
+  // which then triggers the English fallback below.
+  let str = lookup(strings[active] as Dict, key) || key;
   if (str === key && active !== 'en') {
-    str = lookup(strings.en as Dict, key) ?? key;
+    str = lookup(strings.en as Dict, key) || key;
   }
   if (params) {
     for (const [name, value] of Object.entries(params)) {

@@ -2,7 +2,7 @@
 // truth. No dependencies; ~30 lines. A signal holds a value, notifies subscribers
 // on change, and skips notification when the value is unchanged (Object.is).
 
-export type Listener<T> = (value: T) => void;
+type Listener<T> = (value: T) => void;
 
 export interface ReadonlySignal<T> {
   get(): T;

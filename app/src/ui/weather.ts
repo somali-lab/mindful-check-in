@@ -1,7 +1,7 @@
-// Weather widget (lives in the check-in form). Renders the current reading from
-// the WeatherService into #weather-slot: fresh cache first, else geocode the
+// Weather widget (lives on the home view). Renders the current reading from the
+// WeatherService into #weather-slot: fresh cache first, else geocode the
 // configured location and fetch. Degrades gracefully (error / location hint) and
-// never throws. The orchestrator reads the last reading via getCurrent() at save.
+// never throws. The check-in save reads the reading via WeatherService.getCached().
 import { weatherCodes } from '../data/static';
 import { lang, t } from '../i18n';
 import type { CurrentWeather, WeatherService } from '../infra/weather';

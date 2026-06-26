@@ -83,8 +83,12 @@ export class WheelComponent {
       this.#buildTabs();
       this.#draw();
     });
+    // Only adopt the default when it actually changes — otherwise an unrelated
+    // settings save (theme, reminders, …) would snap a manually-chosen wheel back.
+    let lastDefault = store.settings.get().defaultWheelType;
     store.settings.subscribe((s) => {
-      if (s.defaultWheelType && this.#variant !== s.defaultWheelType) {
+      if (s.defaultWheelType !== lastDefault) {
+        lastDefault = s.defaultWheelType;
         this.setVariant(s.defaultWheelType);
       }
     });

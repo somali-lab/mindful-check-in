@@ -58,20 +58,8 @@ export class ReminderController {
   #start(): void {
     this.#stop();
     if (!this.#enabled || !notificationsSupported()) return;
-    if (Notification.permission === 'denied') {
-      showToast(t('reminderNotifDenied') || 'Notifications are blocked.', 'warning');
-      return;
-    }
-    if (Notification.permission === 'granted') {
+    this.#withPermission(() => {
       this.#timer = setInterval(() => this.#tick(), this.#intervalMs);
-      return;
-    }
-    void requestNotificationPermission().then((perm) => {
-      if (perm === 'granted') {
-        this.#timer = setInterval(() => this.#tick(), this.#intervalMs);
-      } else {
-        showToast(t('reminderNotifDenied') || 'Notifications are blocked.', 'warning');
-      }
     });
   }
 
@@ -82,16 +70,24 @@ export class ReminderController {
 
   #test(): void {
     if (!notificationsSupported()) return;
-    const fire = (): void => {
+    this.#withPermission(() => {
       // Unique tag so the OS never suppresses the test as a duplicate.
       showNotification(this.#title(), this.#body(), `mci-reminder-test-${Date.now()}`);
-    };
+    });
+  }
+
+  /** Run `onGranted` if notifications are permitted, requesting permission first; else warn. */
+  #withPermission(onGranted: () => void): void {
     if (Notification.permission === 'granted') {
-      fire();
+      onGranted();
+      return;
+    }
+    if (Notification.permission === 'denied') {
+      showToast(t('reminderNotifDenied') || 'Notifications are blocked.', 'warning');
       return;
     }
     void requestNotificationPermission().then((perm) => {
-      if (perm === 'granted') fire();
+      if (perm === 'granted') onGranted();
       else showToast(t('reminderNotifDenied') || 'Notifications are blocked.', 'warning');
     });
   }

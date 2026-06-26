@@ -43,6 +43,8 @@ function moodLabelOf(e: Entry): string {
   return e.moodLabel || '';
 }
 
+const MOOD_LABEL_MAX = 20; // mood column is fixed-width; thoughts use the configurable maxChars
+
 function truncate(s: string, max: number): string {
   if (!s) return '';
   return s.length > max ? `${s.substring(0, max)}…` : s;
@@ -272,7 +274,7 @@ export class OverviewController {
 
     this.#td(row, d ? `${formatDate(d)} ${formatTime(d)}` : item.key);
     this.#td(row, e.coreFeeling ? emotionLabel(e.coreFeeling) : '—');
-    this.#td(row, truncate(moodLabelOf(e), 20) || '—');
+    this.#td(row, truncate(moodLabelOf(e), MOOD_LABEL_MAX) || '—');
     this.#td(row, energyParts.length ? energyParts.join(' ') : '—');
     this.#td(row, truncate(e.thoughts, maxChars) || '—');
 
