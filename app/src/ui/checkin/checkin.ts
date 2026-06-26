@@ -11,12 +11,14 @@ import { t } from '../../i18n';
 import type { Store } from '../../state/store';
 import { showToast } from '../toast';
 import { BodyComponent } from './body';
+import { EnergyComponent } from './energy';
 import { WheelComponent } from './wheel';
 
 export class CheckinController {
   readonly #store: Store;
   readonly #wheel: WheelComponent;
   readonly #body: BodyComponent;
+  readonly #energy: EnergyComponent;
   #currentKey: string | null = null;
 
   constructor(store: Store) {
@@ -24,6 +26,7 @@ export class CheckinController {
     // The picked emotion is read back from the wheel at save time.
     this.#wheel = new WheelComponent(store, () => {});
     this.#body = new BodyComponent();
+    this.#energy = new EnergyComponent(store);
 
     document.getElementById('ci-btn-save')?.addEventListener('click', () => this.#save());
     document.getElementById('ci-btn-new')?.addEventListener('click', () => this.#clear());
@@ -47,9 +50,11 @@ export class CheckinController {
     this.#wheel.setVariant(entry.wheelType || 'act');
     this.#wheel.setPicked(entry.coreFeeling || '');
     this.#body.setZones(entry.bodySignals || []);
+    this.#energy.setValues(entry.energy || null);
     this.#setField('fld-thoughts', entry.thoughts);
     this.#setField('fld-custom', entry.customFeelings);
     this.#setField('fld-body-note', entry.bodyNote);
+    this.#setField('fld-energy-note', entry.energyNote);
   }
 
   #collect(): Entry {
@@ -60,6 +65,8 @@ export class CheckinController {
       customFeelings: this.#fieldValue('fld-custom'),
       bodySignals: this.#body.getZones(),
       bodyNote: this.#fieldValue('fld-body-note'),
+      energy: this.#energy.getValues(),
+      energyNote: this.#fieldValue('fld-energy-note'),
     };
     partial.moodScore = computeMoodScore(partial);
     return normalize(partial);
@@ -83,7 +90,9 @@ export class CheckinController {
     this.#wheel.setVariant(this.#store.settings.get().defaultWheelType || 'act');
     this.#wheel.setPicked('');
     this.#body.setZones([]);
-    for (const id of ['fld-thoughts', 'fld-custom', 'fld-body-note']) this.#setField(id, '');
+    this.#energy.setValues(null);
+    for (const id of ['fld-thoughts', 'fld-custom', 'fld-body-note', 'fld-energy-note'])
+      this.#setField(id, '');
   }
 
   #fieldValue(id: string): string {

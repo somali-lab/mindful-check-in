@@ -140,6 +140,12 @@ Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
   bars (the inline `display:''` fell back to the CSS `display:none`, hiding `#ci-btn-save`).
   **`body-signals.spec.js` = 10/10 green**; theme/tab-nav/emotion-wheel still 34/34.
 
+- **Phase 5 — energy meters DONE.** `ui/checkin/energy.ts` (three horizontal 20-segment bars;
+  click segment N → round(N/20·100)%; per-meter visibility flags; emotional channel honours the
+  `energyEmotionalLabel` setting; `getValues`/`setValues`, display + reset). Wired into the
+  orchestrator's collect/load/clear; `computeMoodScore` now factors energy. **`energy-meters.spec.js`
+  = 10/10 green**; body/wheel still green. `dist/` rebuilt for file:// testing.
+
 ## Where to resume (for a fresh context)
 
 Phases 1–4 are complete and green. Foundation + app shell work via dev server AND from
