@@ -50,8 +50,8 @@ bar) and the `file://` smoke test do we swap `app/` → `src/`.
 | 2 | Pure core domain + Vitest | ✅ done | `vitest` green |
 | 3 | Infra + state + i18n + data | ✅ done | `vitest` green |
 | 4 | App shell (nav, theme, language) + `window.MCI` bridge | ✅ done | app boots, shell selectors present |
-| 5 | Domain UI components | ⬜ todo | per-domain Playwright specs green |
-| 6 | Full suite green, swap, docs, commit | ⬜ todo | 384 Playwright + `file://` smoke green |
+| 5 | Domain UI components | ✅ done | **384 Playwright green** |
+| 6 | Full suite green, swap, docs, commit | 🔶 in progress | **384 Playwright + 44 Vitest + `file://` smoke all green; swap + docs remain** |
 
 Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
 
@@ -214,3 +214,23 @@ lynchpin** most specs depend on. Revised order:
 
 Then run the FULL suite (384) + add the file:// smoke test, swap `app/` → `src/`, write
 `architecture.md`, update `CLAUDE.md`.
+
+- **Phase 5 COMPLETE — full parity reached.** All remaining domains ported and green in one
+  push: weather widget, check-in meta (greeting/pill/date) + summary panel + 28-day history grid,
+  home dashboard (streak ring / totals / heatmap / mood-swings cards), info/about view
+  (about/guide/privacy/heatmap/data) with data tools (entries export/import + dialog, demo-data
+  generation, clear-all), and cross-view entry loading (overview row / history cell → form via an
+  `entryLoadRequest` signal). Added pure `core/stats.ts` (computeStats/weekStripDays/
+  buildHeatmapData/entrySpanDays) and `core/demo.ts`. **Whole Playwright suite: 384/384 green
+  (chromium + Pixel-7), 44 Vitest green, and the built `dist/` boots clean from `file://`
+  (window.MCI present, wheel/body/mood render, zero non-network console errors).**
+
+## Phase 6 — remaining (needs the user's go-ahead for the swap)
+
+The acceptance bar is met. What's left is the deliberate cutover + docs:
+1. **Swap `app/` → `src/`** — replace the existing live app with the rebuilt one. Destructive /
+   one-way; do only on explicit confirmation. (Suggested: move old `src/` aside, promote `app/`
+   build pipeline, re-point `npm run dev` + the Playwright webServer.)
+2. **Write `architecture.md`** (referenced by `CLAUDE.md`, still missing).
+3. **Update `CLAUDE.md`** — the ES5/no-build constraints describe the *old* app; the rebuilt app
+   is TypeScript + Vite. Rewrite the architecture/commands/constraints sections accordingly.
