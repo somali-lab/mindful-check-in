@@ -6,7 +6,7 @@
 import { dateFromKey, formatDate, formatTime } from '../../core/datetime';
 import type { Entry } from '../../core/types';
 import { moodLabels } from '../../data/static';
-import { lang, t } from '../../i18n';
+import { emotionLabel, lang, t } from '../../i18n';
 import type { Repository } from '../../infra/storage';
 import { STORAGE_KEYS } from '../../infra/storage';
 import { requestEntryLoad } from '../../state/load-request';
@@ -34,9 +34,6 @@ const COLS: { key: SortKey; tKey: string }[] = [
   { key: 'score', tKey: 'colScore' },
   { key: 'actions', tKey: 'colActions' },
 ];
-
-const emotionLabel = (id: string): string =>
-  (id ? t(`em${id.charAt(0).toUpperCase()}${id.slice(1)}`) : '') || id;
 
 function moodLabelOf(e: Entry): string {
   if (e.moodRow >= 0 && e.moodCol >= 0) {

@@ -15,6 +15,7 @@ import type { WheelType } from '../../core/types';
 import { lang, setLang, t } from '../../i18n';
 import type { Store } from '../../state/store';
 import { confirmDialog } from '../confirm';
+import { downloadJson, readJsonFile, renderRemovableTags, wireSubTabs } from '../dom';
 import { showToast } from '../toast';
 
 const REMINDER_DEFAULT_DAYS = [1, 2, 3, 4, 5];
@@ -49,7 +50,7 @@ export class SettingsController {
 
   constructor(store: Store) {
     this.#store = store;
-    this.#wireTabs();
+    wireSubTabs('#view-settings');
     this.#wireButtons();
     this.#wireQuickActions();
     this.#loadForm();
@@ -120,23 +121,6 @@ export class SettingsController {
     s.components = components;
 
     return s;
-  }
-
-  #wireTabs(): void {
-    for (const nav of document.querySelectorAll('#view-settings .settings-nav')) {
-      nav.addEventListener('click', (e) => {
-        const tab = (e.target as Element).closest('[data-settings-tab]');
-        const card = tab?.closest('.settings-card');
-        if (!tab || !card) return;
-        const key = tab.getAttribute('data-settings-tab');
-        for (const el of card.querySelectorAll('.settings-tab')) {
-          el.classList.toggle('is-active', el.getAttribute('data-settings-tab') === key);
-        }
-        for (const el of card.querySelectorAll('.settings-panel')) {
-          el.classList.toggle('is-active', el.getAttribute('data-settings-panel') === key);
-        }
-      });
-    }
   }
 
   #wireButtons(): void {
@@ -214,45 +198,25 @@ export class SettingsController {
   #buildQAList(actions: string[]): void {
     const ct = document.getElementById('qa-list');
     if (!ct) return;
-    ct.innerHTML = '';
-    actions.forEach((action, i) => {
-      const tag = document.createElement('span');
-      tag.className = 'tag quick-action-tag';
-      tag.appendChild(document.createTextNode(action));
-      const del = document.createElement('button');
-      del.type = 'button';
-      del.className = 'tag-x qa-del';
-      del.setAttribute('data-qi', String(i));
-      del.textContent = '✕';
-      tag.appendChild(del);
-      ct.appendChild(tag);
+    renderRemovableTags(ct, actions, {
+      tagClass: 'tag quick-action-tag',
+      delClass: 'tag-x qa-del',
+      removeAttr: 'data-qi',
+      removeLabel: t('ariaRemove') || 'Remove',
     });
   }
 
   #export(): void {
-    const json = JSON.stringify(this.#store.settings.get(), null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'mindful-checkin-settings.json';
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadJson('mindful-checkin-settings.json', this.#store.settings.get());
   }
 
   #import(file: File): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const parsed = mergeSettings(JSON.parse(String(reader.result)));
-        this.#store.saveSettings(parsed);
+    readJsonFile(file)
+      .then((raw) => {
+        this.#store.saveSettings(mergeSettings(raw));
         this.#loadForm();
         showToast(t('settingsImported') || 'Settings imported.', 'success');
-      } catch {
-        showToast(t('importError') || 'Invalid JSON file.', 'warning');
-      }
-    };
-    reader.onerror = () => showToast(t('importError') || 'Invalid JSON file.', 'warning');
-    reader.readAsText(file);
+      })
+      .catch(() => showToast(t('importError') || 'Invalid JSON file.', 'warning'));
   }
 }

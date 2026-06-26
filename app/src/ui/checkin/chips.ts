@@ -6,6 +6,7 @@
 // "+ add" input (Enter/blur commits, Escape cancels).
 import { lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
+import { renderRemovableTags } from '../dom';
 
 function fieldList(id: string): string[] {
   const f = document.getElementById(id) as HTMLTextAreaElement | null;
@@ -127,21 +128,11 @@ export class ChipsComponent {
   #buildFeel(): void {
     const slot = document.getElementById('ci-feel-chips');
     if (!slot) return;
-    const list = fieldList('fld-custom');
-    slot.innerHTML = '';
-    list.forEach((feel, i) => {
-      const tag = document.createElement('span');
-      tag.className = 'tag ci-chip';
-      tag.setAttribute('data-feel', String(i));
-      tag.appendChild(document.createTextNode(feel));
-      const x = document.createElement('button');
-      x.type = 'button';
-      x.className = 'tag-x';
-      x.setAttribute('data-felrm', String(i));
-      x.setAttribute('aria-label', t('ariaRemove') || 'Remove');
-      x.textContent = '×';
-      tag.appendChild(x);
-      slot.appendChild(tag);
+    renderRemovableTags(slot, fieldList('fld-custom'), {
+      tagClass: 'tag ci-chip',
+      delClass: 'tag-x',
+      removeAttr: 'data-felrm',
+      removeLabel: t('ariaRemove') || 'Remove',
     });
     slot.appendChild(this.#addButton('data-feladd', t('ciAddFeeling') || 'Own feeling'));
   }

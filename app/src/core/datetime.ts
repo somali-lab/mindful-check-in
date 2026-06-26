@@ -2,6 +2,16 @@
 
 export const pad2 = (n: number): string => `0${n}`.slice(-2);
 
+const WEEKDAY_HEADERS = {
+  en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  nl: ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'],
+} as const;
+
+/** Monday-first short weekday headers for the heatmap grids. */
+export function weekdayHeaders(lang: 'en' | 'nl'): readonly string[] {
+  return WEEKDAY_HEADERS[lang] ?? WEEKDAY_HEADERS.en;
+}
+
 export function formatDate(d: Date | string | number): string {
   const date = d instanceof Date ? d : new Date(d);
   return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;

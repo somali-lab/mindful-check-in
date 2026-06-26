@@ -8,6 +8,7 @@ import { t } from '../../i18n';
 import { type Repository, STORAGE_KEYS } from '../../infra/storage';
 import type { Store } from '../../state/store';
 import { confirmDialog } from '../confirm';
+import { downloadJson, readJsonFile, wireSubTabs } from '../dom';
 import { showToast } from '../toast';
 
 export class InfoController {
@@ -18,24 +19,8 @@ export class InfoController {
   constructor(store: Store, repo: Repository) {
     this.#store = store;
     this.#repo = repo;
-    this.#wireTabs();
+    wireSubTabs('#view-info');
     this.#wireData();
-  }
-
-  #wireTabs(): void {
-    const nav = document.querySelector('#view-info .settings-nav');
-    nav?.addEventListener('click', (e) => {
-      const tab = (e.target as Element).closest('[data-settings-tab]');
-      const card = tab?.closest('.settings-card');
-      if (!tab || !card) return;
-      const key = tab.getAttribute('data-settings-tab');
-      for (const el of card.querySelectorAll('.settings-tab')) {
-        el.classList.toggle('is-active', el.getAttribute('data-settings-tab') === key);
-      }
-      for (const el of card.querySelectorAll('.settings-panel')) {
-        el.classList.toggle('is-active', el.getAttribute('data-settings-panel') === key);
-      }
-    });
   }
 
   #wireData(): void {
@@ -59,32 +44,20 @@ export class InfoController {
   }
 
   #export(): void {
-    const json = JSON.stringify(this.#store.entries.get(), null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'mindful-checkin-export.json';
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadJson('mindful-checkin-export.json', this.#store.entries.get());
   }
 
   #startImport(file: File): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const parsed = JSON.parse(String(reader.result));
-        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed))
+    readJsonFile(file)
+      .then((parsed) => {
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
           throw new Error('shape');
+        }
         this.#pendingImport = parsed as EntryMap;
         const dlg = document.getElementById('dlg-import') as HTMLDialogElement | null;
-        if (dlg?.showModal) dlg.showModal();
-      } catch {
-        showToast(t('importError') || 'Invalid JSON file.', 'warning');
-      }
-    };
-    reader.onerror = () => showToast(t('importError') || 'Invalid JSON file.', 'warning');
-    reader.readAsText(file);
+        dlg?.showModal?.();
+      })
+      .catch(() => showToast(t('importError') || 'Invalid JSON file.', 'warning'));
   }
 
   #applyImport(mode: 'overwrite' | 'skip'): void {

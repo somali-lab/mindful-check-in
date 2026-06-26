@@ -1,13 +1,10 @@
 // Summary panel (#summary-slot in the check-in view): today's check-in state, a
 // 7-day mood heat strip, and headline stats (total / streak / avg / top feeling).
 // Reads entries from the store and re-renders on entries / language change.
-import { scoreTier } from '../../core/scoring';
 import { computeStats, weekStripDays } from '../../core/stats';
-import { lang, t } from '../../i18n';
+import { emotionLabel, lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
-
-const emotionLabel = (id: string): string =>
-  (id ? t(`em${id.charAt(0).toUpperCase()}${id.slice(1)}`) : '') || id;
+import { renderWeekStrip } from '../dom';
 
 export class SummaryComponent {
   readonly #store: Store;
@@ -48,7 +45,10 @@ export class SummaryComponent {
     today.append(icon, label);
     this.#slot.appendChild(today);
 
-    this.#slot.appendChild(this.#weekStrip());
+    const week = document.createElement('div');
+    week.className = 'summary-week';
+    renderWeekStrip(week, weekStripDays(entries), lang.get());
+    this.#slot.appendChild(week);
 
     const statsRow = document.createElement('div');
     statsRow.className = 'summary-stats';
@@ -62,24 +62,6 @@ export class SummaryComponent {
       ),
     );
     this.#slot.appendChild(statsRow);
-  }
-
-  #weekStrip(): HTMLElement {
-    const wrap = document.createElement('div');
-    wrap.className = 'summary-week';
-    const locale = lang.get() === 'nl' ? 'nl-NL' : 'en-US';
-    for (const day of weekStripDays(this.#store.entries.get())) {
-      const cell = document.createElement('div');
-      cell.className = `heat-day${day.isToday ? ' heat-today' : ''}`;
-      const dot = document.createElement('div');
-      dot.className = `heat-dot ${day.score === 0 ? 'heat-empty' : `heat-${scoreTier(day.score)}`}`;
-      const lbl = document.createElement('span');
-      lbl.className = 'heat-label';
-      lbl.textContent = day.date.toLocaleDateString(locale, { weekday: 'short' });
-      cell.append(dot, lbl);
-      wrap.appendChild(cell);
-    }
-    return wrap;
   }
 
   #stat(value: string, labelText: string): HTMLElement {

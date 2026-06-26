@@ -1,12 +1,14 @@
 // Home dashboard: streak ring, totals, 28-day heatmap, this-week strip, and the
 // "mood swings" spread cards (wheel / matrix-valence / matrix-arousal) over a
 // selectable window. Read-only; re-renders on entries / settings / language.
+import { todayKey, weekdayHeaders } from '../../core/datetime';
 import { computeSwing, scoreTier, swingTier } from '../../core/scoring';
 import { buildHeatmapData, computeStats, entrySpanDays, weekStripDays } from '../../core/stats';
 import type { EntryMap, SwingSource } from '../../core/types';
 import { lang, t } from '../../i18n';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
+import { renderWeekStrip, setText } from '../dom';
 
 const SWING_CARDS: {
   source: SwingSource;
@@ -37,16 +39,6 @@ const SWING_CARDS: {
     subId: null,
   },
 ];
-
-const text = (id: string, value: string): void => {
-  const el = document.getElementById(id);
-  if (el) el.textContent = value;
-};
-
-const dayNames = (): string[] =>
-  lang.get() === 'nl'
-    ? ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo']
-    : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export class HomeController {
   readonly #store: Store;
@@ -88,19 +80,19 @@ export class HomeController {
   #render(): void {
     const entries = this.#store.entries.get();
     const stats = computeStats(entries);
-    text('home-streak', String(stats.streak));
-    text('home-total', String(stats.total));
-    text('home-avg', stats.avgScore);
-    text('home-status', stats.hasTodayEntry ? t('summaryDone') : t('summaryPending'));
+    setText('home-streak', String(stats.streak));
+    setText('home-total', String(stats.total));
+    setText('home-avg', stats.avgScore);
+    setText('home-status', stats.hasTodayEntry ? t('summaryDone') : t('summaryPending'));
 
     const span = entrySpanDays(entries);
-    text(
+    setText(
       'home-span',
       span == null
         ? ''
         : (t('homeSpanDays') || 'across {days} days').replace('{days}', String(span)),
     );
-    text('home-energy', this.#todayEnergy(entries));
+    setText('home-energy', this.#todayEnergy(entries));
 
     this.#renderHeatmap(entries);
     this.#renderRing(stats.streak);
@@ -110,7 +102,7 @@ export class HomeController {
 
   #todayEnergy(entries: EntryMap): string {
     for (const [key, e] of Object.entries(entries)) {
-      if (!key.startsWith(weekTodayKey())) continue;
+      if (!key.startsWith(todayKey())) continue;
       const vals = [e.energy.physical, e.energy.mental, e.energy.emotional].filter(
         (v): v is number => typeof v === 'number',
       );
@@ -125,7 +117,7 @@ export class HomeController {
     if (!el) return;
     const heat = buildHeatmapData(entries);
     el.innerHTML = '';
-    for (const name of dayNames()) {
+    for (const name of weekdayHeaders(lang.get())) {
       const h = document.createElement('div');
       h.className = 'home-heat-header';
       h.textContent = name;
@@ -170,31 +162,18 @@ export class HomeController {
 
   #renderWeek(entries: EntryMap): void {
     const el = document.getElementById('home-week');
-    if (!el) return;
-    const locale = lang.get() === 'nl' ? 'nl-NL' : 'en-US';
-    el.innerHTML = '';
-    for (const day of weekStripDays(entries)) {
-      const cell = document.createElement('div');
-      cell.className = `heat-day${day.isToday ? ' heat-today' : ''}`;
-      const dot = document.createElement('div');
-      dot.className = `heat-dot ${day.score === 0 ? 'heat-empty' : `heat-${scoreTier(day.score)}`}`;
-      const lbl = document.createElement('span');
-      lbl.className = 'heat-label';
-      lbl.textContent = day.date.toLocaleDateString(locale, { weekday: 'short' });
-      cell.append(dot, lbl);
-      el.appendChild(cell);
-    }
+    if (el) renderWeekStrip(el, weekStripDays(entries), lang.get());
   }
 
   #renderSwings(entries: EntryMap): void {
     for (const card of SWING_CARDS) {
       const data = computeSwing(entries, card.source, this.#swingDays);
-      text(card.scoreId, data.score == null ? '—' : String(data.score));
+      setText(card.scoreId, data.score == null ? '—' : String(data.score));
       const spark = document.getElementById(card.sparkId);
       if (spark) spark.innerHTML = sparkSvg(data.series, data.min, data.max);
-      text(card.tierId, data.score == null ? '' : t(`swingTier${swingTier(data.score)}`) || '');
+      setText(card.tierId, data.score == null ? '' : t(`swingTier${swingTier(data.score)}`) || '');
       if (card.subId) {
-        text(
+        setText(
           card.subId,
           data.score == null
             ? t('swingNoData') || 'Not enough data yet'
@@ -203,11 +182,6 @@ export class HomeController {
       }
     }
   }
-}
-
-function weekTodayKey(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${`0${d.getMonth() + 1}`.slice(-2)}-${`0${d.getDate()}`.slice(-2)}`;
 }
 
 /** Inline sparkline; empty string for < 2 points (so no <svg> is rendered). */

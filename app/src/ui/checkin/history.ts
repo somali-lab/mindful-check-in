@@ -1,6 +1,7 @@
 // 28-day history calendar (in the check-in view): a colour grid driven by a
 // selectable mode (core feeling / mood / energy axes). Each mode maps to a
 // component-visibility flag, so hidden components drop their mode button.
+import { weekdayHeaders } from '../../core/datetime';
 import { energyTier, scoreTier, valenceTier } from '../../core/scoring';
 import type { ComponentVisibility } from '../../core/settings';
 import { buildHeatmapData } from '../../core/stats';
@@ -18,11 +19,6 @@ const MODES: { key: Mode; tKey: string; comp: keyof ComponentVisibility }[] = [
   { key: 'mental', tKey: 'modeMental', comp: 'energyMental' },
   { key: 'emotional', tKey: 'modeEmotional', comp: 'energyEmotional' },
 ];
-
-const dayNames = (): string[] =>
-  lang.get() === 'nl'
-    ? ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo']
-    : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export class HistoryComponent {
   readonly #store: Store;
@@ -79,7 +75,7 @@ export class HistoryComponent {
     if (!el) return;
     const heat = buildHeatmapData(this.#store.entries.get());
     el.innerHTML = '';
-    for (const name of dayNames()) {
+    for (const name of weekdayHeaders(lang.get())) {
       const h = document.createElement('div');
       h.className = 'cal-day-header';
       h.textContent = name;

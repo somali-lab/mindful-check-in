@@ -42,3 +42,8 @@ export function defaultQuickActions(forLang: Lang = lang.get()): string[] {
   const value = (strings[forLang] as Dict).defaultQuickActions;
   return Array.isArray(value) ? [...value] : [];
 }
+
+/** Localized label for an emotion id (e.g. "joy" → `t('emJoy')`), falling back to the id. */
+export function emotionLabel(id: string): string {
+  return (id ? t(`em${id.charAt(0).toUpperCase()}${id.slice(1)}`) : '') || id;
+}

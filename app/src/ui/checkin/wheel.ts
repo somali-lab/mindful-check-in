@@ -2,7 +2,7 @@
 // Self-contained component; the orchestrator reads the picked emotion via the `picked` getter.
 import type { WheelType } from '../../core/types';
 import { type Wheel, wheels } from '../../data/static';
-import { lang, t } from '../../i18n';
+import { emotionLabel, lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
 
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -11,9 +11,6 @@ const RO = 116;
 const RI = 58;
 const LABEL_R = 130;
 const VARIANTS: WheelType[] = ['act', 'plutchik', 'ekman', 'junto', 'extended'];
-
-const emotionLabel = (id: string): string =>
-  (id ? t(`em${id.charAt(0).toUpperCase()}${id.slice(1)}`) : '') || id;
 
 function polar(r: number, a: number): { x: number; y: number } {
   return { x: CENTER + r * Math.cos(a), y: CENTER + r * Math.sin(a) };
