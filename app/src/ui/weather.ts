@@ -2,10 +2,10 @@
 // the WeatherService into #weather-slot: fresh cache first, else geocode the
 // configured location and fetch. Degrades gracefully (error / location hint) and
 // never throws. The orchestrator reads the last reading via getCurrent() at save.
-import { weatherCodes } from '../../data/static';
-import { lang, t } from '../../i18n';
-import type { CurrentWeather, WeatherService } from '../../infra/weather';
-import type { Store } from '../../state/store';
+import { weatherCodes } from '../data/static';
+import { lang, t } from '../i18n';
+import type { CurrentWeather, WeatherService } from '../infra/weather';
+import type { Store } from '../state/store';
 
 export class WeatherComponent {
   readonly #store: Store;
@@ -19,8 +19,14 @@ export class WeatherComponent {
     this.#slot = document.getElementById('weather-slot');
     if (!this.#slot) return;
 
+    const card = this.#slot.closest('[data-component="weather"]');
     let lastLocation = store.settings.get().weatherLocation;
+    const applyVisibility = (visible: boolean): void => {
+      card?.classList.toggle('is-hidden', !visible);
+    };
+    applyVisibility(store.settings.get().components.weather);
     store.settings.subscribe((s) => {
+      applyVisibility(s.components.weather);
       if (s.weatherLocation !== lastLocation) {
         lastLocation = s.weatherLocation;
         void this.#refresh();

@@ -19,7 +19,6 @@ import { HistoryComponent } from './history';
 import { MetaComponent } from './meta';
 import { MoodComponent } from './mood';
 import { SummaryComponent } from './summary';
-import { WeatherComponent } from './weather';
 import { WheelComponent } from './wheel';
 
 export class CheckinController {
@@ -29,19 +28,19 @@ export class CheckinController {
   readonly #energy: EnergyComponent;
   readonly #mood: MoodComponent;
   readonly #chips: ChipsComponent;
-  readonly #weather: WeatherComponent;
+  readonly #weather: WeatherService;
   readonly #meta: MetaComponent;
   #currentKey: string | null = null;
 
   constructor(store: Store, weatherService: WeatherService) {
     this.#store = store;
+    this.#weather = weatherService;
     // The picked emotion is read back from the wheel at save time.
     this.#wheel = new WheelComponent(store, () => {});
     this.#body = new BodyComponent();
     this.#energy = new EnergyComponent(store);
     this.#mood = new MoodComponent();
     this.#chips = new ChipsComponent(store);
-    this.#weather = new WeatherComponent(store, weatherService);
     this.#meta = new MetaComponent();
     new SummaryComponent(store);
     new HistoryComponent(store);
@@ -106,7 +105,7 @@ export class CheckinController {
       actions: this.#fieldValue('fld-action'),
       note: this.#fieldValue('fld-note'),
     };
-    const w = this.#weather.getCurrent();
+    const w = this.#weather.getCached();
     if (w) {
       partial.weather = {
         temperature: w.temperature,
@@ -172,7 +171,6 @@ export class CheckinController {
   #applyVisibility(): void {
     const c = this.#store.settings.get().components;
     const visible: Record<string, boolean> = {
-      weather: c.weather,
       thoughts: c.thoughts,
       coreFeeling: c.coreFeeling,
       bodySignals: c.bodySignals,
