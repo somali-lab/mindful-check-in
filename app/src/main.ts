@@ -8,6 +8,7 @@ import { HomeController } from './ui/home/home';
 import { InfoController } from './ui/info/info';
 import { initLanguage } from './ui/language';
 import { OverviewController } from './ui/overview/overview';
+import { ReminderController } from './ui/reminders';
 import { initRouter } from './ui/router';
 import { SettingsController } from './ui/settings/settings';
 import { initTheme } from './ui/theme';
@@ -41,6 +42,7 @@ if (document.getElementById('view-overview')) {
 
 if (document.getElementById('view-settings')) {
   new SettingsController(store);
+  new ReminderController(store);
 }
 
 if (document.getElementById('view-info')) {
