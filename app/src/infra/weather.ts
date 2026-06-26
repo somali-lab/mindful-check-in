@@ -28,10 +28,13 @@ export class WeatherService {
     this.#repo = repo;
   }
 
-  /** The cached reading if still fresh, otherwise null. */
+  /** The cached reading if still fresh and well-formed, otherwise null. */
   getCached(): CurrentWeather | null {
     const cached = this.#repo.read<WeatherCacheEntry | null>(STORAGE_KEYS.weatherCache, null);
-    if (!cached || Date.now() - cached.ts > CACHE_TTL) return null;
+    if (!cached || typeof cached !== 'object') return null;
+    if (typeof cached.ts !== 'number' || !cached.data || typeof cached.data !== 'object')
+      return null;
+    if (Date.now() - cached.ts > CACHE_TTL) return null;
     return cached.data;
   }
 
@@ -46,7 +49,10 @@ export class WeatherService {
         results?: Array<{ latitude: number; longitude: number }>;
       };
       const first = data.results?.[0];
-      return first ? { lat: first.latitude, lon: first.longitude } : null;
+      if (!first || !Number.isFinite(first.latitude) || !Number.isFinite(first.longitude)) {
+        return null;
+      }
+      return { lat: first.latitude, lon: first.longitude };
     } catch {
       return null;
     }

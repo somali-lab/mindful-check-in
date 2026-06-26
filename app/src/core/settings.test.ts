@@ -36,4 +36,17 @@ describe('mergeSettings', () => {
   it('migrates the retired logo3 value to wolf', () => {
     expect(mergeSettings({ logo: 'logo3' }).logo).toBe('wolf');
   });
+
+  it('coerces wrong-typed fields to the default type (P2)', () => {
+    const s = mergeSettings({
+      rowsPerPage: 'lots', // non-number → default kept
+      reminderInterval: 90, // valid number → used
+      reminderDays: 'mon', // non-array → default kept
+      quickActions: ['Walk', 42, 'Rest'], // mixed array → strings only
+    });
+    expect(s.rowsPerPage).toBe(7);
+    expect(s.reminderInterval).toBe(90);
+    expect(s.reminderDays).toEqual([1, 2, 3, 4, 5]);
+    expect(s.quickActions).toEqual(['Walk', 'Rest']);
+  });
 });

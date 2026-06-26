@@ -1,4 +1,10 @@
-import type { Energy, Entry, EntryWeather } from './types';
+import type { Energy, Entry, EntryWeather, WheelType } from './types';
+
+const WHEEL_TYPES: WheelType[] = ['act', 'plutchik', 'ekman', 'junto', 'extended'];
+const isWheelType = (v: unknown): v is WheelType =>
+  typeof v === 'string' && (WHEEL_TYPES as string[]).includes(v);
+const finite = (v: unknown): number | undefined =>
+  typeof v === 'number' && Number.isFinite(v) ? v : undefined;
 
 /** RFC4122 v4 id, native where available with a deterministic-shape fallback. */
 export function uid(): string {
@@ -28,9 +34,9 @@ export function normalize(entry: Partial<Entry> | null | undefined): Entry {
   let weather: EntryWeather | null = null;
   if (e.weather && typeof e.weather === 'object') {
     weather = {
-      temperature: e.weather.temperature,
-      weathercode: e.weather.weathercode,
-      windspeed: e.weather.windspeed,
+      temperature: finite(e.weather.temperature),
+      weathercode: finite(e.weather.weathercode),
+      windspeed: finite(e.weather.windspeed),
       description: e.weather.description || '',
       location: e.weather.location || '',
     };
@@ -40,7 +46,7 @@ export function normalize(entry: Partial<Entry> | null | undefined): Entry {
     id: e.id || uid(),
     thoughts: e.thoughts || '',
     coreFeeling: e.coreFeeling || '',
-    wheelType: e.wheelType || 'act',
+    wheelType: isWheelType(e.wheelType) ? e.wheelType : 'act',
     customFeelings: e.customFeelings || '',
     energy,
     energyNote: e.energyNote || '',

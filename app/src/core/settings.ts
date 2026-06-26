@@ -84,8 +84,10 @@ export function defaultSettings(forLang?: Lang): Settings {
 
 /**
  * Merge a stored (possibly partial/untrusted) settings object over the defaults.
- * Unknown/missing fields fall back to defaults; `components` is merged per flag;
- * the retired `logo3` value migrates to the `wolf` logo.
+ * Each field is coerced to the type of its default (numbers must be finite,
+ * arrays keep only same-typed elements, booleans are forced) so a corrupt or
+ * hand-edited import can't smuggle a wrong-typed value into a typed `Settings`.
+ * `components` is merged per flag; the retired `logo3` value migrates to `wolf`.
  */
 export function mergeSettings(raw: unknown): Settings {
   const defs = defaultSettings();
@@ -94,9 +96,30 @@ export function mergeSettings(raw: unknown): Settings {
 
   const out = { ...defs };
   const outRec = out as unknown as Record<string, unknown>;
+  const defsRec = defs as unknown as Record<string, unknown>;
+
   for (const key of Object.keys(defs)) {
     if (key === 'components') continue;
-    if (r[key] !== undefined) outRec[key] = r[key];
+    const def = defsRec[key];
+    const val = r[key];
+    if (val === undefined) continue;
+
+    if (Array.isArray(def)) {
+      if (!Array.isArray(val)) continue;
+      const numeric = typeof (def as unknown[])[0] === 'number';
+      outRec[key] = numeric
+        ? val.filter((v): v is number => typeof v === 'number' && Number.isFinite(v))
+        : val.filter((v): v is string => typeof v === 'string');
+    } else if (typeof def === 'number') {
+      if (typeof val === 'number' && Number.isFinite(val)) outRec[key] = val;
+    } else if (typeof def === 'boolean') {
+      outRec[key] = Boolean(val);
+    } else if (typeof def === 'string') {
+      if (typeof val === 'string') outRec[key] = val;
+    } else if (val === null || typeof val === 'object') {
+      // object-valued field (weatherCoords): accept null or a plain object.
+      outRec[key] = val;
+    }
   }
 
   const rawComponents = (r.components ?? {}) as Record<string, unknown>;

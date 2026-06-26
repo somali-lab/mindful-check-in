@@ -62,3 +62,24 @@ describe('WeatherService.fetchCurrent', () => {
     expect(await svc.fetchCurrent(0, 0)).toBeNull();
   });
 });
+
+describe('WeatherService.getCached (P2 hardening)', () => {
+  it('returns the cached reading while fresh', () => {
+    const repo = new MemoryRepository();
+    repo.write(STORAGE_KEYS.weatherCache, { ts: Date.now(), data: { temperature: 20 } });
+    expect(new WeatherService(repo).getCached()?.temperature).toBe(20);
+  });
+
+  it('returns null for an expired cache entry', () => {
+    const repo = new MemoryRepository();
+    const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
+    repo.write(STORAGE_KEYS.weatherCache, { ts: twoHoursAgo, data: { temperature: 20 } });
+    expect(new WeatherService(repo).getCached()).toBeNull();
+  });
+
+  it('returns null for a corrupt cache entry instead of garbage', () => {
+    const repo = new MemoryRepository();
+    repo.write(STORAGE_KEYS.weatherCache, { ts: 'soon', data: 42 });
+    expect(new WeatherService(repo).getCached()).toBeNull();
+  });
+});

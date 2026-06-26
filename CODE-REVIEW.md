@@ -163,18 +163,28 @@ Unit suites lean happy-path; the two riskiest behaviours are untested:
 
 ## 6. Prioritized roadmap
 
-**P0 — defects (small, do before/with the cutover)**
-- D1 home-heatmap click, D2 toast-duration, D3 remove dead `onChange`, D4 write-failure surfacing, D5 `dateFromKey`
-  guard. (D6–D8 quick follow-ups.)
+**P0 — defects (small, do before/with the cutover) — ✅ DONE (commit, 386/386 + 45 Vitest)**
+- ✅ D1 home-heatmap click, ✅ D2 toast-duration, ✅ D3 remove dead `onChange`, ✅ D4 write-failure surfacing
+  (`store.persistError` → toast), ✅ D5 `dateFromKey` guard (+Vitest), ✅ D6 chips `ariaRemove`, ✅ D7 distinct delete
+  title, ✅ D8 notification icon → `favicon.svg`. Added a Playwright regression for D1.
 
-**P1 — kill duplication (highest structural value)**
-- Add `ui/dom.ts` + extend `core/datetime` localization; migrate the 9 duplicated routines in §4.1 to them.
-- Extract `wireSubTabs`, `downloadJson`/`readJsonFile`, `renderHeatmap`/`renderWeekStrip`/`renderRemovableTags`.
+**P1 — kill duplication (highest structural value) — ✅ DONE (−111 LOC net)**
+- ✅ Added `ui/dom.ts` (`setText`, `downloadJson`, `readJsonFile`, `wireSubTabs`, `renderRemovableTags`,
+  `renderWeekStrip`) + `i18n.emotionLabel` + `core/datetime.weekdayHeaders`; migrated all consumers.
+- ⏭️ `renderHeatmap` intentionally **not** extracted — the home vs history cell logic (score-tier vs mode-tier,
+  span-wrapped vs not, `data-entry-key` vs not) differs enough that a shared version adds more indirection than it
+  removes.
 
-**P2 — harden trust boundaries & consistency**
-- Per-field coercion in `mergeSettings` + `normalize` (weather/wheelType); weather-cache guard.
-- Standardize the component contract (§4.2); move `wheel` variant + `chips` list into component state.
-- `exactOptionalPropertyTypes`; type `t(key: StringKey)`; type `Entry.wheelType` as `WheelType`.
+**P2 — harden trust boundaries & consistency — 🔶 PARTIAL**
+- ✅ Per-field coercion in `mergeSettings` (numbers must be finite, arrays keep same-typed elements, booleans forced)
+  + `normalize` (weather numerics dropped if non-number; `wheelType` validated → `act`); weather-cache + geocode
+  guards. Added Vitest for each.
+- ✅ `Entry.wheelType` typed as `WheelType`.
+- ❌ `t(key: StringKey)` — **rejected**: the code builds dynamic keys (`t('em'+Id)`, `t('swingTier'+n)`), which a
+  literal-union signature would break.
+- ⏭️ Deferred: `exactOptionalPropertyTypes` (cascades through the `?`-vs-`|null` types — needs a nullability-convention
+  pass first); component-contract standardization (§4.2 — `wheel` variant in DOM, `chips` list in textarea are real but
+  the textarea is the persisted form value, so moving it needs care).
 
 **P3 — polish**
 - Name magic numbers; typed `ids.ts`; keyboard a11y for SVG/grid controls; gate the `window.MCI` store handle;

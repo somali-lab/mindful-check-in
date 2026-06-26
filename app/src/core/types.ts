@@ -21,7 +21,7 @@ export interface Entry {
   id: string;
   thoughts: string;
   coreFeeling: string;
-  wheelType: string;
+  wheelType: WheelType;
   customFeelings: string;
   energy: Energy;
   energyNote: string;
