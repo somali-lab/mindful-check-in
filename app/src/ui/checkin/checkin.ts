@@ -11,6 +11,7 @@ import { t } from '../../i18n';
 import type { Store } from '../../state/store';
 import { showToast } from '../toast';
 import { BodyComponent } from './body';
+import { ChipsComponent } from './chips';
 import { EnergyComponent } from './energy';
 import { MoodComponent } from './mood';
 import { WheelComponent } from './wheel';
@@ -21,6 +22,7 @@ export class CheckinController {
   readonly #body: BodyComponent;
   readonly #energy: EnergyComponent;
   readonly #mood: MoodComponent;
+  readonly #chips: ChipsComponent;
   #currentKey: string | null = null;
 
   constructor(store: Store) {
@@ -30,6 +32,7 @@ export class CheckinController {
     this.#body = new BodyComponent();
     this.#energy = new EnergyComponent(store);
     this.#mood = new MoodComponent();
+    this.#chips = new ChipsComponent(store);
 
     document.getElementById('ci-btn-save')?.addEventListener('click', () => this.#save());
     document.getElementById('ci-btn-new')?.addEventListener('click', () => this.#clear());
@@ -59,6 +62,9 @@ export class CheckinController {
     this.#setField('fld-custom', entry.customFeelings);
     this.#setField('fld-body-note', entry.bodyNote);
     this.#setField('fld-energy-note', entry.energyNote);
+    this.#setField('fld-action', entry.actions);
+    this.#setField('fld-note', entry.note);
+    this.#chips.refresh();
   }
 
   #collect(): Entry {
@@ -71,6 +77,8 @@ export class CheckinController {
       bodyNote: this.#fieldValue('fld-body-note'),
       energy: this.#energy.getValues(),
       energyNote: this.#fieldValue('fld-energy-note'),
+      actions: this.#fieldValue('fld-action'),
+      note: this.#fieldValue('fld-note'),
     };
     const mood = this.#mood.getSelection();
     partial.moodRow = mood ? mood.row : -1;
@@ -101,8 +109,16 @@ export class CheckinController {
     this.#body.setZones([]);
     this.#energy.setValues(null);
     this.#mood.setSelection(-1, -1);
-    for (const id of ['fld-thoughts', 'fld-custom', 'fld-body-note', 'fld-energy-note'])
+    for (const id of [
+      'fld-thoughts',
+      'fld-custom',
+      'fld-body-note',
+      'fld-energy-note',
+      'fld-action',
+      'fld-note',
+    ])
       this.#setField(id, '');
+    this.#chips.refresh();
   }
 
   #fieldValue(id: string): string {

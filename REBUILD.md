@@ -152,6 +152,16 @@ Baseline: existing suite **384 passed (37.5s)** — this is the bar to match.
   orchestrator's collect (moodRow/Col/Label/Color)/load/clear; `computeMoodScore` already used
   moodCol. **`mood-matrix.spec.js` = 10/10 green**; energy/body/wheel still green. `dist/` rebuilt.
 
+- **Phase 5 — check-in chips DONE (spec partially blocked on settings).** `ui/checkin/chips.ts`
+  (quick-action pills `#ci-chips` + custom-feeling tags `#ci-feel-chips`, both backing onto the
+  comma-list fields `#fld-action`/`#fld-custom`; toggle/add/remove + inline "+ add" input;
+  `refresh()` called by the orchestrator after load/clear). Orchestrator now also collects/loads/
+  clears `actions` + `note`. **`quick-actions.spec.js` = 34/40**: the check-in chip tests (render,
+  click-append) pass; the remaining **6 (tests 3–5 ×2)** drive the Settings→actions editor
+  (`#qa-input`/`#qa-list`/`.qa-del`/sub-tabs) which is the **settings domain** (plan step 4, still
+  a stub). They go green when settings lands. Regressions (mood/energy/body/wheel) still green;
+  `dist/` rebuilt.
+
 ## Where to resume (for a fresh context)
 
 Phases 1–4 are complete and green. Foundation + app shell work via dev server AND from
