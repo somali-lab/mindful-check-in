@@ -39,10 +39,6 @@ export class WeatherComponent {
     void this.#refresh();
   }
 
-  getCurrent(): CurrentWeather | null {
-    return this.#current;
-  }
-
   async #refresh(): Promise<void> {
     const cached = this.#service.getCached();
     if (cached) {

@@ -18,6 +18,7 @@ import { EnergyComponent } from './energy';
 import { HistoryComponent } from './history';
 import { MetaComponent } from './meta';
 import { MoodComponent } from './mood';
+import { SectionNavComponent } from './section-nav';
 import { SummaryComponent } from './summary';
 import { WheelComponent } from './wheel';
 
@@ -44,6 +45,7 @@ export class CheckinController {
     this.#meta = new MetaComponent();
     new SummaryComponent(store);
     new HistoryComponent(store);
+    new SectionNavComponent(store);
 
     document.getElementById('ci-btn-save')?.addEventListener('click', () => this.#save());
     document.getElementById('ci-btn-new')?.addEventListener('click', () => this.#clear());

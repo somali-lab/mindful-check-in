@@ -29,8 +29,10 @@ bar) and the `file://` smoke test do we swap `app/` → `src/`.
   Components talk to the store, never to each other — the clean boundaries the old code
   (global bus + direct `Checkin→sub` reach-through) lacked.
 - **UI layout/DOM contract preserved** (decided): same screen structure as the existing app
-  (summary panel inside the check-in view, weather widget inside the form). Reuse the CSS;
-  the existing Playwright selectors stay the acceptance bar. No layout re-architecture.
+  (summary panel inside the check-in view; **weather widget on the home view's bento grid** —
+  an earlier note here said "inside the form", which was a misread of the ES5 app and has been
+  corrected). Reuse the CSS; the existing Playwright selectors stay the acceptance bar. No
+  layout re-architecture.
 
 ## Known limitation (unchanged)
 
