@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalize } from './entry';
+import { isWheelType, normalize, uid, WHEEL_TYPES } from './entry';
 
 describe('normalize', () => {
   it('fills defaults for an empty/null entry', () => {
@@ -45,5 +45,27 @@ describe('normalize', () => {
     expect(n.weather?.temperature).toBeUndefined();
     expect(n.weather?.weathercode).toBe(3);
     expect(n.weather?.windspeed).toBeUndefined();
+  });
+});
+
+describe('isWheelType', () => {
+  it('accepts exactly the five known variants', () => {
+    expect(WHEEL_TYPES).toHaveLength(5);
+    for (const w of WHEEL_TYPES) expect(isWheelType(w)).toBe(true);
+  });
+
+  it('rejects unknown strings and non-strings', () => {
+    for (const bad of ['', 'bogus', 'ACT', 123, null, undefined, {}, []]) {
+      expect(isWheelType(bad)).toBe(false);
+    }
+  });
+});
+
+describe('uid', () => {
+  it('returns unique v4-shaped ids', () => {
+    const a = uid();
+    const b = uid();
+    expect(a).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    expect(a).not.toBe(b);
   });
 });
