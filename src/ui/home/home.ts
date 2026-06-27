@@ -1,11 +1,11 @@
 // Home dashboard: streak ring, totals, 28-day heatmap, this-week strip, and the
 // "mood swings" spread cards (wheel / matrix-valence / matrix-arousal) over a
 // selectable window. Read-only; re-renders on entries / settings / language.
-import { todayKey, weekdayHeaders } from '../../core/datetime';
+import { todayKey } from '../../core/datetime';
 import { computeSwing, scoreTier, swingTier } from '../../core/scoring';
 import { buildHeatmapData, computeStats, entrySpanDays, weekStripDays } from '../../core/stats';
 import type { EntryMap, SwingSource } from '../../core/types';
-import { lang, t } from '../../i18n';
+import { lang, t, weekdayHeaders } from '../../i18n';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
 import { renderWeekStrip, setText } from '../common/dom';
@@ -117,7 +117,7 @@ export class HomeController {
     if (!el) return;
     const heat = buildHeatmapData(entries);
     el.innerHTML = '';
-    for (const name of weekdayHeaders(lang.get())) {
+    for (const name of weekdayHeaders()) {
       const h = document.createElement('div');
       h.className = 'home-heat-header';
       h.textContent = name;

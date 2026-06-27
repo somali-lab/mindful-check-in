@@ -48,3 +48,19 @@ export function defaultQuickActions(forLang: Lang = lang.get()): string[] {
 export function emotionLabel(id: string): string {
   return (id ? t(`em${id.charAt(0).toUpperCase()}${id.slice(1)}`) : '') || id;
 }
+
+// Monday-first; reuses the reminder-day labels so the weekday strings live in one place.
+const WEEKDAY_KEYS = [
+  'reminderDayMon',
+  'reminderDayTue',
+  'reminderDayWed',
+  'reminderDayThu',
+  'reminderDayFri',
+  'reminderDaySat',
+  'reminderDaySun',
+] as const;
+
+/** Monday-first short weekday headers for the heatmap grids, in the active language. */
+export function weekdayHeaders(): string[] {
+  return WEEKDAY_KEYS.map((k) => t(k));
+}
