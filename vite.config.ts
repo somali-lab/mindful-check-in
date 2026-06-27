@@ -48,9 +48,11 @@ export default defineConfig({
       // type/data modules have nothing to execute — both are out of scope here.
       include: ['src/core/**', 'src/infra/**', 'src/state/**', 'src/i18n/**'],
       exclude: ['**/*.test.ts', 'src/core/types.ts', 'src/i18n/translations.ts'],
-      // Note: v8's reporter under-lists a few tiny fully-covered modules
-      // (color/reminders/signal); they ARE tested (see their colocated specs),
-      // so the reported % is a floor, not a ceiling.
+      // Known Vitest quirk: a file imported ONLY by its own colocated test
+      // (color.ts, reminders.ts, signal.ts here) falls through the reporter and
+      // is omitted, even though its spec runs. Those three ARE covered, so the
+      // headline % is a floor. Everything else reports normally, including the
+      // genuine 0% gaps (notifications.ts, load-request.ts).
     },
   },
 });
