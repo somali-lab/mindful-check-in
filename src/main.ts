@@ -11,6 +11,7 @@ import { InfoController } from './ui/info/info';
 import { OverviewController } from './ui/overview/overview';
 import { SettingsController } from './ui/settings/settings';
 import { initLanguage } from './ui/shell/language';
+import { initLogo } from './ui/shell/logo';
 import { ReminderController } from './ui/shell/reminders';
 import { initRouter } from './ui/shell/router';
 import { initTheme } from './ui/shell/theme';
@@ -29,6 +30,7 @@ store.persistError.subscribe((failed) => {
 
 initLanguage(repo);
 initTheme(store);
+initLogo(store);
 initRouter(repo);
 
 // Weather widget lives on the home view; its reading feeds the check-in save.

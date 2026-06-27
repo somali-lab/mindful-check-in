@@ -1,5 +1,55 @@
 /* ── Info / About view ── */
 
+/* About hero: brand emblem + title + version, inside the card. */
+.info-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+/* The About hero always shows the Keep The Wolves Away emblem, regardless of
+   the logo chosen in Settings. `contain` keeps the full artwork (incl. its rim
+   text) visible; font-size 0 hides the literal "M" in the span. */
+.info-hero-mark {
+  width: 104px;
+  height: 104px;
+  border-radius: 18px;
+  background: center / contain no-repeat url(../assets/logos/wolf-light.png);
+  font-size: 0;
+  flex: none;
+}
+
+html[data-theme='dark'] .info-hero-mark {
+  background-image: url(../assets/logos/wolf-dark.png);
+}
+
+.info-hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.info-hero-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--text-strong);
+}
+
+.info-version-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-faint);
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
 /* Personal note about the "Keep the Wolves Away" name */
 .info-kwa {
   margin-top: 12px;
