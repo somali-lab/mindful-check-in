@@ -49,7 +49,7 @@ test('click Core Feeling header to sort by emotion', async ({ page }) => {
   await navigateToTab(page, 'overview');
 
   const coreFeelingHeader = page.locator('th.ov-th-sortable[data-sortcol="feeling"]');
-  if (await coreFeelingHeader.count() > 0) {
+  if ((await coreFeelingHeader.count()) > 0) {
     await coreFeelingHeader.click();
     // Just verify no crash and rows still visible
     await expect(page.locator('#ov-tbody tr').first()).toBeVisible();
@@ -92,9 +92,7 @@ test('hide components, overview columns absent', async ({ page }) => {
 
 // ─── Sort by each sortable column ───
 
-const sortableColumns = [
-  'date', 'feeling', 'mood', 'energy', 'thoughts', 'score', 'actions',
-];
+const sortableColumns = ['date', 'feeling', 'mood', 'energy', 'thoughts', 'score', 'actions'];
 
 for (const sortKey of sortableColumns) {
   test(`sort by ${sortKey} changes order`, async ({ page }) => {
@@ -103,7 +101,7 @@ for (const sortKey of sortableColumns) {
     await navigateToTab(page, 'overview');
 
     const header = page.locator(`th.ov-th-sortable[data-sortcol="${sortKey}"]`);
-    if (await header.count() > 0) {
+    if ((await header.count()) > 0) {
       await header.click();
       await expect(page.locator('#ov-tbody tr').first()).toBeVisible();
     }

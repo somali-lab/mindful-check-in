@@ -1,13 +1,6 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/base');
-const {
-  injectEntries,
-  injectSettings,
-  createTestEntry,
-  createTestSettings,
-  getLocalStorageEntries,
-  getTodayKey,
-} = require('../../fixtures/helpers');
+const { injectEntries, createTestEntry, getTodayKey } = require('../../fixtures/helpers');
 
 // ─── ACT wheel — select emotion and verify highlight ───
 
@@ -82,15 +75,51 @@ test('inject entry with plutchik wheel and trust emotion, verify on load', async
 // ─── Parameterized test for all 5 wheel variants ───
 
 const wheelVariants = [
-  { type: 'act', emotions: ['joy', 'serenity', 'love', 'acceptance', 'sadness', 'melancholy', 'anger', 'aggression'], count: 8 },
-  { type: 'plutchik', emotions: ['joy', 'trust', 'fear', 'surprise', 'sadness', 'disgust', 'anger', 'anticipation'], count: 8 },
+  {
+    type: 'act',
+    emotions: [
+      'joy',
+      'serenity',
+      'love',
+      'acceptance',
+      'sadness',
+      'melancholy',
+      'anger',
+      'aggression',
+    ],
+    count: 8,
+  },
+  {
+    type: 'plutchik',
+    emotions: ['joy', 'trust', 'fear', 'surprise', 'sadness', 'disgust', 'anger', 'anticipation'],
+    count: 8,
+  },
   { type: 'ekman', emotions: ['joy', 'sadness', 'anger', 'fear', 'surprise', 'disgust'], count: 6 },
   { type: 'junto', emotions: ['love', 'joy', 'surprise', 'anger', 'sadness', 'fear'], count: 6 },
-  { type: 'extended', emotions: ['joy', 'love', 'trust', 'surprise', 'curiosity', 'anticipation', 'anxiety', 'fear', 'sadness', 'disgust', 'anger', 'shame'], count: 12 },
+  {
+    type: 'extended',
+    emotions: [
+      'joy',
+      'love',
+      'trust',
+      'surprise',
+      'curiosity',
+      'anticipation',
+      'anxiety',
+      'fear',
+      'sadness',
+      'disgust',
+      'anger',
+      'shame',
+    ],
+    count: 12,
+  },
 ];
 
 for (const variant of wheelVariants) {
-  test(`${variant.type} wheel — renders ${variant.count} segments and each selects correctly`, async ({ page }) => {
+  test(`${variant.type} wheel — renders ${variant.count} segments and each selects correctly`, async ({
+    page,
+  }) => {
     await page.goto('/#checkin');
     await page.locator(`#wheel-tabs .wheel-pill[data-wheel="${variant.type}"]`).click();
     await expect(page.locator('.emotion-segment')).toHaveCount(variant.count);
@@ -98,7 +127,9 @@ for (const variant of wheelVariants) {
     // Click each segment and verify selection
     for (const emotion of variant.emotions) {
       await page.locator(`.emotion-segment[data-em="${emotion}"]`).click();
-      await expect(page.locator(`.emotion-segment[data-em="${emotion}"]`)).toHaveClass(/is-selected/);
+      await expect(page.locator(`.emotion-segment[data-em="${emotion}"]`)).toHaveClass(
+        /is-selected/,
+      );
       const display = page.locator('#wheel-display');
       await expect(display).not.toHaveClass(/is-empty/);
     }

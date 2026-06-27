@@ -1,11 +1,6 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/base');
-const {
-  injectSettings,
-  createTestSettings,
-  navigateToTab,
-  openSettingsTab,
-} = require('../../fixtures/helpers');
+const { navigateToTab, openSettingsTab } = require('../../fixtures/helpers');
 
 // ─── Default quick actions render as chips ───
 
@@ -51,7 +46,7 @@ test('remove quick action from list', async ({ page }) => {
 
   // Click remove on first item
   const removeBtn = page.locator('#qa-list .qa-del').first();
-  if (await removeBtn.count() > 0) {
+  if ((await removeBtn.count()) > 0) {
     await removeBtn.click();
     const itemsAfter = await page.locator('#qa-list .quick-action-tag').count();
     expect(itemsAfter).toBe(itemsBefore - 1);

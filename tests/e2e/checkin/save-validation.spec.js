@@ -4,12 +4,13 @@ const {
   injectSettings,
   createTestSettings,
   getLocalStorageEntries,
-  VISIBILITY_PRESETS,
 } = require('../../fixtures/helpers');
 
 // ─── Both mood inputs enabled, neither selected — warning ───
 
-test('both feeling and mood matrix enabled, nothing selected, Save shows warning', async ({ page }) => {
+test('both feeling and mood matrix enabled, nothing selected, Save shows warning', async ({
+  page,
+}) => {
   await page.goto('/#checkin');
 
   // Both coreFeeling and moodMatrix are enabled by default

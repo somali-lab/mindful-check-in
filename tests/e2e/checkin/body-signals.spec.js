@@ -1,11 +1,5 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/base');
-const {
-  injectEntries,
-  createTestEntry,
-  getLocalStorageEntries,
-  getTodayKey,
-} = require('../../fixtures/helpers');
 
 // Helper: click body part via dispatchEvent to bypass SVG overlap
 async function clickBodyPart(page, partName) {
@@ -98,12 +92,32 @@ test('select 5 body parts, save, reload, verify re-highlight', async ({ page }) 
 // ─── Parameterized test — all body part zones toggle independently ───
 
 const allBodyParts = [
-  'head', 'neck', 'left-shoulder', 'right-shoulder', 'chest', 'abdomen',
-  'left-upper-arm', 'right-upper-arm', 'left-elbow', 'right-elbow',
-  'left-forearm', 'right-forearm', 'left-hand', 'right-hand',
-  'left-hip', 'right-hip', 'left-upper-leg', 'right-upper-leg',
-  'left-knee', 'right-knee', 'left-lower-leg', 'right-lower-leg',
-  'left-foot', 'right-foot', 'upper-back', 'lower-back',
+  'head',
+  'neck',
+  'left-shoulder',
+  'right-shoulder',
+  'chest',
+  'abdomen',
+  'left-upper-arm',
+  'right-upper-arm',
+  'left-elbow',
+  'right-elbow',
+  'left-forearm',
+  'right-forearm',
+  'left-hand',
+  'right-hand',
+  'left-hip',
+  'right-hip',
+  'left-upper-leg',
+  'right-upper-leg',
+  'left-knee',
+  'right-knee',
+  'left-lower-leg',
+  'right-lower-leg',
+  'left-foot',
+  'right-foot',
+  'upper-back',
+  'lower-back',
 ];
 
 test('all body part zones toggle on/off independently', async ({ page }) => {

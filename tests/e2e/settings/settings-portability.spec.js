@@ -24,7 +24,7 @@ test('export settings downloads JSON file', async ({ page }) => {
 
   expect(download.suggestedFilename()).toMatch(/\.json$/);
 
-  const fs = require('fs');
+  const fs = require('node:fs');
   const path = await download.path();
   const content = JSON.parse(fs.readFileSync(path, 'utf-8'));
   expect(content.theme).toBe('dark');
@@ -38,8 +38,8 @@ test('import valid settings JSON applies immediately', async ({ page }) => {
 
   const settingsToImport = createTestSettings({ theme: 'dark', rowsPerPage: 5 });
 
-  const fs = require('fs');
-  const tmpPath = require('path').join(__dirname, 'tmp-settings-import.json');
+  const fs = require('node:fs');
+  const tmpPath = require('node:path').join(__dirname, 'tmp-settings-import.json');
   fs.writeFileSync(tmpPath, JSON.stringify(settingsToImport));
   await page.locator('#cfg-inp-import').setInputFiles(tmpPath);
   await page.waitForTimeout(500);
@@ -48,7 +48,9 @@ test('import valid settings JSON applies immediately', async ({ page }) => {
   const stored = await getLocalStorageSettings(page);
   expect(stored.theme).toBe('dark');
 
-  try { fs.unlinkSync(tmpPath); } catch (_) {}
+  try {
+    fs.unlinkSync(tmpPath);
+  } catch (_) {}
 });
 
 // ─── Import corrupt settings — error ───
@@ -59,8 +61,8 @@ test('import corrupt settings shows error, settings unchanged', async ({ page })
   await page.goto('/');
   await openSettingsTab(page, 'portability');
 
-  const fs = require('fs');
-  const tmpPath = require('path').join(__dirname, 'tmp-bad-settings.json');
+  const fs = require('node:fs');
+  const tmpPath = require('node:path').join(__dirname, 'tmp-bad-settings.json');
   fs.writeFileSync(tmpPath, 'not valid json');
   await page.locator('#cfg-inp-import').setInputFiles(tmpPath);
   await page.waitForTimeout(500);
@@ -69,7 +71,9 @@ test('import corrupt settings shows error, settings unchanged', async ({ page })
   const stored = await getLocalStorageSettings(page);
   expect(stored.theme).toBe('light');
 
-  try { fs.unlinkSync(tmpPath); } catch (_) {}
+  try {
+    fs.unlinkSync(tmpPath);
+  } catch (_) {}
 });
 
 // ─── Reset settings ───
@@ -105,7 +109,9 @@ test('Settings > Import/Export tab presents settings actions as cards', async ({
   await expect(importCard.locator('p')).not.toHaveText('');
 
   // Export/import moved out of the footer; only Reset + Save remain there
-  await expect(page.locator('.app-shell-footer-bar[data-footer="settings"] #cfg-btn-export')).toHaveCount(0);
+  await expect(
+    page.locator('.app-shell-footer-bar[data-footer="settings"] #cfg-btn-export'),
+  ).toHaveCount(0);
   await expect(page.locator('#cfg-btn-reset')).toBeVisible();
   await expect(page.locator('#cfg-btn-save')).toBeVisible();
 });

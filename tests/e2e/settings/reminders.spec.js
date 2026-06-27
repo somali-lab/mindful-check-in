@@ -1,6 +1,11 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/base');
-const { openSettingsTab, injectSettings, createTestSettings, getLocalStorageSettings } = require('../../fixtures/helpers');
+const {
+  openSettingsTab,
+  injectSettings,
+  createTestSettings,
+  getLocalStorageSettings,
+} = require('../../fixtures/helpers');
 
 // The break-reminders settings panel (Web Notifications feature). We exercise
 // the settings form persistence/hydration; the actual notification firing
@@ -40,11 +45,14 @@ test.describe('Break reminders settings', () => {
   });
 
   test('saved reminder settings hydrate the form on load', async ({ page }) => {
-    await injectSettings(page, createTestSettings({
-      reminderEnabled: true,
-      reminderInterval: 45,
-      reminderDays: [2, 4],
-    }));
+    await injectSettings(
+      page,
+      createTestSettings({
+        reminderEnabled: true,
+        reminderInterval: 45,
+        reminderDays: [2, 4],
+      }),
+    );
     await page.goto('/');
     await openSettingsTab(page, 'reminders');
 

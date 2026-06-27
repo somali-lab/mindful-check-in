@@ -44,7 +44,7 @@ test('core feeling mode, joy entry has positive color', async ({ page }) => {
 
   // The "Core" mode should be active by default or selectable
   const feelingBtn = page.locator('.cal-mode-btn[data-hmode="core"]');
-  if (await feelingBtn.count() > 0) {
+  if ((await feelingBtn.count()) > 0) {
     await feelingBtn.click();
   }
 
@@ -71,7 +71,7 @@ test('physical energy mode, colors reflect energy levels', async ({ page }) => {
   await page.goto('/#checkin');
 
   const energyPhysBtn = page.locator('.cal-mode-btn[data-hmode="physical"]');
-  if (await energyPhysBtn.count() > 0) {
+  if ((await energyPhysBtn.count()) > 0) {
     await energyPhysBtn.click();
     const cells = page.locator('.cal-cell[data-entry-key]');
     await expect(cells.first()).toBeVisible();
@@ -93,7 +93,7 @@ test('click history cell with entry loads into form', async ({ page }) => {
 
   // Click a history cell that has an entry
   const cellWithEntry = page.locator('.cal-cell[data-entry-key]').first();
-  if (await cellWithEntry.count() > 0) {
+  if ((await cellWithEntry.count()) > 0) {
     await cellWithEntry.click({ force: true });
     // After clicking, form should be populated (may auto-switch to checkin tab)
     await page.waitForTimeout(300);

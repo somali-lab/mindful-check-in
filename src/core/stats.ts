@@ -101,7 +101,7 @@ export function buildHeatmapData(entries: EntryMap): Heatmap {
       dayKey,
       label: `0${date.getDate()}`.slice(-2),
       isToday: dayKey === today,
-      entry: entryKey ? entries[entryKey] ?? null : null,
+      entry: entryKey ? (entries[entryKey] ?? null) : null,
       entryKey,
     });
   }

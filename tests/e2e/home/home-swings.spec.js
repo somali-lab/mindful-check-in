@@ -81,7 +81,9 @@ test('the Mood swings info button toggles an inline explanation', async ({ page 
 });
 
 test('swing cards show the empty state with too little data', async ({ page }) => {
-  await injectEntries(page, { [getDateKey(0)]: createTestEntry({ coreFeeling: 'joy', moodRow: 5, moodCol: 5 }) });
+  await injectEntries(page, {
+    [getDateKey(0)]: createTestEntry({ coreFeeling: 'joy', moodRow: 5, moodCol: 5 }),
+  });
   await page.goto('/');
 
   await expect(page.locator('#home-swing-wheel-score')).toHaveText('—');

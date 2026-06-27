@@ -45,7 +45,9 @@ test('cached weather (< 1h old) uses cache, no API call', async ({ page }) => {
     route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ current_weather: { temperature: 99, weathercode: 0, windspeed: 0, is_day: 1 } }),
+      body: JSON.stringify({
+        current_weather: { temperature: 99, weathercode: 0, windspeed: 0, is_day: 1 },
+      }),
     });
   });
 
@@ -55,6 +57,8 @@ test('cached weather (< 1h old) uses cache, no API call', async ({ page }) => {
   // If cache was used, the temperature should show cached value (22), not 99
   const temp = await page.locator('.weather-temp').textContent();
   expect(temp).toContain('22');
+  // A fresh cache must short-circuit the network — the API is never hit.
+  expect(apiCalled).toBe(false);
 });
 
 // ─── Weather API failure — app doesn't crash ───
@@ -73,7 +77,7 @@ test('weather API failure, app does not crash', async ({ page }) => {
   // App should still function
   await expect(page.locator('[data-route="checkin"]:visible').first()).toBeVisible();
   // No critical JS errors
-  expect(errors.filter(e => !e.includes('fetch'))).toHaveLength(0);
+  expect(errors.filter((e) => !e.includes('fetch'))).toHaveLength(0);
 });
 
 // ─── Weather disabled — widget hidden ───
@@ -104,7 +108,7 @@ test('save with mocked weather, weather data in entry', async ({ page }) => {
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
-  const entry = entries[Object.keys(entries).find(k => k.startsWith(todayKey))];
+  const entry = entries[Object.keys(entries).find((k) => k.startsWith(todayKey))];
   expect(entry.weather).toBeTruthy();
   expect(entry.weather.temperature).toBe(15);
 });

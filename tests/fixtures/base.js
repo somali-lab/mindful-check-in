@@ -12,29 +12,30 @@ const WEATHER_RESPONSE = {
 };
 
 const GEOCODING_RESPONSE = {
-  results: [
-    { name: 'Amsterdam', latitude: 52.3676, longitude: 4.9041, country: 'Netherlands' },
-  ],
+  results: [{ name: 'Amsterdam', latitude: 52.3676, longitude: 4.9041, country: 'Netherlands' }],
 };
 
 const test = pwTest.extend({
-  autoMockWeatherAPIs: [async ({ page }, use) => {
-    await page.route('**/api.open-meteo.com/**', (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(WEATHER_RESPONSE),
-      })
-    );
-    await page.route('**/geocoding-api.open-meteo.com/**', (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(GEOCODING_RESPONSE),
-      })
-    );
-    await use();
-  }, { scope: 'test', auto: true }],
+  autoMockWeatherAPIs: [
+    async ({ page }, use) => {
+      await page.route('**/api.open-meteo.com/**', (route) =>
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(WEATHER_RESPONSE),
+        }),
+      );
+      await page.route('**/geocoding-api.open-meteo.com/**', (route) =>
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(GEOCODING_RESPONSE),
+        }),
+      );
+      await use();
+    },
+    { scope: 'test', auto: true },
+  ],
 });
 
 module.exports = { test, expect };

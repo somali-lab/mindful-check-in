@@ -67,7 +67,7 @@ test('disable all except thoughts, save without mood requirement', async ({ page
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
-  const keys = Object.keys(entries).filter(k => k.startsWith(todayKey));
+  const keys = Object.keys(entries).filter((k) => k.startsWith(todayKey));
   expect(keys.length).toBeGreaterThanOrEqual(1);
   expect(entries[keys[0]].thoughts).toBe('Just thoughts');
 });
@@ -108,7 +108,12 @@ test('disable core feeling, history mode button absent', async ({ page }) => {
 
 // Hide component, load entry with that data — data preserved in localStorage
 test('hide component, data preserved in localStorage', async ({ page }) => {
-  const { injectEntries, createTestEntry, getLocalStorageEntries, getTodayKey } = require('../../fixtures/helpers');
+  const {
+    injectEntries,
+    createTestEntry,
+    getLocalStorageEntries,
+    getTodayKey,
+  } = require('../../fixtures/helpers');
   const todayKey = getTodayKey();
   const entry = createTestEntry({
     thoughts: 'Test thoughts',
@@ -142,7 +147,9 @@ test('all-on preset — all fields fillable and saved', async ({ page }) => {
   await page.locator('.body-part[data-zone="chest"]').dispatchEvent('click');
   await page.locator('.mood-cell[data-mr="5"][data-mc="5"]').click();
   // #fld-action is hidden (chips drive it); set its value directly
-  await page.locator('#fld-action').evaluate((el) => { el.value = 'Walk'; });
+  await page.locator('#fld-action').evaluate((el) => {
+    el.value = 'Walk';
+  });
   await page.locator('#fld-note').fill('A note');
 
   await page.locator('#ci-btn-save').click();
@@ -150,7 +157,7 @@ test('all-on preset — all fields fillable and saved', async ({ page }) => {
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
-  const keys = Object.keys(entries).filter(k => k.startsWith(todayKey));
+  const keys = Object.keys(entries).filter((k) => k.startsWith(todayKey));
   const entry = entries[keys[0]];
   expect(entry.thoughts).toBe('All on test');
   expect(entry.coreFeeling).toBe('joy');
@@ -162,7 +169,7 @@ test('all-on preset — all fields fillable and saved', async ({ page }) => {
 
 // All-off preset — save works without error
 test('all-off preset — save works without mood requirement', async ({ page }) => {
-  const { getLocalStorageEntries, getTodayKey } = require('../../fixtures/helpers');
+  const { getLocalStorageEntries } = require('../../fixtures/helpers');
   const settings = createTestSettings({
     components: VISIBILITY_PRESETS['all-off'],
     weatherLocation: '',
@@ -193,7 +200,7 @@ test('mood-only preset — select emotion, save, only mood fields', async ({ pag
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
-  const entry = entries[Object.keys(entries).find(k => k.startsWith(todayKey))];
+  const entry = entries[Object.keys(entries).find((k) => k.startsWith(todayKey))];
   expect(entry.coreFeeling).toBe('joy');
 });
 

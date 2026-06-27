@@ -66,7 +66,8 @@ test('very long text (10000 chars) in note saves without hang', async ({ page })
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
-  const entry = entries[todayKey] || entries[Object.keys(entries).find(k => k.startsWith(todayKey))];
+  const entry =
+    entries[todayKey] || entries[Object.keys(entries).find((k) => k.startsWith(todayKey))];
   expect(entry.note.length).toBe(10000);
 });
 
@@ -84,7 +85,7 @@ test('double-click Save creates only one entry', async ({ page }) => {
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
-  const todayEntries = Object.keys(entries).filter(k => k.startsWith(todayKey));
+  const todayEntries = Object.keys(entries).filter((k) => k.startsWith(todayKey));
   // Should have only 1 entry (update, not duplicate)
   expect(todayEntries.length).toBe(1);
 });
@@ -108,7 +109,7 @@ test('multiple entries per day get unique timestamped keys', async ({ page }) =>
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
-  const todayEntries = Object.keys(entries).filter(k => k.startsWith(todayKey));
+  const todayEntries = Object.keys(entries).filter((k) => k.startsWith(todayKey));
   expect(todayEntries.length).toBe(3);
 
   // Keys should be unique
@@ -182,8 +183,8 @@ test('import entries with unknown fields, only known fields kept', async ({ page
     anotherField: 12345,
   };
 
-  const tmpPath = require('path').join(__dirname, 'tmp-extra-fields.json');
-  const fs = require('fs');
+  const tmpPath = require('node:path').join(__dirname, 'tmp-extra-fields.json');
+  const fs = require('node:fs');
   fs.writeFileSync(tmpPath, JSON.stringify(entries));
   await page.locator('#ov-import').setInputFiles(tmpPath);
 
@@ -193,10 +194,12 @@ test('import entries with unknown fields, only known fields kept', async ({ page
 
   const stored = await getLocalStorageEntries(page);
   expect(Object.keys(stored).length).toBeGreaterThanOrEqual(1);
-  const entryKey = Object.keys(stored).find(k => k.startsWith(dateKey)) || Object.keys(stored)[0];
+  const entryKey = Object.keys(stored).find((k) => k.startsWith(dateKey)) || Object.keys(stored)[0];
   expect(stored[entryKey].thoughts).toBe('Valid');
 
-  try { fs.unlinkSync(tmpPath); } catch (_) {}
+  try {
+    fs.unlinkSync(tmpPath);
+  } catch (_) {}
 });
 
 // ─── Import settings with unknown keys ───
@@ -208,8 +211,8 @@ test('import settings with unknown keys, unknown keys ignored', async ({ page })
   const settingsToImport = createTestSettings({ theme: 'dark' });
   settingsToImport.unknownSetting = 'should not break';
 
-  const fs = require('fs');
-  const tmpPath = require('path').join(__dirname, 'tmp-unknown-settings.json');
+  const fs = require('node:fs');
+  const tmpPath = require('node:path').join(__dirname, 'tmp-unknown-settings.json');
   fs.writeFileSync(tmpPath, JSON.stringify(settingsToImport));
   await page.locator('#cfg-inp-import').setInputFiles(tmpPath);
   await page.waitForTimeout(500);
@@ -217,7 +220,9 @@ test('import settings with unknown keys, unknown keys ignored', async ({ page })
   // App should still work
   await expect(page.locator('[data-route="settings"]:visible').first()).toBeVisible();
 
-  try { fs.unlinkSync(tmpPath); } catch (_) {}
+  try {
+    fs.unlinkSync(tmpPath);
+  } catch (_) {}
 });
 
 // ─── Disable and re-enable components ───
@@ -289,7 +294,9 @@ test('special characters safely escaped in text fields', async ({ page }) => {
   await page.locator('#fld-thoughts').fill('"quotes" & <tags>');
   await page.locator('.emotion-segment[data-em="joy"]').click();
   // #fld-action is hidden (chips drive it); set its value directly
-  await page.locator('#fld-action').evaluate((el) => { el.value = 'action with "special" & <chars>'; });
+  await page.locator('#fld-action').evaluate((el) => {
+    el.value = 'action with "special" & <chars>';
+  });
   await page.locator('#fld-note').fill('<b>bold</b> & "quote"');
 
   await page.locator('#ci-btn-save').click();
@@ -315,9 +322,9 @@ test('localStorage quota full, save does not crash the app', async ({ page }) =>
     const chunk = 'x'.repeat(1024 * 100); // 100KB per chunk
     try {
       for (let i = 0; i < 100; i++) {
-        localStorage.setItem(key + i, chunk);
+        localStorage.setItem(`${key}${i}`, chunk);
       }
-    } catch (e) {
+    } catch {
       // Expected — storage full
     }
   });
@@ -336,8 +343,10 @@ test('localStorage quota full, save does not crash the app', async ({ page }) =>
 
   // Clean up filler data so other tests aren't affected
   await page.evaluate(() => {
-    const keys = Object.keys(localStorage).filter(k => k.startsWith('quota-filler-'));
-    keys.forEach(k => localStorage.removeItem(k));
+    const keys = Object.keys(localStorage).filter((k) => k.startsWith('quota-filler-'));
+    for (const k of keys) {
+      localStorage.removeItem(k);
+    }
   });
 });
 
@@ -371,7 +380,6 @@ test('entries at 23:59 and 00:01 stored under different date keys', async ({ pag
   // Navigate to overview — both entries should appear
   await navigateToTab(page, 'overview');
 
-  const rows = page.locator('#ov-tbody tr');
   // Both entries should be visible as separate rows
   const allText = await page.locator('#ov-tbody').innerText();
   expect(allText).toContain('Before midnight');

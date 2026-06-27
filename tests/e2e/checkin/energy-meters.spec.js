@@ -1,15 +1,14 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/base');
-const {
-  getLocalStorageEntries,
-  getTodayKey,
-} = require('../../fixtures/helpers');
+const { getLocalStorageEntries, getTodayKey } = require('../../fixtures/helpers');
 
 // Energy meters are a horizontal 20-segment bar (src/modules/energy.js).
 // Clicking segment N sets the value to round(N * 100 / 20) = N * 5 %.
 // dispatchEvent('click') targets the exact segment, bypassing overlap.
 async function setMeter(page, type, segment) {
-  await page.locator(`.nrg-seg[data-meter="${type}"][data-seg="${segment}"]`).dispatchEvent('click');
+  await page
+    .locator(`.nrg-seg[data-meter="${type}"][data-seg="${segment}"]`)
+    .dispatchEvent('click');
 }
 
 // ─── Click the top segment of the physical meter — high value ───
@@ -57,16 +56,17 @@ test('set energy levels, save, reload, verify meters persist', async ({ page }) 
   // Select emotion to pass validation
   await page.locator('.emotion-segment[data-em="joy"]').click();
 
-  await setMeter(page, 'physical', 14);  // 70%
-  await setMeter(page, 'mental', 8);     // 40%
-  await setMeter(page, 'emotional', 2);  // 10%
+  await setMeter(page, 'physical', 14); // 70%
+  await setMeter(page, 'mental', 8); // 40%
+  await setMeter(page, 'emotional', 2); // 10%
 
   await page.locator('#ci-btn-save').click();
   await expect(page.locator('.toast--success')).toBeVisible();
 
   const entries = await getLocalStorageEntries(page);
   const todayKey = getTodayKey();
-  const entry = entries[todayKey] || entries[Object.keys(entries).find(k => k.startsWith(todayKey))];
+  const entry =
+    entries[todayKey] || entries[Object.keys(entries).find((k) => k.startsWith(todayKey))];
   expect(entry.energy.physical).toBe(70);
   expect(entry.energy.mental).toBe(40);
   expect(entry.energy.emotional).toBe(10);

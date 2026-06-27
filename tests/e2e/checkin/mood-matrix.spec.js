@@ -1,11 +1,5 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/base');
-const {
-  injectEntries,
-  createTestEntry,
-  getLocalStorageEntries,
-  getTodayKey,
-} = require('../../fixtures/helpers');
 
 // ─── Click mood cell and verify display ───
 

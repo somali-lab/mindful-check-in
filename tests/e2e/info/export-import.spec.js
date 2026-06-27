@@ -26,7 +26,7 @@ test('export entries triggers download with correct JSON', async ({ page }) => {
 
   // Read the download content
   const path = await download.path();
-  const fs = require('fs');
+  const fs = require('node:fs');
   const content = JSON.parse(fs.readFileSync(path, 'utf-8'));
   // v4 exports an object keyed by entry key, not an array
   expect(typeof content).toBe('object');
@@ -49,8 +49,8 @@ test('import valid JSON into empty app adds entries', async ({ page }) => {
   }
 
   // Use setInputFiles on hidden input
-  const fs = require('fs');
-  const tmpPath = require('path').join(__dirname, 'tmp-import.json');
+  const fs = require('node:fs');
+  const tmpPath = require('node:path').join(__dirname, 'tmp-import.json');
   fs.writeFileSync(tmpPath, JSON.stringify(entries));
   await page.locator('#ov-import').setInputFiles(tmpPath);
 
@@ -63,7 +63,9 @@ test('import valid JSON into empty app adds entries', async ({ page }) => {
   expect(Object.keys(storedEntries).length).toBeGreaterThanOrEqual(5);
 
   // Cleanup
-  try { fs.unlinkSync(tmpPath); } catch (_) {}
+  try {
+    fs.unlinkSync(tmpPath);
+  } catch (_) {}
 });
 
 // ─── Import with overlap — overwrite mode ───
@@ -80,8 +82,8 @@ test('import overlapping entries, overwrite updates them', async ({ page }) => {
   const imported = {};
   imported[dateKey] = createTestEntry({ thoughts: 'Overwritten', id: testId });
 
-  const fs = require('fs');
-  const tmpPath = require('path').join(__dirname, 'tmp-overwrite.json');
+  const fs = require('node:fs');
+  const tmpPath = require('node:path').join(__dirname, 'tmp-overwrite.json');
   fs.writeFileSync(tmpPath, JSON.stringify(imported));
   await page.locator('#ov-import').setInputFiles(tmpPath);
 
@@ -93,7 +95,9 @@ test('import overlapping entries, overwrite updates them', async ({ page }) => {
   // After overwrite, the entry should have the new thoughts
   expect(entries[dateKey].thoughts).toBe('Overwritten');
 
-  try { fs.unlinkSync(tmpPath); } catch (_) {}
+  try {
+    fs.unlinkSync(tmpPath);
+  } catch (_) {}
 });
 
 // ─── Import with overlap — skip mode ───
@@ -110,8 +114,8 @@ test('import overlapping entries, skip preserves originals', async ({ page }) =>
   const imported = {};
   imported[dateKey] = createTestEntry({ thoughts: 'Skipped', id: testId });
 
-  const fs = require('fs');
-  const tmpPath = require('path').join(__dirname, 'tmp-skip.json');
+  const fs = require('node:fs');
+  const tmpPath = require('node:path').join(__dirname, 'tmp-skip.json');
   fs.writeFileSync(tmpPath, JSON.stringify(imported));
   await page.locator('#ov-import').setInputFiles(tmpPath);
 
@@ -123,7 +127,9 @@ test('import overlapping entries, skip preserves originals', async ({ page }) =>
   // Original should be preserved
   expect(entries[dateKey].thoughts).toBe('Original');
 
-  try { fs.unlinkSync(tmpPath); } catch (_) {}
+  try {
+    fs.unlinkSync(tmpPath);
+  } catch (_) {}
 });
 
 // ─── Import invalid JSON — error ───
@@ -133,8 +139,8 @@ test('import invalid JSON shows error, no data changes', async ({ page }) => {
   await page.goto('/');
   await openInfoTab(page, 'data');
 
-  const fs = require('fs');
-  const tmpPath = require('path').join(__dirname, 'tmp-invalid.json');
+  const fs = require('node:fs');
+  const tmpPath = require('node:path').join(__dirname, 'tmp-invalid.json');
   fs.writeFileSync(tmpPath, 'not valid json {{{');
   await page.locator('#ov-import').setInputFiles(tmpPath);
   await page.waitForTimeout(500);
@@ -143,7 +149,9 @@ test('import invalid JSON shows error, no data changes', async ({ page }) => {
   const entries = await getLocalStorageEntries(page);
   expect(Object.keys(entries).length).toBe(3);
 
-  try { fs.unlinkSync(tmpPath); } catch (_) {}
+  try {
+    fs.unlinkSync(tmpPath);
+  } catch (_) {}
 });
 
 // ─── Per-row export button ───
@@ -154,11 +162,8 @@ test('per-row export button downloads single entry', async ({ page }) => {
   await navigateToTab(page, 'overview');
 
   const exportBtn = page.locator('.ov-export-entry').first();
-  if (await exportBtn.count() > 0) {
-    const [download] = await Promise.all([
-      page.waitForEvent('download'),
-      exportBtn.click(),
-    ]);
+  if ((await exportBtn.count()) > 0) {
+    const [download] = await Promise.all([page.waitForEvent('download'), exportBtn.click()]);
     expect(download.suggestedFilename()).toMatch(/\.json$/);
   }
 });

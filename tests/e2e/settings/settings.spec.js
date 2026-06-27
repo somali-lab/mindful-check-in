@@ -2,8 +2,6 @@
 const { test, expect } = require('../../fixtures/base');
 const {
   injectEntries,
-  injectSettings,
-  createTestSettings,
   generateEntries,
   navigateToTab,
   getLocalStorageSettings,
@@ -47,7 +45,8 @@ test('set max chars to 30, overview cells truncated', async ({ page }) => {
   const entries = {};
   for (let i = 0; i < 3; i++) {
     entries[getDateKey(i)] = createTestEntry({
-      thoughts: 'This is a very long thought that should be truncated at thirty characters definitely',
+      thoughts:
+        'This is a very long thought that should be truncated at thirty characters definitely',
       coreFeeling: 'joy',
     });
   }
@@ -65,7 +64,7 @@ test('set max chars to 30, overview cells truncated', async ({ page }) => {
   // Verify some cell text is truncated (v4 uses \u2026 ellipsis for truncation)
   const cells = page.locator('#ov-tbody td');
   const allCellTexts = await cells.allTextContents();
-  const truncated = allCellTexts.some(text => text.includes('\u2026'));
+  const truncated = allCellTexts.some((text) => text.includes('\u2026'));
   expect(truncated).toBeTruthy();
 });
 

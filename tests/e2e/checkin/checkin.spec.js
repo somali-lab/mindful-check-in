@@ -2,14 +2,10 @@
 const { test, expect } = require('../../fixtures/base');
 const {
   injectEntries,
-  injectSettings,
   createTestEntry,
-  createTestSettings,
   getLocalStorageEntries,
   navigateToTab,
-  clearAppState,
   getTodayKey,
-  VISIBILITY_PRESETS,
 } = require('../../fixtures/helpers');
 
 // ─── Smoke Test ───
@@ -46,7 +42,9 @@ test('fill all fields and save creates entry in localStorage', async ({ page }) 
   await page.locator('.mood-cell[data-mr="2"][data-mc="8"]').click();
 
   // Actions: the raw textarea is hidden (chips drive it); set its value directly
-  await page.locator('#fld-action').evaluate((el) => { el.value = 'Take a walk'; });
+  await page.locator('#fld-action').evaluate((el) => {
+    el.value = 'Take a walk';
+  });
   await page.locator('#fld-note').fill('Good day overall');
 
   // Click save
@@ -61,7 +59,7 @@ test('fill all fields and save creates entry in localStorage', async ({ page }) 
   expect(keys.length).toBeGreaterThanOrEqual(1);
 
   const todayKey = getTodayKey();
-  const todayEntry = entries[todayKey] || entries[keys.find(k => k.startsWith(todayKey))];
+  const todayEntry = entries[todayKey] || entries[keys.find((k) => k.startsWith(todayKey))];
   expect(todayEntry).toBeTruthy();
   expect(todayEntry.thoughts).toBe('Feeling good today');
   expect(todayEntry.coreFeeling).toBe('joy');
@@ -96,7 +94,7 @@ test('modifying existing today entry updates without duplicating', async ({ page
 
   // Verify only one entry for today — updated, not duplicated
   const entries = await getLocalStorageEntries(page);
-  const todayKeys = Object.keys(entries).filter(k => k.startsWith(todayKey));
+  const todayKeys = Object.keys(entries).filter((k) => k.startsWith(todayKey));
   expect(todayKeys).toHaveLength(1);
   expect(entries[todayKeys[0]].thoughts).toBe('Modified thought');
 });
@@ -126,11 +124,11 @@ test('New check-in creates second timestamped entry for today', async ({ page })
 
   // Verify two entries exist
   const entries = await getLocalStorageEntries(page);
-  const todayKeys = Object.keys(entries).filter(k => k.startsWith(todayKey));
+  const todayKeys = Object.keys(entries).filter((k) => k.startsWith(todayKey));
   expect(todayKeys.length).toBe(2);
 
   // The new entry should have a timestamped key
-  const timestampedKey = todayKeys.find(k => k.includes('_'));
+  const timestampedKey = todayKeys.find((k) => k.includes('_'));
   expect(timestampedKey).toBeTruthy();
   expect(entries[timestampedKey].thoughts).toBe('Second entry');
   expect(entries[timestampedKey].coreFeeling).toBe('sadness');

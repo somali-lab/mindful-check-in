@@ -27,8 +27,12 @@ test('selected theme button has is-selected class', async ({ page }) => {
   await page.locator('.theme-button[data-theme-pick="dark"]').click();
 
   await expect(page.locator('.theme-button[data-theme-pick="dark"]')).toHaveClass(/is-selected/);
-  await expect(page.locator('.theme-button[data-theme-pick="light"]')).not.toHaveClass(/is-selected/);
-  await expect(page.locator('.theme-button[data-theme-pick="system"]')).not.toHaveClass(/is-selected/);
+  await expect(page.locator('.theme-button[data-theme-pick="light"]')).not.toHaveClass(
+    /is-selected/,
+  );
+  await expect(page.locator('.theme-button[data-theme-pick="system"]')).not.toHaveClass(
+    /is-selected/,
+  );
 });
 
 // ─── Theme persists across reload ───

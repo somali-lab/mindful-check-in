@@ -4,13 +4,11 @@ const {
   injectEntries,
   createTestEntry,
   getLocalStorageEntries,
-  getLocalStorageSettings,
   navigateToTab,
   openInfoTab,
   acceptConfirm,
   dismissConfirm,
   getDateKey,
-  getTodayKey,
 } = require('../../fixtures/helpers');
 
 // ─── Generate demo data — entries created ───

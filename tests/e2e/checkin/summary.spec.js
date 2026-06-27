@@ -1,11 +1,6 @@
 // @ts-check
 const { test, expect } = require('../../fixtures/base');
-const {
-  injectEntries,
-  createTestEntry,
-  getDateKey,
-  getTodayKey,
-} = require('../../fixtures/helpers');
+const { injectEntries, createTestEntry, getDateKey } = require('../../fixtures/helpers');
 
 // ─── No entries — summary shows "not checked in" ───
 

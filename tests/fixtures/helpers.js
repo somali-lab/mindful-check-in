@@ -83,13 +83,13 @@ async function mockWeatherAPI(page, weatherOverrides) {
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify(weatherResponse),
-    })
+    }),
   );
 }
 
 async function mockWeatherAPIFailure(page) {
   await page.route('**/api.open-meteo.com/**', (route) =>
-    route.fulfill({ status: 500, body: 'Server error' })
+    route.fulfill({ status: 500, body: 'Server error' }),
   );
 }
 
@@ -104,7 +104,7 @@ async function mockGeocodingAPI(page, results) {
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify(response),
-    })
+    }),
   );
 }
 
@@ -114,7 +114,7 @@ async function mockGeocodingAPIEmpty(page) {
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({ results: [] }),
-    })
+    }),
   );
 }
 
@@ -122,7 +122,7 @@ async function mockGeocodingAPIEmpty(page) {
 
 function createTestEntry(overrides) {
   return {
-    id: 'test-' + Math.random().toString(36).slice(2, 10),
+    id: `test-${Math.random().toString(36).slice(2, 10)}`,
     thoughts: '',
     coreFeeling: '',
     wheelType: 'act',
@@ -182,39 +182,88 @@ function createTestSettings(overrides) {
 
 const VISIBILITY_PRESETS = {
   'all-on': {
-    weather: true, thoughts: true, coreFeeling: true, bodySignals: true,
-    energyPhysical: true, energyMental: true, energyEmotional: true,
-    moodMatrix: true, actions: true, note: true,
+    weather: true,
+    thoughts: true,
+    coreFeeling: true,
+    bodySignals: true,
+    energyPhysical: true,
+    energyMental: true,
+    energyEmotional: true,
+    moodMatrix: true,
+    actions: true,
+    note: true,
   },
   'all-off': {
-    weather: false, thoughts: false, coreFeeling: false, bodySignals: false,
-    energyPhysical: false, energyMental: false, energyEmotional: false,
-    moodMatrix: false, actions: false, note: false,
+    weather: false,
+    thoughts: false,
+    coreFeeling: false,
+    bodySignals: false,
+    energyPhysical: false,
+    energyMental: false,
+    energyEmotional: false,
+    moodMatrix: false,
+    actions: false,
+    note: false,
   },
   'mood-only': {
-    weather: false, thoughts: false, coreFeeling: true, bodySignals: false,
-    energyPhysical: false, energyMental: false, energyEmotional: false,
-    moodMatrix: true, actions: false, note: false,
+    weather: false,
+    thoughts: false,
+    coreFeeling: true,
+    bodySignals: false,
+    energyPhysical: false,
+    energyMental: false,
+    energyEmotional: false,
+    moodMatrix: true,
+    actions: false,
+    note: false,
   },
   'energy-only': {
-    weather: false, thoughts: false, coreFeeling: false, bodySignals: false,
-    energyPhysical: true, energyMental: true, energyEmotional: true,
-    moodMatrix: false, actions: false, note: false,
+    weather: false,
+    thoughts: false,
+    coreFeeling: false,
+    bodySignals: false,
+    energyPhysical: true,
+    energyMental: true,
+    energyEmotional: true,
+    moodMatrix: false,
+    actions: false,
+    note: false,
   },
   'no-weather': {
-    weather: false, thoughts: true, coreFeeling: true, bodySignals: true,
-    energyPhysical: true, energyMental: true, energyEmotional: true,
-    moodMatrix: true, actions: true, note: true,
+    weather: false,
+    thoughts: true,
+    coreFeeling: true,
+    bodySignals: true,
+    energyPhysical: true,
+    energyMental: true,
+    energyEmotional: true,
+    moodMatrix: true,
+    actions: true,
+    note: true,
   },
   'single-energy': {
-    weather: false, thoughts: false, coreFeeling: false, bodySignals: false,
-    energyPhysical: false, energyMental: true, energyEmotional: false,
-    moodMatrix: false, actions: false, note: false,
+    weather: false,
+    thoughts: false,
+    coreFeeling: false,
+    bodySignals: false,
+    energyPhysical: false,
+    energyMental: true,
+    energyEmotional: false,
+    moodMatrix: false,
+    actions: false,
+    note: false,
   },
   'text-only': {
-    weather: false, thoughts: true, coreFeeling: false, bodySignals: false,
-    energyPhysical: false, energyMental: false, energyEmotional: false,
-    moodMatrix: false, actions: true, note: true,
+    weather: false,
+    thoughts: true,
+    coreFeeling: false,
+    bodySignals: false,
+    energyPhysical: false,
+    energyMental: false,
+    energyEmotional: false,
+    moodMatrix: false,
+    actions: true,
+    note: true,
   },
 };
 
