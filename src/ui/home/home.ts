@@ -80,7 +80,6 @@ export class HomeController {
   #render(): void {
     const entries = this.#store.entries.get();
     const stats = computeStats(entries);
-    setText('home-streak', String(stats.streak));
     setText('home-total', String(stats.total));
     setText('home-avg', stats.avgScore);
     setText('home-status', stats.hasTodayEntry ? t('summaryDone') : t('summaryPending'));
