@@ -49,7 +49,7 @@ src/
     load-request.ts   entryLoadRequest signal (overview/history → check-in form)
   ui/               — light-DOM components (one per domain) + shell wiring
     checkin/  home/  overview/  settings/  info/   — one folder per screen (home/ also holds weather.ts)
-    shell/            app-level wiring started once in main.ts: router theme language reminders bridge
+    shell/            app-level wiring started once in main.ts: router theme language reminders
     common/           shared UI helpers/services used across screens: dom dom-i18n toast confirm
   i18n/             — translations.ts (EN+NL) + index.ts (t, emotionLabel, lang signal)
   data/             — static.ts (wheels, mood grid labels/colors, body zones, weather codes, mood scores)
@@ -66,10 +66,6 @@ public/             — favicon + logos served at the web root
 - **`Store`** — the single source of truth. Exposes `entries` / `settings` (read-only signals) + `persistError`; mutations (`saveEntry`, `deleteEntry`, `replaceAllEntries`, `saveSettings`) **persist then notify**, and flag `persistError` if a write fails (e.g. quota).
 - **Components subscribe to the store; they never call each other.** Each owns its rendering. The check-in **orchestrator** (`ui/checkin/checkin.ts`) is the one exception: it composes the form sub-components (wheel, body, energy, mood, chips, meta, summary, history, section-nav) and owns collect → validate → `computeMoodScore` → `store.saveEntry`. Cross-view "load this entry into the form" flows through the `entryLoadRequest` signal, not a direct call.
 - **Lifecycle:** components are singletons created once in `main.ts`; views are CSS-toggled, never unmounted — so subscriptions are intentionally never torn down.
-
-### `window.MCI` bridge
-
-`ui/shell/bridge.ts` exposes the pure core functions + static data on `window.MCI` for the legacy `core-units.spec.js` unit specs. It deliberately exposes **no store handle** — there is no global mutation surface.
 
 ---
 

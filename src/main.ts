@@ -10,7 +10,6 @@ import { WeatherComponent } from './ui/home/weather';
 import { InfoController } from './ui/info/info';
 import { OverviewController } from './ui/overview/overview';
 import { SettingsController } from './ui/settings/settings';
-import { exposeBridge } from './ui/shell/bridge';
 import { initLanguage } from './ui/shell/language';
 import { ReminderController } from './ui/shell/reminders';
 import { initRouter } from './ui/shell/router';
@@ -57,5 +56,3 @@ if (document.getElementById('view-settings')) {
 if (document.getElementById('view-info')) {
   new InfoController(store, repo);
 }
-
-exposeBridge();
