@@ -219,15 +219,21 @@ Both are free and require no API key. Disable the weather component in Settings 
 
 ## Testing
 
-[Playwright](https://playwright.dev/) end-to-end suite (desktop Chromium + Pixel-7 mobile), run on every push/PR to `main` by GitHub Actions.
+Two layers, each with one home:
+
+- **Unit** — [Vitest](https://vitest.dev/), colocated as `src/**/*.test.ts`. Pure `core`/`infra`/`state` logic (scoring, normalize, datetime, demo generator, settings-merge, signal/store). No browser, runs in milliseconds.
+- **E2E** — [Playwright](https://playwright.dev/) (desktop Chromium + Pixel-7 mobile), under `tests/e2e/<screen>/`, mirroring `src/ui/` (`checkin`, `overview`, `home`, `settings`, `info`, `shell`). Real DOM behaviour. Run on every push/PR to `main` by GitHub Actions.
 
 ```bash
+npm test                                     # unit (Vitest) — from the repo root
+
 cd tests
 npm install                                  # first time only
 npx playwright install chromium
 
-npx playwright test                          # all projects
+npx playwright test                          # all E2E projects
 npx playwright test --project=chromium       # desktop only
+npx playwright test e2e/checkin              # one screen's specs
 npx playwright test -g "wheel"               # filter by test name
 npx playwright test --ui                     # interactive UI mode
 npx playwright show-report                   # open the last HTML report

@@ -3,8 +3,8 @@ const path = require('node:path');
 const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
-  testDir: '.',
-  testMatch: '*.spec.js',
+  testDir: './e2e',
+  testMatch: '**/*.spec.js',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
