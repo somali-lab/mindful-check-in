@@ -233,12 +233,6 @@ npx playwright test --ui                     # interactive UI mode
 npx playwright show-report                   # open the last HTML report
 ```
 
-A guided visual walkthrough (headed, ~1.5 min, with a red cursor dot) lives in `tests/demo`:
-
-```bash
-cd tests/demo && npx playwright test
-```
-
 ---
 
 ## Built with

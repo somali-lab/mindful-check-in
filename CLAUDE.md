@@ -22,7 +22,7 @@ Mindful Check-in is a private, offline-first mood/check-in web app. **TypeScript
 - Build: `npm run build` (`tsc --noEmit && vite build` → `dist/`). The output is one classic `app.js` + `assets/style.css` + relative paths, so `dist/index.html` is double-clickable from `file://`.
 - Unit tests: `npm test` (Vitest, `src/**/*.test.ts`). `npm run test:watch` to watch.
 - E2E tests: `cd tests && npx playwright test` (Playwright auto-starts Vite on `http://localhost:3000`; runs desktop chromium + Pixel-7 mobile). Filter with `--project=chromium`, `-g "<name>"`, `--headed --workers=1`.
-- Lint/format: `npm run lint` / `npm run format` (Biome). Visual demo walkthrough: `cd tests/demo && npx playwright test`.
+- Lint/format: `npm run lint` / `npm run format` (Biome).
 
 ## Hard constraints
 
