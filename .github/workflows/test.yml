@@ -1,7 +1,8 @@
 name: tests
 
-# Runs the Playwright E2E suite on every push and PR to main.
-# GitHub notifies the commit author by email when a run fails.
+# CI for every push and PR to main: a fast `checks` job (lint + type-check +
+# build + unit tests) from the repo root, plus the Playwright E2E suite. The two
+# jobs run in parallel. GitHub notifies the commit author by email on failure.
 on:
   push:
     branches: [main]
@@ -9,6 +10,30 @@ on:
     branches: [main]
 
 jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (Biome)
+        run: npm run lint
+
+      - name: Type-check and build (tsc --noEmit && vite build)
+        run: npm run build
+
+      - name: Unit tests (Vitest)
+        run: npm test
+
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 15
