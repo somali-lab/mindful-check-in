@@ -10,11 +10,13 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "lint": "biome check .",
     "format": "biome format --write ."
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.1",
+    "@vitest/coverage-v8": "^4.1.9",
     "typescript": "^6.0.3",
     "vite": "^8.1.0",
     "vitest": "^4.1.9"

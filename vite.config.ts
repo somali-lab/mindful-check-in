@@ -40,5 +40,17 @@ export default defineConfig({
   // under tests/ and must NOT be picked up by Vitest.
   test: {
     include: ['src/**/*.test.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      // Coverage reflects the layers Vitest owns (functional core + infra/state/
+      // i18n logic). The ui/ shell is verified by Playwright E2E, and pure
+      // type/data modules have nothing to execute — both are out of scope here.
+      include: ['src/core/**', 'src/infra/**', 'src/state/**', 'src/i18n/**'],
+      exclude: ['**/*.test.ts', 'src/core/types.ts', 'src/i18n/translations.ts'],
+      // Note: v8's reporter under-lists a few tiny fully-covered modules
+      // (color/reminders/signal); they ARE tested (see their colocated specs),
+      // so the reported % is a floor, not a ceiling.
+    },
   },
 });
