@@ -11,7 +11,7 @@ import type { Repository } from '../../infra/storage';
 import { STORAGE_KEYS } from '../../infra/storage';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
-import { confirmDialog } from '../confirm';
+import { confirmDialog } from '../common/confirm';
 
 type SortKey = 'date' | 'feeling' | 'mood' | 'energy' | 'thoughts' | 'score' | 'actions';
 type SortDir = 'asc' | 'desc';

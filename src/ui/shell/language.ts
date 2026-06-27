@@ -1,6 +1,6 @@
-import { type Lang, lang, setLang } from '../i18n';
-import { type Repository, STORAGE_KEYS } from '../infra/storage';
-import { applyTranslations } from './dom-i18n';
+import { type Lang, lang, setLang } from '../../i18n';
+import { type Repository, STORAGE_KEYS } from '../../infra/storage';
+import { applyTranslations } from '../common/dom-i18n';
 
 function syncButtons(): void {
   const current = lang.get();

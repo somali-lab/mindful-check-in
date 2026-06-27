@@ -7,9 +7,9 @@ import type { Entry, EntryMap } from '../../core/types';
 import { lang, t } from '../../i18n';
 import { type Repository, STORAGE_KEYS } from '../../infra/storage';
 import type { Store } from '../../state/store';
-import { confirmDialog } from '../confirm';
-import { downloadJson, readJsonFile, wireSubTabs } from '../dom';
-import { showToast } from '../toast';
+import { confirmDialog } from '../common/confirm';
+import { downloadJson, readJsonFile, wireSubTabs } from '../common/dom';
+import { showToast } from '../common/toast';
 
 export class InfoController {
   readonly #store: Store;

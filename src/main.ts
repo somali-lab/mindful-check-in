@@ -3,18 +3,18 @@ import { t } from './i18n';
 import { LocalStorageRepository } from './infra/storage';
 import { WeatherService } from './infra/weather';
 import { Store } from './state/store';
-import { exposeBridge } from './ui/bridge';
 import { CheckinController } from './ui/checkin/checkin';
+import { setToastDuration, showToast } from './ui/common/toast';
 import { HomeController } from './ui/home/home';
+import { WeatherComponent } from './ui/home/weather';
 import { InfoController } from './ui/info/info';
-import { initLanguage } from './ui/language';
 import { OverviewController } from './ui/overview/overview';
-import { ReminderController } from './ui/reminders';
-import { initRouter } from './ui/router';
 import { SettingsController } from './ui/settings/settings';
-import { initTheme } from './ui/theme';
-import { setToastDuration, showToast } from './ui/toast';
-import { WeatherComponent } from './ui/weather';
+import { exposeBridge } from './ui/shell/bridge';
+import { initLanguage } from './ui/shell/language';
+import { ReminderController } from './ui/shell/reminders';
+import { initRouter } from './ui/shell/router';
+import { initTheme } from './ui/shell/theme';
 
 // Composition root: build the repository + store, then wire the shell.
 const repo = new LocalStorageRepository();

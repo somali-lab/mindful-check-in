@@ -1,7 +1,7 @@
 // Small shared UI helpers, extracted to remove the duplication that had spread
 // across the view components.
-import { scoreTier } from '../core/scoring';
-import type { WeekDay } from '../core/stats';
+import { scoreTier } from '../../core/scoring';
+import type { WeekDay } from '../../core/stats';
 
 /** Set an element's text content by id (no-op if absent). */
 export function setText(id: string, value: string): void {

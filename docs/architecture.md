@@ -48,8 +48,9 @@ src/
     store.ts          Store: reactive entries + settings, persisted via Repository
     load-request.ts   entryLoadRequest signal (overview/history → check-in form)
   ui/               — light-DOM components (one per domain) + shell wiring
-    router.ts theme.ts language.ts dom-i18n.ts confirm.ts toast.ts dom.ts bridge.ts weather.ts reminders.ts
-    checkin/  home/  overview/  settings/  info/
+    checkin/  home/  overview/  settings/  info/   — one folder per screen (home/ also holds weather.ts)
+    shell/            app-level wiring started once in main.ts: router theme language reminders bridge
+    common/           shared UI helpers/services used across screens: dom dom-i18n toast confirm
   i18n/             — translations.ts (EN+NL) + index.ts (t, emotionLabel, lang signal)
   data/             — static.ts (wheels, mood grid labels/colors, body zones, weather codes, mood scores)
   css/              — one stylesheet per concern, @import-ed via src/styles.css
@@ -68,7 +69,7 @@ public/             — favicon + logos served at the web root
 
 ### `window.MCI` bridge
 
-`ui/bridge.ts` exposes the pure core functions + static data on `window.MCI` for the legacy `core-units.spec.js` unit specs. It deliberately exposes **no store handle** — there is no global mutation surface.
+`ui/shell/bridge.ts` exposes the pure core functions + static data on `window.MCI` for the legacy `core-units.spec.js` unit specs. It deliberately exposes **no store handle** — there is no global mutation surface.
 
 ---
 
@@ -154,7 +155,7 @@ First entry of a day: `YYYY-MM-DD` (e.g. `2026-04-12`). Additional same-day entr
 | Convention | Attribute | Purpose |
 |------------|-----------|---------|
 | Component visibility | `data-component="key"` | hidden when the matching settings flag is off |
-| Translatable text / placeholder / aria / title | `data-t` / `data-t-placeholder` / `data-t-aria` / `data-t-title` | applied by `ui/dom-i18n.ts` |
+| Translatable text / placeholder / aria / title | `data-t` / `data-t-placeholder` / `data-t-aria` / `data-t-title` | applied by `ui/common/dom-i18n.ts` |
 | Active route | `body[data-active-route]` + `.is-active` on `[data-route]`/`.view` | CSS-driven view + footer-bar switching |
 | Theme / language pick | `data-theme-pick` / `data-lang-pick` | switch buttons |
 

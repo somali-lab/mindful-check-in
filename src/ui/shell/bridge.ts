@@ -2,9 +2,9 @@
 // existing Playwright unit specs (core-units.spec.js) can call them in-page.
 // Deliberately exposes only pure functions + read-only data — no store handle,
 // so there is no global mutation surface.
-import { hasLightBackground } from '../core/color';
-import { dateFromKey, formatDate } from '../core/datetime';
-import { normalize } from '../core/entry';
+import { hasLightBackground } from '../../core/color';
+import { dateFromKey, formatDate } from '../../core/datetime';
+import { normalize } from '../../core/entry';
 import {
   calculateStreak,
   computeMoodScore,
@@ -13,7 +13,7 @@ import {
   scoreTier,
   swingTier,
   valenceTier,
-} from '../core/scoring';
+} from '../../core/scoring';
 import {
   bodyZones,
   moodColors,
@@ -22,8 +22,8 @@ import {
   weatherCodes,
   wheels,
   zoneKeys,
-} from '../data/static';
-import { t } from '../i18n';
+} from '../../data/static';
+import { t } from '../../i18n';
 
 declare global {
   interface Window {

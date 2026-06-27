@@ -1,4 +1,4 @@
-import { type Repository, STORAGE_KEYS } from '../infra/storage';
+import { type Repository, STORAGE_KEYS } from '../../infra/storage';
 
 const ROUTES = ['home', 'checkin', 'overview', 'settings', 'info'] as const;
 type Route = (typeof ROUTES)[number];

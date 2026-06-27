@@ -6,7 +6,7 @@
 // "+ add" input (Enter/blur commits, Escape cancels).
 import { lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
-import { renderRemovableTags } from '../dom';
+import { renderRemovableTags } from '../common/dom';
 
 function fieldList(id: string): string[] {
   const f = document.getElementById(id) as HTMLTextAreaElement | null;

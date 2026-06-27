@@ -8,7 +8,7 @@ import type { EntryMap, SwingSource } from '../../core/types';
 import { lang, t } from '../../i18n';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
-import { renderWeekStrip, setText } from '../dom';
+import { renderWeekStrip, setText } from '../common/dom';
 
 const SWING_CARDS: {
   source: SwingSource;

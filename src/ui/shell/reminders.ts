@@ -2,16 +2,16 @@
 // scheduler (fires a Web Notification when inside the active window), and wires
 // the "send test notification" button. Notifications need a secure context, so
 // the whole panel hides when the API is unavailable (e.g. file://).
-import { isWithinReminderWindow, type ReminderWindow } from '../core/reminders';
-import type { Settings } from '../core/settings';
-import { t } from '../i18n';
+import { isWithinReminderWindow, type ReminderWindow } from '../../core/reminders';
+import type { Settings } from '../../core/settings';
+import { t } from '../../i18n';
 import {
   notificationsSupported,
   requestNotificationPermission,
   showNotification,
-} from '../infra/notifications';
-import type { Store } from '../state/store';
-import { showToast } from './toast';
+} from '../../infra/notifications';
+import type { Store } from '../../state/store';
+import { showToast } from '../common/toast';
 
 export class ReminderController {
   #timer: ReturnType<typeof setInterval> | null = null;

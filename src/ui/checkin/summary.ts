@@ -4,7 +4,7 @@
 import { computeStats, weekStripDays } from '../../core/stats';
 import { emotionLabel, lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
-import { renderWeekStrip } from '../dom';
+import { renderWeekStrip } from '../common/dom';
 
 export class SummaryComponent {
   readonly #store: Store;

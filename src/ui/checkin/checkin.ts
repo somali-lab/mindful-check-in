@@ -11,7 +11,7 @@ import { t } from '../../i18n';
 import type { WeatherService } from '../../infra/weather';
 import { entryLoadRequest } from '../../state/load-request';
 import type { Store } from '../../state/store';
-import { showToast } from '../toast';
+import { showToast } from '../common/toast';
 import { BodyComponent } from './body';
 import { ChipsComponent } from './chips';
 import { EnergyComponent } from './energy';

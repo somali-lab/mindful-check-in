@@ -2,10 +2,10 @@
 // WeatherService into #weather-slot: fresh cache first, else geocode the
 // configured location and fetch. Degrades gracefully (error / location hint) and
 // never throws. The check-in save reads the reading via WeatherService.getCached().
-import { weatherCodes } from '../data/static';
-import { lang, t } from '../i18n';
-import type { CurrentWeather, WeatherService } from '../infra/weather';
-import type { Store } from '../state/store';
+import { weatherCodes } from '../../data/static';
+import { lang, t } from '../../i18n';
+import type { CurrentWeather, WeatherService } from '../../infra/weather';
+import type { Store } from '../../state/store';
 
 export class WeatherComponent {
   readonly #store: Store;

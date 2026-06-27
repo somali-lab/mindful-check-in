@@ -14,9 +14,9 @@ import {
 import type { WheelType } from '../../core/types';
 import { lang, setLang, t } from '../../i18n';
 import type { Store } from '../../state/store';
-import { confirmDialog } from '../confirm';
-import { downloadJson, readJsonFile, renderRemovableTags, wireSubTabs } from '../dom';
-import { showToast } from '../toast';
+import { confirmDialog } from '../common/confirm';
+import { downloadJson, readJsonFile, renderRemovableTags, wireSubTabs } from '../common/dom';
+import { showToast } from '../common/toast';
 
 const REMINDER_DEFAULT_DAYS = [1, 2, 3, 4, 5];
 

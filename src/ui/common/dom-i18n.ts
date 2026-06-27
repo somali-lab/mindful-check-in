@@ -1,4 +1,4 @@
-import { t } from '../i18n';
+import { t } from '../../i18n';
 
 /** Apply translations to all data-t* attributes within a root (default: document). */
 export function applyTranslations(root: ParentNode = document): void {

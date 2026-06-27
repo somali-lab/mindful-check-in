@@ -1,5 +1,5 @@
-import type { ThemeChoice } from '../core/settings';
-import type { Store } from '../state/store';
+import type { ThemeChoice } from '../../core/settings';
+import type { Store } from '../../state/store';
 
 /** Apply the theme to <html data-theme>, reflect the active button, and persist picks. */
 export function initTheme(store: Store): void {
