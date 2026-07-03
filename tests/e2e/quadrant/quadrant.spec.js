@@ -31,7 +31,7 @@ test('first visit shows example items in every panel', async ({ page }) => {
     const items = page.locator(`[data-qlist="${key}"] .quadrant-item`);
     await expect(items.first()).toBeVisible();
   }
-  await expect(page.locator('[data-qlist="externalTo"]')).toContainText('Doing a check-in');
+  await expect(page.locator('[data-qlist="externalTo"]')).toContainText('Doing check-in moments');
   // Soft default: seeds are not persisted until the user edits.
   expect(await getStoredQuadrant(page)).toBeNull();
 });
@@ -39,7 +39,7 @@ test('first visit shows example items in every panel', async ({ page }) => {
 test('seeds follow the stored language', async ({ page }) => {
   await injectLanguage(page, 'nl');
   await page.goto('/#quadrant');
-  await expect(page.locator('[data-qlist="externalTo"]')).toContainText('Een check-in doen');
+  await expect(page.locator('[data-qlist="externalTo"]')).toContainText('Incheckmomenten doen');
   await expect(page.locator('[data-qpanel="internalFrom"] .quadrant-panel-title')).toHaveText(
     'Intern · vanaf',
   );
