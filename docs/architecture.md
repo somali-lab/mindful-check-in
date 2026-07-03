@@ -65,7 +65,7 @@ public/             — favicon + logos served at the web root
 ### Reactivity & communication
 
 - **`signal<T>`** — holds a value, notifies subscribers on change, skips no-op sets (`Object.is`), returns an unsubscribe fn, copies listeners before dispatch (safe unsubscribe mid-emit).
-- **`Store`** — the single source of truth. Exposes `entries` / `settings` (read-only signals) + `persistError`; mutations (`saveEntry`, `deleteEntry`, `replaceAllEntries`, `saveSettings`) **persist then notify**, and flag `persistError` if a write fails (e.g. quota).
+- **`Store`** — the single source of truth and the only writer of storage. Exposes `entries` / `settings` (read-only signals) + `persistError`; mutations (`saveEntry`, `deleteEntry`, `replaceAllEntries`, `saveSettings`) **persist then notify**, and flag `persistError` if a write fails (e.g. quota). The remaining keys go through it too (`load/saveLanguage`, `load/saveOverviewUI`, `clearAllData`) — UI components never hold a `Repository`.
 - **Components subscribe to the store; they never call each other.** Each owns its rendering. The check-in **orchestrator** (`ui/checkin/checkin.ts`) is the one exception: it composes the form sub-components (wheel, body, energy, mood, chips, meta, summary, history, section-nav) and owns collect → validate → `computeMoodScore` → `store.saveEntry`. Cross-view "load this entry into the form" flows through the `entryLoadRequest` signal, not a direct call.
 - **Lifecycle:** components are singletons created once in `main.ts`; views are CSS-toggled, never unmounted — so subscriptions are intentionally never torn down.
 
@@ -75,14 +75,13 @@ public/             — favicon + logos served at the web root
 
 `localStorage` only, JSON per key; all reads/writes wrapped in try/catch (parse error → default; write failure → `persistError` + degrade). Untrusted data is coerced at the boundary by `normalize` (entries) and `mergeSettings` (settings).
 
-### Storage keys (6)
+### Storage keys (5)
 
 | Key | Type | Content |
 |-----|------|---------|
 | `local-mood-tracker-entries` | Object | `{ [dateKey]: Entry }` — all check-in entries |
 | `local-mood-tracker-settings` | Object | User preferences and component visibility |
 | `local-mood-tracker-language` | String | Active language (`"en"` or `"nl"`) |
-| `local-mood-tracker-active-tab` | String | Active route (`"home"`, `"checkin"`, `"overview"`, `"settings"`, `"info"`) |
 | `local-mood-tracker-overview-ui` | Object | Overview table state (search, filter, sort, page) |
 | `local-mood-tracker-weather-cache` | Object | `{ ts, data }` cached current-weather reading |
 

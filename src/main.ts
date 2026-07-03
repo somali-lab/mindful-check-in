@@ -28,10 +28,10 @@ store.persistError.subscribe((failed) => {
   if (failed) showToast(t('storageWriteError'), 'warning');
 });
 
-initLanguage(repo);
+initLanguage(store);
 initTheme(store);
 initLogo(store);
-initRouter(repo);
+initRouter();
 
 // Weather widget lives on the home view; its reading feeds the check-in save.
 if (document.getElementById('weather-slot')) {
@@ -47,7 +47,7 @@ if (document.getElementById('view-home')) {
 }
 
 if (document.getElementById('view-overview')) {
-  new OverviewController(store, repo);
+  new OverviewController(store);
 }
 
 if (document.getElementById('view-settings')) {
@@ -56,5 +56,5 @@ if (document.getElementById('view-settings')) {
 }
 
 if (document.getElementById('view-info')) {
-  new InfoController(store, repo);
+  new InfoController(store);
 }

@@ -1,5 +1,5 @@
-import { type Lang, lang, setLang } from '../../i18n';
-import { type Repository, STORAGE_KEYS } from '../../infra/storage';
+import { lang, setLang } from '../../i18n';
+import type { Store } from '../../state/store';
 import { applyTranslations } from '../common/dom-i18n';
 
 function syncButtons(): void {
@@ -12,9 +12,8 @@ function syncButtons(): void {
 }
 
 /** Load the persisted language, apply it to the DOM, and wire the EN/NL buttons. */
-export function initLanguage(repo: Repository): void {
-  const stored = repo.read<Lang>(STORAGE_KEYS.language, 'en');
-  setLang(stored === 'nl' ? 'nl' : 'en');
+export function initLanguage(store: Store): void {
+  setLang(store.loadLanguage());
 
   applyTranslations();
   syncButtons();
@@ -27,7 +26,7 @@ export function initLanguage(repo: Repository): void {
   for (const btn of document.querySelectorAll<HTMLElement>('[data-lang-pick]')) {
     btn.addEventListener('click', () => {
       const pick = btn.getAttribute('data-lang-pick') === 'nl' ? 'nl' : 'en';
-      repo.write(STORAGE_KEYS.language, pick);
+      store.saveLanguage(pick);
       setLang(pick);
     });
   }

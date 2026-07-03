@@ -1,9 +1,12 @@
 // The app's single source of truth: reactive entries + settings, persisted
 // through a Repository. UI subscribes to the signals; mutations go through the
-// methods here (which persist, then update the signals).
+// methods here (which persist, then update the signals). The Store is also the
+// only writer for the remaining storage keys (language, overview UI state) —
+// components never see the Repository.
 import { normalize } from '../core/entry';
 import { defaultSettings, mergeSettings, type Settings } from '../core/settings';
 import type { Entry, EntryMap } from '../core/types';
+import type { Lang } from '../i18n/translations';
 import { type Repository, STORAGE_KEYS } from '../infra/storage';
 import { type ReadonlySignal, signal } from './signal';
 
@@ -75,5 +78,29 @@ export class Store {
   saveSettings(next: Settings): void {
     this.#flagWrite(this.#repo.write(STORAGE_KEYS.settings, next));
     this.#settings.set(next);
+  }
+
+  loadLanguage(): Lang {
+    return this.#repo.read<unknown>(STORAGE_KEYS.language, 'en') === 'nl' ? 'nl' : 'en';
+  }
+
+  saveLanguage(next: Lang): void {
+    this.#flagWrite(this.#repo.write(STORAGE_KEYS.language, next));
+  }
+
+  /** Persisted overview-table UI state (search/filter/sort/page); shape owned by the view. */
+  loadOverviewUI<T>(fallback: T): T {
+    return this.#repo.read<T>(STORAGE_KEYS.overviewUI, fallback);
+  }
+
+  saveOverviewUI(state: unknown): void {
+    this.#flagWrite(this.#repo.write(STORAGE_KEYS.overviewUI, state));
+  }
+
+  /** Remove every persisted key (Info → "Clear all data"). */
+  clearAllData(): void {
+    for (const key of Object.values(STORAGE_KEYS)) this.#repo.remove(key);
+    // Retired write-only key from before the router became purely hash-driven.
+    this.#repo.remove('local-mood-tracker-active-tab');
   }
 }

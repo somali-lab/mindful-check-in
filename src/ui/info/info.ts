@@ -5,7 +5,6 @@ import { generateDemoEntries } from '../../core/demo';
 import { normalize } from '../../core/entry';
 import type { Entry, EntryMap } from '../../core/types';
 import { lang, t } from '../../i18n';
-import { type Repository, STORAGE_KEYS } from '../../infra/storage';
 import type { Store } from '../../state/store';
 import { confirmDialog } from '../common/confirm';
 import { downloadJson, readJsonFile, wireSubTabs } from '../common/dom';
@@ -13,12 +12,10 @@ import { showToast } from '../common/toast';
 
 export class InfoController {
   readonly #store: Store;
-  readonly #repo: Repository;
   #pendingImport: EntryMap | null = null;
 
-  constructor(store: Store, repo: Repository) {
+  constructor(store: Store) {
     this.#store = store;
-    this.#repo = repo;
     wireSubTabs('#view-info');
     this.#wireData();
   }
@@ -109,7 +106,7 @@ export class InfoController {
       danger: true,
     });
     if (!second) return;
-    for (const key of Object.values(STORAGE_KEYS)) this.#repo.remove(key);
+    this.#store.clearAllData();
     showToast(t('clearDone') || 'All data cleared. Reloading…', 'success');
     setTimeout(() => location.reload(), 1500);
   }

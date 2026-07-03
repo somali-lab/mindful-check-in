@@ -33,11 +33,11 @@ Mindful Check-in is a private, offline-first mood/check-in web app. **TypeScript
 ## Architecture — functional core / imperative shell
 
 - **`core/`** — pure domain logic, no DOM/storage (datetime, entry `normalize`, scoring/streaks/swings, stats, color, reminders window, demo generator, types). 100% Vitest-able.
-- **`infra/`** — side effects behind interfaces: `Repository` (localStorage now, swappable) for the 6 storage keys; `WeatherService` (Open-Meteo + cache); Web Notifications wrapper.
+- **`infra/`** — side effects behind interfaces: `Repository` (localStorage now, swappable) for the 5 storage keys; `WeatherService` (Open-Meteo + cache); Web Notifications wrapper.
 - **`state/`** — one reactive primitive (`signal`) + a single `Store` (the single source of truth; replaces the old event bus). UI subscribes to `store.entries` / `store.settings`; mutations go through `Store` methods which persist then notify.
 - **`ui/`** — plain-class light-DOM components per domain, each subscribing to the store and owning its own rendering. **Components talk to the store, never to each other.** The check-in **orchestrator** (`ui/checkin/checkin.ts`) composes the form sub-components and owns collect/save/validation. Cross-view "load this entry into the form" goes through the `entryLoadRequest` signal (`state/load-request.ts`), not direct reach-in. Shared UI helpers live in `ui/common/` (e.g. `ui/common/dom.ts`); app-level wiring (router, theme, language, reminders) lives in `ui/shell/`.
 - **`main.ts`** — composition root: build repo + store + services, then wire the views.
-- Persistence is `localStorage` only (6 JSON keys). Full layer contract, storage keys, and entry schema: @docs/architecture.md
+- Persistence is `localStorage` only (5 JSON keys). Full layer contract, storage keys, and entry schema: @docs/architecture.md
 
 ## i18n — never hardcode UI text
 

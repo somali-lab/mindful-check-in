@@ -1,14 +1,12 @@
 // Overview view: a read-only, sortable, paginated, searchable/filterable table of
 // all entries. Reads entries + settings from the store and re-renders on either
-// change; UI state (page / sort / filter / search) persists to the repository so
+// change; UI state (page / sort / filter / search) persists via the store so
 // it survives reloads. Delete is wired (confirm → store.deleteEntry); row-click
 // loading into the form lands with the entry-loading step.
 import { dateFromKey, formatDate, formatTime } from '../../core/datetime';
 import type { Entry } from '../../core/types';
 import { moodLabels } from '../../data/static';
 import { emotionLabel, lang, t } from '../../i18n';
-import type { Repository } from '../../infra/storage';
-import { STORAGE_KEYS } from '../../infra/storage';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
 import { confirmDialog } from '../common/confirm';
@@ -52,15 +50,13 @@ function truncate(s: string, max: number): string {
 
 export class OverviewController {
   readonly #store: Store;
-  readonly #repo: Repository;
   #ui: OverviewUI = { page: 1, sort: 'date', sortDir: 'desc', filter: 'all', search: '' };
   #filtered: Item[] = [];
   #searchTimer: ReturnType<typeof setTimeout> | null = null;
 
-  constructor(store: Store, repo: Repository) {
+  constructor(store: Store) {
     this.#store = store;
-    this.#repo = repo;
-    const saved = repo.read<Partial<OverviewUI> | null>(STORAGE_KEYS.overviewUI, null);
+    const saved = store.loadOverviewUI<Partial<OverviewUI> | null>(null);
     if (saved) this.#ui = { ...this.#ui, ...saved };
 
     this.#wireControls();
@@ -327,6 +323,6 @@ export class OverviewController {
   }
 
   #saveState(): void {
-    this.#repo.write(STORAGE_KEYS.overviewUI, this.#ui);
+    this.#store.saveOverviewUI(this.#ui);
   }
 }

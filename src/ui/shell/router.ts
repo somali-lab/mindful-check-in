@@ -1,5 +1,3 @@
-import { type Repository, STORAGE_KEYS } from '../../infra/storage';
-
 const ROUTES = ['home', 'checkin', 'overview', 'settings', 'info'] as const;
 type Route = (typeof ROUTES)[number];
 const DEFAULT_ROUTE: Route = 'home';
@@ -10,7 +8,7 @@ function parseRoute(hash: string): Route {
 }
 
 /** Hash-based router: toggles `.is-active` on `[data-route]` buttons and `.view` panels. */
-export function initRouter(repo: Repository): void {
+export function initRouter(): void {
   const apply = (route: Route): void => {
     for (const btn of document.querySelectorAll<HTMLElement>('[data-route]')) {
       btn.classList.toggle('is-active', btn.getAttribute('data-route') === route);
@@ -20,7 +18,6 @@ export function initRouter(repo: Repository): void {
     }
     // The footer-bar visibility is driven by CSS keyed on this attribute.
     document.body.setAttribute('data-active-route', route);
-    repo.write(STORAGE_KEYS.activeTab, route);
   };
 
   apply(parseRoute(location.hash));
