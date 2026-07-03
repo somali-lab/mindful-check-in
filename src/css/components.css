@@ -272,7 +272,7 @@ input[type="number"] {
   display: inline-block;
   width: 14px;
   height: 14px;
-  background: #fff;
+  background: var(--toggle-knob);
   border-radius: 50%;
   position: absolute;
   left: 2px;

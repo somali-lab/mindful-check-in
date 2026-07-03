@@ -94,3 +94,13 @@ html[data-theme='dark'] .info-hero-mark {
 .info-privacy-ok {
   color: var(--info-ok);
 }
+
+/* Destructive tool button ("Clear all data"): keeps the delete colour even on
+   hover/focus. Doubled-up .btn selector outweighs .btn--ghost without !important
+   (this file also imports after components.css). */
+.btn.info-btn-danger,
+.btn.info-btn-danger:hover,
+.btn.info-btn-danger:focus-visible {
+  border-color: var(--delete-color);
+  color: var(--delete-color);
+}

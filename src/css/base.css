@@ -16,12 +16,15 @@ body {
   height: 100%;
 }
 
-/* ── Typography tokens (theme-independent) ──
+/* ── Typography + brand tokens (theme-independent) ──
    Lora serif for titles/prose · Geist sans for UI · Fira Code for numerals */
 html {
   --font-sans: "Geist", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-serif: "Lora", Georgia, "Times New Roman", serif;
   --font-mono: "Fira Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  /* Brand mark keeps the same warm gradient in both themes. */
+  --brand-gradient: linear-gradient(135deg, #cf8c54, #9d5f33);
+  --toggle-knob: #fff;
 }
 
 /* ── CSS Variables: Light Theme (Herontwerp — warm earthy / Somali) ── */
