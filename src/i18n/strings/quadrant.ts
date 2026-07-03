@@ -16,6 +16,9 @@ export const quadrant = {
     quadrantAddBtn: 'Add',
     quadrantEmpty: 'Nothing here yet.',
     ariaQuadrantEdit: 'Edit item',
+    quadrantCenterLabel: 'I notice — here and now',
+    quadrantCenterHint: 'Who or what matters to you?',
+    ariaQuadrantCenter: 'Edit who or what matters to you',
   },
   nl: {
     tabQuadrant: 'Kwadrant',
@@ -30,6 +33,9 @@ export const quadrant = {
     quadrantAddBtn: 'Toevoegen',
     quadrantEmpty: 'Nog niets.',
     ariaQuadrantEdit: 'Item bewerken',
+    quadrantCenterLabel: 'Ik merk op — hier en nu',
+    quadrantCenterHint: 'Wie of wat doet er voor jou toe?',
+    ariaQuadrantCenter: 'Bewerk wie of wat er voor jou toe doet',
   },
 } as const;
 
@@ -73,6 +79,7 @@ export const quadrantSeeds: Record<'en' | 'nl', Quadrant> = {
       'Expressing emotions / being moved — verbally and non-verbally',
       'Doing check-in moments',
     ],
+    center: '',
   },
   nl: {
     internalFrom: [
@@ -111,5 +118,6 @@ export const quadrantSeeds: Record<'en' | 'nl', Quadrant> = {
       'Emoties uiten / geraakt zijn — o.a. verbaal als non-verbaal',
       'Incheckmomenten doen',
     ],
+    center: '',
   },
 };

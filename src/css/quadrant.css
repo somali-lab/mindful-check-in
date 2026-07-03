@@ -1,9 +1,65 @@
 /* ── Change quadrant: 2×2 board of editable free-text lists ── */
 .quadrant-grid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-top: 16px;
+}
+
+/* ACT-matrix centre: the values/compass anchor, on its own row between the
+   internal and external halves so it never covers panel content. */
+.quadrant-center {
+  grid-column: 1 / -1;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 250px;
+  max-width: 420px;
+  padding: 14px 30px;
+  border: 2px solid var(--border-accent);
+  border-radius: 999px;
+  background: var(--bg-surface);
+  box-shadow: var(--accent-shadow) 0 4px 18px;
+  cursor: text;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+.quadrant-center-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.quadrant-center-text {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 1.3;
+  color: var(--text-strong);
+}
+
+.quadrant-center.is-empty .quadrant-center-text {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.quadrant-center-edit {
+  font: inherit;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  text-align: center;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border-input);
+  outline: none;
+  width: 180px;
 }
 
 .quadrant-panel {
@@ -119,5 +175,14 @@
 @media (max-width: 600px) {
   .quadrant-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* No physical centre in a stacked layout — the anchor leads the board. */
+  .quadrant-center {
+    order: -1;
+    min-width: 0;
+    max-width: none;
+    justify-self: stretch;
+    border-radius: 20px;
   }
 }

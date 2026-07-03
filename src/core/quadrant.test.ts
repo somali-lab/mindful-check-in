@@ -30,6 +30,12 @@ describe('mergeQuadrant', () => {
     const q = mergeQuadrant({ internalFrom: ['x'], bogus: ['y'] });
     expect(q).toEqual({ ...emptyQuadrant(), internalFrom: ['x'] });
   });
+
+  it('coerces the centre: missing or non-string → empty, string kept trimmed', () => {
+    expect(mergeQuadrant({ internalFrom: ['x'] }).center).toBe(''); // pre-centre data
+    expect(mergeQuadrant({ center: 42 }).center).toBe('');
+    expect(mergeQuadrant({ center: '  my family, health  ' }).center).toBe('my family, health');
+  });
 });
 
 describe('quadrantSeeds', () => {

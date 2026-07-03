@@ -54,6 +54,43 @@ export class QuadrantController extends Component {
         this.#addFromInput(input.getAttribute('data-qinput') as QuadrantKey);
       }
     });
+
+    document
+      .getElementById('quadrant-center')
+      ?.addEventListener('click', () => this.#startCenterEdit());
+  }
+
+  /** Edit the centre (values/compass) in place; Enter/blur commits, Escape cancels. */
+  #startCenterEdit(): void {
+    const center = document.getElementById('quadrant-center');
+    const text = document.getElementById('quadrant-center-text');
+    if (!center || !text || center.querySelector('input')) return;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'quadrant-center-edit';
+    input.value = this.#store.quadrant.get().center;
+    input.setAttribute('placeholder', t('quadrantCenterHint'));
+    let done = false;
+    const commit = (): void => {
+      if (done) return;
+      done = true;
+      const cur = this.#store.quadrant.get();
+      this.#store.saveQuadrant({ ...cur, center: input.value.trim() });
+    };
+    input.addEventListener('keydown', (e) => {
+      e.stopPropagation(); // keep grid-level Enter handling out of this edit
+      if (e.key === 'Enter') commit();
+      if (e.key === 'Escape') {
+        done = true;
+        this.render();
+      }
+    });
+    input.addEventListener('blur', commit);
+    input.addEventListener('click', (e) => e.stopPropagation());
+    text.replaceWith(input);
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
   }
 
   #addFromInput(key: QuadrantKey): void {
@@ -116,6 +153,19 @@ export class QuadrantController extends Component {
 
   protected render(): void {
     const data: Quadrant = this.#store.quadrant.get();
+
+    // Centre circle: the value text, or the invitation hint while empty.
+    const center = document.getElementById('quadrant-center');
+    if (center) {
+      const input = center.querySelector('input');
+      const text = document.createElement('span');
+      text.className = 'quadrant-center-text';
+      text.id = 'quadrant-center-text';
+      text.textContent = data.center || t('quadrantCenterHint');
+      center.classList.toggle('is-empty', !data.center);
+      (input ?? document.getElementById('quadrant-center-text'))?.replaceWith(text);
+    }
+
     for (const key of QUADRANT_KEYS) {
       const list = document.querySelector<HTMLElement>(`[data-qlist="${key}"]`);
       if (!list) continue;

@@ -120,6 +120,39 @@ test('emptying an item during edit removes it', async ({ page }) => {
   await expect(page.locator('[data-qlist="externalTo"] .quadrant-item')).toHaveCount(before - 1);
 });
 
+// ─── Centre (values/compass) ───
+
+test('the centre shows the hint, and an entered value persists across reload', async ({ page }) => {
+  await page.goto('/#quadrant');
+  const center = page.locator('#quadrant-center');
+  await expect(center).toHaveClass(/is-empty/);
+  await expect(center).toContainText('Who or what matters to you?');
+
+  await center.click();
+  const edit = page.locator('.quadrant-center-edit');
+  await edit.fill('Family, health, calm');
+  await edit.press('Enter');
+
+  await expect(center).not.toHaveClass(/is-empty/);
+  await expect(center).toContainText('Family, health, calm');
+
+  await page.reload();
+  await expect(page.locator('#quadrant-center')).toContainText('Family, health, calm');
+  const stored = await getStoredQuadrant(page);
+  expect(stored.center).toBe('Family, health, calm');
+});
+
+test('Escape cancels a centre edit without saving', async ({ page }) => {
+  await page.goto('/#quadrant');
+  await page.locator('#quadrant-center').click();
+  const edit = page.locator('.quadrant-center-edit');
+  await edit.fill('Should not stick');
+  await edit.press('Escape');
+  await expect(page.locator('#quadrant-center')).not.toContainText('Should not stick');
+  await expect(page.locator('#quadrant-center')).toHaveClass(/is-empty/);
+  expect(await getStoredQuadrant(page)).toBeNull();
+});
+
 // ─── Delete ───
 
 test('the ✕ button removes an item, and removal survives reload (no re-seed)', async ({ page }) => {
