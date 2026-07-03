@@ -11,6 +11,7 @@ import { t } from '../../i18n';
 import type { WeatherService } from '../../infra/weather';
 import { entryLoadRequest } from '../../state/load-request';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 import { fieldValue, setFieldValue } from '../common/dom';
 import { showToast } from '../common/toast';
 import { BodyComponent } from './body';
@@ -23,7 +24,7 @@ import { SectionNavComponent } from './section-nav';
 import { SummaryComponent } from './summary';
 import { WheelComponent } from './wheel';
 
-export class CheckinController {
+export class CheckinController extends Component {
   readonly #store: Store;
   readonly #wheel: WheelComponent;
   readonly #body: BodyComponent;
@@ -35,6 +36,7 @@ export class CheckinController {
   #currentKey: string | null = null;
 
   constructor(store: Store, weatherService: WeatherService) {
+    super();
     this.#store = store;
     this.#weather = weatherService;
     // The picked emotion is read back from the wheel at save time.
@@ -52,10 +54,10 @@ export class CheckinController {
     document.getElementById('ci-btn-new')?.addEventListener('click', () => this.#clear());
 
     this.#applyVisibility();
-    this.#store.settings.subscribe(() => this.#applyVisibility());
+    this.listen(this.#store.settings, () => this.#applyVisibility());
 
     // Overview/history rows request an entry be loaded into the form.
-    entryLoadRequest.subscribe((key) => {
+    this.listen(entryLoadRequest, (key) => {
       if (!key) return;
       const entry = this.#store.entries.get()[key];
       if (entry) this.#loadInto(key, entry);
@@ -92,7 +94,7 @@ export class CheckinController {
     setFieldValue('fld-energy-note', entry.energyNote);
     setFieldValue('fld-action', entry.actions);
     setFieldValue('fld-note', entry.note);
-    this.#chips.refresh();
+    this.#chips.render();
   }
 
   #collect(): Entry {
@@ -158,7 +160,7 @@ export class CheckinController {
       'fld-note',
     ])
       setFieldValue(id, '');
-    this.#chips.refresh();
+    this.#chips.render();
   }
 
   #applyVisibility(): void {

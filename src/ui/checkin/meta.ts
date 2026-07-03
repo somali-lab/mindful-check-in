@@ -3,12 +3,14 @@
 // reads getOverrideKey() at save time; everything else is self-contained.
 import { dateFromKey, formatDate, formatTime, pad2 } from '../../core/datetime';
 import { lang, t } from '../../i18n';
+import { Component } from '../common/component';
 
-export class MetaComponent {
+export class MetaComponent extends Component {
   #key: string | null = null;
   #dirty = false;
 
   constructor() {
+    super();
     const input = document.getElementById('ci-date-override') as HTMLInputElement | null;
     const control = document.getElementById('ci-date-control');
     input?.addEventListener('change', () => {
@@ -30,20 +32,20 @@ export class MetaComponent {
       });
     }
 
-    lang.subscribe(() => {
+    this.listen(lang, () => {
       this.#updateGreeting();
       this.#updatePill();
       this.#updateDateDisplay();
     });
 
     this.#updateGreeting();
-    this.#render();
+    this.render();
   }
 
   setKey(key: string | null): void {
     this.#key = key;
     this.#dirty = false;
-    this.#render();
+    this.render();
   }
 
   /** Minute-precision key from the date field, only once the user edits it. */
@@ -56,7 +58,7 @@ export class MetaComponent {
     return `${formatDate(d)}_${pad2(d.getHours())}${pad2(d.getMinutes())}${pad2(d.getSeconds())}000`;
   }
 
-  #render(): void {
+  protected render(): void {
     this.#updatePill();
     this.#syncDateInput();
   }

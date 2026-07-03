@@ -6,6 +6,7 @@
 import { hasLightBackground } from '../../core/color';
 import { moodColors, moodLabels } from '../../data/static';
 import { lang, t } from '../../i18n';
+import { Component } from '../common/component';
 
 export interface MoodSelection {
   row: number;
@@ -14,13 +15,14 @@ export interface MoodSelection {
   color: string;
 }
 
-export class MoodComponent {
+export class MoodComponent extends Component {
   readonly #slot: HTMLElement | null;
   readonly #display: HTMLElement | null;
   #row = -1;
   #col = -1;
 
   constructor() {
+    super();
     this.#slot = document.getElementById('mood-slot');
     this.#display = document.getElementById('mood-display');
     if (!this.#slot) return;
@@ -43,11 +45,11 @@ export class MoodComponent {
     document.getElementById('mood-btn-reset')?.addEventListener('click', () => {
       this.#row = -1;
       this.#col = -1;
-      this.#build();
+      this.render();
     });
 
-    lang.subscribe(() => this.#build());
-    this.#build();
+    this.listen(lang, () => this.render());
+    this.render();
   }
 
   getSelection(): MoodSelection | null {
@@ -63,7 +65,7 @@ export class MoodComponent {
   setSelection(row: number, col: number): void {
     this.#row = row != null && row >= 0 ? row : -1;
     this.#col = col != null && col >= 0 ? col : -1;
-    this.#build();
+    this.render();
   }
 
   #labels(): string[][] {
@@ -83,10 +85,10 @@ export class MoodComponent {
       this.#row = row;
       this.#col = col;
     }
-    this.#build();
+    this.render();
   }
 
-  #build(): void {
+  protected render(): void {
     if (!this.#slot) return;
     const labels = this.#labels();
     const frag = document.createDocumentFragment();

@@ -6,14 +6,16 @@ import { weatherCodes } from '../../data/static';
 import { lang, t } from '../../i18n';
 import type { CurrentWeather, WeatherService } from '../../infra/weather';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 
-export class WeatherComponent {
+export class WeatherComponent extends Component {
   readonly #store: Store;
   readonly #service: WeatherService;
   readonly #slot: HTMLElement | null;
   #current: CurrentWeather | null = null;
 
   constructor(store: Store, service: WeatherService) {
+    super();
     this.#store = store;
     this.#service = service;
     this.#slot = document.getElementById('weather-slot');
@@ -25,14 +27,14 @@ export class WeatherComponent {
       card?.classList.toggle('is-hidden', !visible);
     };
     applyVisibility(store.settings.get().components.weather);
-    store.settings.subscribe((s) => {
+    this.listen(store.settings, (s) => {
       applyVisibility(s.components.weather);
       if (s.weatherLocation !== lastLocation) {
         lastLocation = s.weatherLocation;
         void this.#refresh();
       }
     });
-    lang.subscribe(() => {
+    this.listen(lang, () => {
       if (this.#current) this.#render(this.#current);
     });
 

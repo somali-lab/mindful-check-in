@@ -6,6 +6,7 @@
 import type { ComponentVisibility, Settings } from '../../core/settings';
 import { lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 
 type EnergyKey = 'physical' | 'mental' | 'emotional';
 type EnergyValues = Record<EnergyKey, number | null>;
@@ -26,13 +27,14 @@ function emotionalLabelKey(settings: Settings): string {
   return map[settings.energyEmotionalLabel] || 'energyEmotional';
 }
 
-export class EnergyComponent {
+export class EnergyComponent extends Component {
   readonly #store: Store;
   readonly #slot: HTMLElement | null;
   readonly #display: HTMLElement | null;
   #values: EnergyValues = { physical: null, mental: null, emotional: null };
 
   constructor(store: Store) {
+    super();
     this.#store = store;
     this.#slot = document.getElementById('energy-slot');
     this.#display = document.getElementById('energy-display');
@@ -42,14 +44,14 @@ export class EnergyComponent {
 
     document.getElementById('nrg-btn-reset')?.addEventListener('click', () => {
       this.#values = { physical: null, mental: null, emotional: null };
-      this.#build();
+      this.render();
       const note = document.getElementById('fld-energy-note') as HTMLTextAreaElement | null;
       if (note) note.value = '';
     });
 
-    lang.subscribe(() => this.#build());
-    store.settings.subscribe(() => this.#build());
-    this.#build();
+    this.listen(lang, () => this.render());
+    this.listen(store.settings, () => this.render());
+    this.render();
   }
 
   getValues(): EnergyValues {
@@ -64,10 +66,10 @@ export class EnergyComponent {
           emotional: typeof obj.emotional === 'number' ? obj.emotional : null,
         }
       : { physical: null, mental: null, emotional: null };
-    this.#build();
+    this.render();
   }
 
-  #build(): void {
+  protected render(): void {
     if (!this.#slot) return;
     const settings = this.#store.settings.get();
     const comps = settings.components;

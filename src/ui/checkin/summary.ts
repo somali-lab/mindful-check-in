@@ -4,22 +4,24 @@
 import { computeStats, weekStripDays } from '../../core/stats';
 import { emotionLabel, lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 import { renderWeekStrip } from '../common/dom';
 
-export class SummaryComponent {
+export class SummaryComponent extends Component {
   readonly #store: Store;
   readonly #slot: HTMLElement | null;
 
   constructor(store: Store) {
+    super();
     this.#store = store;
     this.#slot = document.getElementById('summary-slot');
     if (!this.#slot) return;
-    store.entries.subscribe(() => this.#render());
-    lang.subscribe(() => this.#render());
-    this.#render();
+    this.listen(store.entries, () => this.render());
+    this.listen(lang, () => this.render());
+    this.render();
   }
 
-  #render(): void {
+  protected render(): void {
     if (!this.#slot) return;
     const entries = this.#store.entries.get();
     this.#slot.innerHTML = '';

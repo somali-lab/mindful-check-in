@@ -14,6 +14,7 @@ import {
 import type { WheelType } from '../../core/types';
 import { lang, setLang, t } from '../../i18n';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 import { confirmDialog } from '../common/confirm';
 import {
   downloadJson,
@@ -30,17 +31,18 @@ import { showToast } from '../common/toast';
 
 const REMINDER_DEFAULT_DAYS = [1, 2, 3, 4, 5];
 
-export class SettingsController {
+export class SettingsController extends Component {
   readonly #store: Store;
 
   constructor(store: Store) {
+    super();
     this.#store = store;
     wireSubTabs('#view-settings');
     this.#wireButtons();
     this.#wireQuickActions();
     this.#loadForm();
     // Re-render quick actions / labels when the language switches.
-    lang.subscribe(() => this.#buildQAList(this.#store.settings.get().quickActions));
+    this.listen(lang, () => this.#buildQAList(this.#store.settings.get().quickActions));
   }
 
   #loadForm(): void {

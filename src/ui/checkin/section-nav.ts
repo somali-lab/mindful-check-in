@@ -5,6 +5,7 @@
 // change, and tracks the active dot on scroll.
 import { lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 
 const SECTIONS: { sel: string; tKey: string }[] = [
   { sel: '.ci-intro-row', tKey: 'labelThoughts' },
@@ -18,7 +19,7 @@ const SECTIONS: { sel: string; tKey: string }[] = [
 const isVisible = (el: Element | null): el is HTMLElement =>
   !!el && (el as HTMLElement).offsetParent !== null && (el as HTMLElement).offsetHeight > 6;
 
-export class SectionNavComponent {
+export class SectionNavComponent extends Component {
   readonly #rail: HTMLElement | null;
   readonly #dots: HTMLElement | null;
   readonly #prev: HTMLButtonElement | null;
@@ -29,6 +30,7 @@ export class SectionNavComponent {
   #ticking = false;
 
   constructor(store: Store) {
+    super();
     this.#rail = document.getElementById('section-rail');
     this.#scroller = document.querySelector('.app-scroll');
     this.#dots = document.getElementById('section-rail-dots');
@@ -49,16 +51,16 @@ export class SectionNavComponent {
     this.#scroller.addEventListener('scroll', () => this.#onScroll(), { passive: true });
     window.addEventListener('resize', () => this.#onScroll());
     window.addEventListener('hashchange', () => {
-      if (this.#isCheckin()) requestAnimationFrame(() => this.#build());
+      if (this.#isCheckin()) requestAnimationFrame(() => this.render());
     });
-    store.settings.subscribe(() => {
-      if (this.#isCheckin()) requestAnimationFrame(() => this.#build());
+    this.listen(store.settings, () => {
+      if (this.#isCheckin()) requestAnimationFrame(() => this.render());
     });
-    lang.subscribe(() => {
-      if (this.#isCheckin()) this.#build();
+    this.listen(lang, () => {
+      if (this.#isCheckin()) this.render();
     });
 
-    if (this.#isCheckin()) requestAnimationFrame(() => this.#build());
+    if (this.#isCheckin()) requestAnimationFrame(() => this.render());
   }
 
   #isCheckin(): boolean {
@@ -74,7 +76,7 @@ export class SectionNavComponent {
     );
   }
 
-  #build(): void {
+  protected render(): void {
     if (!this.#rail || !this.#dots) return;
     this.#stops = [];
     this.#dots.innerHTML = '';

@@ -6,6 +6,7 @@
 // "+ add" input (Enter/blur commits, Escape cancels).
 import { lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 import { renderRemovableTags } from '../common/dom';
 
 function fieldList(id: string): string[] {
@@ -58,23 +59,24 @@ function startInlineAdd(
   input.addEventListener('blur', () => commit(true));
 }
 
-export class ChipsComponent {
+export class ChipsComponent extends Component {
   readonly #store: Store;
 
   constructor(store: Store) {
+    super();
     this.#store = store;
     document.getElementById('ci-chips')?.addEventListener('click', (e) => this.#onActionClick(e));
     document
       .getElementById('ci-feel-chips')
       ?.addEventListener('click', (e) => this.#onFeelClick(e));
 
-    store.settings.subscribe(() => this.#buildActions());
-    lang.subscribe(() => this.refresh());
-    this.refresh();
+    this.listen(store.settings, () => this.#buildActions());
+    this.listen(lang, () => this.render());
+    this.render();
   }
 
   /** Rebuild both rows from the backing fields — called after load/clear. */
-  refresh(): void {
+  render(): void {
     this.#buildActions();
     this.#buildFeel();
   }

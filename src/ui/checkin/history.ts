@@ -8,6 +8,7 @@ import type { Entry } from '../../core/types';
 import { lang, t, weekdayHeaders } from '../../i18n';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 
 type Mode = 'core' | 'mood' | 'physical' | 'mental' | 'emotional';
 
@@ -19,11 +20,12 @@ const MODES: { key: Mode; tKey: string; comp: keyof ComponentVisibility }[] = [
   { key: 'emotional', tKey: 'modeEmotional', comp: 'energyEmotional' },
 ];
 
-export class HistoryComponent {
+export class HistoryComponent extends Component {
   readonly #store: Store;
   #mode: Mode = 'core';
 
   constructor(store: Store) {
+    super();
     this.#store = store;
     document.getElementById('history-modes')?.addEventListener('click', (e) => {
       const btn = (e.target as Element).closest('[data-hmode]');
@@ -39,13 +41,13 @@ export class HistoryComponent {
       if (key) requestEntryLoad(key);
     });
 
-    store.entries.subscribe(() => this.#renderGrid());
-    store.settings.subscribe(() => this.#render());
-    lang.subscribe(() => this.#render());
-    this.#render();
+    this.listen(store.entries, () => this.#renderGrid());
+    this.listen(store.settings, () => this.render());
+    this.listen(lang, () => this.render());
+    this.render();
   }
 
-  #render(): void {
+  protected render(): void {
     this.#renderModes();
     this.#renderGrid();
   }

@@ -3,13 +3,15 @@
 // reads selected zones via getZones() and restores them via setZones().
 import { bodyZones, zoneKeys } from '../../data/static';
 import { lang, t } from '../../i18n';
+import { Component } from '../common/component';
 
-export class BodyComponent {
+export class BodyComponent extends Component {
   readonly #svg: HTMLElement | null;
   readonly #display: HTMLElement | null;
   #levels: Record<string, number> = {};
 
   constructor() {
+    super();
     this.#svg = document.getElementById('body-svg');
     this.#display = document.getElementById('body-display');
     if (!this.#svg) return;
@@ -21,13 +23,13 @@ export class BodyComponent {
 
     document.getElementById('bdy-btn-reset')?.addEventListener('click', () => {
       this.#levels = {};
-      this.#repaint();
+      this.render();
       const note = document.getElementById('fld-body-note') as HTMLTextAreaElement | null;
       if (note) note.value = '';
     });
 
-    lang.subscribe(() => this.#showDisplay());
-    this.#repaint();
+    this.listen(lang, () => this.#showDisplay());
+    this.render();
   }
 
   getZones(): string[] {
@@ -38,7 +40,7 @@ export class BodyComponent {
     this.#levels = {};
     // Persisted entries store zone ids only — restore at medium intensity.
     for (const z of zones) this.#levels[z] = 2;
-    this.#repaint();
+    this.render();
   }
 
   #toggle(zoneId: string): void {
@@ -46,10 +48,10 @@ export class BodyComponent {
     const next = ((this.#levels[zoneId] || 0) + 1) % 4;
     if (next === 0) delete this.#levels[zoneId];
     else this.#levels[zoneId] = next;
-    this.#repaint();
+    this.render();
   }
 
-  #repaint(): void {
+  protected render(): void {
     if (!this.#svg) return;
     for (const part of this.#svg.querySelectorAll<SVGElement>('[data-zone]')) {
       const level = this.#levels[part.getAttribute('data-zone') ?? ''] || 0;

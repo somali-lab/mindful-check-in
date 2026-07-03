@@ -8,6 +8,7 @@ import type { EntryMap, SwingSource } from '../../core/types';
 import { lang, t, weekdayHeaders } from '../../i18n';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 import { renderWeekStrip, setText } from '../common/dom';
 
 const SWING_CARDS: {
@@ -40,11 +41,12 @@ const SWING_CARDS: {
   },
 ];
 
-export class HomeController {
+export class HomeController extends Component {
   readonly #store: Store;
   #swingDays = 28;
 
   constructor(store: Store) {
+    super();
     this.#store = store;
 
     document.getElementById('home-btn-checkin')?.addEventListener('click', () => {
@@ -71,13 +73,13 @@ export class HomeController {
       this.#renderSwings(this.#store.entries.get());
     });
 
-    store.entries.subscribe(() => this.#render());
-    store.settings.subscribe(() => this.#render());
-    lang.subscribe(() => this.#render());
-    this.#render();
+    this.listen(store.entries, () => this.render());
+    this.listen(store.settings, () => this.render());
+    this.listen(lang, () => this.render());
+    this.render();
   }
 
-  #render(): void {
+  protected render(): void {
     const entries = this.#store.entries.get();
     const stats = computeStats(entries);
     setText('home-total', String(stats.total));

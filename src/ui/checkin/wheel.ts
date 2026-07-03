@@ -5,6 +5,7 @@ import type { WheelType } from '../../core/types';
 import { type Wheel, wheels } from '../../data/static';
 import { emotionLabel, lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 const CENTER = 180;
@@ -31,7 +32,7 @@ function svgEl(name: string, attrs: Record<string, string | number>): SVGElement
   return e;
 }
 
-export class WheelComponent {
+export class WheelComponent extends Component {
   readonly #svg: SVGElement | null;
   readonly #display: HTMLElement | null;
   readonly #select: HTMLSelectElement | null;
@@ -40,6 +41,7 @@ export class WheelComponent {
   #variant: WheelType = 'act';
 
   constructor(store: Store) {
+    super();
     this.#svg = document.getElementById('wheel-svg') as SVGElement | null;
     this.#display = document.getElementById('wheel-display');
     this.#select = document.getElementById('sel-wheel') as HTMLSelectElement | null;
@@ -67,24 +69,24 @@ export class WheelComponent {
       this.#setVariantValue(pill.getAttribute('data-wheel') ?? 'act');
       this.#picked = '';
       this.#buildTabs();
-      this.#draw();
+      this.render();
     });
 
     document.getElementById('whl-btn-reset')?.addEventListener('click', () => {
       this.#picked = '';
-      this.#draw();
+      this.render();
       const custom = document.getElementById('fld-custom') as HTMLTextAreaElement | null;
       if (custom) custom.value = '';
     });
 
-    lang.subscribe(() => {
+    this.listen(lang, () => {
       this.#buildTabs();
-      this.#draw();
+      this.render();
     });
     // Only adopt the default when it actually changes — otherwise an unrelated
     // settings save (theme, reminders, …) would snap a manually-chosen wheel back.
     let lastDefault = store.settings.get().defaultWheelType;
-    store.settings.subscribe((s) => {
+    this.listen(store.settings, (s) => {
       if (s.defaultWheelType !== lastDefault) {
         lastDefault = s.defaultWheelType;
         this.setVariant(s.defaultWheelType);
@@ -93,7 +95,7 @@ export class WheelComponent {
 
     this.#setVariantValue(store.settings.get().defaultWheelType);
     this.#buildTabs();
-    this.#draw();
+    this.render();
   }
 
   get picked(): string {
@@ -106,13 +108,13 @@ export class WheelComponent {
 
   setPicked(id: string): void {
     this.#picked = id || '';
-    this.#draw();
+    this.render();
   }
 
   setVariant(variant: string): void {
     this.#setVariantValue(variant);
     this.#buildTabs();
-    this.#draw();
+    this.render();
   }
 
   /** Set the variant (internal source of truth) and reflect it to the hidden select. */
@@ -123,7 +125,7 @@ export class WheelComponent {
 
   #select_(emId: string): void {
     this.#picked = this.#picked === emId ? '' : emId;
-    this.#draw();
+    this.render();
   }
 
   #buildTabs(): void {
@@ -141,7 +143,7 @@ export class WheelComponent {
     }
   }
 
-  #draw(): void {
+  protected render(): void {
     if (!this.#svg) return;
     const config: Wheel = wheels[this.variant];
     const { emotions, colors } = config;

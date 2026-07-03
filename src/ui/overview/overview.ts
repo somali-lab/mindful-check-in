@@ -9,6 +9,7 @@ import { moodLabels } from '../../data/static';
 import { emotionLabel, lang, t } from '../../i18n';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 import { confirmDialog } from '../common/confirm';
 
 type SortKey = 'date' | 'feeling' | 'mood' | 'energy' | 'thoughts' | 'score' | 'actions';
@@ -48,22 +49,23 @@ function truncate(s: string, max: number): string {
   return s.length > max ? `${s.substring(0, max)}…` : s;
 }
 
-export class OverviewController {
+export class OverviewController extends Component {
   readonly #store: Store;
   #ui: OverviewUI = { page: 1, sort: 'date', sortDir: 'desc', filter: 'all', search: '' };
   #filtered: Item[] = [];
   #searchTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(store: Store) {
+    super();
     this.#store = store;
     const saved = store.loadOverviewUI<Partial<OverviewUI> | null>(null);
     if (saved) this.#ui = { ...this.#ui, ...saved };
 
     this.#wireControls();
-    this.#store.entries.subscribe(() => this.#refresh());
-    this.#store.settings.subscribe(() => this.#refresh());
-    lang.subscribe(() => this.#refresh());
-    this.#refresh();
+    this.listen(this.#store.entries, () => this.render());
+    this.listen(this.#store.settings, () => this.render());
+    this.listen(lang, () => this.render());
+    this.render();
   }
 
   #wireControls(): void {
@@ -75,7 +77,7 @@ export class OverviewController {
         this.#searchTimer = setTimeout(() => {
           this.#ui.search = search.value;
           this.#ui.page = 1;
-          this.#refresh();
+          this.render();
         }, 200);
       });
     }
@@ -86,7 +88,7 @@ export class OverviewController {
       filter.addEventListener('change', () => {
         this.#ui.filter = filter.value;
         this.#ui.page = 1;
-        this.#refresh();
+        this.render();
       });
     }
 
@@ -100,7 +102,7 @@ export class OverviewController {
         this.#ui.sort = col;
         this.#ui.sortDir = col === 'date' ? 'desc' : 'asc';
       }
-      this.#refresh();
+      this.render();
     });
 
     document.getElementById('ov-tbody')?.addEventListener('click', (e) => {
@@ -147,7 +149,7 @@ export class OverviewController {
     return Math.max(1, Math.ceil(this.#filtered.length / this.#pageSize()));
   }
 
-  #refresh(): void {
+  protected render(): void {
     this.#filtered = this.#applyFilter();
     this.#buildHead();
     this.#buildBody();

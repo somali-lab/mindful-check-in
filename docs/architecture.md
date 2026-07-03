@@ -67,7 +67,7 @@ public/             — favicon + logos served at the web root
 - **`signal<T>`** — holds a value, notifies subscribers on change, skips no-op sets (`Object.is`), returns an unsubscribe fn, copies listeners before dispatch (safe unsubscribe mid-emit).
 - **`Store`** — the single source of truth and the only writer of storage. Exposes `entries` / `settings` (read-only signals) + `persistError`; mutations (`saveEntry`, `deleteEntry`, `replaceAllEntries`, `saveSettings`) **persist then notify**, and flag `persistError` if a write fails (e.g. quota). The remaining keys go through it too (`load/saveLanguage`, `load/saveOverviewUI`, `clearAllData`) — UI components never hold a `Repository`.
 - **Components subscribe to the store; they never call each other.** Each owns its rendering. The check-in **orchestrator** (`ui/checkin/checkin.ts`) is the one exception: it composes the form sub-components (wheel, body, energy, mood, chips, meta, summary, history, section-nav) and owns collect → validate → `computeMoodScore` → `store.saveEntry`. Cross-view "load this entry into the form" flows through the `entryLoadRequest` signal, not a direct call.
-- **Lifecycle:** components are singletons created once in `main.ts`; views are CSS-toggled, never unmounted — so subscriptions are intentionally never torn down.
+- **Lifecycle:** components extend the `Component` base (`ui/common/component.ts`): signal subscriptions go through `this.listen(...)` (tracked, removable via `destroy()`), and the full-render entry point is conventionally named `render()`. In the app itself components are singletons created once in `main.ts` and views are CSS-toggled, never unmounted — so `destroy()` exists for isolated teardown (tests), not for the shell.
 
 ---
 

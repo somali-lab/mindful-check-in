@@ -11,9 +11,10 @@ import {
   showNotification,
 } from '../../infra/notifications';
 import type { Store } from '../../state/store';
+import { Component } from '../common/component';
 import { showToast } from '../common/toast';
 
-export class ReminderController {
+export class ReminderController extends Component {
   #timer: ReturnType<typeof setInterval> | null = null;
   #enabled = false;
   #intervalMs = 120 * 60 * 1000;
@@ -22,6 +23,7 @@ export class ReminderController {
   #customBody = '';
 
   constructor(store: Store) {
+    super();
     if (!notificationsSupported()) {
       const section = document.getElementById('reminder-section');
       if (section) section.style.display = 'none';
@@ -31,7 +33,7 @@ export class ReminderController {
     document.getElementById('cfg-reminder-test')?.addEventListener('click', () => this.#test());
 
     this.#apply(store.settings.get());
-    store.settings.subscribe((s) => this.#apply(s));
+    this.listen(store.settings, (s) => this.#apply(s));
   }
 
   #apply(s: Settings): void {
