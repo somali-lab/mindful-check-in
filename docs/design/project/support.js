@@ -84,7 +84,8 @@
 
   // src/boot.ts
   var BASE_CSS = `
-    .sc-placeholder{background:rgba(255,255,255,.3);border:1px solid rgba(0,0,0,.5);
+    .sc-placeholder{background:color-mix(in srgb,currentColor 8%,transparent);
+      border:1px solid color-mix(in srgb,currentColor 50%,transparent);
       border-radius:2px;box-sizing:border-box;overflow:hidden}
     @keyframes sc-shine{0%{background-position:100% 50%}100%{background-position:0% 50%}}
     html.sc-dc-streaming .sc-placeholder,
@@ -100,13 +101,14 @@
     html.sc-dc-streaming .sc-interp.sc-missing:nth-child(n+9 of .sc-interp.sc-missing)::before{animation:none;
       background:color-mix(in srgb,currentColor 8%,transparent)}
     .sc-placeholder-error{padding:4px 8px;font:11px/1.4 ui-monospace,monospace;
-      color:rgba(0,0,0,.7);word-break:break-word}
+      color:color-mix(in srgb,currentColor 70%,transparent);word-break:break-word}
     .sc-interp.sc-missing{display:inline-block;width:2em;height:1em;overflow:hidden;
       vertical-align:text-bottom;background:rgba(255,255,255,.3);border:1px solid rgba(0,0,0,.5);
       border-radius:2px;box-sizing:border-box;color:transparent;
       user-select:none}
     .sc-interp.sc-unresolved{font-family:ui-monospace,monospace;font-size:.85em;
-      color:rgba(0,0,0,.5);background:rgba(0,0,0,.05);border-radius:3px;
+      color:color-mix(in srgb,currentColor 50%,transparent);
+      background:color-mix(in srgb,currentColor 10%,transparent);border-radius:3px;
       padding:0 3px}
     .sc-host.sc-has-error{position:relative}
     .sc-logic-error{position:absolute;top:8px;left:8px;z-index:2147483647;max-width:60ch;
@@ -151,6 +153,7 @@
     const React = getReact();
     const rootName = rootNameForDocument(doc, location);
     runtime.markFetched(rootName);
+    runtime.setRootName(rootName);
     runtime.adoptParsed(rootName, parsed);
     fetch(location.href).then((res) => res.ok ? res.text() : "").then((t) => {
       const raw = t ? parseDcText(t) : null;
@@ -177,7 +180,15 @@
           entry.subs.delete(sub);
         };
       }, []);
-      return h(Root, entry.propOverrides || null);
+      const defaults = React.useMemo(() => {
+        const d = {};
+        for (const k in entry.propsMeta || {}) {
+          const v = entry.propsMeta?.[k]?.default;
+          if (v !== void 0) d[k] = v;
+        }
+        return d;
+      }, [entry.propsMeta]);
+      return h(Root, { ...defaults, ...entry.propOverrides || {} });
     }
     const ReactDOM = getReactDOM();
     if (ReactDOM.createRoot)
@@ -282,6 +293,11 @@
 
   // src/encode.ts
   var CAMEL_ATTR = "sc-camel-";
+  var INLINE_TEXT_TAGS = new Set(
+    "a abbr b bdi bdo br cite code del dfn em i ins kbd mark q s samp small span strike strong sub sup u var wbr".split(
+      " "
+    )
+  );
   var RAW_WRAP = {
     select: "sc-raw-select",
     table: "sc-raw-table",
@@ -365,7 +381,7 @@
   }
 
   // src/compile.ts
-  function collectProps(node, isComponent, host) {
+  function collectProps(node, kind, host) {
     const propGetters = [];
     const pseudoClasses = [];
     let hintSize = null;
@@ -382,8 +398,9 @@
         pseudoClasses.push(host.pseudoClass(key.slice(6), value));
         continue;
       }
-      if (isComponent) {
-        if (key.includes("-")) key = kebabToCamel(key);
+      if (kind !== "dom") {
+        if (key.includes("-") && !(kind === "x-import" && (key.startsWith("aria-") || key.startsWith("data-"))))
+          key = kebabToCamel(key);
       } else {
         if (key === "class") key = "className";
         else if (key === "for") key = "htmlFor";
@@ -554,7 +571,7 @@
     const styleRaw = el.getAttribute("style");
     el.removeAttribute("style");
     const styleGet = styleRaw != null ? compileAttr(styleRaw) : null;
-    const { propGetters, hintSize } = collectProps(el, true, host);
+    const { propGetters, hintSize } = collectProps(el, "dc-import", host);
     const kids = walkChildren(el, host);
     return (vals, ctx, key) => {
       const props = {
@@ -563,7 +580,14 @@
         __tplId: tplId,
         __hostStyle: styleGet ? hostPositionStyle(styleGet(vals)) : void 0
       };
-      for (const [k, g] of propGetters) props[k] = g(vals);
+      for (const [k, g] of propGetters) {
+        const v = g(vals);
+        if (k === "dcProps") {
+          if (v && typeof v === "object") Object.assign(props, v);
+          continue;
+        }
+        props[k] = v;
+      }
       if (kids.length) props.children = kids.map((b, j) => b(vals, ctx, j));
       return h(host.component(name), props);
     };
@@ -575,18 +599,23 @@
     const exportNameGet = compileAttr(
       el.getAttribute("component") || el.getAttribute("name") || ""
     );
-    const url = el.getAttribute("from") || el.getAttribute("src") || el.getAttribute("import") || "";
-    const kind = /\.(jsx|tsx)(\?|#|$)/i.test(url) ? "jsx" : "js";
+    const fromRaw = el.getAttribute("from") || el.getAttribute("src") || el.getAttribute("import") || "";
+    const urls = fromRaw.trim() ? fromRaw.trim().split(/\s+/) : [];
+    const url = urls.length ? urls[urls.length - 1] : "";
+    const kindOf = (u) => /\.(jsx|tsx)(\?|#|$)/i.test(u) ? "jsx" : "js";
     const tplId = el.getAttribute("data-dc-tpl");
     const styleRaw = el.getAttribute("style");
     el.removeAttribute("style");
     const styleGet = styleRaw != null ? compileAttr(styleRaw) : null;
     const wrap = tplId != null || styleGet != null;
-    const { propGetters, hintSize } = collectProps(el, true, host);
+    const { propGetters, hintSize } = collectProps(el, "x-import", host);
     const hasContent = el.children.length > 0 || !!(el.textContent || "").trim();
     const kids = hasContent ? walkChildren(el, host) : [];
-    const urlBindable = url.includes("{{");
-    if (url && !urlBindable) host.loadExternal(kind, url);
+    const urlBindable = fromRaw.includes("{{");
+    if (urls.length && !urlBindable) {
+      let prev;
+      for (const u of urls) prev = host.loadExternal(kindOf(u), u, prev);
+    }
     const evalName = (g, vals) => {
       const v = g(vals);
       const s = v == null ? "" : String(v);
@@ -616,11 +645,15 @@
       const props = wrapper ? {} : { key };
       let unresolvedHole = false;
       for (const [k, g] of propGetters) {
-        if (k === "component" || k === "componentFromGlobalScope" || k === "name" || k === "from" || k === "src" || k === "import") {
+        if (k === "component" || k === "componentFromGlobalScope" || k === "from") {
           continue;
         }
         const v = g(vals);
         if (v === void 0) unresolvedHole = true;
+        if (k === "dcProps") {
+          if (v && typeof v === "object") Object.assign(props, v);
+          continue;
+        }
         props[k] = v;
       }
       if (unresolvedHole && ctx?.__htmlStreamingNow) {
@@ -636,13 +669,34 @@
       return wrapper ? h("div", wrapper, h(C, props)) : h(C, props);
     };
   }
+  function contentKey(el) {
+    const clone = el.cloneNode(true);
+    for (const d of clone.querySelectorAll("*")) {
+      while (d.attributes.length) d.removeAttribute(d.attributes[0].name);
+    }
+    const s = clone.innerHTML;
+    let h2 = 5381;
+    for (let i = 0; i < s.length; i++) h2 = (h2 << 5) + h2 + s.charCodeAt(i) | 0;
+    return s.length + "." + (h2 >>> 0).toString(36);
+  }
+  var NEVER_CONTENT_KEYED = new Set(
+    "script style textarea option title select canvas iframe video audio".split(
+      " "
+    )
+  );
+  var NOT_INLINE_SELECTOR = ":not(" + [...INLINE_TEXT_TAGS].join(",") + ")";
   function walkElement(el, host) {
     const realTag = RAW_UNWRAP[el.localName] || el.localName;
     const tplId = el.getAttribute("data-dc-tpl");
-    const { propGetters, pseudoClasses } = collectProps(el, false, host);
+    const inlineOnly = el.childNodes.length > 0 && !NEVER_CONTENT_KEYED.has(realTag) && el.querySelector(NOT_INLINE_SELECTOR) === null;
+    const keySuffix = inlineOnly ? "|" + contentKey(el) : "";
+    const { propGetters, pseudoClasses } = collectProps(el, "dom", host);
     const kids = walkChildren(el, host);
     return (vals, ctx, key) => {
-      const props = { key, "data-dc-tpl": tplId };
+      const props = {
+        key: key + keySuffix,
+        "data-dc-tpl": tplId
+      };
       for (const [k, g] of propGetters) {
         let v = g(vals);
         if (k === "style" && typeof v === "string") v = cssToObj(v);
@@ -904,7 +958,7 @@
             { ...hostBase, className: cls + " sc-has-error" },
             h(
               "div",
-              { className: "sc-logic-error" },
+              { className: "sc-logic-error", "data-omelette-chrome": "" },
               this.__name + ": " + this.state.__err
             ),
             h(Placeholder, {
@@ -937,7 +991,11 @@
         return h(
           "div",
           { ...hostBase, className: cls + (renderErr ? " sc-has-error" : "") },
-          renderErr && h("div", { className: "sc-logic-error" }, renderErr),
+          renderErr && h(
+            "div",
+            { className: "sc-logic-error", "data-omelette-chrome": "" },
+            renderErr
+          ),
           h(
             AncestorContext.Provider,
             { value: [...chain, this.__name] },
@@ -987,7 +1045,8 @@
     }
     return cur;
   }
-  var BABEL_URL = "https://unpkg.com/@babel/standalone@7.26.4/babel.min.js";
+  var BABEL_URL = "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js";
+  var BABEL_SRI = "sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y";
   var GLOBAL_POLL_INTERVAL_MS = 50;
   var GLOBAL_POLL_TIMEOUT_MS = 3e4;
   function createExternalModules(onResolved) {
@@ -1001,6 +1060,7 @@
       babelLoading = new Promise((res, rej) => {
         const s = document.createElement("script");
         s.src = BABEL_URL;
+        s.integrity = BABEL_SRI;
         s.crossOrigin = "anonymous";
         s.onload = () => res();
         s.onerror = rej;
@@ -1008,12 +1068,17 @@
       });
       return babelLoading;
     }
-    function load(kind, url) {
-      if (cache.has(url)) return;
+    const pending = /* @__PURE__ */ new Map();
+    function load(kind, url, after) {
+      const existing = pending.get(url);
+      if (existing) return existing;
       cache.set(url, null);
       console.info("[dc-runtime] x-import: loading", url, "(" + kind + ")");
-      const ready = kind === "jsx" ? ensureBabel() : Promise.resolve();
-      ready.then(() => fetch(url)).then((r) => {
+      const ready = Promise.all([
+        kind === "jsx" ? ensureBabel() : Promise.resolve(),
+        after ?? Promise.resolve()
+      ]);
+      const p = ready.then(() => fetch(url)).then((r) => {
         if (!r.ok) throw new Error("HTTP " + r.status);
         return r.text();
       }).then((src) => {
@@ -1060,6 +1125,8 @@
         );
         onResolved();
       });
+      pending.set(url, p);
+      return p;
     }
     function resolve2(url, name) {
       const entry = cache.get(url);
@@ -1167,9 +1234,64 @@
   );
 
   // src/helmet.ts
+  var DESIGN_DOC_MODE_RE = /<meta\b[^>]*\bname\s*=\s*["']design_doc_mode["'][^>]*\b(?:content|value)\s*=\s*["'](\w+)["']/i;
+  var CANVAS_BG_LIGHT = "#f0eee6";
+  var CANVAS_BG_DARK = "#2e2c26";
   function createHelmetManager(doc, isStreaming) {
     const mounted = /* @__PURE__ */ new Set();
     const live = /* @__PURE__ */ new Map();
+    let designDocMode = null;
+    let canvasStyleEl = null;
+    let appTheme = "light";
+    try {
+      const ds = doc.documentElement.dataset.theme;
+      appTheme = ds === "dark" || ds === "light" ? ds : new URLSearchParams(doc.defaultView?.location.search ?? "").get(
+        "theme"
+      ) === "dark" ? "dark" : "light";
+    } catch {
+    }
+    function applyCanvasBg() {
+      if (!canvasStyleEl) return;
+      const bg = appTheme === "dark" ? CANVAS_BG_DARK : CANVAS_BG_LIGHT;
+      canvasStyleEl.textContent = `html,body{background:${bg}}#dc-root>.sc-host{position:relative}`;
+    }
+    function postDesignMode(mode) {
+      if (window.parent === window) return;
+      try {
+        window.parent.postMessage({ type: "__dc_design_mode", mode }, "*");
+      } catch {
+      }
+    }
+    function setDesignDocMode(mode) {
+      if (mode === designDocMode) return;
+      designDocMode = mode;
+      postDesignMode(mode);
+      if (mode === "canvas") {
+        doc.documentElement.setAttribute("data-dc-canvas", "");
+        canvasStyleEl = doc.createElement("style");
+        canvasStyleEl.setAttribute("data-dc-canvas", "");
+        applyCanvasBg();
+        doc.head.appendChild(canvasStyleEl);
+      } else {
+        doc.documentElement.removeAttribute("data-dc-canvas");
+        canvasStyleEl?.remove();
+        canvasStyleEl = null;
+      }
+    }
+    window.addEventListener("message", (e) => {
+      const type = e.data && e.data.type;
+      if (type === "__dc_theme") {
+        const t = e.data.theme;
+        if (t === "light" || t === "dark") {
+          appTheme = t;
+          doc.documentElement.dataset.theme = t;
+          applyCanvasBg();
+        }
+        return;
+      }
+      if (!designDocMode || type !== "__dc_probe") return;
+      postDesignMode(designDocMode);
+    });
     function compile(node) {
       const raw = [...node.children];
       const helmetClosed = node.nextSibling != null || node.parentNode?.nextSibling != null;
@@ -1222,7 +1344,7 @@
         return null;
       };
     }
-    return { compile };
+    return { compile, setDesignDocMode };
   }
 
   // src/pseudo.ts
@@ -1291,7 +1413,7 @@
       component: (name) => factory.getDC(name),
       placeholder: (props) => h(Placeholder, props),
       helmet: (node) => helmet.compile(node),
-      loadExternal: (kind, url) => external.load(kind, url),
+      loadExternal: (kind, url, after) => external.load(kind, url, after),
       resolveExternal: (url, name) => external.resolve(url, name),
       resolveExternalGlobal: (url, name) => external.resolveGlobal(url, name),
       resolveExternalError: (url, name) => external.getError(url, name),
@@ -1337,9 +1459,14 @@
         )
       );
     }
+    let rootName = null;
     function updateHtml(name, html) {
       const r = registry.get(name);
       r.html = html;
+      if (name === rootName) {
+        const mode = DESIGN_DOC_MODE_RE.exec(html)?.[1] ?? null;
+        if (mode || !r.htmlStreaming) helmet.setDesignDocMode(mode);
+      }
       try {
         r.tpl = compileTemplate(html, host);
       } catch (e) {
@@ -1422,6 +1549,9 @@
       dcUpdate,
       setProps,
       adoptParsed,
+      setRootName: (name) => {
+        rootName = name;
+      },
       markFetched: (name) => {
         registry.get(name).fetched = true;
       },
@@ -1516,6 +1646,7 @@
       StreamableLogic: runtime.StreamableLogic
     };
     Object.assign(window, api);
+    window.__dcContentKeyed = true;
     if (document.readyState !== "loading") api.__dcBoot();
     else document.addEventListener("DOMContentLoaded", () => api.__dcBoot());
   }
