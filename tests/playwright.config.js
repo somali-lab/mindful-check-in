@@ -8,7 +8,9 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // ubuntu-latest runners have 4 vCPUs; the suite is fully parallel-safe
+  // (each test gets its own browser context against the shared Vite server).
+  workers: process.env.CI ? 4 : undefined,
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:3000',
