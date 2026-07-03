@@ -139,7 +139,7 @@ export class SettingsController {
         danger: true,
       });
       if (!ok) return;
-      this.#store.saveSettings(defaultSettings());
+      this.#store.saveSettings(defaultSettings(lang.get()));
       this.#loadForm();
       showToast(t('settingsReset') || 'Settings reset to defaults.', 'success');
     });

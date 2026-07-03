@@ -11,6 +11,11 @@ describe('defaultSettings', () => {
     expect(s.reminderDays).toEqual([1, 2, 3, 4, 5]);
     expect(s.quickActions).toContain('Walk');
   });
+
+  it('seeds quick actions in the requested language, defaulting to English', () => {
+    expect(defaultSettings('nl').quickActions).toContain('Wandeling');
+    expect(defaultSettings().quickActions).toContain('Walk');
+  });
 });
 
 describe('mergeSettings', () => {

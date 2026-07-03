@@ -1,4 +1,5 @@
-import { defaultQuickActions, type Lang } from '../i18n';
+import { defaultQuickActions } from '../data/static';
+import type { Lang } from '../i18n/translations';
 import type { WheelType } from './types';
 
 export type ThemeChoice = 'system' | 'light' | 'dark';
@@ -59,7 +60,7 @@ export function defaultSettings(forLang?: Lang): Settings {
     weatherLocation: 'Amsterdam',
     weatherCoords: null,
     isDefaultQuickActions: true,
-    quickActions: defaultQuickActions(forLang),
+    quickActions: [...defaultQuickActions[forLang ?? 'en']],
     components: {
       weather: true,
       thoughts: true,

@@ -1,6 +1,14 @@
 // Static data: emotion wheels, mood grid, weather codes, body zones.
 // Pure data + two deterministic generators — no DOM, no side effects.
 import type { WheelType } from '../core/types';
+import type { Lang } from '../i18n/translations';
+
+// Seed values for settings.quickActions — stored user data (not UI labels),
+// so they live here rather than in the translation tables.
+export const defaultQuickActions: Record<Lang, readonly string[]> = {
+  en: ['Walk', 'Meditate', 'Call a friend', 'Early night', 'Breathing', 'Journal', 'Stretch', 'Go outside'],
+  nl: ['Wandeling', 'Mediteren', 'Vriend bellen', 'Vroeg slapen', 'Ademhaling', 'Journaling', 'Stretchen', 'Naar buiten'],
+};
 
 export interface WheelEmotion {
   id: string;

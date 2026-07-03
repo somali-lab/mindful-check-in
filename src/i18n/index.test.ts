@@ -1,13 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  defaultQuickActions,
-  emotionLabel,
-  lang,
-  setLang,
-  strings,
-  t,
-  weekdayHeaders,
-} from './index';
+import { emotionLabel, setLang, strings, t, weekdayHeaders } from './index';
 
 afterEach(() => setLang('en'));
 
@@ -35,19 +27,6 @@ describe('t', () => {
     } finally {
       nl.tabOverview = saved;
     }
-  });
-});
-
-describe('defaultQuickActions', () => {
-  it('returns the localized list', () => {
-    expect(defaultQuickActions('en')).toContain('Walk');
-    expect(defaultQuickActions('nl')).toContain('Wandeling');
-  });
-
-  it('tracks the active language by default', () => {
-    setLang('nl');
-    expect(lang.get()).toBe('nl');
-    expect(defaultQuickActions()).toContain('Wandeling');
   });
 });
 

@@ -7,11 +7,10 @@ export { strings } from './translations';
 /** The active UI language. Subscribe to react to changes (e.g. re-render). */
 export const lang = signal<Lang>('en');
 
-type Dict = Record<string, string | readonly string[]>;
+type Dict = Record<string, string>;
 
 function lookup(dict: Dict, key: string): string | undefined {
-  const value = dict[key];
-  return typeof value === 'string' ? value : undefined;
+  return dict[key] || undefined;
 }
 
 /**
@@ -36,12 +35,6 @@ export function t(key: string, params?: Record<string, string | number>): string
 
 export function setLang(next: Lang): void {
   lang.set(next);
-}
-
-/** The localized default quick-action list for a language. */
-export function defaultQuickActions(forLang: Lang = lang.get()): string[] {
-  const value = (strings[forLang] as Dict).defaultQuickActions;
-  return Array.isArray(value) ? [...value] : [];
 }
 
 /** Localized label for an emotion id (e.g. "joy" → `t('emJoy')`), falling back to the id. */

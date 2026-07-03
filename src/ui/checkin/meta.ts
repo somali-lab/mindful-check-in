@@ -102,13 +102,12 @@ export class MetaComponent {
     if (!value) return '';
     const d = new Date(value);
     if (Number.isNaN(d.getTime())) return '';
-    const nl = lang.get() === 'nl';
-    const dn = nl
-      ? ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za']
-      : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const mn = nl
-      ? ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
-      : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return `${dn[d.getDay()]} ${d.getDate()} ${mn[d.getMonth()]} · ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+    const locale = lang.get() === 'nl' ? 'nl' : 'en-GB';
+    const date = new Intl.DateTimeFormat(locale, {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    }).format(d);
+    return `${date} · ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
   }
 }
