@@ -2,13 +2,14 @@
 // `Repository`, never to localStorage directly — so the backing store can be
 // swapped (e.g. IndexedDB) without touching the domain or state layers.
 
-/** The five localStorage keys. Kept stable for data portability across versions. */
+/** The six localStorage keys. Kept stable for data portability across versions. */
 export const STORAGE_KEYS = {
   entries: 'local-mood-tracker-entries',
   settings: 'local-mood-tracker-settings',
   language: 'local-mood-tracker-language',
   overviewUI: 'local-mood-tracker-overview-ui',
   weatherCache: 'local-mood-tracker-weather-cache',
+  quadrant: 'local-mood-tracker-quadrant',
 } as const;
 
 export interface Repository {

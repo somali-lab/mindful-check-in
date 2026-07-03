@@ -1,4 +1,4 @@
-const ROUTES = ['home', 'checkin', 'overview', 'settings', 'info'] as const;
+const ROUTES = ['home', 'checkin', 'overview', 'quadrant', 'settings', 'info'] as const;
 type Route = (typeof ROUTES)[number];
 const DEFAULT_ROUTE: Route = 'home';
 

@@ -27,7 +27,7 @@ ES-module scripts are CORS-blocked under the `file:` protocol. The Vite `classic
 
 ```
 src/
-  index.html        — DOM shell (5 .view sections, dialogs, toast container)
+  index.html        — DOM shell (6 .view sections, dialogs, toast container)
   main.ts           — composition root: build repo + store + services, wire the views
   core/             — domain logic, deterministic* (no DOM/storage/signals) — unit-testable without mocks
     datetime.ts       pad/format/parse keys, weekday headers
@@ -38,6 +38,7 @@ src/
     reminders.ts      isWithinReminderWindow
     demo.ts           generateDemoEntries(lang)
     settings.ts       Settings type, defaultSettings, mergeSettings (boundary coercion)
+    quadrant.ts       Quadrant type, emptyQuadrant, mergeQuadrant (boundary coercion)
     types.ts          Entry, Energy, EntryWeather, EntryMap, Tier, Swing*, WheelType …
   infra/            — side effects behind interfaces
     storage.ts        Repository interface + LocalStorageRepository + MemoryRepository
@@ -48,10 +49,10 @@ src/
     store.ts          Store: reactive entries + settings, persisted via Repository
     load-request.ts   entryLoadRequest signal (overview/history → check-in form)
   ui/               — light-DOM components (one per domain) + shell wiring
-    checkin/  home/  overview/  settings/  info/   — one folder per screen (home/ also holds weather.ts)
+    checkin/  home/  overview/  quadrant/  settings/  info/   — one folder per screen (home/ also holds weather.ts)
     shell/            app-level wiring started once in main.ts: router theme language reminders
     common/           shared UI helpers/services used across screens: dom dom-i18n toast confirm
-  i18n/             — translations.ts (EN+NL tables + quick-action seeds; pure data) + index.ts (t, emotionLabel, lang signal)
+  i18n/             — translations.ts (EN+NL tables + quick-action/quadrant seeds; pure data) + index.ts (t, emotionLabel, lang signal)
   data/             — static.ts (wheels, mood grid labels/colors, body zones, weather codes, mood scores)
   css/              — one stylesheet per concern, @import-ed via src/styles.css
   assets/           — self-hosted fonts + logos
@@ -77,7 +78,7 @@ public/             — favicon + logos served at the web root
 
 Every value is stored inside a **version envelope** `{ v, data }` (`SCHEMA_VERSION` + `MIGRATIONS` in `infra/storage.ts`): a future shape change bumps the version and adds one numbered upgrade step instead of another permanent coercion. Pre-envelope values are read as version 1; export/import files stay unwrapped (plain data), so old backups keep importing.
 
-### Storage keys (5)
+### Storage keys (6)
 
 | Key | Type | Content |
 |-----|------|---------|
@@ -86,6 +87,7 @@ Every value is stored inside a **version envelope** `{ v, data }` (`SCHEMA_VERSI
 | `local-mood-tracker-language` | String | Active language (`"en"` or `"nl"`) |
 | `local-mood-tracker-overview-ui` | Object | Overview table state (search, filter, sort, page) |
 | `local-mood-tracker-weather-cache` | Object | `{ ts, data }` cached current-weather reading |
+| `local-mood-tracker-quadrant` | Object | Change quadrant: four string lists (`internalFrom` / `internalTo` / `externalFrom` / `externalTo`) |
 
 Keys live in one place: `STORAGE_KEYS` (`infra/storage.ts`). The active wheel variant is not a separate key — it's `defaultWheelType` in settings and `wheelType` on each entry.
 

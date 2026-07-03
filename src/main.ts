@@ -9,6 +9,7 @@ import { HomeController } from './ui/home/home';
 import { WeatherComponent } from './ui/home/weather';
 import { InfoController } from './ui/info/info';
 import { OverviewController } from './ui/overview/overview';
+import { QuadrantController } from './ui/quadrant/quadrant';
 import { SettingsController } from './ui/settings/settings';
 import { initLanguage } from './ui/shell/language';
 import { initLogo } from './ui/shell/logo';
@@ -48,6 +49,10 @@ if (document.getElementById('view-home')) {
 
 if (document.getElementById('view-overview')) {
   new OverviewController(store);
+}
+
+if (document.getElementById('view-quadrant')) {
+  new QuadrantController(store);
 }
 
 if (document.getElementById('view-settings')) {

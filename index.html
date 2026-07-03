@@ -27,6 +27,9 @@
           <button type="button" class="icon-btn nav-rail-btn" data-route="overview" aria-label="Overview" title="Overview">
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 14h6m-6-4h6m-6 8h4"/></svg>
           </button>
+          <button type="button" class="icon-btn nav-rail-btn" data-route="quadrant" aria-label="Quadrant" title="Quadrant" data-t-aria="tabQuadrant" data-t-title="tabQuadrant">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>
+          </button>
         </div>
         <div class="nav-rail-footer">
           <button type="button" class="icon-btn nav-rail-btn" data-route="settings" aria-label="Settings" title="Settings">
@@ -50,6 +53,7 @@
               <button type="button" class="nav-tab" data-route="home" data-t="ciTabHome">Home</button>
               <button type="button" class="nav-tab" data-route="checkin" data-t="ciTabCheckin">Check-in</button>
               <button type="button" class="nav-tab" data-route="overview" data-t="overviewTitle">Overview</button>
+              <button type="button" class="nav-tab" data-route="quadrant" data-t="tabQuadrant">Quadrant</button>
               <button type="button" class="nav-tab" data-route="settings" data-t="settingsTitle">Settings</button>
               <button type="button" class="nav-tab" data-route="info" data-t="infoTitle">About</button>
             </nav>
@@ -380,6 +384,49 @@
               </section>
             </div>
           </div>
+          <div class="view" id="view-quadrant">
+            <div class="view-content">
+              <section class="card quadrant-card" data-t-aria="quadrantTitle" aria-label="Change quadrant">
+                <h2 data-t="quadrantTitle">Change quadrant</h2>
+                <p class="intro" data-t="quadrantIntro">What are you moving away from, and what are you working towards?</p>
+                <div class="quadrant-grid" id="quadrant-grid">
+                  <div class="quadrant-panel quadrant-panel--from" data-qpanel="internalFrom">
+                    <h3 class="quadrant-panel-title" data-t="quadrantInternalFrom">Internal · away from</h3>
+                    <ul class="quadrant-list" data-qlist="internalFrom"></ul>
+                    <div class="quadrant-add">
+                      <input type="text" data-qinput="internalFrom" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
+                      <button type="button" class="btn btn--ghost" data-qadd="internalFrom" data-t="quadrantAddBtn">Add</button>
+                    </div>
+                  </div>
+                  <div class="quadrant-panel quadrant-panel--to" data-qpanel="internalTo">
+                    <h3 class="quadrant-panel-title" data-t="quadrantInternalTo">Internal · towards</h3>
+                    <ul class="quadrant-list" data-qlist="internalTo"></ul>
+                    <div class="quadrant-add">
+                      <input type="text" data-qinput="internalTo" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
+                      <button type="button" class="btn btn--ghost" data-qadd="internalTo" data-t="quadrantAddBtn">Add</button>
+                    </div>
+                  </div>
+                  <div class="quadrant-panel quadrant-panel--from" data-qpanel="externalFrom">
+                    <h3 class="quadrant-panel-title" data-t="quadrantExternalFrom">External · away from</h3>
+                    <ul class="quadrant-list" data-qlist="externalFrom"></ul>
+                    <div class="quadrant-add">
+                      <input type="text" data-qinput="externalFrom" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
+                      <button type="button" class="btn btn--ghost" data-qadd="externalFrom" data-t="quadrantAddBtn">Add</button>
+                    </div>
+                  </div>
+                  <div class="quadrant-panel quadrant-panel--to" data-qpanel="externalTo">
+                    <h3 class="quadrant-panel-title" data-t="quadrantExternalTo">External · towards</h3>
+                    <ul class="quadrant-list" data-qlist="externalTo"></ul>
+                    <div class="quadrant-add">
+                      <input type="text" data-qinput="externalTo" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
+                      <button type="button" class="btn btn--ghost" data-qadd="externalTo" data-t="quadrantAddBtn">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+
           <div class="view" id="view-settings">
             <div class="view-content">
               <section class="card settings-card" data-t-aria="settingsTitle" aria-label="Settings">

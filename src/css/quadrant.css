@@ -1,0 +1,123 @@
+/* ── Change quadrant: 2×2 board of editable free-text lists ── */
+.quadrant-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.quadrant-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  background: var(--bg-surface-alt);
+}
+
+/* Subtle direction cue: away-from panels lean warm, towards panels lean calm. */
+.quadrant-panel--from {
+  border-left: 3px solid var(--status-low);
+}
+
+.quadrant-panel--to {
+  border-left: 3px solid var(--status-high);
+}
+
+.quadrant-panel-title {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.quadrant-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.quadrant-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.quadrant-item-text {
+  flex: 1;
+  cursor: text;
+  border-radius: 6px;
+  padding: 2px 4px;
+}
+
+.quadrant-item-text:hover {
+  background: var(--bg-surface);
+}
+
+.quadrant-item-del {
+  border: 0;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 0.72rem;
+  padding: 2px 4px;
+  border-radius: 6px;
+  visibility: hidden;
+}
+
+.quadrant-item:hover .quadrant-item-del,
+.quadrant-item-del:focus-visible {
+  visibility: visible;
+}
+
+.quadrant-item-del:hover {
+  color: var(--delete-color);
+  background: var(--delete-bg-hover);
+}
+
+.quadrant-item-edit {
+  flex: 1;
+  font: inherit;
+  color: inherit;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-input);
+  border-radius: 6px;
+  padding: 2px 4px;
+}
+
+.quadrant-empty {
+  color: var(--text-faint);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.quadrant-add {
+  display: flex;
+  gap: 8px;
+}
+
+.quadrant-add input {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 10px;
+  font-size: 0.875rem;
+  border: 1px solid var(--border-input);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--text-strong);
+}
+
+@media (max-width: 600px) {
+  .quadrant-grid {
+    grid-template-columns: 1fr;
+  }
+}

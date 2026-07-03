@@ -7,8 +7,11 @@ import { emotions } from './strings/emotions';
 import { home } from './strings/home';
 import { info } from './strings/info';
 import { overview } from './strings/overview';
+import { quadrant } from './strings/quadrant';
 import { settings } from './strings/settings';
 import { shell } from './strings/shell';
+
+export { quadrantSeeds } from './strings/quadrant';
 
 export type Lang = 'en' | 'nl';
 
@@ -20,6 +23,7 @@ export const strings = {
     ...checkin.en,
     ...home.en,
     ...overview.en,
+    ...quadrant.en,
     ...settings.en,
     ...info.en,
   },
@@ -30,6 +34,7 @@ export const strings = {
     ...checkin.nl,
     ...home.nl,
     ...overview.nl,
+    ...quadrant.nl,
     ...settings.nl,
     ...info.nl,
   },
