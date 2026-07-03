@@ -2,6 +2,9 @@
   "name": "mindful-check-in",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "tests"
+  ],
   "type": "module",
   "description": "Mindful Check-in — private, offline-first mood/check-in app. TypeScript + Vite, light-DOM web components, builds to a double-clickable classic bundle (file://).",
   "scripts": {
