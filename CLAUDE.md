@@ -19,7 +19,7 @@ Mindful Check-in is a private, offline-first mood/check-in web app. **TypeScript
 ## Commands
 
 - Run locally: `npm run dev` (Vite dev server, native ESM over HTTP). Serve over HTTP, not `file://`, during development (Web Notifications + fetch need a server/secure context).
-- Build: `npm run build` (`tsc --noEmit && vite build` → `dist/`). The output is one classic `app.js` + `assets/style.css` + relative paths, so `dist/index.html` is double-clickable from `file://`.
+- Build: `npm run build` (type-checks `src/` and `vite.config.ts`, then `vite build` → `dist/`). The output is one classic `app.js` + `assets/style.css` + relative paths, so `dist/index.html` is double-clickable from `file://`. The build additionally emits `dist/mindful-check-in.html` — the whole app in a single self-contained file (script, styles, fonts, logos inlined).
 - Unit tests: `npm test` (Vitest, `src/**/*.test.ts`). `npm run test:watch` to watch.
 - E2E tests: `cd tests && npx playwright test` (Playwright auto-starts Vite on `http://localhost:3000`; runs desktop chromium + Pixel-7 mobile). Filter with `--project=chromium`, `-g "<name>"`, `--headed --workers=1`.
 - Lint/format: `npm run lint` / `npm run format` (Biome).

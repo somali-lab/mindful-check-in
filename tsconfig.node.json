@@ -3,21 +3,18 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
+    "lib": ["ESNext"],
+    "types": ["node"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
-    "useDefineForClassFields": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
     "exactOptionalPropertyTypes": true,
-    "noImplicitOverride": true
+    "noEmit": true
   },
-  "include": ["src"]
+  "include": ["vite.config.ts"]
 }

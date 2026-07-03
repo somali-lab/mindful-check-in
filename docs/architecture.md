@@ -13,7 +13,7 @@
 | Tooling | Vite (dev + build), Vitest (unit), Playwright (E2E), Biome (lint/format) |
 | UI | Plain TS classes rendering light DOM — **no framework, no Shadow DOM** |
 | Styling | Hand-written CSS with custom properties (light + dark tokens); no preprocessor |
-| Build output | One classic IIFE `app.js` + `assets/style.css`, relative paths → **double-clickable from `file://`** |
+| Build output | One classic IIFE `app.js` + `assets/style.css`, relative paths → **double-clickable from `file://`**; plus `mindful-check-in.html`, the app as one self-contained file (all assets inlined) |
 | Runtime dependencies | Zero shipped — no UI libraries/frameworks |
 | External services | Open-Meteo Weather + Geocoding APIs (optional, weather widget only) |
 
@@ -174,6 +174,6 @@ The DOM shell + element ids are the stable contract the Playwright suite selects
 ## Build & test
 
 - `npm run dev` — Vite dev (native ESM, HMR).
-- `npm run build` — `tsc --noEmit && vite build` → `dist/` (file://-openable).
+- `npm run build` — type-check (`src/` + `vite.config.ts`) then `vite build` → `dist/` (file://-openable) + the single-file `dist/mindful-check-in.html`.
 - `npm test` — Vitest (`src/**/*.test.ts`, pure core/infra/state).
 - `cd tests && npx playwright test` — Playwright auto-starts Vite on `:3000`; chromium + Pixel-7.
