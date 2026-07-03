@@ -75,6 +75,8 @@ public/             — favicon + logos served at the web root
 
 `localStorage` only, JSON per key; all reads/writes wrapped in try/catch (parse error → default; write failure → `persistError` + degrade). Untrusted data is coerced at the boundary by `normalize` (entries) and `mergeSettings` (settings).
 
+Every value is stored inside a **version envelope** `{ v, data }` (`SCHEMA_VERSION` + `MIGRATIONS` in `infra/storage.ts`): a future shape change bumps the version and adds one numbered upgrade step instead of another permanent coercion. Pre-envelope values are read as version 1; export/import files stay unwrapped (plain data), so old backups keep importing.
+
 ### Storage keys (5)
 
 | Key | Type | Content |

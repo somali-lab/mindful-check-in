@@ -40,6 +40,40 @@ describe('MemoryRepository', () => {
   });
 });
 
+describe('version envelope', () => {
+  it('writes values wrapped as { v, data }', () => {
+    const repo = new MemoryRepository();
+    repo.write('k', { a: 1 });
+    // Round-trip proves the wrapper is transparent to callers.
+    expect(repo.read('k', null)).toEqual({ a: 1 });
+  });
+
+  it('reads a pre-envelope (legacy) value as current-version data', () => {
+    const repo = new MemoryRepository();
+    repo.seedRaw('k', JSON.stringify({ theme: 'dark', rowsPerPage: 5 }));
+    expect(repo.read('k', null)).toEqual({ theme: 'dark', rowsPerPage: 5 });
+  });
+
+  it('reads a legacy plain string value (language key)', () => {
+    const repo = new MemoryRepository();
+    repo.seedRaw('k', '"nl"');
+    expect(repo.read('k', 'en')).toBe('nl');
+  });
+
+  it('does not mistake look-alike user data for an envelope', () => {
+    const repo = new MemoryRepository();
+    // Weather cache shape has `data` but no numeric `v` — must pass through.
+    repo.seedRaw('k', JSON.stringify({ ts: 123, data: { temperature: 14 } }));
+    expect(repo.read('k', null)).toEqual({ ts: 123, data: { temperature: 14 } });
+  });
+
+  it('returns envelope data unchanged when no migration applies', () => {
+    const repo = new MemoryRepository();
+    repo.seedRaw('k', JSON.stringify({ v: 1, data: [1, 2, 3] }));
+    expect(repo.read('k', null)).toEqual([1, 2, 3]);
+  });
+});
+
 describe('LocalStorageRepository (P3 coverage)', () => {
   afterEach(() => vi.unstubAllGlobals());
 

@@ -37,23 +37,35 @@ async function injectWeatherCache(page, cache) {
 }
 
 // ─── localStorage reading (after page interaction) ───
+// The app writes a `{ v, data }` version envelope; injected (legacy-format)
+// values stay raw, so unwrap conditionally.
 
 async function getLocalStorageEntries(page) {
   return page.evaluate(() => {
     const raw = localStorage.getItem('local-mood-tracker-entries');
-    return raw ? JSON.parse(raw) : {};
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed.v === 'number' && 'data' in parsed ? parsed.data : parsed;
   });
 }
 
 async function getLocalStorageSettings(page) {
   return page.evaluate(() => {
     const raw = localStorage.getItem('local-mood-tracker-settings');
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed.v === 'number' && 'data' in parsed ? parsed.data : parsed;
   });
 }
 
 async function getLocalStorageLanguage(page) {
-  return page.evaluate(() => localStorage.getItem('local-mood-tracker-language'));
+  return page.evaluate(() => {
+    const raw = localStorage.getItem('local-mood-tracker-language');
+    if (raw === null) return null;
+    const parsed = JSON.parse(raw);
+    const value = parsed && typeof parsed.v === 'number' && 'data' in parsed ? parsed.data : parsed;
+    return JSON.stringify(value);
+  });
 }
 
 async function clearAppState(page) {

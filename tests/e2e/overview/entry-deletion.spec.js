@@ -79,7 +79,10 @@ test('delete today entry from overview, form resets', async ({ page }) => {
   // Verify entry was removed from storage
   const remaining = await page.evaluate(() => {
     var raw = localStorage.getItem('local-mood-tracker-entries');
-    return raw ? Object.keys(JSON.parse(raw)) : [];
+    if (!raw) return [];
+    var parsed = JSON.parse(raw);
+    var data = parsed && typeof parsed.v === 'number' && 'data' in parsed ? parsed.data : parsed;
+    return Object.keys(data);
   });
   expect(remaining).not.toContain(todayKey);
 });
