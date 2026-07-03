@@ -1,4 +1,8 @@
 /* ── Reset ── */
+/* Breakpoint scale (media queries can't read custom properties, so these are
+   convention, not tokens): ≤600px small-phone tweaks · ≤767px/≥768px the
+   mobile/desktop boundary (nav rail ↔ bottom tabs) · ≥800px wide 2-col home
+   grid · ≤1199px hides the check-in section rail. */
 * {
   box-sizing: border-box;
 }

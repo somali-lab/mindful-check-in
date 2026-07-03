@@ -212,7 +212,7 @@
 /* footer Save / New buttons use the shared .btn system (components.css) */
 
 /* ── Responsive: stack core/body, smaller padding ── */
-@media (max-width: 760px) {
+@media (max-width: 767px) {
   .checkin-card {
     padding: 22px 18px 20px;
   }

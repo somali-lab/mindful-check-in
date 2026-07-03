@@ -109,7 +109,7 @@
   transform: translateX(50%);
 }
 
-@media (max-width: 620px) {
+@media (max-width: 600px) {
   .mood-grid {
     grid-template-rows: repeat(10, 46px);
   }

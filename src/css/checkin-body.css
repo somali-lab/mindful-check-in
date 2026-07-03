@@ -168,7 +168,7 @@
   stroke: var(--body-part-stroke);
 }
 
-@media (max-width: 620px) {
+@media (max-width: 600px) {
   .body-figure-svg {
     width: 160px;
     height: 280px;

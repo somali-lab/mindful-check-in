@@ -203,7 +203,7 @@
 }
 
 /* ── Settings Responsive ── */
-@media (max-width: 620px) {
+@media (max-width: 600px) {
   .settings-general-grid,
   .settings-grid {
     grid-template-columns: 1fr;
