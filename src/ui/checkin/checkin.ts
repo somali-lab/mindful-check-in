@@ -11,6 +11,7 @@ import { t } from '../../i18n';
 import type { WeatherService } from '../../infra/weather';
 import { entryLoadRequest } from '../../state/load-request';
 import type { Store } from '../../state/store';
+import { fieldValue, setFieldValue } from '../common/dom';
 import { showToast } from '../common/toast';
 import { BodyComponent } from './body';
 import { ChipsComponent } from './chips';
@@ -85,27 +86,27 @@ export class CheckinController {
     this.#body.setZones(entry.bodySignals || []);
     this.#energy.setValues(entry.energy || null);
     this.#mood.setSelection(entry.moodRow, entry.moodCol);
-    this.#setField('fld-thoughts', entry.thoughts);
-    this.#setField('fld-custom', entry.customFeelings);
-    this.#setField('fld-body-note', entry.bodyNote);
-    this.#setField('fld-energy-note', entry.energyNote);
-    this.#setField('fld-action', entry.actions);
-    this.#setField('fld-note', entry.note);
+    setFieldValue('fld-thoughts', entry.thoughts);
+    setFieldValue('fld-custom', entry.customFeelings);
+    setFieldValue('fld-body-note', entry.bodyNote);
+    setFieldValue('fld-energy-note', entry.energyNote);
+    setFieldValue('fld-action', entry.actions);
+    setFieldValue('fld-note', entry.note);
     this.#chips.refresh();
   }
 
   #collect(): Entry {
     const partial: Partial<Entry> = {
-      thoughts: this.#fieldValue('fld-thoughts'),
+      thoughts: fieldValue('fld-thoughts').trim(),
       coreFeeling: this.#wheel.picked,
       wheelType: this.#wheel.variant,
-      customFeelings: this.#fieldValue('fld-custom'),
+      customFeelings: fieldValue('fld-custom').trim(),
       bodySignals: this.#body.getZones(),
-      bodyNote: this.#fieldValue('fld-body-note'),
+      bodyNote: fieldValue('fld-body-note').trim(),
       energy: this.#energy.getValues(),
-      energyNote: this.#fieldValue('fld-energy-note'),
-      actions: this.#fieldValue('fld-action'),
-      note: this.#fieldValue('fld-note'),
+      energyNote: fieldValue('fld-energy-note').trim(),
+      actions: fieldValue('fld-action').trim(),
+      note: fieldValue('fld-note').trim(),
     };
     const w = this.#weather.getCached();
     if (w) {
@@ -156,18 +157,8 @@ export class CheckinController {
       'fld-action',
       'fld-note',
     ])
-      this.#setField(id, '');
+      setFieldValue(id, '');
     this.#chips.refresh();
-  }
-
-  #fieldValue(id: string): string {
-    const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
-    return el ? el.value.trim() : '';
-  }
-
-  #setField(id: string, value: string | undefined): void {
-    const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
-    if (el) el.value = value || '';
   }
 
   #applyVisibility(): void {

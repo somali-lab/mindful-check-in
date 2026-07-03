@@ -15,35 +15,20 @@ import type { WheelType } from '../../core/types';
 import { lang, setLang, t } from '../../i18n';
 import type { Store } from '../../state/store';
 import { confirmDialog } from '../common/confirm';
-import { downloadJson, readJsonFile, renderRemovableTags, wireSubTabs } from '../common/dom';
+import {
+  downloadJson,
+  fieldChecked,
+  fieldValue,
+  intFieldValue,
+  readJsonFile,
+  renderRemovableTags,
+  setFieldChecked,
+  setFieldValue,
+  wireSubTabs,
+} from '../common/dom';
 import { showToast } from '../common/toast';
 
 const REMINDER_DEFAULT_DAYS = [1, 2, 3, 4, 5];
-
-function val(id: string): string {
-  const el = document.getElementById(id) as HTMLInputElement | HTMLSelectElement | null;
-  return el ? el.value : '';
-}
-
-function setVal(id: string, value: string | number): void {
-  const el = document.getElementById(id) as HTMLInputElement | HTMLSelectElement | null;
-  if (el) el.value = String(value);
-}
-
-function intVal(id: string, fallback: number): number {
-  const n = Number.parseInt(val(id), 10);
-  return Number.isNaN(n) ? fallback : n;
-}
-
-function checked(id: string): boolean {
-  const el = document.getElementById(id) as HTMLInputElement | null;
-  return el ? el.checked : false;
-}
-
-function setChecked(id: string, value: boolean): void {
-  const el = document.getElementById(id) as HTMLInputElement | null;
-  if (el) el.checked = value;
-}
 
 export class SettingsController {
   readonly #store: Store;
@@ -60,21 +45,21 @@ export class SettingsController {
 
   #loadForm(): void {
     const s = this.#store.settings.get();
-    setVal('cfg-lang', s.defaultLanguage);
-    setVal('cfg-theme', s.theme);
-    setVal('cfg-logo', s.logo);
-    setVal('cfg-wheel', s.defaultWheelType);
-    setVal('cfg-energy-label', s.energyEmotionalLabel);
-    setVal('cfg-location', s.weatherLocation);
-    setVal('cfg-rows', s.rowsPerPage);
-    setVal('cfg-maxchars', s.overviewMaxChars);
-    setVal('cfg-toast', s.toastDuration);
-    setChecked('cfg-reminder-enabled', s.reminderEnabled);
-    setVal('cfg-reminder-interval', s.reminderInterval);
-    setVal('cfg-reminder-start', s.reminderStartHour);
-    setVal('cfg-reminder-end', s.reminderEndHour);
-    setVal('cfg-reminder-title', s.reminderCustomTitle);
-    setVal('cfg-reminder-body', s.reminderCustomBody);
+    setFieldValue('cfg-lang', s.defaultLanguage);
+    setFieldValue('cfg-theme', s.theme);
+    setFieldValue('cfg-logo', s.logo);
+    setFieldValue('cfg-wheel', s.defaultWheelType);
+    setFieldValue('cfg-energy-label', s.energyEmotionalLabel);
+    setFieldValue('cfg-location', s.weatherLocation);
+    setFieldValue('cfg-rows', s.rowsPerPage);
+    setFieldValue('cfg-maxchars', s.overviewMaxChars);
+    setFieldValue('cfg-toast', s.toastDuration);
+    setFieldChecked('cfg-reminder-enabled', s.reminderEnabled);
+    setFieldValue('cfg-reminder-interval', s.reminderInterval);
+    setFieldValue('cfg-reminder-start', s.reminderStartHour);
+    setFieldValue('cfg-reminder-end', s.reminderEndHour);
+    setFieldValue('cfg-reminder-title', s.reminderCustomTitle);
+    setFieldValue('cfg-reminder-body', s.reminderCustomBody);
 
     const days = Array.isArray(s.reminderDays) ? s.reminderDays : REMINDER_DEFAULT_DAYS;
     for (const cb of document.querySelectorAll<HTMLInputElement>('[data-reminder-day]')) {
@@ -91,21 +76,21 @@ export class SettingsController {
 
   #gather(): Settings {
     const s = { ...this.#store.settings.get() };
-    s.defaultLanguage = val('cfg-lang') === 'nl' ? 'nl' : 'en';
-    s.theme = (val('cfg-theme') || 'system') as ThemeChoice;
-    s.logo = (val('cfg-logo') || 'wolf') as LogoChoice;
-    s.defaultWheelType = (val('cfg-wheel') || 'act') as WheelType;
-    s.energyEmotionalLabel = val('cfg-energy-label') || 'social';
-    s.weatherLocation = val('cfg-location');
-    s.rowsPerPage = intVal('cfg-rows', 7);
-    s.overviewMaxChars = intVal('cfg-maxchars', 120);
-    s.toastDuration = intVal('cfg-toast', 4);
-    s.reminderEnabled = checked('cfg-reminder-enabled');
-    s.reminderInterval = intVal('cfg-reminder-interval', 120);
-    s.reminderStartHour = intVal('cfg-reminder-start', 8);
-    s.reminderEndHour = intVal('cfg-reminder-end', 18);
-    s.reminderCustomTitle = val('cfg-reminder-title');
-    s.reminderCustomBody = val('cfg-reminder-body');
+    s.defaultLanguage = fieldValue('cfg-lang') === 'nl' ? 'nl' : 'en';
+    s.theme = (fieldValue('cfg-theme') || 'system') as ThemeChoice;
+    s.logo = (fieldValue('cfg-logo') || 'wolf') as LogoChoice;
+    s.defaultWheelType = (fieldValue('cfg-wheel') || 'act') as WheelType;
+    s.energyEmotionalLabel = fieldValue('cfg-energy-label') || 'social';
+    s.weatherLocation = fieldValue('cfg-location');
+    s.rowsPerPage = intFieldValue('cfg-rows', 7);
+    s.overviewMaxChars = intFieldValue('cfg-maxchars', 120);
+    s.toastDuration = intFieldValue('cfg-toast', 4);
+    s.reminderEnabled = fieldChecked('cfg-reminder-enabled');
+    s.reminderInterval = intFieldValue('cfg-reminder-interval', 120);
+    s.reminderStartHour = intFieldValue('cfg-reminder-start', 8);
+    s.reminderEndHour = intFieldValue('cfg-reminder-end', 18);
+    s.reminderCustomTitle = fieldValue('cfg-reminder-title');
+    s.reminderCustomBody = fieldValue('cfg-reminder-body');
 
     const days: number[] = [];
     for (const cb of document.querySelectorAll<HTMLInputElement>('[data-reminder-day]')) {

@@ -9,6 +9,38 @@ export function setText(id: string, value: string): void {
   if (el) el.textContent = value;
 }
 
+type FormField = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+
+/** Read a form field's value by id ('' if absent). */
+export function fieldValue(id: string): string {
+  const el = document.getElementById(id) as FormField | null;
+  return el ? el.value : '';
+}
+
+/** Set a form field's value by id (no-op if absent). */
+export function setFieldValue(id: string, value: string | number | undefined): void {
+  const el = document.getElementById(id) as FormField | null;
+  if (el) el.value = value === undefined ? '' : String(value);
+}
+
+/** Read a form field as a base-10 integer, falling back when absent or non-numeric. */
+export function intFieldValue(id: string, fallback: number): number {
+  const n = Number.parseInt(fieldValue(id), 10);
+  return Number.isNaN(n) ? fallback : n;
+}
+
+/** Read a checkbox's checked state by id (false if absent). */
+export function fieldChecked(id: string): boolean {
+  const el = document.getElementById(id) as HTMLInputElement | null;
+  return el ? el.checked : false;
+}
+
+/** Set a checkbox's checked state by id (no-op if absent). */
+export function setFieldChecked(id: string, value: boolean): void {
+  const el = document.getElementById(id) as HTMLInputElement | null;
+  if (el) el.checked = value;
+}
+
 /** Trigger a client-side JSON file download. */
 export function downloadJson(filename: string, data: unknown): void {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
