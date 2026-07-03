@@ -1,13 +1,14 @@
 // Static data: emotion wheels, mood grid, weather codes, body zones.
 // Pure data + two deterministic generators — no DOM, no side effects.
 import type { WheelType } from '../core/types';
+import type { StringKey } from '../i18n/translations';
 
 export interface WheelEmotion {
   id: string;
-  tKey: string;
+  tKey: StringKey;
 }
 export interface Wheel {
-  labelKey: string;
+  labelKey: StringKey;
   emotions: WheelEmotion[];
   colors: string[];
 }
@@ -141,7 +142,7 @@ export const moodScores: Record<string, number> = {
   guilt: 1,
 };
 
-export const zoneKeys: Record<string, string> = {
+export const zoneKeys: Record<string, StringKey> = {
   head: 'zoneHead',
   neck: 'zoneNeck',
   chest: 'zoneChest',

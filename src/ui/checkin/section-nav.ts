@@ -3,11 +3,11 @@
 // hidden sections are skipped, and the rail hides itself with fewer than two
 // stops. Rebuilds when the check-in view becomes active, on settings/language
 // change, and tracks the active dot on scroll.
-import { lang, t } from '../../i18n';
+import { lang, type StringKey, t } from '../../i18n';
 import type { Store } from '../../state/store';
 import { Component } from '../common/component';
 
-const SECTIONS: { sel: string; tKey: string }[] = [
+const SECTIONS: { sel: string; tKey: StringKey }[] = [
   { sel: '.ci-intro-row', tKey: 'labelThoughts' },
   { sel: '.ci-core-row', tKey: 'labelCoreFeeling' },
   { sel: '.ci-energy-section', tKey: 'labelEnergy' },

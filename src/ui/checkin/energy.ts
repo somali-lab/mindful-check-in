@@ -4,7 +4,7 @@
 // each meter respects its component-visibility flag. Self-contained: the
 // orchestrator reads values via getValues() and restores them via setValues().
 import type { ComponentVisibility, Settings } from '../../core/settings';
-import { lang, t } from '../../i18n';
+import { lang, type StringKey, t } from '../../i18n';
 import type { Store } from '../../state/store';
 import { Component } from '../common/component';
 
@@ -12,14 +12,14 @@ type EnergyKey = 'physical' | 'mental' | 'emotional';
 type EnergyValues = Record<EnergyKey, number | null>;
 
 const SEGMENTS = 20;
-const METERS: { key: EnergyKey; flag: keyof ComponentVisibility; labelKey: string }[] = [
+const METERS: { key: EnergyKey; flag: keyof ComponentVisibility; labelKey: StringKey }[] = [
   { key: 'physical', flag: 'energyPhysical', labelKey: 'energyPhysical' },
   { key: 'mental', flag: 'energyMental', labelKey: 'energyMental' },
   { key: 'emotional', flag: 'energyEmotional', labelKey: 'energyEmotional' },
 ];
 
-function emotionalLabelKey(settings: Settings): string {
-  const map: Record<string, string> = {
+function emotionalLabelKey(settings: Settings): StringKey {
+  const map: Record<string, StringKey> = {
     emotionalSocial: 'energyEmotionalSocial',
     emotional: 'energyEmotional',
     social: 'energySocial',

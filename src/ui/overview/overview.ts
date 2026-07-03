@@ -6,7 +6,7 @@
 import { dateFromKey, formatDate, formatTime } from '../../core/datetime';
 import type { Entry } from '../../core/types';
 import { moodLabels } from '../../data/static';
-import { emotionLabel, lang, t } from '../../i18n';
+import { emotionLabel, lang, type StringKey, t } from '../../i18n';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
 import { Component } from '../common/component';
@@ -24,7 +24,7 @@ interface OverviewUI {
   search: string;
 }
 
-const COLS: { key: SortKey; tKey: string }[] = [
+const COLS: { key: SortKey; tKey: StringKey }[] = [
   { key: 'date', tKey: 'colDate' },
   { key: 'feeling', tKey: 'colFeeling' },
   { key: 'mood', tKey: 'colMood' },

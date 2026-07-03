@@ -1,5 +1,5 @@
 import { signal } from '../state/signal';
-import { type Lang, strings } from './translations';
+import { type Lang, type StringKey, strings } from './translations';
 
 export type { Lang, StringKey } from './translations';
 export { strings } from './translations';
@@ -16,8 +16,15 @@ function lookup(dict: Dict, key: string): string | undefined {
 /**
  * Translate `key` in the active language, substituting `{param}` placeholders.
  * Falls back to English, then to the raw key when a string is missing/empty.
+ * `key` must be a known `StringKey` — typos fail the type-check. For keys
+ * assembled at runtime, use {@link tDynamic}.
  */
-export function t(key: string, params?: Record<string, string | number>): string {
+export function t(key: StringKey, params?: Record<string, string | number>): string {
+  return tDynamic(key, params);
+}
+
+/** `t()` for keys that are built at runtime (template strings, DOM attributes). */
+export function tDynamic(key: string, params?: Record<string, string | number>): string {
   const active = lang.get();
   // `|| key` so a missing OR empty-string translation falls through to the key,
   // which then triggers the English fallback below.
@@ -39,7 +46,7 @@ export function setLang(next: Lang): void {
 
 /** Localized label for an emotion id (e.g. "joy" → `t('emJoy')`), falling back to the id. */
 export function emotionLabel(id: string): string {
-  return (id ? t(`em${id.charAt(0).toUpperCase()}${id.slice(1)}`) : '') || id;
+  return (id ? tDynamic(`em${id.charAt(0).toUpperCase()}${id.slice(1)}`) : '') || id;
 }
 
 // Monday-first; reuses the reminder-day labels so the weekday strings live in one place.

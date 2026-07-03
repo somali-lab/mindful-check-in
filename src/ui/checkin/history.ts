@@ -5,14 +5,14 @@ import { energyTier, scoreTier, valenceTier } from '../../core/scoring';
 import type { ComponentVisibility } from '../../core/settings';
 import { buildHeatmapData } from '../../core/stats';
 import type { Entry } from '../../core/types';
-import { lang, t, weekdayHeaders } from '../../i18n';
+import { lang, type StringKey, t, weekdayHeaders } from '../../i18n';
 import { requestEntryLoad } from '../../state/load-request';
 import type { Store } from '../../state/store';
 import { Component } from '../common/component';
 
 type Mode = 'core' | 'mood' | 'physical' | 'mental' | 'emotional';
 
-const MODES: { key: Mode; tKey: string; comp: keyof ComponentVisibility }[] = [
+const MODES: { key: Mode; tKey: StringKey; comp: keyof ComponentVisibility }[] = [
   { key: 'core', tKey: 'histCore', comp: 'coreFeeling' },
   { key: 'mood', tKey: 'histMood', comp: 'moodMatrix' },
   { key: 'physical', tKey: 'modePhysical', comp: 'energyPhysical' },

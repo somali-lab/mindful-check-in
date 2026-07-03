@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { emotionLabel, setLang, strings, t, weekdayHeaders } from './index';
+import { emotionLabel, setLang, strings, t, tDynamic, weekdayHeaders } from './index';
 
 afterEach(() => setLang('en'));
 
 describe('t', () => {
   it('substitutes {params} and falls back to the raw key when missing', () => {
-    expect(t('___no_such_key___')).toBe('___no_such_key___');
+    expect(tDynamic('___no_such_key___')).toBe('___no_such_key___');
     expect(t('importDone', { count: 7 })).toContain('7');
   });
 
