@@ -620,3 +620,30 @@ export const strings = {
 } as const;
 
 export type StringKey = keyof (typeof strings)['en'];
+
+// Seed values for settings.quickActions. Not part of `strings`: they are copied
+// into the user's stored settings once (not looked up live via t()), but they
+// are language content, so they live in this file with the other EN/NL text.
+// This module is pure data — importing it does not pull in the lang signal.
+export const defaultQuickActions: Record<Lang, readonly string[]> = {
+  en: [
+    'Walk',
+    'Meditate',
+    'Call a friend',
+    'Early night',
+    'Breathing',
+    'Journal',
+    'Stretch',
+    'Go outside',
+  ],
+  nl: [
+    'Wandeling',
+    'Mediteren',
+    'Vriend bellen',
+    'Vroeg slapen',
+    'Ademhaling',
+    'Journaling',
+    'Stretchen',
+    'Naar buiten',
+  ],
+};

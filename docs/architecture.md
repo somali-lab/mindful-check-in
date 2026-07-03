@@ -29,7 +29,7 @@ ES-module scripts are CORS-blocked under the `file:` protocol. The Vite `classic
 src/
   index.html        — DOM shell (5 .view sections, dialogs, toast container)
   main.ts           — composition root: build repo + store + services, wire the views
-  core/             — PURE domain logic (no DOM, no storage) — 100% unit-testable
+  core/             — domain logic, deterministic* (no DOM/storage/signals) — unit-testable without mocks
     datetime.ts       pad/format/parse keys, weekday headers
     entry.ts          uid(), normalize() (fills + coerces an untrusted entry)
     scoring.ts        calculateStreak, computeMoodScore, tiers, computeSwing
@@ -51,14 +51,16 @@ src/
     checkin/  home/  overview/  settings/  info/   — one folder per screen (home/ also holds weather.ts)
     shell/            app-level wiring started once in main.ts: router theme language reminders
     common/           shared UI helpers/services used across screens: dom dom-i18n toast confirm
-  i18n/             — translations.ts (EN+NL) + index.ts (t, emotionLabel, lang signal)
+  i18n/             — translations.ts (EN+NL tables + quick-action seeds; pure data) + index.ts (t, emotionLabel, lang signal)
   data/             — static.ts (wheels, mood grid labels/colors, body zones, weather codes, mood scores)
   css/              — one stylesheet per concern, @import-ed via src/styles.css
   assets/           — self-hosted fonts + logos
 public/             — favicon + logos served at the web root
 ```
 
-**Dependency rule:** `ui → state/infra/core`, `infra → core`, `core → nothing`. Core never imports DOM, storage, or i18n state.
+**Dependency rule:** `ui → anything below it`, `state → core/infra`, `infra → core`, `core → data + i18n/translations + types`, `data → types`. The point is not the import count but what an import drags in: **pure data modules (`data/static.ts`, `i18n/translations.ts`) are importable from anywhere; signals, DOM, and storage are not.** Only `ui/` and `state/` may touch signals; only `infra/` (and callers holding a `Repository`) touches storage; only `ui/` touches the DOM. Core never imports `i18n/index` (that would pull in the mutable `lang` signal — anything language-, theme- or user-dependent enters core as a parameter).
+
+\* Core is deterministic with two accepted exceptions: the clock (`todayKey()`, `updatedAt`) and `uid()`'s randomness. Everything else: same inputs → same outputs.
 
 ### Reactivity & communication
 

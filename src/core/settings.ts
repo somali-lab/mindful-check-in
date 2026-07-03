@@ -1,5 +1,5 @@
-import { defaultQuickActions } from '../data/static';
-import type { Lang } from '../i18n/translations';
+// i18n/translations is pure data (no lang signal) — allowed in core.
+import { defaultQuickActions, type Lang } from '../i18n/translations';
 import type { WheelType } from './types';
 
 export type ThemeChoice = 'system' | 'light' | 'dark';
