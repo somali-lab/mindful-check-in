@@ -201,7 +201,10 @@ html[data-theme="dark"] svg:not(.body-figure-svg):not(.emotion-wheel) {
   filter: brightness(0.9);
 }
 
-/* ── Utility ── */
+/* ── Utility ──
+   State-class convention (see docs/architecture.md): .is-active marks the
+   current tab/mode/route/section, .is-selected the chosen value in a
+   single-choice control, .is-on an element of a multi-select/fill control. */
 .is-hidden {
   display: none !important;
 }

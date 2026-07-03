@@ -154,6 +154,7 @@ First entry of a day: `YYYY-MM-DD` (e.g. `2026-04-12`). Additional same-day entr
 | Translatable text / placeholder / aria / title | `data-t` / `data-t-placeholder` / `data-t-aria` / `data-t-title` | applied by `ui/common/dom-i18n.ts` |
 | Active route | `body[data-active-route]` + `.is-active` on `[data-route]`/`.view` | CSS-driven view + footer-bar switching |
 | Theme / language pick | `data-theme-pick` / `data-lang-pick` | switch buttons |
+| State classes | `.is-active` / `.is-selected` / `.is-on` | `is-active` = the current tab/mode/route/section; `is-selected` = the chosen value in a single-choice control (wheel segment, mood cell, theme/language button); `is-on` = an element of a multi-select or fill control (body part, energy segment, action pill) |
 
 The DOM shell + element ids are the stable contract the Playwright suite selects on.
 
