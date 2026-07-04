@@ -40,10 +40,8 @@ function coerceItem(value: unknown): QuadrantItem | null {
 
 /**
  * Coerce an untrusted (stored/imported/seed) value into a valid Quadrant:
- * panel items may be strings or { text, done } objects; anything else is
- * dropped. Two retired centre-hub shapes migrate into quadrant 1
- * (`internalTo`, who/what matters): a `values` string list (compass chips)
- * and the single `center` string that preceded it.
+ * panel items may be strings (the seed authoring shape, read as not-done)
+ * or { text, done } objects; anything else is dropped.
  */
 export function mergeQuadrant(raw: unknown): Quadrant {
   const out = emptyQuadrant();
@@ -53,11 +51,6 @@ export function mergeQuadrant(raw: unknown): Quadrant {
     const value = r[key];
     if (!Array.isArray(value)) continue;
     out[key] = value.map(coerceItem).filter((v): v is QuadrantItem => v !== null);
-  }
-  const legacy = Array.isArray(r.values) ? r.values : [r.center];
-  for (const value of legacy) {
-    const item = coerceItem(value);
-    if (item && !out.internalTo.some((it) => it.text === item.text)) out.internalTo.push(item);
   }
   return out;
 }

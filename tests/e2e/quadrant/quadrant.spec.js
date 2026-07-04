@@ -278,24 +278,6 @@ test('the hub is the static noticing anchor, not an editor', async ({ page }) =>
   await expect(hub.locator('input')).toHaveCount(0);
 });
 
-test('legacy compass values migrate into quadrant 1 on load', async ({ page }) => {
-  await page.addInitScript(() => {
-    const q = {
-      internalFrom: [],
-      internalTo: [{ text: 'Own item', done: false }],
-      externalFrom: [],
-      externalTo: [],
-      values: ['My family', 'Health'],
-    };
-    localStorage.setItem('local-mood-tracker-quadrant', JSON.stringify({ v: 1, data: q }));
-  });
-  await page.goto('/#quadrant');
-  const list = page.locator('[data-qlist="internalTo"]');
-  await expect(list).toContainText('Own item');
-  await expect(list).toContainText('My family');
-  await expect(list).toContainText('Health');
-});
-
 // ─── Delete ───
 
 test('the ✕ button removes an item, and removal survives reload (no re-seed)', async ({ page }) => {

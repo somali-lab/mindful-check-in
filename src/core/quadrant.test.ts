@@ -54,20 +54,6 @@ describe('mergeQuadrant', () => {
     expect(q.internalFrom).toEqual([{ text: 'ok', done: false }]);
     expect(q.internalTo).toEqual([]);
   });
-
-  it('migrates retired centre-hub data (values list, center string) into quadrant 1', () => {
-    expect(mergeQuadrant({ internalFrom: ['x'] }).internalTo).toEqual([]); // nothing legacy
-    expect(mergeQuadrant({ values: ['Calm', 7, '  ', 'Health'] }).internalTo).toEqual([
-      { text: 'Calm', done: false },
-      { text: 'Health', done: false },
-    ]);
-    expect(mergeQuadrant({ center: 'my family' }).internalTo).toEqual([
-      { text: 'my family', done: false },
-    ]);
-    // Values merge after existing items, without duplicating identical text.
-    const q = mergeQuadrant({ internalTo: ['Calm', 'Rest'], values: ['Calm', 'Health'] });
-    expect(q.internalTo.map((i) => i.text)).toEqual(['Calm', 'Rest', 'Health']);
-  });
 });
 
 describe('quadrantSeeds', () => {

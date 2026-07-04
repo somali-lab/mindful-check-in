@@ -4,8 +4,8 @@ import type { QuadrantSeed } from '../../core/quadrant';
 
 export const quadrant = {
   en: {
-    tabQuadrant: 'Quadrant',
-    quadrantTitle: 'Change quadrant',
+    tabQuadrant: 'Matrix',
+    quadrantTitle: 'Change your matrix',
     quadrantIntro:
       'What are you moving away from, and what are you working towards — inside (thoughts, feelings) and outside (behaviour)? Edit the items so the board becomes yours — fill the quadrants in the order of the numbers.',
     quadrantStep1Title: 'Who or what matters?',
@@ -30,11 +30,11 @@ export const quadrant = {
     quadrantHubTitle: 'I notice',
     quadrantHubSub: 'here and now — from here you see which way you are moving',
     quadrantClear: 'Clear board',
-    quadrantClearConfirm: 'Empty the whole quadrant — all items? This cannot be undone.',
+    quadrantClearConfirm: 'Empty the whole matrix — all items? This cannot be undone.',
   },
   nl: {
-    tabQuadrant: 'Kwadrant',
-    quadrantTitle: 'Verander je kwadrant',
+    tabQuadrant: 'Matrix',
+    quadrantTitle: 'Verander je matrix',
     quadrantIntro:
       'Waar beweeg je vanaf, en waar werk je naartoe — vanbinnen (gedachten, gevoelens) en vanbuiten (gedrag)? Pas de items aan zodat het bord van jou wordt — vul de vakken in de volgorde van de nummers.',
     quadrantStep1Title: 'Wie of wat is belangrijk?',
