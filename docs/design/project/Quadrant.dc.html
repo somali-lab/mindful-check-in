@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/storyforge-design-server-99b946e5-bef3-47d0-aae6-b954807ba469/tokens/fonts.css">
+<script src="./image-slot.js"></script>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0}
+  image-slot::part(frame){background:transparent}
+  image-slot::part(ring){display:none}
+</style>
+</helmet>
+
+<div style="min-width:100%;width:max-content;min-height:100vh;box-sizing:border-box;padding:40px 48px 80px;background:#e7e5df;font-family:Geist,sans-serif">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:6px">
+    <div>
+      <div style="font:600 12px Geist;letter-spacing:.14em;text-transform:uppercase;color:#9d5f33">Mindful Check-in · kwadrant</div>
+      <div style="font:600 30px/1.1 Lora,serif;color:#2c261f;margin-top:8px">Het kwadrant met een kompas-midden</div>
+      <div style="font:400 14px/1.55 Geist;color:#6f6354;margin-top:8px;max-width:660px">De vier vakken (weg van ↔ naar toe × binnen ↔ buiten) krijgen pas richting ten opzichte van wat er voor jou toe doet. Dat <b>kompas</b> zit nu in het hart van de matrix — je oriënteert alles erop. Licht en donker, allebei klikbaar en aanpasbaar.</div>
+    </div>
+    <div style="display:flex;gap:6px;background:#fbf8f2;border:1px solid #ddd2bf;border-radius:999px;padding:5px;flex:none">
+      <button onClick="{{ toNl }}" style="{{ nlBtn }}">NL</button>
+      <button onClick="{{ toEn }}" style="{{ enBtn }}">EN</button>
+    </div>
+  </div>
+
+  <section style="margin-top:30px">
+    <div style="display:flex;gap:44px;align-items:flex-start;flex-wrap:wrap">
+
+      <div id="2a" style="flex:none">
+        <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:12px">
+          <span style="font:700 12px Geist;letter-spacing:.04em;background:#2c261f;color:#f4efe6;padding:4px 9px;border-radius:6px">2a</span>
+          <span style="font:500 13px Geist;color:#6f6354">Medaillon — licht</span>
+        </div>
+        <div style="width:820px;background:#f4efe6;border-radius:18px;box-shadow:0 10px 34px rgba(60,45,30,.12);overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid #e2d8c6">
+            <div style="display:flex;align-items:center;gap:10px">
+              <image-slot id="q-wolf-2a" shape="rounded" radius="7" fit="cover" placeholder="wolf" src="./assets/wolf-kw-light.png" style="width:32px;height:42px;flex:none"></image-slot>
+              <span style="font:600 16px Lora,serif;color:#2c261f">{{ t.appName }}</span>
+            </div>
+            <div style="display:flex;gap:2px;background:#ece2d0;border-radius:999px;padding:4px">
+              <span style="padding:6px 12px;border-radius:999px;color:#8c7e6b;font:500 12px Geist">{{ t.navHome }}</span>
+              <span style="padding:6px 12px;border-radius:999px;color:#8c7e6b;font:500 12px Geist">{{ t.navCheckin }}</span>
+              <span style="padding:6px 12px;border-radius:999px;color:#8c7e6b;font:500 12px Geist">{{ t.navOverview }}</span>
+              <span style="padding:6px 12px;border-radius:999px;background:#bf7b46;color:#fff;font:600 12px Geist">{{ t.navQuadrant }}</span>
+              <span style="padding:6px 12px;border-radius:999px;color:#8c7e6b;font:500 12px Geist">{{ t.navSettings }}</span>
+            </div>
+          </div>
+          <div style="padding:26px 26px 30px">
+            <div style="font:600 26px/1.1 Lora,serif;color:#2c261f">{{ t.title }}</div>
+            <div style="font:400 13.5px/1.5 Geist;color:#8c7e6b;margin-top:8px;max-width:560px">{{ t.intro }}</div>
+            <div style="margin-top:24px">{{ bLight }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="2b" style="flex:none">
+        <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:12px">
+          <span style="font:700 12px Geist;letter-spacing:.04em;background:#2c261f;color:#f4efe6;padding:4px 9px;border-radius:6px">2b</span>
+          <span style="font:500 13px Geist;color:#6f6354">Medaillon — donker</span>
+        </div>
+        <div style="width:820px;background:#211b15;border-radius:18px;box-shadow:0 10px 34px rgba(0,0,0,.3);overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid #352c22">
+            <div style="display:flex;align-items:center;gap:10px">
+              <image-slot id="q-wolf-2b" shape="rounded" radius="7" fit="cover" placeholder="wolf" src="./assets/wolf-kw-dark.png" style="width:32px;height:42px;flex:none"></image-slot>
+              <span style="font:600 16px Lora,serif;color:#ece3d4">{{ t.appName }}</span>
+            </div>
+            <div style="display:flex;gap:2px;background:#2b241c;border-radius:999px;padding:4px">
+              <span style="padding:6px 12px;border-radius:999px;color:#9b8b76;font:500 12px Geist">{{ t.navHome }}</span>
+              <span style="padding:6px 12px;border-radius:999px;color:#9b8b76;font:500 12px Geist">{{ t.navCheckin }}</span>
+              <span style="padding:6px 12px;border-radius:999px;color:#9b8b76;font:500 12px Geist">{{ t.navOverview }}</span>
+              <span style="padding:6px 12px;border-radius:999px;background:#d99458;color:#211b15;font:600 12px Geist">{{ t.navQuadrant }}</span>
+              <span style="padding:6px 12px;border-radius:999px;color:#9b8b76;font:500 12px Geist">{{ t.navSettings }}</span>
+            </div>
+          </div>
+          <div style="padding:26px 26px 30px">
+            <div style="font:600 26px/1.1 Lora,serif;color:#ece3d4">{{ t.title }}</div>
+            <div style="font:400 13.5px/1.5 Geist;color:#9b8b76;margin-top:8px;max-width:560px">{{ t.intro }}</div>
+            <div style="margin-top:24px">{{ bDark }}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1780,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  L = { bg:'#f4efe6', surface:'#fbf8f2', surface2:'#efe7d9', border:'#ddd2bf', borderSoft:'#e9e1d1', text:'#2c261f', textMute:'#8c7e6b', copper:'#bf7b46' };
+  D = { bg:'#211b15', surface:'#2b241c', surface2:'#352c22', border:'#3e3429', borderSoft:'#2f2820', text:'#ece3d4', textMute:'#9b8b76', copper:'#d99458' };
+
+  QUADS = [
+    {id:'ia', axis:'internal', dir:'away'},
+    {id:'it', axis:'internal', dir:'towards'},
+    {id:'ea', axis:'external', dir:'away'},
+    {id:'et', axis:'external', dir:'towards'}
+  ];
+
+  SEED = {
+    ia:['Piekeren (m.n. om de naasten) \u2192 geen invloed','"Oh, kan nog wel even" (werk pakken dat niet van jou is)','Brandjes blussen','Overzicht kwijtraken','\u2212/\u2212 concentratie','Kort lontje / irritatie','"Oh shit, hoe vandaag?"'],
+    it:['Minder moe \u2192 uitgerust wakker','Effectief','Mentale rust','"Niet van mij" (cirkel van invloed)','Grenzen van hulpvaardigheid (h)erkennen \u2014 ook m.b.t. emoties','Emoties toelaten (/verwelkomen)','Positief gevoel','"Gaat het niet, dan gaat het niet"'],
+    ea:['Fictieve boeken lezen','Doorgaan','"Bal onder water"','\u0027s Avonds werken','Vermijden van negatieve consequenties (\u2192 kan het ook weer wegleggen)','Lijstjes maken','Veelal gapen bij opstaan'],
+    et:['Korte herstelmomenten: o.a. fietsen, gamen, wandelen, met katten spelen','Op tijd naar bed','Snoep laten liggen','Emoties uiten / geraakt zijn \u2014 o.a. verbaal als non-verbaal','Incheckmomenten doen']
+  };
+  SEED_VALUES = ['Rust','Gezondheid','Verbondenheid'];
+
+  T = {
+    nl:{ appName:'Mindful Check-in', navHome:'Start', navCheckin:'Inchecken', navOverview:'Overzicht', navQuadrant:'Kwadrant', navSettings:'Instellingen',
+      title:'Verander je kwadrant',
+      intro:'Waar beweeg je vanaf, en waar werk je naartoe — vanbinnen (gedachten, gevoelens) en vanbuiten (gedrag)? Pas de items aan zodat het bord van jou wordt.',
+      internal:'Binnen', internalSub:'gedachten & gevoel', external:'Buiten', externalSub:'gedrag',
+      away:'Weg van', towards:'Naar toe', axisIn:'Intern', axisOut:'Extern',
+      add:'Toevoegen', addPh:'Voeg iets toe…',
+      compass:'Kompas', valuesQ:'Wie of wat is belangrijk voor je?', valuePh:'Waarde…' },
+    en:{ appName:'Mindful Check-in', navHome:'Home', navCheckin:'Check-in', navOverview:'Overview', navQuadrant:'Quadrant', navSettings:'Settings',
+      title:'Change quadrant',
+      intro:'What are you moving away from, and what are you working towards — inside (thoughts, feelings) and outside (behaviour)? Edit the items so the board becomes yours.',
+      internal:'Inside', internalSub:'thoughts & feelings', external:'Outside', externalSub:'behaviour',
+      away:'Away from', towards:'Towards', axisIn:'Internal', axisOut:'External',
+      add:'Add', addPh:'Add an item…',
+      compass:'Compass', valuesQ:'Who or what matters to you?', valuePh:'Value…' }
+  };
+
+  state = {
+    lang:'nl',
+    items: { lt:this._seed(), dk:this._seed() },
+    values: { lt:this.SEED_VALUES.slice(), dk:this.SEED_VALUES.slice() },
+    draft:{}, valDraft:{},
+    editing:null, editDraft:''
+  };
+  _seed(){ const o={}; for(const k in this.SEED) o[k]=this.SEED[k].slice(); return o; }
+
+  dirTone(dir,dark){
+    if(dir==='away') return dark ? {accent:'#cf7d4a', eyebrow:'#dd8a52', soft:'#32261d'} : {accent:'#b6683c', eyebrow:'#a2542f', soft:'#f6ebe1'};
+    return dark ? {accent:'#a2b56d', eyebrow:'#a7ba72', soft:'#282a1e'} : {accent:'#788c50', eyebrow:'#5f7040', soft:'#edf0e1'};
+  }
+
+  // ---- mutations ----
+  setDraft(k,v){ this.setState(s=>({draft:Object.assign({},s.draft,{[k]:v})})); }
+  addItem(opt,q){ const k=opt+'|'+q; const v=(this.state.draft[k]||'').trim(); if(!v) return;
+    this.setState(s=>{ const items=Object.assign({},s.items); items[opt]=Object.assign({},items[opt]); items[opt][q]=items[opt][q].concat([v]);
+      return {items, draft:Object.assign({},s.draft,{[k]:''})}; }); }
+  delItem(opt,q,idx){ this.setState(s=>{ const items=Object.assign({},s.items); items[opt]=Object.assign({},items[opt]); items[opt][q]=items[opt][q].filter((_,i)=>i!==idx); return {items}; }); }
+  startEdit(opt,q,idx,cur){ this.setState({editing:{opt,q,idx}, editDraft:cur}); }
+  setEditDraft(v){ this.setState({editDraft:v}); }
+  commitEdit(){ const e=this.state.editing; if(!e) return; const v=this.state.editDraft.trim();
+    this.setState(s=>{ const items=Object.assign({},s.items); items[e.opt]=Object.assign({},items[e.opt]); const arr=items[e.opt][e.q].slice();
+      if(v) arr[e.idx]=v; else arr.splice(e.idx,1); items[e.opt][e.q]=arr; return {items, editing:null, editDraft:''}; }); }
+  cancelEdit(){ this.setState({editing:null, editDraft:''}); }
+  setValDraft(opt,v){ this.setState(s=>({valDraft:Object.assign({},s.valDraft,{[opt]:v})})); }
+  addValue(opt){ const v=(this.state.valDraft[opt]||'').trim(); if(!v) return;
+    this.setState(s=>({ values:Object.assign({},s.values,{[opt]:s.values[opt].concat([v])}), valDraft:Object.assign({},s.valDraft,{[opt]:''}) })); }
+  delValue(opt,idx){ this.setState(s=>({ values:Object.assign({},s.values,{[opt]:s.values[opt].filter((_,i)=>i!==idx)}) })); }
+
+  // ---- pieces ----
+  eyebrow(text,col){ return React.createElement('div',{style:{font:'700 11px Geist,sans-serif',letterSpacing:'.11em',textTransform:'uppercase',color:col}}, text); }
+
+  itemsList(opt,q,pal,tone){
+    const h=React.createElement, arr=this.state.items[opt][q]||[], ed=this.state.editing;
+    if(!arr.length) return h('div',{style:{font:'italic 400 13.5px/1.4 Lora,serif',color:pal.textMute,opacity:.8,padding:'2px 0'}}, this.state.lang==='nl'?'Nog niets — voeg iets toe.':'Nothing yet — add something.');
+    return h('div',{style:{display:'flex',flexDirection:'column',gap:4}},
+      arr.map((txt,idx)=>{
+        const editing=ed&&ed.opt===opt&&ed.q===q&&ed.idx===idx;
+        if(editing){
+          return h('input',{key:idx,autoFocus:true,value:this.state.editDraft,
+            onChange:(e)=>this.setEditDraft(e.target.value),
+            onKeyDown:(e)=>{ if(e.key==='Enter') this.commitEdit(); if(e.key==='Escape') this.cancelEdit(); },
+            onBlur:()=>this.commitEdit(),
+            style:{width:'100%',boxSizing:'border-box',background:pal.surface,border:'1px solid '+tone.accent,borderRadius:8,padding:'7px 10px',font:'400 14.5px Lora,serif',color:pal.text,outline:'none'}});
+        }
+        return h('div',{key:idx,style:{display:'flex',alignItems:'flex-start',gap:8,padding:'3px 2px'}},
+          h('span',{style:{width:6,height:6,borderRadius:'50%',background:tone.accent,marginTop:8,flex:'none'}}),
+          h('div',{onClick:()=>this.startEdit(opt,q,idx,txt),title:'Edit',style:{flex:1,minWidth:0,font:'400 14.5px/1.35 Lora,serif',color:pal.text,cursor:'text'}}, txt),
+          h('div',{onClick:()=>this.delItem(opt,q,idx),title:'Remove',style:{flex:'none',width:20,height:20,borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:pal.textMute,fontSize:14,lineHeight:1,opacity:.55}},'\u00d7')
+        );
+      })
+    );
+  }
+
+  addRow(opt,q,pal,tone){
+    const h=React.createElement, k=opt+'|'+q, v=this.state.draft[k]||'', t=this.T[this.state.lang];
+    return h('div',{style:{display:'flex',gap:8,marginTop:10}},
+      h('input',{value:v,placeholder:t.addPh,
+        onChange:(e)=>this.setDraft(k,e.target.value),
+        onKeyDown:(e)=>{ if(e.key==='Enter') this.addItem(opt,q); },
+        style:{flex:1,minWidth:0,background:pal.surface,border:'1px solid '+pal.border,borderRadius:9,padding:'9px 12px',font:'400 13.5px Geist,sans-serif',color:pal.text,outline:'none'}}),
+      h('button',{onClick:()=>this.addItem(opt,q),
+        style:{flex:'none',background:'transparent',border:'1px solid '+tone.accent,color:tone.eyebrow,borderRadius:9,padding:'0 14px',font:'600 13px Geist,sans-serif',cursor:'pointer'}}, t.add)
+    );
+  }
+
+  quadEyebrow(q){ const t=this.T[this.state.lang]; return (t[q.axis]+' \u00b7 '+t[q.dir]); }
+
+  compassHub(opt,pal,size){
+    const h=React.createElement, t=this.T[this.state.lang], dark=pal===this.D;
+    const vals=this.state.values[opt]||[], v=this.state.valDraft[opt]||'', onCol=dark?'#211b15':'#fff';
+    const chips=vals.map((x,i)=>h('div',{key:i,style:{display:'inline-flex',alignItems:'center',gap:5,background:pal.copper,color:onCol,borderRadius:999,padding:'4px 10px',font:'600 12px Geist,sans-serif'}},
+      h('span',null,x),
+      h('span',{onClick:()=>this.delValue(opt,i),style:{cursor:'pointer',opacity:.7,fontWeight:700,fontSize:13,lineHeight:1}},'\u00d7')));
+    const add=h('div',{key:'add',style:{display:'inline-flex',alignItems:'center',gap:4,background:dark?pal.surface2:'#fbf3ea',border:'1px dashed '+pal.copper,borderRadius:999,padding:'2px 4px 2px 11px'}},
+      h('input',{value:v,placeholder:t.valuePh,onChange:(e)=>this.setValDraft(opt,e.target.value),onKeyDown:(e)=>{ if(e.key==='Enter') this.addValue(opt); },
+        style:{border:'none',outline:'none',background:'transparent',font:'500 12.5px Geist,sans-serif',color:pal.text,width:70}}),
+      h('div',{onClick:()=>this.addValue(opt),style:{width:22,height:22,borderRadius:999,background:pal.copper,color:onCol,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',font:'600 14px Geist,sans-serif',flex:'none'}},'+'));
+    const compassIcon=h('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:pal.copper,strokeWidth:1.7,strokeLinecap:'round',strokeLinejoin:'round'},
+      h('circle',{cx:12,cy:12,r:9}), h('path',{d:'M15.5 8.5l-2 5-5 2 2-5z'}));
+    return h('div',{style:{width:size,height:size,borderRadius:'50%',background:pal.surface,border:'2px solid '+pal.copper,boxShadow:dark?'0 6px 22px rgba(0,0,0,.35)':'0 6px 20px rgba(150,95,50,.16)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',gap:8,padding:'0 18px'}},
+      h('div',{style:{display:'flex',alignItems:'center',gap:6}}, compassIcon, this.eyebrow(t.compass, pal.copper)),
+      h('div',{style:{font:'500 13.5px/1.25 Lora,serif',color:pal.text,maxWidth:190}}, t.valuesQ),
+      h('div',{style:{display:'flex',flexWrap:'wrap',gap:6,justifyContent:'center',width:'100%'}}, chips.concat([add]))
+    );
+  }
+
+  buildMedallion(opt,pal){
+    const h=React.createElement, dark=pal===this.D, line=dark?'#463a2c':'#dcc7a8';
+    const cell=(q)=>{ const tone=this.dirTone(q.dir,dark); const rightCol=q.id==='it'||q.id==='et'; const topRow=q.id==='ia'||q.id==='it';
+      return h('div',{style:{minWidth:0,boxSizing:'border-box',paddingTop:topRow?36:10,paddingBottom:topRow?22:36,paddingLeft:rightCol?46:8,paddingRight:rightCol?8:46}},
+        this.itemsList(opt,q.id,pal,tone),
+        this.addRow(opt,q.id,pal,tone)); };
+    const get=(id)=>this.QUADS.find(x=>x.id===id);
+    const t=this.T[this.state.lang];
+    const BAND=248;
+    const alabel=(txt,extra)=>h('div',{key:'al-'+txt,style:Object.assign({font:'700 11px Geist,sans-serif',letterSpacing:'.16em',textTransform:'uppercase',color:pal.copper,background:pal.bg,padding:'3px 12px',borderRadius:6,zIndex:3,whiteSpace:'nowrap'},extra)}, txt);
+    const hbar=h('div',{key:'hbar',style:{gridColumn:'1 / span 2',gridRow:2,display:'flex',alignItems:'center'}}, h('div',{style:{height:2,width:'100%',background:line}}));
+    const hub=h('div',{key:'hub',style:{gridColumn:'1 / span 2',gridRow:2,display:'flex',alignItems:'center',justifyContent:'center',zIndex:2}}, this.compassHub(opt,pal,BAND-8));
+    return h('div',{style:{position:'relative',display:'grid',gridTemplateColumns:'1fr 1fr',gridTemplateRows:'minmax(300px,auto) '+BAND+'px minmax(300px,auto)',columnGap:0,rowGap:0}},
+      h('div',{key:'vline',style:{position:'absolute',left:'calc(50% - 1px)',top:0,bottom:0,width:2,background:line,zIndex:1}}),
+      h('div',{key:'ia',style:{gridColumn:1,gridRow:1}}, cell(get('ia'))),
+      h('div',{key:'it',style:{gridColumn:2,gridRow:1}}, cell(get('it'))),
+      h('div',{key:'ea',style:{gridColumn:1,gridRow:3}}, cell(get('ea'))),
+      h('div',{key:'et',style:{gridColumn:2,gridRow:3}}, cell(get('et'))),
+      hbar,
+      hub,
+      alabel(t.axisIn,{gridColumn:'1 / span 2',gridRow:1,alignSelf:'start',justifySelf:'center'}),
+      alabel(t.axisOut,{gridColumn:'1 / span 2',gridRow:3,alignSelf:'end',justifySelf:'center'}),
+      alabel(t.away,{gridColumn:'1 / span 2',gridRow:2,alignSelf:'center',justifySelf:'start'}),
+      alabel(t.towards,{gridColumn:'1 / span 2',gridRow:2,alignSelf:'center',justifySelf:'end'})
+    );
+  }
+
+  renderVals(){
+    const lang=this.state.lang, t=this.T[lang];
+    const onStyle={padding:'6px 16px',border:'none',borderRadius:999,background:'#bf7b46',color:'#fff',font:'600 12.5px Geist,sans-serif',cursor:'pointer'};
+    const offStyle={padding:'6px 16px',border:'none',borderRadius:999,background:'transparent',color:'#8c7e6b',font:'500 12.5px Geist,sans-serif',cursor:'pointer'};
+    return {
+      t, lang,
+      toNl:()=>this.setState({lang:'nl'}), toEn:()=>this.setState({lang:'en'}),
+      nlBtn: lang==='nl'?onStyle:offStyle, enBtn: lang==='en'?onStyle:offStyle,
+      bLight:this.buildMedallion('lt',this.L), bDark:this.buildMedallion('dk',this.D)
+    };
+  }
+}
+</script>
+</body>
+</html>
