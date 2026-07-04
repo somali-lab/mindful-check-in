@@ -8,11 +8,17 @@
   background: var(--bg-surface-alt);
 }
 
+/* Intro line + clear button share a row under the title. */
 .quadrant-head {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: 24px;
+}
+
+.quadrant-head .intro {
+  flex: 1;
+  min-width: 0;
 }
 
 .quadrant-clear-btn,

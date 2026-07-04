@@ -163,6 +163,7 @@ test('dragging an item by its handle to another panel moves it there', async ({
 
   // Pointer-based drag: press the ⠿ handle, move over the target panel, release.
   const target = page.locator('[data-qpanel="externalTo"]');
+  await source.hover(); // reveal the hover controls first
   await source.locator('.quadrant-item-grab').hover();
   await page.mouse.down();
   const box = await target.boundingBox();
@@ -187,6 +188,7 @@ test('dragging within a panel reorders the items', async ({ page, isMobile }) =>
   const secondText = await items.nth(1).locator('.quadrant-item-text').textContent();
 
   // Drag item 0 to just below item 1 (its bottom half → insert after it).
+  await items.nth(0).hover(); // reveal the hover controls first
   await items.nth(0).locator('.quadrant-item-grab').hover();
   await page.mouse.down();
   const box = await items.nth(1).boundingBox();
