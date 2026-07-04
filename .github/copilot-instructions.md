@@ -3,111 +3,99 @@
 Guidance for AI coding assistants working in this repo. See also `CLAUDE.md` and `docs/architecture.md`.
 
 ## Active Technologies
-- Vanilla JavaScript (ES5-compatible IIFEs, `"use strict"`), zero runtime dependencies, no build step
-- `localStorage` — 6 JSON keys: entries, settings, language, active tab, overview UI state, weather cache
-- Tests: `@playwright/test` (dev-only), served via `npx serve` — test files are modern JS (ES2020+)
+- TypeScript (strict — `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `noImplicitOverride`, …), zero shipped runtime dependencies
+- Vite (dev + build), Vitest (unit), Playwright (E2E), Biome (lint/format)
+- UI: plain TS classes rendering light DOM — no framework, no Shadow DOM
+- Styling: hand-written CSS with custom properties (light + dark tokens); no preprocessor
+- `localStorage` — 6 JSON keys: entries, settings, language, overview UI state, weather cache, quadrant
+- Build output: one classic IIFE `app.js` + `assets/style.css` (relative paths → double-clickable from `file://`), plus `mindful-check-in.html` (whole app inlined into one self-contained file)
 
 ## Project Structure
 
 ```text
-src/      — application source (index.html, boot.js, lib/, modules/, data/, css/, assets/)
+src/      — application source (index.html, main.ts, core/, infra/, state/, ui/, i18n/, data/, css/, assets/)
+public/   — favicon + logos served at the web root
 docs/     — architecture reference
 tests/    — Playwright E2E suite
+legacy-src/ — unmaintained vanilla-ES5 predecessor (reference / rollback only — do not edit)
 ```
 
 ## Commands
 
-- `npm run dev` — serve the app on http://localhost:3004
-- `cd tests && npx playwright test` — run the E2E suite
+- `npm run dev` — Vite dev server (native ESM, HMR) on http://localhost:3000
+- `npm run build` — type-check (`src/` + `vite.config.ts`) then `vite build` → `dist/` + single-file `dist/mindful-check-in.html`
+- `npm test` — Vitest (`src/**/*.test.ts`); `npm run test:watch` to watch
+- `cd tests && npx playwright test` — Playwright E2E (auto-starts Vite on :3000; chromium + Pixel-7)
+- `npm run lint` / `npm run format` — Biome
 
 ## Code Style
 
-ES5 for all app code under `src/` (no `let`/`const`/arrow functions/`class`/template literals/modules). Test files may use modern JS.
+TypeScript for all app code under `src/`. No `any`/unsafe casts/non-null assertions — coerce untrusted data at the boundary instead. Test files may use whatever the test runner supports.
 
 <!-- MANUAL ADDITIONS START -->
 
-## JavaScript Architecture
+## Architecture — functional core / imperative shell
 
-All frontend JavaScript MUST follow this architecture. This section defines the rules.
+All frontend code MUST follow this architecture. This section defines the rules.
 
-### Namespace & Module Pattern
-
-- Single global namespace: `MCI` (`window.MCI = window.MCI || {}`)
-- Every file is an IIFE: `(function () { "use strict"; var MCI = window.MCI; ... })();`
-- ES5 syntax only — no `let`, `const`, arrow functions, template literals, `class`, or ES modules
-- Zero runtime dependencies
-
-### File Structure
-
-All app sources live under `src/`.
+### Layers
 
 ```
-src/lib/core.js          — Event bus, Store, i18n engine, helpers, entry normalization
-src/data/static.js       — Pure data: wheel variants, mood grid labels, weather codes, body zones
-src/data/translations.js — All translation strings (flat object per language)
-src/modules/<name>.js    — One module per feature (checkin, overview, settings, dashboard, etc.)
-src/boot.js              — DOMContentLoaded: only calls <Module>.init() in dependency order
+src/
+  index.html    — DOM shell (view sections, dialogs, toast container)
+  main.ts       — composition root: build repo + store + services, wire the views
+  core/         — pure domain logic, no DOM/storage/signals (datetime, entry normalize, scoring,
+                  stats, color, reminders, demo, settings, quadrant, types) — unit-testable without mocks
+  infra/        — side effects behind interfaces: Repository (storage.ts), WeatherService (weather.ts),
+                  Notifications (notifications.ts)
+  state/        — reactivity: signal.ts (primitive), store.ts (single source of truth),
+                  load-request.ts (entryLoadRequest signal)
+  ui/           — light-DOM components, one folder per screen (checkin, home, overview, quadrant,
+                  settings, info) + shell/ (router, theme, language, reminders) + common/ (dom, toast, confirm)
+  i18n/         — translations.ts (EN+NL tables, pure data) + index.ts (t, emotionLabel, lang signal)
+  data/         — static.ts (wheels, mood grid, body zones, weather codes, mood scores)
+  css/          — one stylesheet per concern, @import-ed via src/styles.css
 ```
 
 ### Reference
 
-The full Core API (`MCI.on/off/emit`, Store, typed loaders, i18n, helpers, `normalize`), the standard event list with payloads, the data layer and the HTML conventions (`data-component`, `data-t` / `-placeholder` / `-aria`, `data-theme-pick`, `data-lang-pick`) are documented once in **[docs/architecture.md](../docs/architecture.md)** — the canonical reference. The rules below are what to follow when generating code.
+The full layer contract, `Store`/`signal` API, storage keys, entry/settings schema, and HTML conventions (`data-component`, `data-t` / `-placeholder` / `-aria` / `-title`, `data-theme-pick`, `data-lang-pick`) are documented once in **[docs/architecture.md](../docs/architecture.md)** — the canonical reference. The rules below are what to follow when generating code.
 
-### Module Contract
+### Dependency rule
 
-Every module MUST follow this pattern:
+`ui → anything below it`, `state → core/infra`, `infra → core`, `core → data + i18n/translations + types`, `data → types`. Pure data modules (`data/static.ts`, `i18n/translations.ts`) are importable from anywhere; **signals, DOM, and storage are not.**
 
-```js
-(function () {
-  "use strict";
-  var MCI = window.MCI;
+- Only `ui/` and `state/` may touch signals.
+- Only `infra/` (and callers holding a `Repository`) touches storage.
+- Only `ui/` touches the DOM.
+- Core never imports `i18n/index` — anything language-, theme- or user-dependent enters core as a **parameter**.
 
-  // Private state — never exposed
-  var _localVar = null;
+### Reactivity & communication (CRITICAL)
 
-  // Private functions
-  function doSomething() { ... }
+1. **`Store` is the single source of truth and the only writer of storage.** Mutations (`saveEntry`, `deleteEntry`, `replaceAllEntries`, `saveSettings`, `load/saveLanguage`, `load/saveOverviewUI`, `clearAllData`) **persist then notify**, and flag `persistError` on write failure. UI components never hold a `Repository`.
 
-  // Public API — attach to MCI.<ModuleName>
-  MCI.MyModule = {
-    init: function () {
-      // 1. Cache DOM references
-      // 2. Bind event listeners
-      // 3. Subscribe to bus events: MCI.on("event:name", handler)
-      // 4. Initial render
-    },
-    // Getter/setter methods for Checkin to collect/restore form state
-    getValue: function () { return _localVar; },
-    setValue: function (v) { _localVar = v; /* re-render */ }
-  };
-})();
-```
+2. **Components subscribe to the store; they never call each other.** Each owns its own rendering. No component tells another what to re-render.
 
-### Communication Rules (CRITICAL)
+3. **The check-in orchestrator (`ui/checkin/checkin.ts`) is the one exception** — it composes the form sub-components (wheel, body, energy, mood, chips, meta, summary, history, section-nav) and owns collect → validate → `computeMoodScore` → `store.saveEntry`.
 
-1. **Modules MUST NOT call other modules directly** — use the event bus
-   - WRONG: `MCI.Checkin.renderSummary()` from Settings
-   - RIGHT: `MCI.emit("settings:changed", settings)` → Checkin listens with `MCI.on("settings:changed", fn)`
+4. **Cross-view "load this entry into the form"** flows through the `entryLoadRequest` signal (`state/load-request.ts`), never a direct call.
 
-2. **Store functions emit events** — `MCI.saveSettings()` emits `"settings:changed"`, `MCI.saveEntry()` emits `"entry:saved"`, `MCI.deleteEntry()` emits `"entry:deleted"`. Modules subscribe to these.
+5. **Component lifecycle** — components extend the `Component` base (`ui/common/component.ts`): signal subscriptions go through `this.listen(...)` (tracked, removable via `destroy()`); the full-render entry point is conventionally named `render()`. In the app, components are singletons created once in `main.ts` and views are CSS-toggled, never unmounted.
 
-3. **Modules own their own rendering** — When a module receives a bus event, it decides what to re-render. No other module tells it what to do.
+### i18n — never hardcode UI text
 
-4. **Allowed direct references**:
-   - Modules MAY call `MCI.t()`, `MCI.esc()`, `MCI.loadSettings()`, `MCI.loadEntries()` and other core helpers
-   - Modules MAY read `MCI.Data.*` for static data (wheels, zones, weather codes)
-   - Checkin MAY call getter/setter methods on sub-modules it orchestrates (`MCI.Wheel.getPicked()`, `MCI.Body.getZones()`, `MCI.Energy.getValues()`, `MCI.Mood.getSelection()`, `MCI.CheckinMeta.getOverrideKey()`) and may read `MCI.Weather.getCurrent()` / `MCI.Nav.activeRoute()`. The `CheckinChips`/`CheckinMeta` helpers otherwise react to the entry-lifecycle bus events
-
-5. **boot.js is declarative only** — It calls `<Module>.init()` in dependency order. No business logic, no render calls, no state hydration.
+Bilingual (EN + NL). All user-facing strings live in `src/i18n/translations.ts`, applied via `data-t` / `data-t-placeholder` / `data-t-aria` / `data-t-title` attributes (or `t(key, params)` in TS; `emotionLabel(id)` for emotions). Dynamic keys are fine. Any new UI string must be added to **both** the `en` and `nl` blocks.
 
 ### What NOT to do
 
-- Do NOT use ES6+ syntax (let, const, =>, class, template literals, import/export)
-- Do NOT add runtime dependencies
-- Do NOT create god-modules that know about other modules' internals
-- Do NOT put rendering logic in boot.js
-- Do NOT bypass the event bus for cross-module communication
-- Do NOT access localStorage directly — always go through MCI.get/put/del or typed loaders
-- Do NOT store private state on the MCI namespace — use IIFE-scoped variables
+- Do NOT reintroduce `type="module"` into the built HTML — the `file://`-safe classic bundle must stay a single IIFE with relative paths
+- Do NOT add runtime dependencies (no UI libraries/frameworks)
+- Do NOT use `any`, unsafe casts, or non-null assertions — coerce at the boundary (`normalize`, `mergeSettings`, `mergeQuadrant`)
+- Do NOT let components call each other — go through the store or `entryLoadRequest`
+- Do NOT put business logic or state hydration in `main.ts` beyond wiring
+- Do NOT touch the DOM outside `ui/`, storage outside `infra/`, or signals outside `ui/`/`state/`
+- Do NOT import `i18n/index` from `core/` — pass language-dependent data in as parameters
+- Do NOT hardcode display text in HTML/TS — add keys to both EN and NL
+- Do NOT edit `legacy-src/` — it is a frozen reference/rollback only
 
 <!-- MANUAL ADDITIONS END -->
