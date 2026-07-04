@@ -45,3 +45,24 @@ test('dark theme persists across reload', async ({ page }) => {
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
+
+// ─── Header changes reflect in the open settings form ───
+
+test('header theme + language switches sync the settings form controls live', async ({ page }) => {
+  const { navigateToTab } = require('../../fixtures/helpers');
+  await page.goto('/');
+  await navigateToTab(page, 'settings');
+
+  // Baseline: form shows the defaults.
+  await expect(page.locator('#cfg-theme')).toHaveValue('system');
+  await expect(page.locator('#cfg-lang')).toHaveValue('en');
+
+  // Change theme + language from the header while settings is open.
+  await page.locator('.theme-button[data-theme-pick="dark"]').click();
+  await page.locator('.language-button[data-lang-pick="nl"]').click();
+
+  // The form controls follow without a save or reload.
+  await expect(page.locator('#cfg-theme')).toHaveValue('dark');
+  await expect(page.locator('#cfg-lang')).toHaveValue('nl');
+  await expect(page.locator('#view-settings [data-t="settingLanguage"]')).toHaveText('Taal');
+});

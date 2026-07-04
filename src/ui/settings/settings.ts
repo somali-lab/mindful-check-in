@@ -41,13 +41,21 @@ export class SettingsController extends Component {
     this.#wireButtons();
     this.#wireQuickActions();
     this.#loadForm();
-    // Re-render quick actions / labels when the language switches.
-    this.listen(lang, () => this.#buildQAList(this.#store.settings.get().quickActions));
+    // Keep the two controls that can also change from OUTSIDE the form — the
+    // header theme and language switches — in sync while the page is open,
+    // without reloading the whole form (which would drop unsaved edits).
+    this.listen(this.#store.settings, (s) => setFieldValue('cfg-theme', s.theme));
+    this.listen(lang, () => {
+      setFieldValue('cfg-lang', lang.get());
+      this.#buildQAList(this.#store.settings.get().quickActions);
+    });
   }
 
   #loadForm(): void {
     const s = this.#store.settings.get();
-    setFieldValue('cfg-lang', s.defaultLanguage);
+    // Show the active language (what the header toggles), not the stored
+    // default, so header and form always agree.
+    setFieldValue('cfg-lang', lang.get());
     setFieldValue('cfg-theme', s.theme);
     setFieldValue('cfg-logo', s.logo);
     setFieldValue('cfg-wheel', s.defaultWheelType);
