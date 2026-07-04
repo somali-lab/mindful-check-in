@@ -103,7 +103,11 @@
   right: 0;
 }
 
-/* ── Cells: open (no card), padded away from the axis lines ── */
+/* ── Cells: open (no card), padded away from the axis lines. The list is not
+   flex-grow (see .quadrant-list), so content stacks at the top and the add-row
+   follows the items directly — no gap when a shorter quadrant sits beside a
+   longer one. The cell still stretches to the row height, keeping its whole
+   area a valid drop target. ── */
 .quadrant-panel {
   min-width: 0;
   display: flex;
@@ -201,7 +205,6 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1;
 }
 
 .quadrant-item {
