@@ -58,7 +58,7 @@ test('adding an item appends it and persists across reload', async ({ page }) =>
   await page.reload();
   await expect(page.locator('[data-qlist="internalTo"]')).toContainText('Sleep before midnight');
   const stored = await getStoredQuadrant(page);
-  expect(stored.internalTo).toContain('Sleep before midnight');
+  expect(stored.internalTo.map((i) => i.text)).toContain('Sleep before midnight');
 });
 
 test('Enter in the input also adds the item', async ({ page }) => {
@@ -91,7 +91,7 @@ test('clicking an item edits it inline; Enter commits', async ({ page }) => {
 
   await expect(page.locator('[data-qlist="internalFrom"]')).toContainText('Rewritten item');
   const stored = await getStoredQuadrant(page);
-  expect(stored.internalFrom).toContain('Rewritten item');
+  expect(stored.internalFrom.map((i) => i.text)).toContain('Rewritten item');
 });
 
 test('Escape cancels an inline edit without saving', async ({ page }) => {
@@ -118,6 +118,64 @@ test('emptying an item during edit removes it', async ({ page }) => {
   await edit.fill('');
   await edit.press('Enter');
   await expect(page.locator('[data-qlist="externalTo"] .quadrant-item')).toHaveCount(before - 1);
+});
+
+// ─── Strike-through (overcome) ───
+
+test('the ✓ toggle strikes an item through and persists; toggling back clears it', async ({
+  page,
+}) => {
+  await page.goto('/#quadrant');
+  const first = page.locator('[data-qlist="internalFrom"] .quadrant-item').first();
+  await first.hover();
+  await first.locator('.quadrant-item-done').click();
+  await expect(page.locator('[data-qlist="internalFrom"] .quadrant-item').first()).toHaveClass(
+    /is-done/,
+  );
+
+  await page.reload();
+  const reloaded = page.locator('[data-qlist="internalFrom"] .quadrant-item').first();
+  await expect(reloaded).toHaveClass(/is-done/);
+  const stored = await getStoredQuadrant(page);
+  expect(stored.internalFrom[0].done).toBe(true);
+
+  await reloaded.hover();
+  await reloaded.locator('.quadrant-item-done').click();
+  await expect(page.locator('[data-qlist="internalFrom"] .quadrant-item').first()).not.toHaveClass(
+    /is-done/,
+  );
+});
+
+// ─── Drag between panels ───
+
+test('dragging an item by its handle to another panel moves it there', async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(isMobile, 'covered on desktop; mobile uses the same pointer flow with auto-scroll');
+  // Tall enough that source and target panels are both on screen (the drop
+  // hit-test uses elementFromPoint, which only sees the visible viewport).
+  await page.setViewportSize({ width: 1280, height: 1500 });
+  await page.goto('/#quadrant');
+
+  const source = page.locator('[data-qlist="externalFrom"] .quadrant-item').first();
+  const sourceText = await source.locator('.quadrant-item-text').textContent();
+  const before = await page.locator('[data-qlist="externalFrom"] .quadrant-item').count();
+
+  // Pointer-based drag: press the ⠿ handle, move over the target panel, release.
+  const target = page.locator('[data-qpanel="externalTo"]');
+  await source.locator('.quadrant-item-grab').hover();
+  await page.mouse.down();
+  const box = await target.boundingBox();
+  if (!box) throw new Error('target panel not visible');
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 8 });
+  await page.mouse.up();
+
+  await expect(page.locator('[data-qlist="externalFrom"] .quadrant-item')).toHaveCount(before - 1);
+  await expect(page.locator('[data-qlist="externalTo"]')).toContainText(sourceText ?? '');
+  const stored = await getStoredQuadrant(page);
+  expect(stored.externalTo.map((i) => i.text)).toContain(sourceText);
+  expect(stored.externalFrom.map((i) => i.text)).not.toContain(sourceText);
 });
 
 // ─── Centre (values/compass) ───

@@ -103,9 +103,59 @@
 .quadrant-item {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 4px;
   font-size: 0.875rem;
   line-height: 1.4;
+}
+
+.quadrant-item.is-done .quadrant-item-text {
+  text-decoration: line-through;
+  color: var(--text-faint);
+}
+
+.quadrant-item-grab {
+  color: var(--text-faint);
+  font-size: 0.7rem;
+  padding: 2px 2px 2px 0;
+  cursor: grab;
+  touch-action: none; /* the handle drags the item, not the page */
+  user-select: none;
+}
+
+.quadrant-item.is-dragging {
+  opacity: 0.45;
+}
+
+.quadrant-item-done {
+  border: 0;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 0.72rem;
+  padding: 2px 4px;
+  border-radius: 6px;
+  visibility: hidden;
+}
+
+.quadrant-item:hover .quadrant-item-done,
+.quadrant-item-done:focus-visible,
+.quadrant-item.is-done .quadrant-item-done {
+  visibility: visible;
+}
+
+.quadrant-item.is-done .quadrant-item-done {
+  color: var(--status-high);
+}
+
+.quadrant-item-done:hover {
+  color: var(--status-high);
+  background: var(--summary-done-bg);
+}
+
+/* Drop cue while dragging an item over another panel. */
+.quadrant-panel.is-drop-target {
+  border-color: var(--border-accent);
+  background: var(--bg-accent);
 }
 
 .quadrant-item-text {

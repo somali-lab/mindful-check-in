@@ -25,10 +25,11 @@ export class Store {
     this.#settings.set(mergeSettings(this.#repo.read(STORAGE_KEYS.settings, null)));
     this.#entries.set(this.#readEntries());
     // First use (key absent): show the example items for the stored language.
-    // Not persisted until the user edits, so it stays a soft default.
+    // Not persisted until the user edits, so it stays a soft default. Both
+    // paths run through mergeQuadrant (seeds are authored as plain strings).
     const rawQuadrant = this.#repo.read<unknown>(STORAGE_KEYS.quadrant, null);
     this.#quadrant.set(
-      rawQuadrant === null ? quadrantSeeds[this.loadLanguage()] : mergeQuadrant(rawQuadrant),
+      mergeQuadrant(rawQuadrant === null ? quadrantSeeds[this.loadLanguage()] : rawQuadrant),
     );
   }
 

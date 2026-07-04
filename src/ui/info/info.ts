@@ -1,8 +1,10 @@
 // Info/About view controller: vertical sub-tabs (about / guide / privacy /
-// heatmap / data) and the "Data" tab tools — export/import entries (with an
-// overwrite/skip dialog), demo-data generation, and clear-all.
+// heatmap / data) and the "Data" tab tools — export/import of entries +
+// quadrant (with an overwrite/skip dialog for entries), demo-data generation,
+// and clear-all.
 import { generateDemoEntries } from '../../core/demo';
 import { normalize } from '../../core/entry';
+import { mergeQuadrant, type Quadrant } from '../../core/quadrant';
 import type { Entry, EntryMap } from '../../core/types';
 import { lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
@@ -12,7 +14,7 @@ import { showToast } from '../common/toast';
 
 export class InfoController {
   readonly #store: Store;
-  #pendingImport: EntryMap | null = null;
+  #pendingImport: { entries: EntryMap; quadrant: Quadrant | null } | null = null;
 
   constructor(store: Store) {
     this.#store = store;
@@ -41,7 +43,10 @@ export class InfoController {
   }
 
   #export(): void {
-    downloadJson('mindful-checkin-export.json', this.#store.entries.get());
+    downloadJson('mindful-checkin-export.json', {
+      entries: this.#store.entries.get(),
+      quadrant: this.#store.quadrant.get(),
+    });
   }
 
   #startImport(file: File): void {
@@ -50,7 +55,16 @@ export class InfoController {
         if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
           throw new Error('shape');
         }
-        this.#pendingImport = parsed as EntryMap;
+        const r = parsed as Record<string, unknown>;
+        // Current export format is { entries, quadrant }; older backups are a
+        // flat entry map (its keys are dates, so the shapes can't collide).
+        const wrapped = r.entries && typeof r.entries === 'object' && !Array.isArray(r.entries);
+        this.#pendingImport = wrapped
+          ? {
+              entries: r.entries as EntryMap,
+              quadrant: 'quadrant' in r ? mergeQuadrant(r.quadrant) : null,
+            }
+          : { entries: parsed as EntryMap, quadrant: null };
         const dlg = document.getElementById('dlg-import') as HTMLDialogElement | null;
         dlg?.showModal?.();
       })
@@ -61,12 +75,15 @@ export class InfoController {
     if (!this.#pendingImport) return;
     const merged: EntryMap = { ...this.#store.entries.get() };
     let added = 0;
-    for (const [key, raw] of Object.entries(this.#pendingImport)) {
+    for (const [key, raw] of Object.entries(this.#pendingImport.entries)) {
       if (mode === 'skip' && merged[key]) continue;
       merged[key] = normalize(raw as Partial<Entry>);
       added++;
     }
     this.#store.replaceAllEntries(merged);
+    // A quadrant in the file replaces the board wholesale (it is one document,
+    // not keyed records — the overwrite/skip choice only applies to entries).
+    if (this.#pendingImport.quadrant) this.#store.saveQuadrant(this.#pendingImport.quadrant);
     this.#pendingImport = null;
     (document.getElementById('dlg-import') as HTMLDialogElement | null)?.close();
     showToast(

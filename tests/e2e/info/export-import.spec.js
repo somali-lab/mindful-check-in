@@ -28,9 +28,50 @@ test('export entries triggers download with correct JSON', async ({ page }) => {
   const path = await download.path();
   const fs = require('node:fs');
   const content = JSON.parse(fs.readFileSync(path, 'utf-8'));
-  // v4 exports an object keyed by entry key, not an array
+  // The export wraps the entry map together with the quadrant board.
   expect(typeof content).toBe('object');
-  expect(Object.keys(content).length).toBe(10);
+  expect(Object.keys(content.entries).length).toBe(10);
+  expect(content.quadrant).toBeDefined();
+  expect(Array.isArray(content.quadrant.internalFrom)).toBe(true);
+  expect(typeof content.quadrant.center).toBe('string');
+});
+
+// ─── Import a wrapped export file restores the quadrant board ───
+
+test('importing a wrapped export file restores entries and quadrant', async ({ page }) => {
+  await page.goto('/');
+  await openInfoTab(page, 'data');
+
+  const file = {
+    entries: { [getDateKey(0)]: createTestEntry({ thoughts: 'From backup' }) },
+    quadrant: {
+      internalFrom: [{ text: 'Backup worry', done: false }],
+      internalTo: [],
+      externalFrom: [],
+      externalTo: [{ text: 'Backup walk', done: true }],
+      center: 'Family',
+    },
+  };
+  const fs = require('node:fs');
+  const tmpPath = require('node:path').join(__dirname, 'tmp-import-wrapped.json');
+  fs.writeFileSync(tmpPath, JSON.stringify(file));
+  await page.locator('#ov-import').setInputFiles(tmpPath);
+  await page.locator('#dlg-overwrite').click();
+  await page.waitForTimeout(500);
+
+  const storedEntries = await getLocalStorageEntries(page);
+  expect(Object.keys(storedEntries).length).toBe(1);
+
+  await page.goto('/#quadrant');
+  await expect(page.locator('[data-qlist="internalFrom"]')).toContainText('Backup worry');
+  await expect(page.locator('[data-qlist="externalTo"] .quadrant-item').first()).toHaveClass(
+    /is-done/,
+  );
+  await expect(page.locator('#quadrant-center')).toContainText('Family');
+
+  try {
+    fs.unlinkSync(tmpPath);
+  } catch (_) {}
 });
 
 // ─── Import valid JSON into empty app ───

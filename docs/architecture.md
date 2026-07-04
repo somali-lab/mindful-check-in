@@ -78,6 +78,8 @@ public/             — favicon + logos served at the web root
 
 Every value is stored inside a **version envelope** `{ v, data }` (`SCHEMA_VERSION` + `MIGRATIONS` in `infra/storage.ts`): a future shape change bumps the version and adds one numbered upgrade step instead of another permanent coercion. Pre-envelope values are read as version 1; export/import files stay unwrapped (plain data), so old backups keep importing.
 
+The data export (Info → Data) is one file: `{ entries, quadrant }`. Import accepts that wrapper and legacy entries-only files (a flat entry map — its keys are dates, so the shapes cannot collide); the overwrite/skip choice applies per entry, while an imported quadrant replaces the board wholesale.
+
 ### Storage keys (6)
 
 | Key | Type | Content |
@@ -87,7 +89,7 @@ Every value is stored inside a **version envelope** `{ v, data }` (`SCHEMA_VERSI
 | `local-mood-tracker-language` | String | Active language (`"en"` or `"nl"`) |
 | `local-mood-tracker-overview-ui` | Object | Overview table state (search, filter, sort, page) |
 | `local-mood-tracker-weather-cache` | Object | `{ ts, data }` cached current-weather reading |
-| `local-mood-tracker-quadrant` | Object | Change quadrant: four string lists (`internalFrom` / `internalTo` / `externalFrom` / `externalTo`) |
+| `local-mood-tracker-quadrant` | Object | Change quadrant (ACT matrix): four `{ text, done }` item lists (`internalFrom` / `internalTo` / `externalFrom` / `externalTo`) + `center` (values/compass string). Plain-string items from older data are read as not-done. |
 
 Keys live in one place: `STORAGE_KEYS` (`infra/storage.ts`). The active wheel variant is not a separate key — it's `defaultWheelType` in settings and `wheelType` on each entry.
 

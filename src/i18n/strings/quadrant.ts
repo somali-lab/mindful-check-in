@@ -1,6 +1,6 @@
 // Change-quadrant view: tab, axis/panel labels and editor strings.
 // Both languages side by side — a new key must be added to BOTH blocks.
-import type { Quadrant } from '../../core/quadrant';
+import type { QuadrantSeed } from '../../core/quadrant';
 
 export const quadrant = {
   en: {
@@ -19,6 +19,7 @@ export const quadrant = {
     quadrantCenterLabel: 'I notice — here and now',
     quadrantCenterHint: 'Who or what matters to you?',
     ariaQuadrantCenter: 'Edit who or what matters to you',
+    ariaQuadrantDone: 'Strike through as overcome',
   },
   nl: {
     tabQuadrant: 'Kwadrant',
@@ -36,12 +37,13 @@ export const quadrant = {
     quadrantCenterLabel: 'Ik merk op — hier en nu',
     quadrantCenterHint: 'Wie of wat doet er voor jou toe?',
     ariaQuadrantCenter: 'Bewerk wie of wat er voor jou toe doet',
+    ariaQuadrantDone: 'Afstrepen als overwonnen',
   },
 } as const;
 
 // First-use example items (deletable/overwritable), seeded in the active
 // language when no quadrant has been stored yet. Stored user data afterwards.
-export const quadrantSeeds: Record<'en' | 'nl', Quadrant> = {
+export const quadrantSeeds: Record<'en' | 'nl', QuadrantSeed> = {
   en: {
     internalFrom: [
       'Ruminating (esp. about loved ones) → no influence',

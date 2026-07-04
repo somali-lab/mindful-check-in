@@ -9,26 +9,40 @@ describe('mergeQuadrant', () => {
     expect(mergeQuadrant(42)).toEqual(emptyQuadrant());
   });
 
-  it('keeps valid panels and defaults missing ones', () => {
+  it('reads plain strings (seeds / pre-strike-through data) as not-done items', () => {
     const q = mergeQuadrant({ internalFrom: ['worry'], externalTo: ['walk', 'check-in'] });
-    expect(q.internalFrom).toEqual(['worry']);
-    expect(q.externalTo).toEqual(['walk', 'check-in']);
+    expect(q.internalFrom).toEqual([{ text: 'worry', done: false }]);
+    expect(q.externalTo).toEqual([
+      { text: 'walk', done: false },
+      { text: 'check-in', done: false },
+    ]);
     expect(q.internalTo).toEqual([]);
     expect(q.externalFrom).toEqual([]);
   });
 
-  it('filters non-string and blank items and ignores non-array panels', () => {
+  it('keeps { text, done } items and coerces done to boolean', () => {
     const q = mergeQuadrant({
-      internalFrom: ['ok', 42, null, '  ', 'also ok'],
-      internalTo: 'not an array',
+      internalFrom: [
+        { text: 'overcome', done: true },
+        { text: 'open', done: 0 },
+        { text: 'sloppy' }, // done missing → false
+      ],
     });
-    expect(q.internalFrom).toEqual(['ok', 'also ok']);
-    expect(q.internalTo).toEqual([]);
+    expect(q.internalFrom).toEqual([
+      { text: 'overcome', done: true },
+      { text: 'open', done: false },
+      { text: 'sloppy', done: false },
+    ]);
   });
 
-  it('ignores unknown extra fields', () => {
-    const q = mergeQuadrant({ internalFrom: ['x'], bogus: ['y'] });
-    expect(q).toEqual({ ...emptyQuadrant(), internalFrom: ['x'] });
+  it('drops invalid items and ignores non-array panels and unknown fields', () => {
+    const q = mergeQuadrant({
+      internalFrom: ['ok', 42, null, '  ', { done: true }, { text: '' }],
+      internalTo: 'not an array',
+      bogus: ['y'],
+    });
+    expect(q.internalFrom).toEqual([{ text: 'ok', done: false }]);
+    expect(q.internalTo).toEqual([]);
   });
 
   it('coerces the centre: missing or non-string → empty, string kept trimmed', () => {
@@ -47,8 +61,12 @@ describe('quadrantSeeds', () => {
     }
   });
 
-  it('survives the storage boundary coercion unchanged', () => {
-    expect(mergeQuadrant(quadrantSeeds.en)).toEqual(quadrantSeeds.en);
-    expect(mergeQuadrant(quadrantSeeds.nl)).toEqual(quadrantSeeds.nl);
+  it('coerces cleanly into not-done items at the boundary', () => {
+    for (const lang of ['en', 'nl'] as const) {
+      const q = mergeQuadrant(quadrantSeeds[lang]);
+      for (const key of QUADRANT_KEYS) {
+        expect(q[key]).toEqual(quadrantSeeds[lang][key].map((text) => ({ text, done: false })));
+      }
+    }
   });
 });
