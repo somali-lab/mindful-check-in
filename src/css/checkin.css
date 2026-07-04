@@ -166,13 +166,6 @@
   margin-bottom: 0;
 }
 
-/* The intro thoughts field dominates the header card; tone it down to the
-   card tint (border keeps the definition) so it doesn't outshine the
-   later fields. */
-.ci-intro-thoughts .ci-prose {
-  background: var(--bg-surface-alt);
-}
-
 /* ── Serif prose textareas (thoughts, note) ── */
 .ci-prose {
   font-family: var(--font-serif);
