@@ -4,8 +4,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Mindful Check-in is a private, offline-first mood/check-in web app. **TypeScript (strict) + Vite**, light-DOM components, no UI framework. It builds to a single classic IIFE bundle that is **double-clickable from `file://`**. All app sources live under **`src/`** (`src/index.html` is at the repo root; TS under `src/core/`, `src/infra/`, `src/state/`, `src/ui/`, `src/i18n/`, `src/data/`; CSS under `src/css/`; fonts/logos in `src/assets/` and `public/`). Tests, docs and config stay at the repo root.
 
-> The previous vanilla-ES5 implementation is preserved, unmaintained, in **`legacy-src/`** — do not edit it; it's a reference/rollback only.
-
 ## Working style
 
 - Don't assume and don't hide confusion — surface tradeoffs and ask when anything is unclear. Be critical: push back and ask for clarification rather than telling the user what they want to hear.

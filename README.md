@@ -105,8 +105,6 @@ For development (native ESM + hot reload):
 npm run dev          # Vite dev server
 ```
 
-> The previous vanilla-ES5 implementation is preserved, unmaintained, in `legacy-src/`.
-
 ---
 
 ## Reminders (push notifications)

@@ -17,7 +17,6 @@ src/      — application source (index.html, main.ts, core/, infra/, state/, ui
 public/   — favicon + logos served at the web root
 docs/     — architecture reference
 tests/    — Playwright E2E suite
-legacy-src/ — unmaintained vanilla-ES5 predecessor (reference / rollback only — do not edit)
 ```
 
 ## Commands
@@ -96,6 +95,5 @@ Bilingual (EN + NL). All user-facing strings live in `src/i18n/translations.ts`,
 - Do NOT touch the DOM outside `ui/`, storage outside `infra/`, or signals outside `ui/`/`state/`
 - Do NOT import `i18n/index` from `core/` — pass language-dependent data in as parameters
 - Do NOT hardcode display text in HTML/TS — add keys to both EN and NL
-- Do NOT edit `legacy-src/` — it is a frozen reference/rollback only
 
 <!-- MANUAL ADDITIONS END -->

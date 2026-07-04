@@ -1,7 +1,6 @@
 # Mindful Check-in — Architecture Reference
 
 **Status**: Active — describes the current TypeScript + Vite implementation under `src/`.
-**Predecessor**: a vanilla-ES5 build is preserved unmaintained in `legacy-src/` (reference / rollback only).
 
 ---
 
