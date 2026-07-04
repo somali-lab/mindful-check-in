@@ -8,30 +8,19 @@
   background: var(--bg-surface-alt);
 }
 
-/* Intro line + clear button share a row under the title. Flex items don't
-   margin-collapse, so strip the intro's default top margin and keep the
-   title→intro gap a tight 8px (as in the design). */
+/* Tight title→intro gap, as in the design. */
 .quadrant-card h2 {
   margin-bottom: 8px;
 }
 
-.quadrant-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.quadrant-head .intro {
-  flex: 1;
-  min-width: 0;
+.quadrant-card .intro {
   margin-top: 0;
 }
 
+/* Clear button lives in the app-shell footer bar (like check-in's actions). */
 .quadrant-clear-btn,
 .quadrant-clear-btn:hover,
 .quadrant-clear-btn:focus-visible {
-  flex: none;
   border-color: var(--delete-color);
   color: var(--delete-color);
 }

@@ -158,6 +158,7 @@
 
 /* Footer appears only for screens whose action(s) it hosts */
 body[data-active-route="checkin"] .app-shell-footer,
+body[data-active-route="quadrant"] .app-shell-footer,
 body[data-active-route="home"] .app-shell-footer,
 body[data-active-route="settings"] .app-shell-footer {
   display: block;
@@ -170,6 +171,7 @@ body[data-active-route="settings"] .app-shell-footer {
 }
 
 body[data-active-route="checkin"] .app-shell-footer-bar[data-footer="checkin"],
+body[data-active-route="quadrant"] .app-shell-footer-bar[data-footer="quadrant"],
 body[data-active-route="home"] .app-shell-footer-bar[data-footer="home"],
 body[data-active-route="settings"] .app-shell-footer-bar[data-footer="settings"] {
   display: flex;
