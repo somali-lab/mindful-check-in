@@ -131,7 +131,7 @@ npm run dev          # Vite dev server
 
 ### Releasing
 
-The `release` GitHub Actions workflow publishes downloadable builds. Push a version tag and it lints, builds, unit-tests, then attaches `mindful-check-in.html` + `mindful-check-in-dist.zip` to a GitHub Release:
+The `release` GitHub Actions workflow publishes downloadable builds. Push a version tag and it lints, builds, unit-tests, generates release notes from the commits since the previous tag, then attaches `mindful-check-in.html` + `mindful-check-in-dist.zip` to a GitHub Release:
 
 ```bash
 git tag v1.1.0

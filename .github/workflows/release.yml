@@ -24,6 +24,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history + tags, so the changelog can diff against the previous tag
 
       - uses: actions/setup-node@v4
         with:
@@ -53,11 +55,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.event.inputs.tag || github.ref_name }}
         run: |
+          # Usage blurb.
           cat > RELEASE_NOTES.md <<'EOF'
           Download **mindful-check-in.html** below and open it (double-click) — it runs entirely in your browser, offline, with no install or build. Your data stays on your own device.
 
           Prefer the split build? Download **mindful-check-in-dist.zip**, unzip it, and open `index.html`.
           EOF
+          # Changelog from the commits since the previous tag (this repo commits
+          # straight to main, so GitHub's PR-based auto-notes would be empty).
+          PREV=$(git tag --sort=-creatordate | grep -vFx "$TAG" | head -1 || true)
+          if [ -n "$PREV" ]; then
+            printf '\n---\n\n### Changes since %s\n\n' "$PREV" >> RELEASE_NOTES.md
+            git log "$PREV..HEAD" --no-merges --pretty=format:'- %s (%h)' >> RELEASE_NOTES.md
+            printf '\n' >> RELEASE_NOTES.md
+          else
+            printf '\n---\n\n_Initial release._\n' >> RELEASE_NOTES.md
+          fi
           gh release create "$TAG" \
             --title "Mindful Check-in $TAG" \
             --notes-file RELEASE_NOTES.md \
