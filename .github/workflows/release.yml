@@ -1,0 +1,65 @@
+name: release
+
+# Publish a downloadable build so people can use the app without building it.
+# Trigger by pushing a version tag (e.g. `git tag v1.1.0 && git push --tags`),
+# or run manually from the Actions tab with a tag name. The build is gated on
+# lint + type-check/build + unit tests, then a GitHub Release is created with:
+#   - mindful-check-in.html      — the whole app in one file (double-click, offline)
+#   - mindful-check-in-dist.zip  — the multi-file build (unzip, open index.html)
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to create (e.g. v1.1.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies (app + tests workspace)
+        run: npm ci
+
+      - name: Lint (Biome)
+        run: npm run lint
+
+      - name: Type-check and build (produces dist/ + single-file HTML)
+        run: npm run build
+
+      - name: Unit tests (Vitest)
+        run: npm test
+
+      - name: Package the artifacts
+        run: |
+          cp dist/mindful-check-in.html mindful-check-in.html
+          (cd dist && zip -qr ../mindful-check-in-dist.zip . -x '_seed.html')
+
+      - name: Publish the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          cat > RELEASE_NOTES.md <<'EOF'
+          Download **mindful-check-in.html** below and open it (double-click) — it runs entirely in your browser, offline, with no install or build. Your data stays on your own device.
+
+          Prefer the split build? Download **mindful-check-in-dist.zip**, unzip it, and open `index.html`.
+          EOF
+          gh release create "$TAG" \
+            --title "Mindful Check-in $TAG" \
+            --notes-file RELEASE_NOTES.md \
+            mindful-check-in.html \
+            mindful-check-in-dist.zip

@@ -4,6 +4,17 @@ A private, local-only mental health check-in web app. Runs entirely in the brows
 
 ---
 
+## Download & use (no build needed)
+
+Grab the latest [**Release**](../../releases/latest) and open it — no install, no build step:
+
+- **`mindful-check-in.html`** — the whole app in a single file. Download it and double-click; it runs offline in your browser and keeps your data on your own device.
+- **`mindful-check-in-dist.zip`** — the split build; unzip it and open `index.html`.
+
+> The weather widget and reminders need the app served over HTTP (they're blocked on the `file://` protocol); everything else works straight from the file.
+
+---
+
 ## Features
 
 ### Check-in
@@ -117,6 +128,17 @@ For development (native ESM + hot reload):
 ```bash
 npm run dev          # Vite dev server
 ```
+
+### Releasing
+
+The `release` GitHub Actions workflow publishes downloadable builds. Push a version tag and it lints, builds, unit-tests, then attaches `mindful-check-in.html` + `mindful-check-in-dist.zip` to a GitHub Release:
+
+```bash
+git tag v1.1.0
+git push origin v1.1.0
+```
+
+Or run it by hand from **Actions → release → Run workflow**, entering the tag name.
 
 ---
 
