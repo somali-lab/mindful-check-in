@@ -98,21 +98,33 @@ export class QuadrantController extends Component {
       for (const el of grid.querySelectorAll('.is-drop-target')) {
         if (el !== panel) el.classList.remove('is-drop-target');
       }
-      if (panel && panel.getAttribute('data-qpanel') !== this.#drag.key) {
+      this.#clearDropMarkers(grid);
+      if (!panel) return;
+      if (panel.getAttribute('data-qpanel') !== this.#drag.key) {
         panel.classList.add('is-drop-target');
       }
+      // Insertion marker: a line above the item the drag would land before,
+      // or under the last item when it would land at the end.
+      const list = panel.querySelector('[data-qlist]');
+      if (!list) return;
+      const items = [...list.querySelectorAll<HTMLElement>('[data-qi]')];
+      const index = this.#dropIndex(items, e.clientY);
+      if (index < items.length) items[index]?.classList.add('is-drop-before');
+      else if (items.length > 0) list.classList.add('is-drop-end');
     });
     grid.addEventListener('pointerup', (e) => {
       if (!this.#drag) return;
-      const panel = this.#panelAt(e.clientX, e.clientY);
-      const to = panel?.getAttribute('data-qpanel') as QuadrantKey | null;
       const from = this.#drag;
       this.#drag = null;
-      if (to && to !== from.key) {
-        this.#moveItem(from, to); // saveQuadrant triggers a full re-render
-      } else {
-        this.render(); // clear drag styling
+      const panel = this.#panelAt(e.clientX, e.clientY);
+      const list = panel?.querySelector('[data-qlist]');
+      const to = panel?.getAttribute('data-qpanel') as QuadrantKey | null;
+      if (!panel || !list || !to) {
+        this.render(); // dropped outside — clear drag styling
+        return;
       }
+      const items = [...list.querySelectorAll<HTMLElement>('[data-qi]')];
+      this.#placeItem(from, to, this.#dropIndex(items, e.clientY));
     });
     grid.addEventListener('pointercancel', () => {
       if (!this.#drag) return;
@@ -124,6 +136,26 @@ export class QuadrantController extends Component {
   /** The quadrant panel under a viewport point (drag hit-testing). */
   #panelAt(x: number, y: number): Element | null {
     return document.elementFromPoint(x, y)?.closest('[data-qpanel]') ?? null;
+  }
+
+  /** List position a drop at viewport height `y` would insert before. */
+  #dropIndex(items: HTMLElement[], y: number): number {
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (!item) continue;
+      const rect = item.getBoundingClientRect();
+      if (y < rect.top + rect.height / 2) return i;
+    }
+    return items.length;
+  }
+
+  #clearDropMarkers(grid: Element): void {
+    for (const el of grid.querySelectorAll('.is-drop-before')) {
+      el.classList.remove('is-drop-before');
+    }
+    for (const el of grid.querySelectorAll('.is-drop-end')) {
+      el.classList.remove('is-drop-end');
+    }
   }
 
   /** Resolve which panel/index an element inside a rendered item belongs to. */
@@ -159,14 +191,32 @@ export class QuadrantController extends Component {
     this.#store.saveQuadrant({ ...cur, [key]: next });
   }
 
-  #moveItem(from: { key: QuadrantKey; index: number }, to: QuadrantKey): void {
+  /** Drop an item at a specific position — reorder within a panel or move across. */
+  #placeItem(from: { key: QuadrantKey; index: number }, to: QuadrantKey, insertAt: number): void {
     const cur = this.#store.quadrant.get();
     const item = cur[from.key][from.index];
-    if (!item || from.key === to) return;
+    if (!item) {
+      this.render();
+      return;
+    }
+    if (from.key === to) {
+      // Removing the item first shifts later positions down by one.
+      const adjusted = insertAt > from.index ? insertAt - 1 : insertAt;
+      if (adjusted === from.index) {
+        this.render(); // dropped where it already was
+        return;
+      }
+      const list = cur[from.key].filter((_, i) => i !== from.index);
+      list.splice(adjusted, 0, item);
+      this.#store.saveQuadrant({ ...cur, [from.key]: list });
+      return;
+    }
+    const target = [...cur[to]];
+    target.splice(insertAt, 0, item);
     this.#store.saveQuadrant({
       ...cur,
       [from.key]: cur[from.key].filter((_, i) => i !== from.index),
-      [to]: [...cur[to], item],
+      [to]: target,
     });
   }
 
@@ -245,6 +295,7 @@ export class QuadrantController extends Component {
         li.setAttribute('data-qi', String(i));
         const grab = document.createElement('span');
         grab.className = 'quadrant-item-grab';
+        grab.textContent = '⠿';
         grab.setAttribute('aria-hidden', 'true');
         const span = document.createElement('span');
         span.className = 'quadrant-item-text';

@@ -177,6 +177,28 @@ test('dragging an item by its handle to another panel moves it there', async ({
   expect(stored.externalFrom.map((i) => i.text)).not.toContain(sourceText);
 });
 
+test('dragging within a panel reorders the items', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'covered on desktop; mobile uses the same pointer flow');
+  await page.setViewportSize({ width: 1280, height: 1500 });
+  await page.goto('/#quadrant');
+
+  const items = page.locator('[data-qlist="internalTo"] .quadrant-item');
+  const firstText = await items.nth(0).locator('.quadrant-item-text').textContent();
+  const secondText = await items.nth(1).locator('.quadrant-item-text').textContent();
+
+  // Drag item 0 to just below item 1 (its bottom half → insert after it).
+  await items.nth(0).locator('.quadrant-item-grab').hover();
+  await page.mouse.down();
+  const box = await items.nth(1).boundingBox();
+  if (!box) throw new Error('second item not visible');
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height * 0.9, { steps: 6 });
+  await page.mouse.up();
+
+  const stored = await getStoredQuadrant(page);
+  expect(stored.internalTo[0].text).toBe(secondText);
+  expect(stored.internalTo[1].text).toBe(firstText);
+});
+
 // ─── Compass (values) ───
 
 test('the compass shows seed value chips; adding one persists across reload', async ({ page }) => {
