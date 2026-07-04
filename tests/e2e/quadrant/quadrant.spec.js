@@ -40,9 +40,8 @@ test('seeds follow the stored language', async ({ page }) => {
   await injectLanguage(page, 'nl');
   await page.goto('/#quadrant');
   await expect(page.locator('[data-qlist="externalTo"]')).toContainText('Incheckmomenten doen');
-  await expect(page.locator('[data-qpanel="internalFrom"] .quadrant-panel-title')).toHaveText(
-    'Intern · vanaf',
-  );
+  await expect(page.locator('.quadrant-axis--away')).toHaveText('Weg van');
+  await expect(page.locator('#quadrant-values')).toContainText('Verbondenheid');
 });
 
 // ─── Add ───
@@ -178,37 +177,56 @@ test('dragging an item by its handle to another panel moves it there', async ({
   expect(stored.externalFrom.map((i) => i.text)).not.toContain(sourceText);
 });
 
-// ─── Centre (values/compass) ───
+// ─── Compass (values) ───
 
-test('the centre shows the hint, and an entered value persists across reload', async ({ page }) => {
+test('the compass shows seed value chips; adding one persists across reload', async ({ page }) => {
   await page.goto('/#quadrant');
-  const center = page.locator('#quadrant-center');
-  await expect(center).toHaveClass(/is-empty/);
-  await expect(center).toContainText('Who or what matters to you?');
+  const hub = page.locator('#quadrant-center');
+  await expect(hub).toContainText('Who or what matters to you?');
+  await expect(hub).toContainText('Calm');
+  await expect(hub).toContainText('Connection');
 
-  await center.click();
-  const edit = page.locator('.quadrant-center-edit');
-  await edit.fill('Family, health, calm');
-  await edit.press('Enter');
-
-  await expect(center).not.toHaveClass(/is-empty/);
-  await expect(center).toContainText('Family, health, calm');
+  await page.locator('.quadrant-value-input').fill('Family');
+  await page.locator('.quadrant-value-add-btn').click();
+  await expect(hub).toContainText('Family');
 
   await page.reload();
-  await expect(page.locator('#quadrant-center')).toContainText('Family, health, calm');
+  await expect(page.locator('#quadrant-center')).toContainText('Family');
   const stored = await getStoredQuadrant(page);
-  expect(stored.center).toBe('Family, health, calm');
+  expect(stored.values).toContain('Family');
 });
 
-test('Escape cancels a centre edit without saving', async ({ page }) => {
+test('removing a value chip deletes it; Enter in the value input also adds', async ({ page }) => {
   await page.goto('/#quadrant');
-  await page.locator('#quadrant-center').click();
-  const edit = page.locator('.quadrant-center-edit');
-  await edit.fill('Should not stick');
-  await edit.press('Escape');
-  await expect(page.locator('#quadrant-center')).not.toContainText('Should not stick');
-  await expect(page.locator('#quadrant-center')).toHaveClass(/is-empty/);
-  expect(await getStoredQuadrant(page)).toBeNull();
+  const hub = page.locator('#quadrant-center');
+
+  const input = page.locator('.quadrant-value-input');
+  await input.fill('Play');
+  await input.press('Enter');
+  await expect(hub).toContainText('Play');
+
+  const chips = page.locator('.quadrant-value-chip');
+  const before = await chips.count();
+  await chips.first().locator('.quadrant-value-del').click();
+  await expect(page.locator('.quadrant-value-chip')).toHaveCount(before - 1);
+  const stored = await getStoredQuadrant(page);
+  expect(stored.values).not.toContain('Calm'); // first seed chip removed
+  expect(stored.values).toContain('Play');
+});
+
+test('a legacy stored center string appears as a value chip', async ({ page }) => {
+  await page.addInitScript(() => {
+    const q = {
+      internalFrom: [],
+      internalTo: [],
+      externalFrom: [],
+      externalTo: [],
+      center: 'My family',
+    };
+    localStorage.setItem('local-mood-tracker-quadrant', JSON.stringify({ v: 1, data: q }));
+  });
+  await page.goto('/#quadrant');
+  await expect(page.locator('.quadrant-value-chip')).toHaveText(/My family/);
 });
 
 // ─── Delete ───

@@ -110,6 +110,10 @@ html {
   --warning-text: #9d5f33;
 
   /* Calendar day numbers */
+  /* Quadrant (ACT matrix): direction tones + axis lines */
+  --q-away: #b6683c;
+  --q-towards: #788c50;
+  --q-axis-line: #dcc7a8;
   --cal-day-color: rgba(44, 38, 31, 0.55);
   --cal-day-filled-color: rgba(44, 38, 31, 0.62);
 
@@ -172,6 +176,9 @@ html[data-theme="dark"] {
   --warning-border: rgba(217, 148, 88, 0.32);
   --warning-text: #e0a064;
 
+  --q-away: #cf7d4a;
+  --q-towards: #a2b56d;
+  --q-axis-line: #463a2c;
   --cal-day-color: rgba(236, 227, 212, 0.55);
   --cal-day-filled-color: rgba(236, 227, 212, 0.62);
 

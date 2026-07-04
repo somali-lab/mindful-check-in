@@ -1,8 +1,9 @@
 // Change-quadrant view (ACT matrix): four editable free-text lists on the
-// internal/external × away-from/towards axes around the values centre. Items
-// are added via the per-panel input, edited inline (click the text), struck
-// through as overcome (✓), dragged to another panel (desktop), and removed
-// with ✕. All mutations go through store.saveQuadrant.
+// internal/external × away-from/towards axes around the compass hub, which
+// holds the values everything is oriented on. Items are added via the
+// per-panel input, edited inline (click the text), struck through as overcome
+// (✓), dragged to another panel by their direction dot, and removed with ✕.
+// All mutations go through store.saveQuadrant.
 import { QUADRANT_KEYS, type Quadrant, type QuadrantKey } from '../../core/quadrant';
 import { lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
@@ -32,6 +33,16 @@ export class QuadrantController extends Component {
         this.#addFromInput(add.getAttribute('data-qadd') as QuadrantKey);
         return;
       }
+      const valueAdd = target.closest('.quadrant-value-add-btn');
+      if (valueAdd) {
+        this.#addValue();
+        return;
+      }
+      const valueDel = target.closest('.quadrant-value-del');
+      if (valueDel) {
+        this.#removeValue(Number.parseInt(valueDel.getAttribute('data-qvi') ?? '', 10));
+        return;
+      }
       const done = target.closest('.quadrant-item-done');
       if (done) {
         const pos = this.#itemPosition(done);
@@ -50,14 +61,20 @@ export class QuadrantController extends Component {
 
     grid.addEventListener('keydown', (e) => {
       if (e.key !== 'Enter') return;
-      const input = (e.target as Element).closest('[data-qinput]');
+      const target = e.target as Element;
+      const input = target.closest('[data-qinput]');
       if (input) {
         e.preventDefault();
         this.#addFromInput(input.getAttribute('data-qinput') as QuadrantKey);
+        return;
+      }
+      if (target.closest('.quadrant-value-input')) {
+        e.preventDefault();
+        this.#addValue();
       }
     });
 
-    // Drag an item (by its ⠿ handle) onto another panel to move it there.
+    // Drag an item (by its direction dot) onto another panel to move it there.
     // Pointer events instead of HTML5 drag & drop: they also work on touch
     // and are deterministic under test automation.
     grid.addEventListener('pointerdown', (e) => {
@@ -102,10 +119,6 @@ export class QuadrantController extends Component {
       this.#drag = null;
       this.render();
     });
-
-    document
-      .getElementById('quadrant-center')
-      ?.addEventListener('click', () => this.#startCenterEdit());
   }
 
   /** The quadrant panel under a viewport point (drag hit-testing). */
@@ -168,6 +181,22 @@ export class QuadrantController extends Component {
     this.#store.saveQuadrant({ ...cur, [key]: next });
   }
 
+  #addValue(): void {
+    const input = document.querySelector<HTMLInputElement>('.quadrant-value-input');
+    const value = input?.value.trim();
+    if (!input || !value) return;
+    const cur = this.#store.quadrant.get();
+    this.#store.saveQuadrant({ ...cur, values: [...cur.values, value] });
+    // render() rebuilt the chips; put focus back into the fresh input.
+    document.querySelector<HTMLInputElement>('.quadrant-value-input')?.focus();
+  }
+
+  #removeValue(index: number): void {
+    const cur = this.#store.quadrant.get();
+    if (Number.isNaN(index) || cur.values[index] === undefined) return;
+    this.#store.saveQuadrant({ ...cur, values: cur.values.filter((_, i) => i !== index) });
+  }
+
   /** Swap the item's text for an input; Enter/blur commits, Escape cancels. */
   #startEdit(textEl: HTMLElement): void {
     const pos = this.#itemPosition(textEl);
@@ -196,54 +225,9 @@ export class QuadrantController extends Component {
     input.setSelectionRange(input.value.length, input.value.length);
   }
 
-  /** Edit the centre (values/compass) in place; Enter/blur commits, Escape cancels. */
-  #startCenterEdit(): void {
-    const center = document.getElementById('quadrant-center');
-    const text = document.getElementById('quadrant-center-text');
-    if (!center || !text || center.querySelector('input')) return;
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'quadrant-center-edit';
-    input.value = this.#store.quadrant.get().center;
-    input.setAttribute('placeholder', t('quadrantCenterHint'));
-    let done = false;
-    const commit = (): void => {
-      if (done) return;
-      done = true;
-      const cur = this.#store.quadrant.get();
-      this.#store.saveQuadrant({ ...cur, center: input.value.trim() });
-    };
-    input.addEventListener('keydown', (e) => {
-      e.stopPropagation(); // keep grid-level Enter handling out of this edit
-      if (e.key === 'Enter') commit();
-      if (e.key === 'Escape') {
-        done = true;
-        this.render();
-      }
-    });
-    input.addEventListener('blur', commit);
-    input.addEventListener('click', (e) => e.stopPropagation());
-    text.replaceWith(input);
-    input.focus();
-    input.setSelectionRange(input.value.length, input.value.length);
-  }
-
   protected render(): void {
     const data: Quadrant = this.#store.quadrant.get();
-
-    // Centre circle: the value text, or the invitation hint while empty.
-    const center = document.getElementById('quadrant-center');
-    if (center) {
-      const input = center.querySelector('input');
-      const text = document.createElement('span');
-      text.className = 'quadrant-center-text';
-      text.id = 'quadrant-center-text';
-      text.textContent = data.center || t('quadrantCenterHint');
-      center.classList.toggle('is-empty', !data.center);
-      (input ?? document.getElementById('quadrant-center-text'))?.replaceWith(text);
-    }
-
+    this.#renderValues(data.values);
     for (const key of QUADRANT_KEYS) {
       const list = document.querySelector<HTMLElement>(`[data-qlist="${key}"]`);
       if (!list) continue;
@@ -261,26 +245,58 @@ export class QuadrantController extends Component {
         li.setAttribute('data-qi', String(i));
         const grab = document.createElement('span');
         grab.className = 'quadrant-item-grab';
-        grab.textContent = '⠿';
         grab.setAttribute('aria-hidden', 'true');
+        const span = document.createElement('span');
+        span.className = 'quadrant-item-text';
+        span.setAttribute('title', t('ariaQuadrantEdit'));
+        span.textContent = item.text;
         const done = document.createElement('button');
         done.type = 'button';
         done.className = 'quadrant-item-done';
         done.setAttribute('aria-label', t('ariaQuadrantDone'));
         done.setAttribute('aria-pressed', String(item.done));
         done.textContent = '✓';
-        const span = document.createElement('span');
-        span.className = 'quadrant-item-text';
-        span.setAttribute('title', t('ariaQuadrantEdit'));
-        span.textContent = item.text;
         const del = document.createElement('button');
         del.type = 'button';
         del.className = 'quadrant-item-del';
         del.setAttribute('aria-label', t('ariaRemove'));
         del.textContent = '✕';
-        li.append(grab, done, span, del);
+        li.append(grab, span, done, del);
         list.appendChild(li);
       });
     }
+  }
+
+  /** Compass hub: one removable chip per value + the add pill. */
+  #renderValues(values: string[]): void {
+    const slot = document.getElementById('quadrant-values');
+    if (!slot) return;
+    slot.innerHTML = '';
+    values.forEach((value, i) => {
+      const chip = document.createElement('span');
+      chip.className = 'quadrant-value-chip';
+      chip.appendChild(document.createTextNode(value));
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'quadrant-value-del';
+      del.setAttribute('data-qvi', String(i));
+      del.setAttribute('aria-label', t('ariaRemove'));
+      del.textContent = '✕';
+      chip.appendChild(del);
+      slot.appendChild(chip);
+    });
+    const add = document.createElement('span');
+    add.className = 'quadrant-value-add';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'quadrant-value-input';
+    input.setAttribute('placeholder', t('quadrantValuePh'));
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'quadrant-value-add-btn';
+    btn.setAttribute('aria-label', t('ariaQuadrantValueAdd'));
+    btn.textContent = '+';
+    add.append(input, btn);
+    slot.appendChild(add);
   }
 }

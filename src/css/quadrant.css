@@ -1,95 +1,142 @@
-/* ── Change quadrant: 2×2 board of editable free-text lists ── */
-.quadrant-grid {
+/* ── Change quadrant (ACT matrix): open 2×2 board with axis lines, direction
+   tones (warm = away from, green = towards) and the compass hub of values on
+   the crossing. Matches docs/design/project/Quadrant.dc.html. ── */
+.quadrant-matrix {
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 16px;
+  grid-template-rows: auto minmax(248px, auto) auto;
+  margin-top: 24px;
 }
 
-/* ACT-matrix centre: the values/compass anchor, on its own row between the
-   internal and external halves so it never covers panel content. */
-.quadrant-center {
+/* Axis lines: vertical through everything, horizontal through the middle band. */
+.quadrant-vline {
+  position: absolute;
+  left: calc(50% - 1px);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--q-axis-line);
+  z-index: 1;
+}
+
+.quadrant-band {
   grid-column: 1 / -1;
-  justify-self: center;
+  grid-row: 2;
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  min-width: 250px;
-  max-width: 420px;
-  padding: 14px 30px;
-  border: 2px solid var(--border-accent);
-  border-radius: 999px;
-  background: var(--bg-surface);
-  box-shadow: var(--accent-shadow) 0 4px 18px;
-  cursor: text;
-  font: inherit;
-  color: inherit;
-  text-align: center;
+  justify-content: center;
 }
 
-.quadrant-center-label {
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+.quadrant-hline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 1px);
+  height: 2px;
+  background: var(--q-axis-line);
+}
+
+/* Axis labels: small uppercase pills masking the lines. */
+.quadrant-axis-label {
+  position: absolute;
+  z-index: 3;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--accent);
+  background: var(--bg-surface);
+  padding: 3px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
-.quadrant-center-text {
-  font-family: var(--font-serif);
-  font-size: 0.95rem;
-  line-height: 1.3;
-  color: var(--text-strong);
+.quadrant-axis--internal {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -4px);
 }
 
-.quadrant-center.is-empty .quadrant-center-text {
-  color: var(--text-faint);
-  font-style: italic;
+.quadrant-axis--external {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 4px);
 }
 
-.quadrant-center-edit {
-  font: inherit;
-  font-family: var(--font-serif);
-  font-size: 0.95rem;
-  text-align: center;
-  color: inherit;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--border-input);
-  outline: none;
-  width: 180px;
+.quadrant-axis--away,
+.quadrant-axis--towards {
+  top: 50%;
+  transform: translateY(-50%);
 }
 
+.quadrant-axis--away {
+  left: 0;
+}
+
+.quadrant-axis--towards {
+  right: 0;
+}
+
+/* ── Cells: open (no card), padded away from the axis lines ── */
 .quadrant-panel {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 16px;
-  border: 1px solid var(--border-card);
-  border-radius: 12px;
-  background: var(--bg-surface-alt);
 }
 
-/* Subtle direction cue: away-from panels lean warm, towards panels lean calm. */
-.quadrant-panel--from {
-  border-left: 3px solid var(--status-low);
+.quadrant-cell--internalFrom {
+  grid-column: 1;
+  grid-row: 1;
+  padding: 36px 46px 22px 8px;
 }
 
-.quadrant-panel--to {
-  border-left: 3px solid var(--status-high);
+.quadrant-cell--internalTo {
+  grid-column: 2;
+  grid-row: 1;
+  padding: 36px 8px 22px 46px;
 }
 
+.quadrant-cell--externalFrom {
+  grid-column: 1;
+  grid-row: 3;
+  padding: 10px 46px 36px 8px;
+}
+
+.quadrant-cell--externalTo {
+  grid-column: 2;
+  grid-row: 3;
+  padding: 10px 8px 36px 46px;
+}
+
+/* Cell headings are for the stacked (mobile) layout; the axis labels carry
+   the orientation on the open desktop matrix. */
 .quadrant-panel-title {
-  margin: 0;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  display: none;
+  margin: 0 0 10px;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: var(--text-muted);
 }
 
+.quadrant-panel--from .quadrant-panel-title {
+  color: var(--q-away);
+}
+
+.quadrant-panel--to .quadrant-panel-title {
+  color: var(--q-towards);
+}
+
+.quadrant-panel.is-drop-target {
+  border-radius: 12px;
+  background: var(--bg-accent);
+  box-shadow: inset 0 0 0 1px var(--border-accent);
+}
+
+/* ── Items: direction dot (= drag handle) + serif text + hover controls ── */
 .quadrant-list {
   list-style: none;
   margin: 0;
@@ -102,10 +149,50 @@
 
 .quadrant-item {
   display: flex;
-  align-items: baseline;
-  gap: 4px;
-  font-size: 0.875rem;
-  line-height: 1.4;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 3px 2px;
+}
+
+.quadrant-item-grab {
+  flex: none;
+  width: 14px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none; /* the handle drags the item, not the page */
+  user-select: none;
+}
+
+.quadrant-item-grab::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.quadrant-panel--from .quadrant-item-grab::before {
+  background: var(--q-away);
+}
+
+.quadrant-panel--to .quadrant-item-grab::before {
+  background: var(--q-towards);
+}
+
+.quadrant-item.is-dragging {
+  opacity: 0.45;
+}
+
+.quadrant-item-text {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: var(--text-strong);
+  cursor: text;
 }
 
 .quadrant-item.is-done .quadrant-item-text {
@@ -113,126 +200,258 @@
   color: var(--text-faint);
 }
 
-.quadrant-item-grab {
-  color: var(--text-faint);
-  font-size: 0.7rem;
-  padding: 2px 2px 2px 0;
-  cursor: grab;
-  touch-action: none; /* the handle drags the item, not the page */
-  user-select: none;
-}
-
-.quadrant-item.is-dragging {
-  opacity: 0.45;
-}
-
-.quadrant-item-done {
+.quadrant-item-done,
+.quadrant-item-del {
+  flex: none;
   border: 0;
   background: transparent;
-  color: var(--text-faint);
+  color: var(--text-muted);
   cursor: pointer;
   font-size: 0.72rem;
-  padding: 2px 4px;
+  line-height: 1;
+  padding: 4px;
   border-radius: 6px;
+  opacity: 0.55;
   visibility: hidden;
 }
 
 .quadrant-item:hover .quadrant-item-done,
+.quadrant-item:hover .quadrant-item-del,
 .quadrant-item-done:focus-visible,
+.quadrant-item-del:focus-visible,
 .quadrant-item.is-done .quadrant-item-done {
   visibility: visible;
 }
 
 .quadrant-item.is-done .quadrant-item-done {
-  color: var(--status-high);
+  color: var(--q-towards);
+  opacity: 1;
 }
 
 .quadrant-item-done:hover {
-  color: var(--status-high);
-  background: var(--summary-done-bg);
-}
-
-/* Drop cue while dragging an item over another panel. */
-.quadrant-panel.is-drop-target {
-  border-color: var(--border-accent);
-  background: var(--bg-accent);
-}
-
-.quadrant-item-text {
-  flex: 1;
-  cursor: text;
-  border-radius: 6px;
-  padding: 2px 4px;
-}
-
-.quadrant-item-text:hover {
-  background: var(--bg-surface);
-}
-
-.quadrant-item-del {
-  border: 0;
-  background: transparent;
-  color: var(--text-faint);
-  cursor: pointer;
-  font-size: 0.72rem;
-  padding: 2px 4px;
-  border-radius: 6px;
-  visibility: hidden;
-}
-
-.quadrant-item:hover .quadrant-item-del,
-.quadrant-item-del:focus-visible {
-  visibility: visible;
+  color: var(--q-towards);
+  opacity: 1;
 }
 
 .quadrant-item-del:hover {
   color: var(--delete-color);
-  background: var(--delete-bg-hover);
+  opacity: 1;
 }
 
 .quadrant-item-edit {
   flex: 1;
-  font: inherit;
-  color: inherit;
+  min-width: 0;
+  box-sizing: border-box;
   background: var(--bg-surface);
-  border: 1px solid var(--border-input);
-  border-radius: 6px;
-  padding: 2px 4px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: var(--text-strong);
+  outline: none;
 }
 
 .quadrant-empty {
-  color: var(--text-faint);
-  font-size: 0.82rem;
+  font-family: var(--font-serif);
   font-style: italic;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  opacity: 0.8;
+  padding: 2px 0;
 }
 
+/* ── Add row ── */
 .quadrant-add {
   display: flex;
   gap: 8px;
+  margin-top: 10px;
 }
 
 .quadrant-add input {
   flex: 1;
   min-width: 0;
-  padding: 7px 10px;
-  font-size: 0.875rem;
-  border: 1px solid var(--border-input);
-  border-radius: 8px;
   background: var(--bg-surface);
+  border: 1px solid var(--border-input);
+  border-radius: 9px;
+  padding: 9px 12px;
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
   color: var(--text-strong);
+  outline: none;
 }
 
+.quadrant-add-btn {
+  flex: none;
+  background: transparent;
+  border: 1px solid;
+  border-radius: 9px;
+  padding: 0 14px;
+  font-family: var(--font-sans);
+  font-size: 0.81rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.quadrant-panel--from .quadrant-add-btn {
+  border-color: var(--q-away);
+  color: var(--q-away);
+}
+
+.quadrant-panel--to .quadrant-add-btn {
+  border-color: var(--q-towards);
+  color: var(--q-towards);
+}
+
+/* ── Compass hub: the values everything is oriented on ── */
+.quadrant-hub {
+  position: relative;
+  z-index: 2;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 2px solid var(--accent);
+  box-shadow: var(--accent-shadow) 0 6px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 0 18px;
+}
+
+.quadrant-hub-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+}
+
+.quadrant-hub-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.quadrant-hub-q {
+  font-family: var(--font-serif);
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--text-strong);
+  max-width: 190px;
+}
+
+.quadrant-hub-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  width: 100%;
+}
+
+.quadrant-value-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.quadrant-value-del {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  opacity: 0.7;
+  font-weight: 700;
+  font-size: 0.7rem;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+
+.quadrant-value-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-accent);
+  border: 1px dashed var(--accent);
+  border-radius: 999px;
+  padding: 2px 4px 2px 11px;
+}
+
+.quadrant-value-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-strong);
+  width: 70px;
+}
+
+.quadrant-value-add-btn {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  flex: none;
+}
+
+/* ── Stacked (mobile): hub leads, cells get their heading back ── */
 @media (max-width: 600px) {
-  .quadrant-grid {
+  .quadrant-matrix {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
+    gap: 20px;
   }
 
-  /* No physical centre in a stacked layout — the anchor leads the board. */
-  .quadrant-center {
+  .quadrant-vline,
+  .quadrant-hline,
+  .quadrant-axis-label {
+    display: none;
+  }
+
+  .quadrant-cell--internalFrom,
+  .quadrant-cell--internalTo,
+  .quadrant-cell--externalFrom,
+  .quadrant-cell--externalTo {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 0;
+  }
+
+  .quadrant-panel-title {
+    display: block;
+  }
+
+  .quadrant-band {
+    grid-column: 1;
+    grid-row: auto;
     order: -1;
-    min-width: 0;
-    max-width: none;
-    justify-self: stretch;
+  }
+
+  .quadrant-hub {
+    width: 100%;
+    height: auto;
     border-radius: 20px;
+    padding: 18px;
   }
 }

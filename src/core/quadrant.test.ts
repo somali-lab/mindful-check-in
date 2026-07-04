@@ -45,10 +45,17 @@ describe('mergeQuadrant', () => {
     expect(q.internalTo).toEqual([]);
   });
 
-  it('coerces the centre: missing or non-string → empty, string kept trimmed', () => {
-    expect(mergeQuadrant({ internalFrom: ['x'] }).center).toBe(''); // pre-centre data
-    expect(mergeQuadrant({ center: 42 }).center).toBe('');
-    expect(mergeQuadrant({ center: '  my family, health  ' }).center).toBe('my family, health');
+  it('coerces the compass values and migrates a legacy center string', () => {
+    expect(mergeQuadrant({ internalFrom: ['x'] }).values).toEqual([]); // pre-compass data
+    expect(mergeQuadrant({ values: ['Calm', 7, '  ', 'Health'] }).values).toEqual([
+      'Calm',
+      'Health',
+    ]);
+    // The centre-circle era stored one string; it becomes the first value.
+    expect(mergeQuadrant({ center: '  my family  ' }).values).toEqual(['my family']);
+    expect(mergeQuadrant({ center: '' }).values).toEqual([]);
+    // An explicit values array wins over a lingering center field.
+    expect(mergeQuadrant({ values: ['A'], center: 'B' }).values).toEqual(['A']);
   });
 });
 

@@ -12,13 +12,13 @@ export interface QuadrantItem {
   done: boolean;
 }
 
-export type Quadrant = Record<QuadrantKey, QuadrantItem[]> & { center: string };
+export type Quadrant = Record<QuadrantKey, QuadrantItem[]> & { values: string[] };
 
 /** Authoring shape for seeds and older stored data: plain strings per panel. */
-export type QuadrantSeed = Record<QuadrantKey, string[]> & { center: string };
+export type QuadrantSeed = Record<QuadrantKey, string[]> & { values: string[] };
 
 export function emptyQuadrant(): Quadrant {
-  return { internalFrom: [], internalTo: [], externalFrom: [], externalTo: [], center: '' };
+  return { internalFrom: [], internalTo: [], externalFrom: [], externalTo: [], values: [] };
 }
 
 function coerceItem(value: unknown): QuadrantItem | null {
@@ -36,7 +36,8 @@ function coerceItem(value: unknown): QuadrantItem | null {
 /**
  * Coerce an untrusted (stored/imported/seed) value into a valid Quadrant:
  * panel items may be strings or { text, done } objects; anything else is
- * dropped. The centre must be a string (missing on pre-centre data → '').
+ * dropped. The compass holds a list of values; data from before the chips
+ * stored a single `center` string, which becomes the first value.
  */
 export function mergeQuadrant(raw: unknown): Quadrant {
   const out = emptyQuadrant();
@@ -47,6 +48,10 @@ export function mergeQuadrant(raw: unknown): Quadrant {
     if (!Array.isArray(value)) continue;
     out[key] = value.map(coerceItem).filter((v): v is QuadrantItem => v !== null);
   }
-  if (typeof r.center === 'string') out.center = r.center.trim();
+  if (Array.isArray(r.values)) {
+    out.values = r.values.filter((v): v is string => typeof v === 'string' && v.trim() !== '');
+  } else if (typeof r.center === 'string' && r.center.trim() !== '') {
+    out.values = [r.center.trim()];
+  }
   return out;
 }

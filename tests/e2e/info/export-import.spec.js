@@ -33,7 +33,7 @@ test('export entries triggers download with correct JSON', async ({ page }) => {
   expect(Object.keys(content.entries).length).toBe(10);
   expect(content.quadrant).toBeDefined();
   expect(Array.isArray(content.quadrant.internalFrom)).toBe(true);
-  expect(typeof content.quadrant.center).toBe('string');
+  expect(Array.isArray(content.quadrant.values)).toBe(true);
 });
 
 // ─── Import a wrapped export file restores the quadrant board ───

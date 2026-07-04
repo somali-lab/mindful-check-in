@@ -89,7 +89,7 @@ The data export (Info → Data) is one file: `{ entries, quadrant }`. Import acc
 | `local-mood-tracker-language` | String | Active language (`"en"` or `"nl"`) |
 | `local-mood-tracker-overview-ui` | Object | Overview table state (search, filter, sort, page) |
 | `local-mood-tracker-weather-cache` | Object | `{ ts, data }` cached current-weather reading |
-| `local-mood-tracker-quadrant` | Object | Change quadrant (ACT matrix): four `{ text, done }` item lists (`internalFrom` / `internalTo` / `externalFrom` / `externalTo`) + `center` (values/compass string). Plain-string items from older data are read as not-done. |
+| `local-mood-tracker-quadrant` | Object | Change quadrant (ACT matrix): four `{ text, done }` item lists (`internalFrom` / `internalTo` / `externalFrom` / `externalTo`) + `values` (compass chips, string[]). Older data coerces at the boundary: plain-string items → not-done, a legacy `center` string → the first value. |
 
 Keys live in one place: `STORAGE_KEYS` (`infra/storage.ts`). The active wheel variant is not a separate key — it's `defaultWheelType` in settings and `wheelType` on each entry.
 

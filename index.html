@@ -389,43 +389,55 @@
               <section class="card quadrant-card" data-t-aria="quadrantTitle" aria-label="Change quadrant">
                 <h2 data-t="quadrantTitle">Change quadrant</h2>
                 <p class="intro" data-t="quadrantIntro">What are you moving away from, and what are you working towards?</p>
-                <div class="quadrant-grid" id="quadrant-grid">
-                  <div class="quadrant-panel quadrant-panel--from" data-qpanel="internalFrom">
-                    <h3 class="quadrant-panel-title" data-t="quadrantInternalFrom">Internal · away from</h3>
+                <div class="quadrant-matrix" id="quadrant-grid">
+                  <div class="quadrant-vline" aria-hidden="true"></div>
+                  <div class="quadrant-panel quadrant-panel--from quadrant-cell--internalFrom" role="group" data-qpanel="internalFrom" data-t-aria="quadrantInternalFrom" aria-label="panel">
+                    <h3 class="quadrant-panel-title" data-t="quadrantInternalFrom">panel</h3>
                     <ul class="quadrant-list" data-qlist="internalFrom"></ul>
                     <div class="quadrant-add">
                       <input type="text" data-qinput="internalFrom" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
-                      <button type="button" class="btn btn--ghost" data-qadd="internalFrom" data-t="quadrantAddBtn">Add</button>
+                      <button type="button" class="quadrant-add-btn" data-qadd="internalFrom" data-t="quadrantAddBtn">Add</button>
                     </div>
                   </div>
-                  <div class="quadrant-panel quadrant-panel--to" data-qpanel="internalTo">
-                    <h3 class="quadrant-panel-title" data-t="quadrantInternalTo">Internal · towards</h3>
+                  <div class="quadrant-panel quadrant-panel--to quadrant-cell--internalTo" role="group" data-qpanel="internalTo" data-t-aria="quadrantInternalTo" aria-label="panel">
+                    <h3 class="quadrant-panel-title" data-t="quadrantInternalTo">panel</h3>
                     <ul class="quadrant-list" data-qlist="internalTo"></ul>
                     <div class="quadrant-add">
                       <input type="text" data-qinput="internalTo" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
-                      <button type="button" class="btn btn--ghost" data-qadd="internalTo" data-t="quadrantAddBtn">Add</button>
+                      <button type="button" class="quadrant-add-btn" data-qadd="internalTo" data-t="quadrantAddBtn">Add</button>
                     </div>
                   </div>
-                  <button type="button" class="quadrant-center" id="quadrant-center" data-t-aria="ariaQuadrantCenter" aria-label="Edit who or what matters to you">
-                    <span class="quadrant-center-label" data-t="quadrantCenterLabel">I notice — here and now</span>
-                    <span class="quadrant-center-text" id="quadrant-center-text"></span>
-                  </button>
-                  <div class="quadrant-panel quadrant-panel--from" data-qpanel="externalFrom">
-                    <h3 class="quadrant-panel-title" data-t="quadrantExternalFrom">External · away from</h3>
+                  <div class="quadrant-band">
+                    <div class="quadrant-hline" aria-hidden="true"></div>
+                    <div class="quadrant-hub" id="quadrant-center">
+                      <div class="quadrant-hub-head">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
+                        <span class="quadrant-hub-eyebrow" data-t="quadrantCompass">Compass</span>
+                      </div>
+                      <div class="quadrant-hub-q" data-t="quadrantValuesQ">Who or what matters to you?</div>
+                      <div class="quadrant-hub-chips" id="quadrant-values"></div>
+                    </div>
+                  </div>
+                  <div class="quadrant-panel quadrant-panel--from quadrant-cell--externalFrom" role="group" data-qpanel="externalFrom" data-t-aria="quadrantExternalFrom" aria-label="panel">
+                    <h3 class="quadrant-panel-title" data-t="quadrantExternalFrom">panel</h3>
                     <ul class="quadrant-list" data-qlist="externalFrom"></ul>
                     <div class="quadrant-add">
                       <input type="text" data-qinput="externalFrom" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
-                      <button type="button" class="btn btn--ghost" data-qadd="externalFrom" data-t="quadrantAddBtn">Add</button>
+                      <button type="button" class="quadrant-add-btn" data-qadd="externalFrom" data-t="quadrantAddBtn">Add</button>
                     </div>
                   </div>
-                  <div class="quadrant-panel quadrant-panel--to" data-qpanel="externalTo">
-                    <h3 class="quadrant-panel-title" data-t="quadrantExternalTo">External · towards</h3>
+                  <div class="quadrant-panel quadrant-panel--to quadrant-cell--externalTo" role="group" data-qpanel="externalTo" data-t-aria="quadrantExternalTo" aria-label="panel">
+                    <h3 class="quadrant-panel-title" data-t="quadrantExternalTo">panel</h3>
                     <ul class="quadrant-list" data-qlist="externalTo"></ul>
                     <div class="quadrant-add">
                       <input type="text" data-qinput="externalTo" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
-                      <button type="button" class="btn btn--ghost" data-qadd="externalTo" data-t="quadrantAddBtn">Add</button>
+                      <button type="button" class="quadrant-add-btn" data-qadd="externalTo" data-t="quadrantAddBtn">Add</button>
                     </div>
                   </div>
+                  <span class="quadrant-axis-label quadrant-axis--internal" data-t="quadrantAxisInternal" aria-hidden="true">Internal</span>
+                  <span class="quadrant-axis-label quadrant-axis--external" data-t="quadrantAxisExternal" aria-hidden="true">External</span>
+                  <span class="quadrant-axis-label quadrant-axis--away" data-t="quadrantAxisAway" aria-hidden="true">Away from</span>
+                  <span class="quadrant-axis-label quadrant-axis--towards" data-t="quadrantAxisTowards" aria-hidden="true">Towards</span>
                 </div>
               </section>
             </div>
