@@ -4,10 +4,11 @@
 // per-panel input, edited inline (click the text), struck through as overcome
 // (✓), dragged to another panel by their direction dot, and removed with ✕.
 // All mutations go through store.saveQuadrant.
-import { QUADRANT_KEYS, type Quadrant, type QuadrantKey } from '../../core/quadrant';
+import { emptyQuadrant, QUADRANT_KEYS, type Quadrant, type QuadrantKey } from '../../core/quadrant';
 import { lang, t } from '../../i18n';
 import type { Store } from '../../state/store';
 import { Component } from '../common/component';
+import { confirmDialog } from '../common/confirm';
 
 export class QuadrantController extends Component {
   readonly #store: Store;
@@ -23,6 +24,15 @@ export class QuadrantController extends Component {
   }
 
   #wire(): void {
+    document.getElementById('quadrant-clear')?.addEventListener('click', async () => {
+      const ok = await confirmDialog({
+        title: t('quadrantClear'),
+        body: t('quadrantClearConfirm'),
+        danger: true,
+      });
+      if (ok) this.#store.saveQuadrant(emptyQuadrant());
+    });
+
     const grid = document.getElementById('quadrant-grid');
     if (!grid) return;
 
@@ -293,6 +303,9 @@ export class QuadrantController extends Component {
         const li = document.createElement('li');
         li.className = `quadrant-item${item.done ? ' is-done' : ''}`;
         li.setAttribute('data-qi', String(i));
+        const dot = document.createElement('span');
+        dot.className = 'quadrant-item-dot';
+        dot.setAttribute('aria-hidden', 'true');
         const grab = document.createElement('span');
         grab.className = 'quadrant-item-grab';
         grab.textContent = '⠿';
@@ -312,7 +325,7 @@ export class QuadrantController extends Component {
         del.className = 'quadrant-item-del';
         del.setAttribute('aria-label', t('ariaRemove'));
         del.textContent = '✕';
-        li.append(grab, span, done, del);
+        li.append(dot, span, done, del, grab);
         list.appendChild(li);
       });
     }

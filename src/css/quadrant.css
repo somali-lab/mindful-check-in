@@ -8,6 +8,21 @@
   background: var(--bg-surface-alt);
 }
 
+.quadrant-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.quadrant-clear-btn,
+.quadrant-clear-btn:hover,
+.quadrant-clear-btn:focus-visible {
+  flex: none;
+  border-color: var(--delete-color);
+  color: var(--delete-color);
+}
+
 .quadrant-matrix {
   position: relative;
   display: grid;
@@ -161,6 +176,22 @@
   padding: 3px 2px;
 }
 
+.quadrant-item-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+
+.quadrant-panel--from .quadrant-item-dot {
+  background: var(--q-away);
+}
+
+.quadrant-panel--to .quadrant-item-dot {
+  background: var(--q-towards);
+}
+
 .quadrant-item-grab {
   flex: none;
   width: 16px;
@@ -170,17 +201,16 @@
   justify-content: center;
   font-size: 0.68rem;
   line-height: 1;
+  color: var(--text-muted);
+  opacity: 0.55;
   cursor: grab;
   touch-action: none; /* the handle drags the item, not the page */
   user-select: none;
+  visibility: hidden;
 }
 
-.quadrant-panel--from .quadrant-item-grab {
-  color: var(--q-away);
-}
-
-.quadrant-panel--to .quadrant-item-grab {
-  color: var(--q-towards);
+.quadrant-item:hover .quadrant-item-grab {
+  visibility: visible;
 }
 
 .quadrant-item.is-dragging {
@@ -270,6 +300,14 @@
   color: var(--text-muted);
   opacity: 0.8;
   padding: 2px 0;
+}
+
+@media (hover: none) {
+  .quadrant-item-done,
+  .quadrant-item-del,
+  .quadrant-item-grab {
+    visibility: visible;
+  }
 }
 
 /* ── Add row ── */

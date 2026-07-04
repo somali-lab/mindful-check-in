@@ -25,6 +25,8 @@ export const quadrant = {
     quadrantValuesQ: 'Who or what matters to you?',
     quadrantValuePh: 'Value…',
     ariaQuadrantValueAdd: 'Add value',
+    quadrantClear: 'Clear board',
+    quadrantClearConfirm: 'Empty the whole quadrant — all items and values? This cannot be undone.',
   },
   nl: {
     tabQuadrant: 'Kwadrant',
@@ -48,6 +50,9 @@ export const quadrant = {
     quadrantValuesQ: 'Wie of wat is belangrijk voor je?',
     quadrantValuePh: 'Waarde…',
     ariaQuadrantValueAdd: 'Waarde toevoegen',
+    quadrantClear: 'Bord leegmaken',
+    quadrantClearConfirm:
+      'Het hele kwadrant leegmaken — alle items en waarden? Dit kan niet ongedaan worden.',
   },
 } as const;
 

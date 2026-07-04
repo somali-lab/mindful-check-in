@@ -199,6 +199,33 @@ test('dragging within a panel reorders the items', async ({ page, isMobile }) =>
   expect(stored.internalTo[1].text).toBe(firstText);
 });
 
+// ─── Clear board ───
+
+test('the clear button empties the whole board after confirmation', async ({ page }) => {
+  await page.goto('/#quadrant');
+  await page.locator('#quadrant-clear').click();
+  await page.locator('#dlg-confirm-ok').click();
+
+  await expect(page.locator('.quadrant-empty')).toHaveCount(4);
+  await expect(page.locator('.quadrant-value-chip')).toHaveCount(0);
+
+  // Persisted: the emptied board survives a reload (no re-seed).
+  await page.reload();
+  await expect(page.locator('.quadrant-empty')).toHaveCount(4);
+  const stored = await getStoredQuadrant(page);
+  expect(stored.internalFrom).toEqual([]);
+  expect(stored.values).toEqual([]);
+});
+
+test('cancelling the clear dialog keeps the board untouched', async ({ page }) => {
+  await page.goto('/#quadrant');
+  const before = await page.locator('.quadrant-item').count();
+  await page.locator('#quadrant-clear').click();
+  await page.locator('#dlg-confirm-cancel').click();
+  await expect(page.locator('.quadrant-item')).toHaveCount(before);
+  expect(await getStoredQuadrant(page)).toBeNull(); // still the soft default
+});
+
 // ─── Compass (values) ───
 
 test('the compass shows seed value chips; adding one persists across reload', async ({ page }) => {
