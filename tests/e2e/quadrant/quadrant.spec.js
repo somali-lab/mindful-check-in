@@ -41,7 +41,8 @@ test('seeds follow the stored language', async ({ page }) => {
   await page.goto('/#quadrant');
   await expect(page.locator('[data-qlist="externalTo"]')).toContainText('Incheckmomenten doen');
   await expect(page.locator('.quadrant-axis--away')).toHaveText('Weg van');
-  await expect(page.locator('#quadrant-values')).toContainText('Verbondenheid');
+  await expect(page.locator('[data-qlist="internalTo"]')).toContainText('Verbondenheid');
+  await expect(page.locator('#quadrant-center')).toContainText('Ik merk op');
 });
 
 // ─── Add ───
@@ -209,14 +210,13 @@ test('the clear button empties the whole board after confirmation', async ({ pag
   await page.locator('#dlg-confirm-ok').click();
 
   await expect(page.locator('.quadrant-empty')).toHaveCount(4);
-  await expect(page.locator('.quadrant-value-chip')).toHaveCount(0);
 
   // Persisted: the emptied board survives a reload (no re-seed).
   await page.reload();
   await expect(page.locator('.quadrant-empty')).toHaveCount(4);
   const stored = await getStoredQuadrant(page);
   expect(stored.internalFrom).toEqual([]);
-  expect(stored.values).toEqual([]);
+  expect(stored.internalTo).toEqual([]);
 });
 
 test('cancelling the clear dialog keeps the board untouched', async ({ page }) => {
@@ -244,9 +244,9 @@ test('generating demo data fills a cleared board with the example items', async 
 
   await navigateToTab(page, 'quadrant');
   await expect(page.locator('[data-qlist="externalTo"]')).toContainText('Doing check-in moments');
-  await expect(page.locator('#quadrant-values')).toContainText('Calm');
+  await expect(page.locator('[data-qlist="internalTo"]')).toContainText('Calm');
   const stored = await getStoredQuadrant(page);
-  expect(stored.values).toContain('Health');
+  expect(stored.internalTo.map((i) => i.text)).toContain('Health');
 });
 
 test('demo data does not overwrite a board with own content', async ({ page }) => {
@@ -265,59 +265,35 @@ test('demo data does not overwrite a board with own content', async ({ page }) =
   await navigateToTab(page, 'quadrant');
   await expect(page.locator('[data-qlist="internalTo"]')).toContainText('My own item');
   const stored = await getStoredQuadrant(page);
-  expect(stored.values).toEqual([]); // seeds not re-applied
+  expect(stored.internalTo.map((i) => i.text)).toEqual(['My own item']); // seeds not re-applied
 });
 
-// ─── Compass (values) ───
+// ─── Observing-self hub ───
 
-test('the compass shows seed value chips; adding one persists across reload', async ({ page }) => {
+test('the hub is the static noticing anchor, not an editor', async ({ page }) => {
   await page.goto('/#quadrant');
   const hub = page.locator('#quadrant-center');
-  await expect(hub).toContainText('Who or what matters to you?');
-  await expect(hub).toContainText('Calm');
-  await expect(hub).toContainText('Connection');
-
-  await page.locator('.quadrant-value-input').fill('Family');
-  await page.locator('.quadrant-value-add-btn').click();
-  await expect(hub).toContainText('Family');
-
-  await page.reload();
-  await expect(page.locator('#quadrant-center')).toContainText('Family');
-  const stored = await getStoredQuadrant(page);
-  expect(stored.values).toContain('Family');
+  await expect(hub).toContainText('I notice');
+  await expect(hub).toContainText('here and now');
+  await expect(hub.locator('input')).toHaveCount(0);
 });
 
-test('removing a value chip deletes it; Enter in the value input also adds', async ({ page }) => {
-  await page.goto('/#quadrant');
-  const hub = page.locator('#quadrant-center');
-
-  const input = page.locator('.quadrant-value-input');
-  await input.fill('Play');
-  await input.press('Enter');
-  await expect(hub).toContainText('Play');
-
-  const chips = page.locator('.quadrant-value-chip');
-  const before = await chips.count();
-  await chips.first().locator('.quadrant-value-del').click();
-  await expect(page.locator('.quadrant-value-chip')).toHaveCount(before - 1);
-  const stored = await getStoredQuadrant(page);
-  expect(stored.values).not.toContain('Calm'); // first seed chip removed
-  expect(stored.values).toContain('Play');
-});
-
-test('a legacy stored center string appears as a value chip', async ({ page }) => {
+test('legacy compass values migrate into quadrant 1 on load', async ({ page }) => {
   await page.addInitScript(() => {
     const q = {
       internalFrom: [],
-      internalTo: [],
+      internalTo: [{ text: 'Own item', done: false }],
       externalFrom: [],
       externalTo: [],
-      center: 'My family',
+      values: ['My family', 'Health'],
     };
     localStorage.setItem('local-mood-tracker-quadrant', JSON.stringify({ v: 1, data: q }));
   });
   await page.goto('/#quadrant');
-  await expect(page.locator('.quadrant-value-chip')).toHaveText(/My family/);
+  const list = page.locator('[data-qlist="internalTo"]');
+  await expect(list).toContainText('Own item');
+  await expect(list).toContainText('My family');
+  await expect(list).toContainText('Health');
 });
 
 // ─── Delete ───

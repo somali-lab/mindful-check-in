@@ -33,7 +33,6 @@ test('export entries triggers download with correct JSON', async ({ page }) => {
   expect(Object.keys(content.entries).length).toBe(10);
   expect(content.quadrant).toBeDefined();
   expect(Array.isArray(content.quadrant.internalFrom)).toBe(true);
-  expect(Array.isArray(content.quadrant.values)).toBe(true);
 });
 
 // ─── Import a wrapped export file restores the quadrant board ───
@@ -49,7 +48,7 @@ test('importing a wrapped export file restores entries and quadrant', async ({ p
       internalTo: [],
       externalFrom: [],
       externalTo: [{ text: 'Backup walk', done: true }],
-      center: 'Family',
+      values: ['Family'], // legacy compass data migrates into quadrant 1
     },
   };
   const fs = require('node:fs');
@@ -67,7 +66,7 @@ test('importing a wrapped export file restores entries and quadrant', async ({ p
   await expect(page.locator('[data-qlist="externalTo"] .quadrant-item').first()).toHaveClass(
     /is-done/,
   );
-  await expect(page.locator('#quadrant-center')).toContainText('Family');
+  await expect(page.locator('[data-qlist="internalTo"]')).toContainText('Family');
 
   try {
     fs.unlinkSync(tmpPath);

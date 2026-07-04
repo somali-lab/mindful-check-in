@@ -5,7 +5,6 @@ import { emptyQuadrant, isQuadrantEmpty, mergeQuadrant, QUADRANT_KEYS } from './
 describe('isQuadrantEmpty', () => {
   it('is true for a fresh empty board and false once anything is on it', () => {
     expect(isQuadrantEmpty(emptyQuadrant())).toBe(true);
-    expect(isQuadrantEmpty({ ...emptyQuadrant(), values: ['Calm'] })).toBe(false);
     expect(
       isQuadrantEmpty({ ...emptyQuadrant(), externalTo: [{ text: 'Walk', done: false }] }),
     ).toBe(false);
@@ -56,17 +55,18 @@ describe('mergeQuadrant', () => {
     expect(q.internalTo).toEqual([]);
   });
 
-  it('coerces the compass values and migrates a legacy center string', () => {
-    expect(mergeQuadrant({ internalFrom: ['x'] }).values).toEqual([]); // pre-compass data
-    expect(mergeQuadrant({ values: ['Calm', 7, '  ', 'Health'] }).values).toEqual([
-      'Calm',
-      'Health',
+  it('migrates retired centre-hub data (values list, center string) into quadrant 1', () => {
+    expect(mergeQuadrant({ internalFrom: ['x'] }).internalTo).toEqual([]); // nothing legacy
+    expect(mergeQuadrant({ values: ['Calm', 7, '  ', 'Health'] }).internalTo).toEqual([
+      { text: 'Calm', done: false },
+      { text: 'Health', done: false },
     ]);
-    // The centre-circle era stored one string; it becomes the first value.
-    expect(mergeQuadrant({ center: '  my family  ' }).values).toEqual(['my family']);
-    expect(mergeQuadrant({ center: '' }).values).toEqual([]);
-    // An explicit values array wins over a lingering center field.
-    expect(mergeQuadrant({ values: ['A'], center: 'B' }).values).toEqual(['A']);
+    expect(mergeQuadrant({ center: 'my family' }).internalTo).toEqual([
+      { text: 'my family', done: false },
+    ]);
+    // Values merge after existing items, without duplicating identical text.
+    const q = mergeQuadrant({ internalTo: ['Calm', 'Rest'], values: ['Calm', 'Health'] });
+    expect(q.internalTo.map((i) => i.text)).toEqual(['Calm', 'Rest', 'Health']);
   });
 });
 

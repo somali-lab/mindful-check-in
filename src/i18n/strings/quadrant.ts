@@ -27,12 +27,10 @@ export const quadrant = {
     quadrantEmpty: 'Nothing yet — add something.',
     ariaQuadrantEdit: 'Edit item',
     ariaQuadrantDone: 'Strike through as overcome',
-    quadrantCompass: 'Compass',
-    quadrantValuesQ: 'Who or what matters to you?',
-    quadrantValuePh: 'Value…',
-    ariaQuadrantValueAdd: 'Add value',
+    quadrantHubTitle: 'I notice',
+    quadrantHubSub: 'here and now — from here you see which way you are moving',
     quadrantClear: 'Clear board',
-    quadrantClearConfirm: 'Empty the whole quadrant — all items and values? This cannot be undone.',
+    quadrantClearConfirm: 'Empty the whole quadrant — all items? This cannot be undone.',
   },
   nl: {
     tabQuadrant: 'Kwadrant',
@@ -57,10 +55,8 @@ export const quadrant = {
     quadrantEmpty: 'Nog niets — voeg iets toe.',
     ariaQuadrantEdit: 'Item bewerken',
     ariaQuadrantDone: 'Afstrepen als overwonnen',
-    quadrantCompass: 'Kompas',
-    quadrantValuesQ: 'Wie of wat is belangrijk voor je?',
-    quadrantValuePh: 'Waarde…',
-    ariaQuadrantValueAdd: 'Waarde toevoegen',
+    quadrantHubTitle: 'Ik merk op',
+    quadrantHubSub: 'hier en nu — van hieruit zie je welke kant je beweegt',
     quadrantClear: 'Bord leegmaken',
     quadrantClearConfirm:
       'Het hele kwadrant leegmaken — alle items en waarden? Dit kan niet ongedaan worden.',
@@ -82,6 +78,9 @@ export const quadrantSeeds: Record<'en' | 'nl', QuadrantSeed> = {
       '"Oh shit, how will today go?"',
     ],
     internalTo: [
+      'Calm',
+      'Health',
+      'Connection',
       'Less tired → waking up rested',
       'Effective',
       'Mental calm',
@@ -107,7 +106,6 @@ export const quadrantSeeds: Record<'en' | 'nl', QuadrantSeed> = {
       'Expressing emotions / being moved — verbally and non-verbally',
       'Doing check-in moments',
     ],
-    values: ['Calm', 'Health', 'Connection'],
   },
   nl: {
     internalFrom: [
@@ -121,6 +119,9 @@ export const quadrantSeeds: Record<'en' | 'nl', QuadrantSeed> = {
       '"Oh shit, hoe vandaag?"',
     ],
     internalTo: [
+      'Rust',
+      'Gezondheid',
+      'Verbondenheid',
       'Minder moe → uitgerust wakker',
       'Effectief',
       'Mentale rust',
@@ -146,6 +147,5 @@ export const quadrantSeeds: Record<'en' | 'nl', QuadrantSeed> = {
       'Emoties uiten / geraakt zijn — o.a. verbaal als non-verbaal',
       'Incheckmomenten doen',
     ],
-    values: ['Rust', 'Gezondheid', 'Verbondenheid'],
   },
 };

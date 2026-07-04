@@ -12,18 +12,18 @@ export interface QuadrantItem {
   done: boolean;
 }
 
-export type Quadrant = Record<QuadrantKey, QuadrantItem[]> & { values: string[] };
+export type Quadrant = Record<QuadrantKey, QuadrantItem[]>;
 
 /** Authoring shape for seeds and older stored data: plain strings per panel. */
-export type QuadrantSeed = Record<QuadrantKey, string[]> & { values: string[] };
+export type QuadrantSeed = Record<QuadrantKey, string[]>;
 
 export function emptyQuadrant(): Quadrant {
-  return { internalFrom: [], internalTo: [], externalFrom: [], externalTo: [], values: [] };
+  return { internalFrom: [], internalTo: [], externalFrom: [], externalTo: [] };
 }
 
-/** True when the board holds no items and no values (e.g. after Clear board). */
+/** True when the board holds no items (e.g. after Clear board). */
 export function isQuadrantEmpty(q: Quadrant): boolean {
-  return q.values.length === 0 && QUADRANT_KEYS.every((key) => q[key].length === 0);
+  return QUADRANT_KEYS.every((key) => q[key].length === 0);
 }
 
 function coerceItem(value: unknown): QuadrantItem | null {
@@ -41,8 +41,9 @@ function coerceItem(value: unknown): QuadrantItem | null {
 /**
  * Coerce an untrusted (stored/imported/seed) value into a valid Quadrant:
  * panel items may be strings or { text, done } objects; anything else is
- * dropped. The compass holds a list of values; data from before the chips
- * stored a single `center` string, which becomes the first value.
+ * dropped. Two retired centre-hub shapes migrate into quadrant 1
+ * (`internalTo`, who/what matters): a `values` string list (compass chips)
+ * and the single `center` string that preceded it.
  */
 export function mergeQuadrant(raw: unknown): Quadrant {
   const out = emptyQuadrant();
@@ -53,10 +54,10 @@ export function mergeQuadrant(raw: unknown): Quadrant {
     if (!Array.isArray(value)) continue;
     out[key] = value.map(coerceItem).filter((v): v is QuadrantItem => v !== null);
   }
-  if (Array.isArray(r.values)) {
-    out.values = r.values.filter((v): v is string => typeof v === 'string' && v.trim() !== '');
-  } else if (typeof r.center === 'string' && r.center.trim() !== '') {
-    out.values = [r.center.trim()];
+  const legacy = Array.isArray(r.values) ? r.values : [r.center];
+  for (const value of legacy) {
+    const item = coerceItem(value);
+    if (item && !out.internalTo.some((it) => it.text === item.text)) out.internalTo.push(item);
   }
   return out;
 }
