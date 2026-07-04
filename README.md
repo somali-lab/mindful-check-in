@@ -11,7 +11,7 @@ Grab the latest [**Release**](../../releases/latest) and open it — no install,
 - **`mindful-check-in.html`** — the whole app in a single file. Download it and double-click; it runs offline in your browser and keeps your data on your own device.
 - **`mindful-check-in-dist.zip`** — the split build; unzip it and open `index.html`.
 
-> The weather widget and reminders need the app served over HTTP (they're blocked on the `file://` protocol); everything else works straight from the file.
+> Reminders (browser notifications) need the app served over HTTP — they're blocked on the `file://` protocol. Everything else, including the weather widget, works straight from the file.
 
 ---
 
@@ -121,7 +121,7 @@ npm run build        # → dist/  (one classic app.js + assets, relative paths)
 open dist/index.html
 ```
 
-Opening the built `dist/index.html` directly works for the core app. The **weather widget and reminders** need the app served over HTTP — `fetch` and Web Notifications are blocked on the `file://` protocol.
+Opening the built `dist/index.html` directly works for the whole app, weather widget included — Open-Meteo sends permissive CORS headers, so `fetch` succeeds from the `file://` origin. Only **reminders** need the app served over HTTP: the Web Notifications API requires a secure context, which `file://` isn't.
 
 For development (native ESM + hot reload):
 
