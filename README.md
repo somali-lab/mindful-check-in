@@ -1,292 +1,93 @@
 # Mindful Check-in
 
-A private, local-only mental health check-in web app. Runs entirely in the browser — no server, no account, no tracking. All data stays on your device in `localStorage`.
+**A calm, private space to check in with yourself.** Track how you feel across the day — your emotions, your body, your energy and mood — and watch the patterns emerge over time. Everything runs in your browser and stays on your device. No account, no server, no tracking.
+
+![The Mindful Check-in dashboard: streak, weather, a 28-day mood history heatmap, and mood-swing trends](docs/screenshots/home.png)
 
 ---
 
-## Download & use (no build needed)
+## Get it running
 
-Grab the latest [**Release**](../../releases/latest) and open it — no install, no build step:
+No install, no sign-up. Grab the latest [**Release**](../../releases/latest) and open it:
 
-- **`mindful-check-in.html`** — the whole app in a single file. Download it and double-click; it runs offline in your browser and keeps your data on your own device.
-- **`mindful-check-in-dist.zip`** — the split build; unzip it and open `index.html`.
+- **`mindful-check-in.html`** — the whole app in a single file. Download it, double-click, done. It runs offline and keeps your data on your own device.
+- **`mindful-check-in-dist.zip`** — the same app as a small folder; unzip and open `index.html`.
 
-> Reminders (browser notifications) need the app served over HTTP — they're blocked on the `file://` protocol. Everything else, including the weather widget, works straight from the file.
-
----
-
-## Features
-
-### Check-in
-
-Each check-in is a snapshot of your current state across multiple dimensions:
-
-| Component           | Description                                                                                                                    |
-|---------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| **Weather**         | Current conditions fetched from [Open-Meteo](https://open-meteo.com/) (free, no API key) — attached to the entry automatically |
-| **Thoughts**        | Free-text field for whatever is on your mind                                                                                   |
-| **Core feeling**    | Interactive SVG emotion wheel — pick one primary emotion                                                                       |
-| **Body signals**    | Clickable SVG body figure — mark where you notice physical sensations                                                          |
-| **Energy meters**   | Three 0–100% click-to-set meters: Physical, Mental, Emotional/Social                                                           |
-| **Custom feelings** | Free-text to describe nuanced emotions beyond the wheel                                                                        |
-| **Body note**       | Free-text body description                                                                                                     |
-| **Energy note**     | Free-text description of your energy quality                                                                                   |
-| **Mood matrix**     | 10×10 color-coded grid (valence × arousal) with 100 labeled mood words                                                         |
-| **Actions**         | What you did or plan to do                                                                                                     |
-| **Optional note**   | Anything else to add                                                                                                           |
-
-**Save behaviour:**
-
-- **Save** — updates the latest check-in for today, or creates one if none exists
-- **New check-in** — clears the form so you can start a fresh entry (creates an additional check-in for the same day on save)
-
-### Emotion wheel variants
-
-Five models to choose from (switch per check-in or set a default):
-
-| Variant  | Emotions                                                                                                |
-|----------|---------------------------------------------------------------------------------------------------------|
-| ACT      | 8 (joy, serenity, love, acceptance, sadness, melancholy, anger, aggression)                             |
-| Plutchik | 8 (joy, trust, fear, surprise, sadness, disgust, anger, anticipation)                                   |
-| Ekman    | 6 (joy, sadness, anger, fear, surprise, disgust)                                                        |
-| Junto    | 6 (love, joy, surprise, anger, sadness, fear)                                                           |
-| Extended | 12 (joy, love, trust, surprise, curiosity, anticipation, anxiety, fear, sadness, disgust, anger, shame) |
-
-### Summary & History
-
-- **Summary** — today's status, 7-day heatmap, streak counter, total check-in count
-- **History** — 28-day calendar view with color-coded dots; switchable between core feeling, mood matrix, and energy modes; click a day to load that entry
-
-### Quadrant (Change Matrix)
-
-An ACT-inspired four-quadrant board for tracking internal/external movement:
-
-| Quadrant | Axis |
-|----------|------|
-| Internal — moving away from | What you want to leave behind (internal) |
-| Internal — moving towards | What matters to you / who you want to be |
-| External — moving away from | External circumstances you're moving away from |
-| External — moving towards | External goals you're working towards |
-
-Items can be marked as done (struck through). The board seeds with language-appropriate defaults and persists independently from check-in entries.
-
-### Overview
-
-- Paginated, sortable table of all saved entries
-- Search across entries
-- Date filters: today, last 7 days, last 2 weeks, last month, last 3 months
-- Delete individual entries
-- Export a single entry as JSON
-- Bulk export / import (JSON) with overwrite or skip-duplicates choice
-
-### Settings
-
-- Default language (English / Dutch)
-- Theme: light, dark, or follow system preference
-- Default emotion wheel type
-- Rows per page (5–100)
-- Overview text truncation limit (20–500 characters)
-- Weather location (city name, geocoded via Open-Meteo)
-- Emotional/Social energy label variant
-- Per-component visibility toggles (hide sections you don't use)
-- Quick actions editor (configurable shortcut chips for the actions field)
-- Export and import settings as JSON
-
-### Info tab
-
-- Quick usage guide
-- Storage explanation
-- Clear all local data
-- Generate 30 demo entries for exploration
+> Everything works straight from the downloaded file — including the weather widget. The only exception is **reminders** (browser notifications), which need the app opened from a web address rather than a local file.
 
 ---
 
-## Privacy
+## What you can do
 
-- **No server.** The app runs entirely in your browser — no backend, no account. The built bundle is a set of static files you can open directly.
-- **No network requests** except for the optional weather widget (Open-Meteo, no personal data sent).
-- **No cookies, no tracking, no analytics.**
-- Data is stored as plain JSON in `localStorage`. It is not encrypted by the app.
+### Check in with yourself
 
----
+A check-in is a snapshot of how you're doing right now. Fill in as much or as little as you like — every part is optional, and you can hide the parts you don't use.
 
-## Usage
+![The check-in screen: an emotion wheel, a clickable body figure, energy sliders, and a mood matrix](docs/screenshots/checkin.png)
 
-The app is built with TypeScript + Vite. The source lives under `src/`; the build output is a single classic bundle that runs straight from disk.
+- **Thoughts** — a free space for whatever is on your mind.
+- **Core feeling** — pick one primary emotion from an interactive wheel. Choose the model that speaks to you: **ACT**, **Plutchik**, **Ekman**, **Junto**, or an **Extended** 12-emotion wheel.
+- **Body signals** — tap where you notice something on a body figure, and tap again to mark how strong it feels.
+- **Energy** — set your Physical, Mental, and Emotional/Social levels.
+- **Mood matrix** — place yourself on a 10×10 grid of 100 mood words, from calm to energised and negative to positive.
+- **Actions & notes** — jot down what you did or plan to do, plus any extra note.
 
-```bash
-npm install          # first time only
-npm run build        # → dist/  (one classic app.js + assets, relative paths)
-# then double-click dist/index.html, or:
-open dist/index.html
-```
+Save updates today's check-in, or start a fresh one whenever your state shifts — you can log more than once a day.
 
-Opening the built `dist/index.html` directly works for the whole app, weather widget included — Open-Meteo sends permissive CORS headers, so `fetch` succeeds from the `file://` origin. Only **reminders** need the app served over HTTP: the Web Notifications API requires a secure context, which `file://` isn't.
+### See your patterns
 
-For development (native ESM + hot reload):
+The home dashboard gives you the bigger picture at a glance: your current **streak**, a **28-day history** heatmap, today's weather and energy, and **mood-swing** trends that show how much you've been fluctuating.
 
-```bash
-npm run dev          # Vite dev server
-```
+### Work with the change matrix
 
-### Releasing
+An ACT-inspired board for reflecting on where you're headed — what you want to move *away from* and *towards*, both inside (thoughts, feelings) and outside (behaviour). The centre keeps you anchored in the here and now.
 
-The `release` GitHub Actions workflow publishes downloadable builds. Push a version tag and it lints, builds, unit-tests, generates release notes from the commits since the previous tag, then attaches `mindful-check-in.html` + `mindful-check-in-dist.zip` to a GitHub Release:
+![The change matrix: four quadrants around a central "I notice" anchor](docs/screenshots/quadrant.png)
 
-```bash
-git tag v1.1.0
-git push origin v1.1.0
-```
+### Browse your history
 
-Or run it by hand from **Actions → release → Run workflow**, entering the tag name.
+Every check-in in one searchable, sortable table. Filter by date, search your notes, and export a single entry or your whole history as a file you can back up or move to another device.
 
----
+![The overview table listing past check-ins with feeling, mood, energy, and thoughts](docs/screenshots/overview.png)
 
-## Reminders (push notifications)
+### Make it yours
 
-The app can send browser notifications at set intervals as a reminder to check in. Enable this via **Settings → Reminders**.
+![The settings screen with language, theme, default wheel, and other preferences](docs/screenshots/settings.png)
 
-> **Note:** browser notifications do not work when the app is opened directly as a file (`file://` protocol). You need to run the app through a local web server.
+- Switch between **English** and **Dutch** anytime.
+- Choose **light, dark, or system** theme.
+- Pick your default emotion wheel, set your weather location, and tune the overview table.
+- **Hide any check-in section** you don't want to see.
+- Set up **quick-action chips** for the things you do most.
+- **Export and import** your data and settings as plain files.
 
-```bash
-npm run dev                 # Vite dev server (recommended)
-# or serve the built output:
-npm run build && npx serve dist
-```
-
-Then open the app at the printed URL and enable reminders in settings.
+Curious first? The **About → Data** tab can generate a month of demo entries so you can explore everything with the views already filled in — and clear it all with one button.
 
 ---
 
-## Data format
+## Your privacy
 
-Entries are stored in `localStorage` under the key `local-mood-tracker-entries` as a JSON object. Keys use the format `YYYY-MM-DD` (first entry of a day) or `YYYY-MM-DD_HHMMSSmmm` (subsequent entries on the same day).
-
-Each entry contains:
-
-```json
-{
-  "id": "a1b2c3d4-...",
-  "thoughts": "...",
-  "coreFeeling": "joy",
-  "wheelType": "act",
-  "customFeelings": "...",
-  "energy": { "physical": 70, "mental": 55, "emotional": 60 },
-  "bodySignals": ["chest", "left-shoulder"],
-  "bodyNote": "...",
-  "energyNote": "...",
-  "actions": "...",
-  "note": "...",
-  "moodRow": 2,
-  "moodCol": 8,
-  "moodLabel": "content",
-  "moodColor": "#7cb342",
-  "moodScore": 3,
-  "weather": { "temperature": 14, "weathercode": 1, "windspeed": 8.5, "description": "Mainly clear", "location": "Amsterdam" },
-  "updatedAt": "2026-04-06T09:30:00.000Z"
-}
-```
-
-Other `localStorage` keys used by the app:
-
-| Key                                | Contents                                   |
-|------------------------------------|--------------------------------------------|
-| `local-mood-tracker-entries`       | All check-in entries                       |
-| `local-mood-tracker-settings`      | User settings                              |
-| `local-mood-tracker-language`      | Active language (`en` / `nl`)              |
-| `local-mood-tracker-overview-ui`   | Overview UI state (sort, filters, page)    |
-| `local-mood-tracker-weather-cache` | Cached weather responses (30-minute TTL)   |
-| `local-mood-tracker-quadrant`      | Change quadrant board (ACT matrix items)   |
+- **It's yours, and it stays yours.** Everything is saved locally in your browser. There is no backend and no account.
+- **No tracking.** No cookies, no analytics, nobody watching.
+- **No network requests** — except the optional weather widget, which only sends a location to fetch the current conditions ([Open-Meteo](https://open-meteo.com/), free, no personal data). Turn the weather component off in Settings for a fully offline experience.
+- Your data is stored as plain text in the browser and isn't encrypted, so treat the device as you would a private notebook.
 
 ---
 
-## File structure
+## Reminders
 
-```text
-index.html            — DOM shell (views, dialogs, toast container)
-src/
-  main.ts             — composition root: build store + services, wire the views
-  core/               — pure domain logic (datetime, entry, scoring, stats, demo, settings, types)
-  infra/              — side effects behind interfaces (storage Repository, weather, notifications)
-  state/              — reactive signal + Store (single source of truth)
-  ui/                 — light-DOM components per view (checkin/ home/ overview/ quadrant/ settings/ info/) + shell/ + common/
-  i18n/               — translations (EN+NL) + t()/emotionLabel
-  data/               — static data (wheels, mood grid, body zones, weather codes)
-  css/                — one stylesheet per concern (@import-ed via styles.css)
-  assets/             — self-hosted fonts + logos
-public/               — favicon + logos served at the web root
-```
+Mindful Check-in can nudge you with a browser notification at intervals you choose (**Settings → Reminders**). Because notifications need a secure context, reminders only work when the app is opened from a web address, not straight from a downloaded file. Everything else works either way.
 
 ---
 
-## Architecture
+## For developers
 
-TypeScript + Vite, **functional core / imperative shell**: a pure `core/`, side effects behind interfaces in `infra/`, a single reactive `Store` as the source of truth (`state/`), and plain light-DOM components (`ui/`) that subscribe to the store and never call each other. Builds to a classic IIFE that runs from `file://`.
-
-See [architecture.md](docs/architecture.md) for the full specification: layer contract, storage keys, entry/settings schema, and conventions.
-
----
-
-## Languages
-
-English and Dutch. Switch at any time using the EN / NL toggle in the header. The default language is configurable in Settings.
-
----
-
-## Browser support
-
-Any modern browser that supports `localStorage`, `fetch`, `crypto.randomUUID`, and SVG. No polyfills included.
-
----
-
-## External services
-
-| Service                                                                  | Purpose                 | Required |
-|--------------------------------------------------------------------------|-------------------------|----------|
-| [Open-Meteo Forecast API](https://open-meteo.com/)                       | Current weather         | Optional |
-| [Open-Meteo Geocoding API](https://open-meteo.com/en/docs/geocoding-api) | City name → coordinates | Optional |
-
-Both are free and require no API key. Disable the weather component in Settings if you prefer fully offline operation.
-
----
-
-## Testing
-
-Two layers, each with one home:
-
-- **Unit** — [Vitest](https://vitest.dev/), colocated as `src/**/*.test.ts`. Pure `core`/`infra`/`state` logic (scoring, normalize, datetime, demo generator, settings-merge, signal/store). No browser, runs in milliseconds.
-- **E2E** — [Playwright](https://playwright.dev/) (desktop Chromium + Pixel-7 mobile), under `tests/e2e/<screen>/`, mirroring `src/ui/` (`checkin`, `overview`, `home`, `settings`, `info`, `shell`). Real DOM behaviour. Run on every push/PR to `main` by GitHub Actions.
-
-```bash
-npm test                                     # unit (Vitest) — from the repo root
-
-cd tests
-npm install                                  # first time only
-npx playwright install chromium
-
-npx playwright test                          # all E2E projects
-npx playwright test --project=chromium       # desktop only
-npx playwright test e2e/checkin              # one screen's specs
-npx playwright test -g "wheel"               # filter by test name
-npx playwright test --ui                     # interactive UI mode
-npx playwright show-report                   # open the last HTML report
-```
-
----
-
-## Built with
-
-This project was built entirely with AI-assisted development using:
-
-- **[VS Code](https://code.visualstudio.com/)** and **[Cursor](https://cursor.com/)** as editors
-- **GPT 5.3 Codex** (OpenAI) and **Claude Opus 4.6** (Anthropic) as coding models
+This is a from-scratch TypeScript + Vite app with no UI framework. Build steps, project layout, data format, and the testing setup live in **[docs/development.md](docs/development.md)**, with the full technical reference in **[docs/architecture.md](docs/architecture.md)**.
 
 ---
 
 ## License
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-
-You are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies — as long as you include attribution to the original source.
+Released under the [MIT License](https://opensource.org/licenses/MIT) — free to use, modify, and share, with attribution to the original source.
 
 Copyright (c) 2026 [somali-lab](https://github.com/somali-lab)
