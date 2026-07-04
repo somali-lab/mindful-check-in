@@ -21,6 +21,11 @@ export function emptyQuadrant(): Quadrant {
   return { internalFrom: [], internalTo: [], externalFrom: [], externalTo: [], values: [] };
 }
 
+/** True when the board holds no items and no values (e.g. after Clear board). */
+export function isQuadrantEmpty(q: Quadrant): boolean {
+  return q.values.length === 0 && QUADRANT_KEYS.every((key) => q[key].length === 0);
+}
+
 function coerceItem(value: unknown): QuadrantItem | null {
   // Pre-strike-through data stored plain strings; read them as not-done items.
   if (typeof value === 'string') {

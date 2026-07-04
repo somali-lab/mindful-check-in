@@ -1,6 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import { quadrantSeeds } from '../i18n/translations';
-import { emptyQuadrant, mergeQuadrant, QUADRANT_KEYS } from './quadrant';
+import { emptyQuadrant, isQuadrantEmpty, mergeQuadrant, QUADRANT_KEYS } from './quadrant';
+
+describe('isQuadrantEmpty', () => {
+  it('is true for a fresh empty board and false once anything is on it', () => {
+    expect(isQuadrantEmpty(emptyQuadrant())).toBe(true);
+    expect(isQuadrantEmpty({ ...emptyQuadrant(), values: ['Calm'] })).toBe(false);
+    expect(
+      isQuadrantEmpty({ ...emptyQuadrant(), externalTo: [{ text: 'Walk', done: false }] }),
+    ).toBe(false);
+    expect(isQuadrantEmpty(mergeQuadrant(quadrantSeeds.nl))).toBe(false);
+  });
+});
 
 describe('mergeQuadrant', () => {
   it('returns an empty quadrant for non-object input', () => {

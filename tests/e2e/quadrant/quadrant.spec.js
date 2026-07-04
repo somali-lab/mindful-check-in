@@ -228,6 +228,46 @@ test('cancelling the clear dialog keeps the board untouched', async ({ page }) =
   expect(await getStoredQuadrant(page)).toBeNull(); // still the soft default
 });
 
+// ─── Demo data fills an empty board ───
+
+test('generating demo data fills a cleared board with the example items', async ({ page }) => {
+  await page.goto('/#quadrant');
+  // Clear (and thereby persist) an empty board first.
+  await page.locator('#quadrant-clear').click();
+  await page.locator('#dlg-confirm-ok').click();
+  await expect(page.locator('.quadrant-empty')).toHaveCount(4);
+
+  await navigateToTab(page, 'info');
+  await page.locator('#view-info [data-settings-tab="data"]').click();
+  await page.locator('#demo-btn-generate').click();
+  await page.locator('#dlg-confirm-ok').click();
+
+  await navigateToTab(page, 'quadrant');
+  await expect(page.locator('[data-qlist="externalTo"]')).toContainText('Doing check-in moments');
+  await expect(page.locator('#quadrant-values')).toContainText('Calm');
+  const stored = await getStoredQuadrant(page);
+  expect(stored.values).toContain('Health');
+});
+
+test('demo data does not overwrite a board with own content', async ({ page }) => {
+  await page.goto('/#quadrant');
+  // Clear, then put one own item on the board.
+  await page.locator('#quadrant-clear').click();
+  await page.locator('#dlg-confirm-ok').click();
+  await page.locator('[data-qinput="internalTo"]').fill('My own item');
+  await page.locator('[data-qadd="internalTo"]').click();
+
+  await navigateToTab(page, 'info');
+  await page.locator('#view-info [data-settings-tab="data"]').click();
+  await page.locator('#demo-btn-generate').click();
+  await page.locator('#dlg-confirm-ok').click();
+
+  await navigateToTab(page, 'quadrant');
+  await expect(page.locator('[data-qlist="internalTo"]')).toContainText('My own item');
+  const stored = await getStoredQuadrant(page);
+  expect(stored.values).toEqual([]); // seeds not re-applied
+});
+
 // ─── Compass (values) ───
 
 test('the compass shows seed value chips; adding one persists across reload', async ({ page }) => {

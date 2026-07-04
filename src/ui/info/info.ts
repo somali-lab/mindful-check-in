@@ -4,9 +4,10 @@
 // and clear-all.
 import { generateDemoEntries } from '../../core/demo';
 import { normalize } from '../../core/entry';
-import { mergeQuadrant, type Quadrant } from '../../core/quadrant';
+import { isQuadrantEmpty, mergeQuadrant, type Quadrant } from '../../core/quadrant';
 import type { Entry, EntryMap } from '../../core/types';
 import { lang, t } from '../../i18n';
+import { quadrantSeeds } from '../../i18n/translations';
 import type { Store } from '../../state/store';
 import { confirmDialog } from '../common/confirm';
 import { downloadJson, readJsonFile, wireSubTabs } from '../common/dom';
@@ -101,6 +102,11 @@ export class InfoController {
     const demo = generateDemoEntries(lang.get());
     const merged = { ...this.#store.entries.get(), ...demo };
     this.#store.replaceAllEntries(merged);
+    // Demo also fills the quadrant with the example board (active language),
+    // but never overwrites a board the user has put content on.
+    if (isQuadrantEmpty(this.#store.quadrant.get())) {
+      this.#store.saveQuadrant(mergeQuadrant(quadrantSeeds[lang.get()]));
+    }
     showToast(
       (t('demoGenerated') || 'Generated {count} demo entries.').replace(
         '{count}',
