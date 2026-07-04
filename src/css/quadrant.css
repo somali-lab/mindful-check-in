@@ -88,13 +88,13 @@
   white-space: nowrap;
 }
 
-.quadrant-axis--internal {
+.quadrant-axis--external {
   top: 0;
   left: 50%;
   transform: translate(-50%, -4px);
 }
 
-.quadrant-axis--external {
+.quadrant-axis--internal {
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 4px);
@@ -121,48 +121,81 @@
   flex-direction: column;
 }
 
-.quadrant-cell--internalFrom {
+.quadrant-cell--externalFrom {
   grid-column: 1;
   grid-row: 1;
   padding: 36px 46px 22px 8px;
 }
 
-.quadrant-cell--internalTo {
+.quadrant-cell--externalTo {
   grid-column: 2;
   grid-row: 1;
   padding: 36px 8px 22px 46px;
 }
 
-.quadrant-cell--externalFrom {
+.quadrant-cell--internalFrom {
   grid-column: 1;
   grid-row: 3;
   padding: 10px 46px 36px 8px;
 }
 
-.quadrant-cell--externalTo {
+.quadrant-cell--internalTo {
   grid-column: 2;
   grid-row: 3;
   padding: 10px 8px 36px 46px;
 }
 
-/* Cell headings are for the stacked (mobile) layout; the axis labels carry
-   the orientation on the open desktop matrix. */
-.quadrant-panel-title {
-  display: none;
-  margin: 0 0 10px;
-  font-family: var(--font-sans);
+/* Numbered fill-order guidance (ACT matrix: 1 values → 2 monsters →
+   3 away moves → 4 toward moves). */
+.quadrant-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quadrant-step-num {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-on-accent);
+}
+
+.quadrant-panel--from .quadrant-step-num {
+  background: var(--q-away);
+}
+
+.quadrant-panel--to .quadrant-step-num {
+  background: var(--q-towards);
+}
+
+.quadrant-step-title {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
 }
 
-.quadrant-panel--from .quadrant-panel-title {
+.quadrant-panel--from .quadrant-step-title {
   color: var(--q-away);
 }
 
-.quadrant-panel--to .quadrant-panel-title {
+.quadrant-panel--to .quadrant-step-title {
   color: var(--q-towards);
+}
+
+.quadrant-step-q {
+  margin: 6px 0 12px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--text-muted);
 }
 
 .quadrant-panel.is-drop-target {
@@ -499,10 +532,6 @@
     grid-column: 1;
     grid-row: auto;
     padding: 0;
-  }
-
-  .quadrant-panel-title {
-    display: block;
   }
 
   .quadrant-band {

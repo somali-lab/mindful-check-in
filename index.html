@@ -394,22 +394,6 @@
                 </div>
                 <div class="quadrant-matrix" id="quadrant-grid">
                   <div class="quadrant-vline" aria-hidden="true"></div>
-                  <div class="quadrant-panel quadrant-panel--from quadrant-cell--internalFrom" role="group" data-qpanel="internalFrom" data-t-aria="quadrantInternalFrom" aria-label="panel">
-                    <h3 class="quadrant-panel-title" data-t="quadrantInternalFrom">panel</h3>
-                    <ul class="quadrant-list" data-qlist="internalFrom"></ul>
-                    <div class="quadrant-add">
-                      <input type="text" data-qinput="internalFrom" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
-                      <button type="button" class="quadrant-add-btn" data-qadd="internalFrom" data-t="quadrantAddBtn">Add</button>
-                    </div>
-                  </div>
-                  <div class="quadrant-panel quadrant-panel--to quadrant-cell--internalTo" role="group" data-qpanel="internalTo" data-t-aria="quadrantInternalTo" aria-label="panel">
-                    <h3 class="quadrant-panel-title" data-t="quadrantInternalTo">panel</h3>
-                    <ul class="quadrant-list" data-qlist="internalTo"></ul>
-                    <div class="quadrant-add">
-                      <input type="text" data-qinput="internalTo" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
-                      <button type="button" class="quadrant-add-btn" data-qadd="internalTo" data-t="quadrantAddBtn">Add</button>
-                    </div>
-                  </div>
                   <div class="quadrant-band">
                     <div class="quadrant-hline" aria-hidden="true"></div>
                     <div class="quadrant-hub" id="quadrant-center">
@@ -421,16 +405,48 @@
                       <div class="quadrant-hub-chips" id="quadrant-values"></div>
                     </div>
                   </div>
-                  <div class="quadrant-panel quadrant-panel--from quadrant-cell--externalFrom" role="group" data-qpanel="externalFrom" data-t-aria="quadrantExternalFrom" aria-label="panel">
-                    <h3 class="quadrant-panel-title" data-t="quadrantExternalFrom">panel</h3>
+                  <div class="quadrant-panel quadrant-panel--to quadrant-cell--internalTo" role="group" data-qpanel="internalTo" data-t-aria="quadrantStep1Title" aria-label="step">
+                    <div class="quadrant-step">
+                      <span class="quadrant-step-num" aria-hidden="true">1</span>
+                      <span class="quadrant-step-title" data-t="quadrantStep1Title">step</span>
+                    </div>
+                    <p class="quadrant-step-q" data-t="quadrantStep1Q">…</p>
+                    <ul class="quadrant-list" data-qlist="internalTo"></ul>
+                    <div class="quadrant-add">
+                      <input type="text" data-qinput="internalTo" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
+                      <button type="button" class="quadrant-add-btn" data-qadd="internalTo" data-t="quadrantAddBtn">Add</button>
+                    </div>
+                  </div>
+                  <div class="quadrant-panel quadrant-panel--from quadrant-cell--internalFrom" role="group" data-qpanel="internalFrom" data-t-aria="quadrantStep2Title" aria-label="step">
+                    <div class="quadrant-step">
+                      <span class="quadrant-step-num" aria-hidden="true">2</span>
+                      <span class="quadrant-step-title" data-t="quadrantStep2Title">step</span>
+                    </div>
+                    <p class="quadrant-step-q" data-t="quadrantStep2Q">…</p>
+                    <ul class="quadrant-list" data-qlist="internalFrom"></ul>
+                    <div class="quadrant-add">
+                      <input type="text" data-qinput="internalFrom" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
+                      <button type="button" class="quadrant-add-btn" data-qadd="internalFrom" data-t="quadrantAddBtn">Add</button>
+                    </div>
+                  </div>
+                  <div class="quadrant-panel quadrant-panel--from quadrant-cell--externalFrom" role="group" data-qpanel="externalFrom" data-t-aria="quadrantStep3Title" aria-label="step">
+                    <div class="quadrant-step">
+                      <span class="quadrant-step-num" aria-hidden="true">3</span>
+                      <span class="quadrant-step-title" data-t="quadrantStep3Title">step</span>
+                    </div>
+                    <p class="quadrant-step-q" data-t="quadrantStep3Q">…</p>
                     <ul class="quadrant-list" data-qlist="externalFrom"></ul>
                     <div class="quadrant-add">
                       <input type="text" data-qinput="externalFrom" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
                       <button type="button" class="quadrant-add-btn" data-qadd="externalFrom" data-t="quadrantAddBtn">Add</button>
                     </div>
                   </div>
-                  <div class="quadrant-panel quadrant-panel--to quadrant-cell--externalTo" role="group" data-qpanel="externalTo" data-t-aria="quadrantExternalTo" aria-label="panel">
-                    <h3 class="quadrant-panel-title" data-t="quadrantExternalTo">panel</h3>
+                  <div class="quadrant-panel quadrant-panel--to quadrant-cell--externalTo" role="group" data-qpanel="externalTo" data-t-aria="quadrantStep4Title" aria-label="step">
+                    <div class="quadrant-step">
+                      <span class="quadrant-step-num" aria-hidden="true">4</span>
+                      <span class="quadrant-step-title" data-t="quadrantStep4Title">step</span>
+                    </div>
+                    <p class="quadrant-step-q" data-t="quadrantStep4Q">…</p>
                     <ul class="quadrant-list" data-qlist="externalTo"></ul>
                     <div class="quadrant-add">
                       <input type="text" data-qinput="externalTo" data-t-placeholder="quadrantAdd" placeholder="Add an item…"/>
