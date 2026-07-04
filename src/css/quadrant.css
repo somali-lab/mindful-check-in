@@ -1,6 +1,13 @@
 /* ── Change quadrant (ACT matrix): open 2×2 board with axis lines, direction
    tones (warm = away from, green = towards) and the compass hub of values on
    the crossing. Matches docs/design/project/Quadrant.dc.html. ── */
+
+/* The board sits on the softer surface tint (design: #f4efe6 light /
+   near-#211b15 dark), not the near-white card surface. */
+.quadrant-card {
+  background: var(--bg-surface-alt);
+}
+
 .quadrant-matrix {
   position: relative;
   display: grid;
@@ -47,7 +54,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
-  background: var(--bg-surface);
+  background: var(--bg-surface-alt); /* same tint as the card, masks the line */
   padding: 3px 12px;
   border-radius: 6px;
   white-space: nowrap;
