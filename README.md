@@ -46,6 +46,19 @@ Five models to choose from (switch per check-in or set a default):
 - **Summary** — today's status, 7-day heatmap, streak counter, total check-in count
 - **History** — 28-day calendar view with color-coded dots; switchable between core feeling, mood matrix, and energy modes; click a day to load that entry
 
+### Quadrant (Change Matrix)
+
+An ACT-inspired four-quadrant board for tracking internal/external movement:
+
+| Quadrant | Axis |
+|----------|------|
+| Internal — moving away from | What you want to leave behind (internal) |
+| Internal — moving towards | What matters to you / who you want to be |
+| External — moving away from | External circumstances you're moving away from |
+| External — moving towards | External goals you're working towards |
+
+Items can be marked as done (struck through). The board seeds with language-appropriate defaults and persists independently from check-in entries.
+
 ### Overview
 
 - Paginated, sortable table of all saved entries
@@ -154,14 +167,14 @@ Each entry contains:
 
 Other `localStorage` keys used by the app:
 
-| Key                                | Contents                                |
-|------------------------------------|-----------------------------------------|
-| `local-mood-tracker-entries`       | All check-in entries                    |
-| `local-mood-tracker-settings`      | User settings                           |
-| `local-mood-tracker-language`      | Active language (`en` / `nl`)           |
-| `local-mood-tracker-active-tab`    | Last active tab                         |
-| `local-mood-tracker-overview-ui`   | Overview UI state (sort, filters, page) |
-| `local-mood-tracker-weather-cache` | Cached weather responses (1 hour TTL)   |
+| Key                                | Contents                                   |
+|------------------------------------|--------------------------------------------|
+| `local-mood-tracker-entries`       | All check-in entries                       |
+| `local-mood-tracker-settings`      | User settings                              |
+| `local-mood-tracker-language`      | Active language (`en` / `nl`)              |
+| `local-mood-tracker-overview-ui`   | Overview UI state (sort, filters, page)    |
+| `local-mood-tracker-weather-cache` | Cached weather responses (30-minute TTL)   |
+| `local-mood-tracker-quadrant`      | Change quadrant board (ACT matrix items)   |
 
 ---
 
@@ -174,7 +187,7 @@ src/
   core/               — pure domain logic (datetime, entry, scoring, stats, demo, settings, types)
   infra/              — side effects behind interfaces (storage Repository, weather, notifications)
   state/              — reactive signal + Store (single source of truth)
-  ui/                 — light-DOM components per view (checkin/ home/ overview/ settings/ info/) + shell
+  ui/                 — light-DOM components per view (checkin/ home/ overview/ quadrant/ settings/ info/) + shell/ + common/
   i18n/               — translations (EN+NL) + t()/emotionLabel
   data/               — static data (wheels, mood grid, body zones, weather codes)
   css/                — one stylesheet per concern (@import-ed via styles.css)
